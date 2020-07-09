@@ -1,11 +1,15 @@
-import { shallowMount } from '@vue/test-utils'
+import BootstrapVue from 'bootstrap-vue'
+import { mount, createLocalVue } from '@vue/test-utils'
 import Index from '@/pages/index.vue'
+
+const localVue = createLocalVue()
+localVue.use(BootstrapVue)
 
 describe('Index', () => {
 
-  // TODO: change to mount. Add stubs. Fix deprecation warnings.
+  // TODO: Make this a proper test.
   test('is a Vue instance', () => {
-    const wrapper = shallowMount(Index)
-    expect(wrapper.isVueInstance()).toBeTruthy()
+    const wrapper = mount(Index, { localVue } )
+    expect(wrapper.findComponent(Index).exists()).toBeTruthy()
   })
 })
