@@ -1,0 +1,34 @@
+{
+  "reports": [
+    {
+      "filename": "200624_0100_positives_with_locations.xlsx", 
+      "size": "4.81 MB", 
+      "created": "Wed Jun 24 01:00:33 2020", 
+      "download_url": "https://uat.lighthouse.psd.sanger.ac.uk/200624_0100_positives_with_locations.xlsx"
+    }, 
+    {
+      "filename": "200605_1721_positives_with_locations.xlsx", 
+      "size": "3.01 MB", 
+      "created": "Fri Jun  5 17:21:38 2020", 
+      "download_url": "https://uat.lighthouse.psd.sanger.ac.uk/200605_1721_positives_with_locations.xlsx"
+    }, 
+    {
+      "filename": "200702_0952_positives_with_locations.xlsx", 
+      "size": "0B", 
+      "created": "Thu Jul  2 09:52:30 2020", 
+      "download_url": "https://uat.lighthouse.psd.sanger.ac.uk/200702_0952_positives_with_locations.xlsx"
+    }, 
+    {
+      "filename": "200628_0100_positives_with_locations.xlsx", 
+      "size": "4.92 MB", 
+      "created": "Sun Jun 28 01:00:34 2020", 
+      "download_url": "https://uat.lighthouse.psd.sanger.ac.uk/200628_0100_positives_with_locations.xlsx"
+    }, 
+    {
+      "filename": "200702_1211_positives_with_locations.xlsx", 
+      "size": "5.08 MB", 
+      "created": "Thu Jul  2 12:11:55 2020", 
+      "download_url": "https://uat.lighthouse.psd.sanger.ac.uk/200702_1211_positives_with_locations.xlsx"
+    }
+  ]
+}

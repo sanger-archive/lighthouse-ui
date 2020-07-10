@@ -8,6 +8,7 @@
         </p>
         <p>
           <b-button
+            id="createReport"
             variant="success"
             :disabled="isCreating"
             @click="createReport"
@@ -75,8 +76,8 @@ export default {
   methods: {
     async reportsProvider(ctx) {
       try {
-        const data = await this.$axios.$get(`reports`)
-        return data.reports
+        const result = await this.$axios.$get(`reports`)
+        return result.data.reports
       } catch (error) {
         return []
       }
