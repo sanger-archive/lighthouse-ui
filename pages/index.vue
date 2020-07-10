@@ -8,6 +8,7 @@
         </p>
         <p>
           <b-button
+            id="createReport"
             variant="success"
             :disabled="isCreating"
             @click="createReport"

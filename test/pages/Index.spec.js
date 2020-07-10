@@ -5,7 +5,8 @@ import ReportsJson from '../data/reports'
 import flushPromises from 'flush-promises'
 
 const $axios = {
-  $get: jest.fn()
+  $get: jest.fn(),
+  $post: jest.fn()
 }
 
 const localVue = createLocalVue()
@@ -43,6 +44,26 @@ describe('Index', () => {
   })
 
   describe('#createReport', () => {
-    
+    beforeEach(() => {
+      wrapper = mount(Index, { localVue, mocks: { $axios } } )
+    })
+
+    it('when the request is successful',  async () => {
+      $axios.$post.mockResolvedValue({data: "success"})
+      $axios.$get.mockResolvedValue({data: ReportsJson})
+      wrapper = mount(Index, { localVue, mocks: { $axios } } )
+      let button = wrapper.find('#createReport')
+      await button.trigger('click')
+      await flushPromises()
+      expect(wrapper.find('tbody').findAll('tr').length).toEqual(ReportsJson.reports.length)
+    })
+
+    it('when the request fails', async () => {
+      $axios.$post.mockImplementationOnce(() => Promise.reject(new Error('There was an error')))
+      wrapper = mount(Index, { localVue, mocks: { $axios } } )
+      let button = wrapper.find('#createReport')
+      await button.trigger('click')
+      expect(wrapper.find('tbody').findAll('tr').length).toEqual(0)
+    })
   })
 })
