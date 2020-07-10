@@ -90,7 +90,6 @@ export default {
         this.isCreated = true
         this.isCreating = false
       } catch (error) {
-        console.log('error')
         this.isCreating = false
         this.isError = true
         return []
