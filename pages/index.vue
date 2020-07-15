@@ -6,6 +6,11 @@
         <p class="lead">
           Reports generated for Lighthouse samples which are on site
         </p>
+        <!-- <b-form-input
+          id="plate_barcode"
+          placeholder="Barcode"
+          @change="performLighthouseRequest"
+        ></b-form-input> -->
         <p>
           <b-button
             id="createReport"
@@ -56,6 +61,8 @@
 </template>
 
 <script>
+// import { getPlateMapMetadataFromLighthouseService } from '../modules/api'
+
 export default {
   data() {
     return {
@@ -74,6 +81,9 @@ export default {
     }
   },
   methods: {
+    // performLighthouseRequest(value) {
+    //   getPlateMapMetadataFromLighthouseService({ plateBarcodes: [value] })
+    // },
     async reportsProvider(ctx) {
       try {
         const result = await this.$axios.$get(`reports`)
