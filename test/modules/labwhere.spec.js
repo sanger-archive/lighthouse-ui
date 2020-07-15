@@ -28,7 +28,9 @@ describe('Labwhere', () => {
     })
 
     it('labwhere request', () => {
-      expect(labwhereRequest.defaults.baseURL).toEqual(config.privateRuntimeConfig.labwhereBaseURL)
+      expect(labwhereRequest.defaults.baseURL).toEqual(
+        config.privateRuntimeConfig.labwhereBaseURL
+      )
     })
 
     it('when there is an error', async () => {

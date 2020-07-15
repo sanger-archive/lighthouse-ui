@@ -2,13 +2,15 @@ import axios from 'axios'
 import * as Modules from '@/modules/lighthouse_service'
 
 describe('lighthouse_service api', () => {
-  // it('can be passed arguements of plate barcodes', () => {
-  //   let plateBarcodes = ['A1234', 'B1234']
-  //   Modules.getMetadataForPlate = jest.fn()
+  it('#getPlateMapMetadataFromLighthouseService', () => {
+    const mock = jest.spyOn(axios, 'get')
+    const plateBarcodes = ['aBarcode1', 'aBarcode2']
 
-  //   Modules.getPlateMapMetadataFromLighthouseService({ 'plateBarcodes': plateBarcodes })
-  //   expect(Modules.getMetadataForPlate).toHaveBeenCalledTimes(plateBarcodes.length)
-  // })
+    Modules.getPlateMapMetadataFromLighthouseService({
+      plateBarcodes
+    })
+    expect(mock).toHaveBeenCalledTimes(plateBarcodes.length)
+  })
 
   it('#getMetadataForPlate', async () => {
     const mock = jest.spyOn(axios, 'get')

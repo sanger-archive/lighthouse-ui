@@ -1,7 +1,9 @@
 import axios from 'axios'
 import config from '@/nuxt.config'
 
-const labwhereRequest = axios.create({ baseURL: config.privateRuntimeConfig.labwhereBaseURL })
+const labwhereRequest = axios.create({
+  baseURL: config.privateRuntimeConfig.labwhereBaseURL
+})
 
 const getPlates = async (request, boxBarcode) => {
   try {
@@ -13,3 +15,5 @@ const getPlates = async (request, boxBarcode) => {
 }
 
 export { labwhereRequest, getPlates }
+
+export default getPlates

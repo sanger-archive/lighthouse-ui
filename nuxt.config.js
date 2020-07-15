@@ -82,5 +82,5 @@ export default {
   },
   privateRuntimeConfig: {
     labwhereBaseURL: process.env.LABWHERE_BASE_URL || 'http://labwhere'
-},
+  }
 }

@@ -5,7 +5,7 @@ import LighthouseSentinelBatch from '@/pages/lighthouse_sentinel_batch'
 const localVue = createLocalVue()
 localVue.use(BootstrapVue)
 
-describe('Index', () => {
+describe('lighthouse sentinel batch', () => {
   let wrapper
 
   it('is a Vue instance', () => {
