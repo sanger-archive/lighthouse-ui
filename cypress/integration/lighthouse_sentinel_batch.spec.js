@@ -1,0 +1,24 @@
+// GPL-558 As genomics POs (Emma, Rich C & James) we would like Lighthouse sentinel samples to be automatically created
+// in sequencescape by scanning a BOX barcode to support a 5 day turn-around-time
+// Scan in a Lighthouse BOX barcode
+// Request the plate barcodes in to box from LabWhere (assumes box manifest has been uploaded previously see GPL-468)
+// Request plate map metadata, root sample id, result (+ve, -ve or void)
+// Request COG-UK id with correct prefix dependent on Lighthouse Lab (MILK, ALDP ...)
+// Create (Just +ves?) sample in SS, including entery to stock_resourse table in MLWH (See GPL-577)
+// Report back number plates, and samples created and if box barcode unknown, any plate barcodes unknown
+
+describe('Lighthouse Sentinel Batch test', () => {
+  beforeEach(() => {
+    cy.visit('http://localhost:3000/lighthouse_sentinel_batch')
+  })
+
+  it('Visits the page', () => {
+    cy.contains('Lighthouse Sentinel sample creation')
+  })
+
+  it('Scans lighthouse box barcode', () => {
+    cy.contains('Box barcode')
+    cy.findByText('Please scan Lighthouse box barcode').type('DN1234567')
+    cy.findByText('Submit').click()
+  })
+})
