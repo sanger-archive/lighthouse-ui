@@ -12,7 +12,7 @@ const $axios = {
 const localVue = createLocalVue()
 localVue.use(BootstrapVue)
 
-describe('Index', () => {
+describe('lighthouse sentinel batch', () => {
   let wrapper
 
   it('is a Vue instance', () => {
@@ -25,7 +25,7 @@ describe('Index', () => {
       localVue,
       data() {
         return {
-          boxBarcode: 'lw-ogilvie-4'
+          boxBarcode: 'lw-ogilvie-4',
         }
       }
     })
