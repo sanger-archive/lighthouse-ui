@@ -41,8 +41,7 @@ export default {
       return this.boxBarcode.length === 0
     }
   },
-  methods: {
-  }
+  methods: {}
 }
 </script>
 

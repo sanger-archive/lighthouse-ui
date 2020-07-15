@@ -6,21 +6,18 @@
 import axios from 'axios'
 
 const getMetadataForPlate = async (barcode) => {
-  let url = `http://localhost:5000/samples?where=${barcode}`
+  const url = `http://localhost:5000/samples?where=${barcode}`
   return await axios.get(url)
-} 
+}
 
 const getPlateMapMetadataFromLighthouseService = (moduleOptions) => {
-  let plateBarcodes = moduleOptions.plateBarcodes
-  let plateMetadata = plateBarcodes.map(plateBarcode => {
+  const plateBarcodes = moduleOptions.plateBarcodes
+  const plateMetadata = plateBarcodes.map((plateBarcode) => {
     getMetadataForPlate(plateBarcode)
   })
   return plateMetadata
 }
 
-export {
-  getMetadataForPlate,
-  getPlateMapMetadataFromLighthouseService
-}
+export { getMetadataForPlate, getPlateMapMetadataFromLighthouseService }
 
 export default getPlateMapMetadataFromLighthouseService

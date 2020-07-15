@@ -79,5 +79,8 @@ export default {
      ** You can extend webpack config here
      */
     extend(config, ctx) {}
-  }
+  },
+  privateRuntimeConfig: {
+    labwhereBaseURL: process.env.LABWHERE_BASE_URL || 'http://labwhere'
+},
 }
