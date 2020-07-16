@@ -48,10 +48,9 @@
             >Submit
           </b-button>
           <b-button
-            id="cancel"
+            id="cancelSearch"
             variant="primary"
             class="float-right"
-            :disabled="isDisabled"
             @click="cancelSearch()"
             >Cancel
           </b-button>
@@ -103,7 +102,8 @@ export default {
       return ''
     },
     cancelSearch() {
-      return ''
+      this.checkBox = ['positive']
+      this.boxBarcode = ''
     },
     checkCheckBox() {
       if (this.checkBox.length > 1) {
