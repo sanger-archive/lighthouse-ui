@@ -61,7 +61,7 @@
 </template>
 
 <script>
-// import { getPlateMapMetadataFromLighthouseService } from '../modules/api'
+// import { createPlatesFromBarcodes } from '../modules/api'
 
 export default {
   data() {
@@ -81,8 +81,8 @@ export default {
     }
   },
   methods: {
-    // performLighthouseRequest(value) {
-    //   getPlateMapMetadataFromLighthouseService({ plateBarcodes: [value] })
+    // async performLighthouseRequest(value) {
+    //   await createPlatesFromBarcodes({ plateBarcodes: [value] })
     // },
     async reportsProvider(ctx) {
       try {
