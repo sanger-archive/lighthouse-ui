@@ -1,45 +1,193 @@
 import axios from 'axios'
-import LighthouseSampleMetadataForPlate from '../data/lighthouse_sample_metadata_for_plate'
 import * as Modules from '@/modules/lighthouse_service'
 
 describe('lighthouse_service api', () => {
-  it('#getPlateMapMetadataFromLighthouseService', () => {
-    const mock = jest.spyOn(axios, 'get')
-    const plateBarcodes = ['aBarcode1', 'aBarcode2']
+  describe('#createPlatesFromBarcodes ', () => {
+    let mock, plateBarcodes, response
 
-    Modules.getPlateMapMetadataFromLighthouseService({
-      plateBarcodes
+    beforeEach(() => {
+      mock = jest.spyOn(axios, 'post')
     })
-    expect(mock).toHaveBeenCalledTimes(plateBarcodes.length)
-    // expect(mock).toHaveBeenNthCalledWith(
-    //   1,
-    //   "http://localhost:5000/samples?where['plate_barcode']=aBarcode1}"
-    // )
-    // expect(mock).toHaveBeenNthCalledWith(
-    //   2,
-    //   "http://localhost:5000/samples?where['plate_barcode']=aBarcode2}"
-    // )
-  })
 
-  it('#filterSamplesByPlateBarcode', async () => {
-    const mock = jest.spyOn(axios, 'get')
-    const expected = LighthouseSampleMetadataForPlate
-    mock.mockResolvedValue(expected)
-    const result = await Modules.filterSamplesByPlateBarcode('aBarcode')
-    // expect(mock).toHaveBeenCalledWith(
-    //   "http://localhost:5000/samples?where['plate_barcode']=aBarcode}"
-    // )
-    // expect(mock).toHaveBeenCalledTimes(1)
-    expect(result.length).toEqual(expected.data._items.length)
-  })
+    afterEach(() => {
+      mock.mockRestore()
+    })
 
-  it('#getMetadata', () => {
-    const result = Modules.getMetadata(
-      LighthouseSampleMetadataForPlate.data._items
-    )
-    result.map((r) => {
-      expect(r).toHaveProperty('rootSampleID')
-      expect(r).toHaveProperty('result')
+    it('for a single barcode on failure', async () => {
+      plateBarcodes = ['aBarcode1']
+
+      response = {
+        errors: ['foreign barcode is already in use.']
+      }
+
+      mock.mockResolvedValue(response)
+
+      const result = await Modules.createPlatesFromBarcodes({
+        plateBarcodes
+      })
+
+      expect(result).toEqual([response])
+      expect(mock).toHaveBeenCalledTimes(1)
+      expect(mock).toHaveBeenNthCalledWith(
+        1,
+        'http://localhost:5000/plates/new',
+        { barcode: plateBarcodes[0] }
+      )
+    })
+
+    it('for a single barcode on success', async () => {
+      plateBarcodes = ['aBarcode1']
+
+      response = {
+        data: {
+          attributes: {
+            uuid: 'ce649e2e-c751-11ea-93a9-fa163e68e77d',
+            purpose_name: 'LHR Stock',
+            study_names: ['Heron Project']
+          },
+          links: {
+            self:
+              'http://uat.sequencescape.psd.sanger.ac.uk/api/v2/plates/26485889'
+          }
+        }
+      }
+
+      mock.mockResolvedValue(response)
+
+      const result = await Modules.createPlatesFromBarcodes({
+        plateBarcodes
+      })
+
+      expect(result).toEqual([response])
+      expect(mock).toHaveBeenCalledTimes(1)
+      expect(mock).toHaveBeenNthCalledWith(
+        1,
+        'http://localhost:5000/plates/new',
+        { barcode: plateBarcodes[0] }
+      )
+    })
+
+    it('#for multiple barcodes on failure', async () => {
+      plateBarcodes = ['aBarcode1', 'aBarcode2']
+
+      const response1 = {
+        errors: ['foreign barcode is already in use.']
+      }
+
+      const response2 = {
+        errors: ['sample does not exist.']
+      }
+
+      mock.mockImplementationOnce(() => response1)
+      mock.mockImplementationOnce(() => response2)
+
+      const result = await Modules.createPlatesFromBarcodes({
+        plateBarcodes
+      })
+
+      expect(result).toEqual([response1, response2])
+      expect(mock).toHaveBeenCalledTimes(2)
+      expect(mock).toHaveBeenNthCalledWith(
+        1,
+        'http://localhost:5000/plates/new',
+        { barcode: plateBarcodes[0] }
+      )
+      expect(mock).toHaveBeenNthCalledWith(
+        2,
+        'http://localhost:5000/plates/new',
+        { barcode: plateBarcodes[1] }
+      )
+    })
+
+    it('#for multiple barcodes on success', async () => {
+      plateBarcodes = ['aBarcode1', 'aBarcode2']
+
+      const response1 = {
+        data: {
+          attributes: {
+            uuid: '11111-111-1111-1111-111111111',
+            purpose_name: 'LHR Stock',
+            study_names: ['Heron Project']
+          },
+          links: {
+            self: 'http://uat.sequencescape.psd.sanger.ac.uk/api/v2/plates/1'
+          }
+        }
+      }
+
+      const response2 = {
+        data: {
+          attributes: {
+            uuid: '22222-2222-2222-2222-222222222',
+            purpose_name: 'LHR Stock',
+            study_names: ['Heron Project']
+          },
+          links: {
+            self: 'http://uat.sequencescape.psd.sanger.ac.uk/api/v2/plates/2'
+          }
+        }
+      }
+
+      mock.mockImplementationOnce(() => response1)
+      mock.mockImplementationOnce(() => response2)
+
+      const result = await Modules.createPlatesFromBarcodes({
+        plateBarcodes
+      })
+
+      expect(result).toEqual([response1, response2])
+      expect(mock).toHaveBeenCalledTimes(2)
+      expect(mock).toHaveBeenNthCalledWith(
+        1,
+        'http://localhost:5000/plates/new',
+        { barcode: plateBarcodes[0] }
+      )
+      expect(mock).toHaveBeenNthCalledWith(
+        2,
+        'http://localhost:5000/plates/new',
+        { barcode: plateBarcodes[1] }
+      )
+    })
+
+    it('#for multiple barcodes on partial success/ failure', async () => {
+      plateBarcodes = ['aBarcode1', 'aBarcode2']
+
+      const response1 = {
+        errors: ['foreign barcode is already in use.']
+      }
+
+      const response2 = {
+        data: {
+          attributes: {
+            uuid: '22222-2222-2222-2222-222222222',
+            purpose_name: 'LHR Stock',
+            study_names: ['Heron Project']
+          },
+          links: {
+            self: 'http://uat.sequencescape.psd.sanger.ac.uk/api/v2/plates/2'
+          }
+        }
+      }
+
+      mock.mockImplementationOnce(() => response1)
+      mock.mockImplementationOnce(() => response2)
+
+      const result = await Modules.createPlatesFromBarcodes({
+        plateBarcodes
+      })
+
+      expect(result).toEqual([response1, response2])
+      expect(mock).toHaveBeenCalledTimes(2)
+      expect(mock).toHaveBeenNthCalledWith(
+        1,
+        'http://localhost:5000/plates/new',
+        { barcode: plateBarcodes[0] }
+      )
+      expect(mock).toHaveBeenNthCalledWith(
+        2,
+        'http://localhost:5000/plates/new',
+        { barcode: plateBarcodes[1] }
+      )
     })
   })
 })
