@@ -1,4 +1,4 @@
-import PlatesJson from '../data/plates'
+import PlatesJson from '../data/labwhere_plates'
 import { labwhereRequest, getPlates } from '@/modules/labwhere'
 import config from '@/nuxt.config'
 
@@ -14,6 +14,13 @@ describe('Labwhere', () => {
       boxBarcode = 'lw-ogilvie-4'
     })
 
+    it('labwhere request', () => {
+      expect(labwhereRequest.defaults.baseURL).toBeDefined()
+      expect(labwhereRequest.defaults.baseURL).toEqual(
+        config.privateRuntimeConfig.labwhereBaseURL
+      )
+    })
+
     it('successfully', async () => {
       axios.get.mockResolvedValue({ data: PlatesJson })
       labwareBarcodes = await getPlates(axios, boxBarcode)
@@ -25,12 +32,6 @@ describe('Labwhere', () => {
         'lw-aa212-9',
         'lw-aa209-10'
       ])
-    })
-
-    it('labwhere request', () => {
-      expect(labwhereRequest.defaults.baseURL).toEqual(
-        config.privateRuntimeConfig.labwhereBaseURL
-      )
     })
 
     it('when there is an error', async () => {

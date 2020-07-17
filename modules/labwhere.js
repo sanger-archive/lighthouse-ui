@@ -7,7 +7,7 @@ const labwhereRequest = axios.create({
 
 const getPlates = async (request, boxBarcode) => {
   try {
-    const plates = await request.get(`/api/locations/${boxBarcode}/children`)
+    const plates = await request.get(`/api/locations/${boxBarcode}/labwares`)
     return plates.data.map((plate) => plate.barcode)
   } catch (error) {
     return []

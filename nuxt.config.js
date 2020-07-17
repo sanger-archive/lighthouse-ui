@@ -69,7 +69,7 @@ export default {
    ** See https://axios.nuxtjs.org/options
    */
   axios: {
-    browserBaseURL: 'https://lighthouse.psd.sanger.ac.uk/'
+    browserBaseURL: process.env.LIGHTHOUSE_BASE_URL
   },
   /*
    ** Build configuration
@@ -81,6 +81,9 @@ export default {
     extend(config, ctx) {}
   },
   privateRuntimeConfig: {
-    labwhereBaseURL: process.env.LABWHERE_BASE_URL || 'http://labwhere'
+    lighthouseBaseURL: process.env.LIGHTHOUSE_BASE_URL || 'http://lighthouse',
+    labwhereBaseURL: process.env.LABWHERE_BASE_URL || 'http://labwhere',
+    sequencescapeBaseURL:
+      process.env.SEQUENCESCAPE_BASE_URL || 'http://sequencescape'
   }
 }

@@ -1,6 +1,6 @@
 import axios from 'axios'
-import * as Modules from '@/modules/lighthouse_service'
 import LighthouseSampleMetadataForPlate from '../data/lighthouse_sample_metadata_for_plate'
+import * as Modules from '@/modules/lighthouse_service'
 
 describe('lighthouse_service api', () => {
   it('#getPlateMapMetadataFromLighthouseService', () => {
@@ -34,7 +34,9 @@ describe('lighthouse_service api', () => {
   })
 
   it('#getMetadata', () => {
-    const result = Modules.getMetadata(LighthouseSampleMetadataForPlate.data._items)
+    const result = Modules.getMetadata(
+      LighthouseSampleMetadataForPlate.data._items
+    )
     result.map((r) => {
       expect(r).toHaveProperty('rootSampleID')
       expect(r).toHaveProperty('result')
