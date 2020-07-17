@@ -28,6 +28,7 @@ describe('lighthouse sentinel batch', () => {
     expect(wrapper.vm.boxBarcode).toEqual('lw-ogilvie-4')
   })
 
+  // TODO: Are these necessary. Would this be better done in an integration test.
   describe('submission', () => {
     let button
 
