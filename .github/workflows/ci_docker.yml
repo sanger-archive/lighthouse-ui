@@ -1,15 +1,15 @@
 name: CI docker
 
-on:
-  push:
-    branches:
-      - develop
-      - master
-    paths-ignore:
-      - "README.md"
-    tags:
-      - uat-*
-      - release-*
+# on:
+#   push:
+#     branches:
+#       - develop
+#       - master
+#     paths-ignore:
+#       - "README.md"
+#     tags:
+#       - uat-*
+#       - release-*
 env:
   IMAGE_NAME: ${{ github.repository }}/${{ github.event.repository.name }}
 
