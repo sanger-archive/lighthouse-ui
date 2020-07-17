@@ -1,10 +1,10 @@
-FROM starefossen/ruby-node
-
-RUN apt-get update -qq && apt-get install -y
-RUN apt-get -y install git vim
+FROM node:10
 
 WORKDIR /code
 ADD . /code/
+
+# global install & update
+RUN npm i -g npm && npm i -g yarn
 
 RUN yarn install
 
