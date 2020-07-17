@@ -6,7 +6,7 @@ const localVue = createLocalVue()
 localVue.use(BootstrapVue)
 
 describe('lighthouse sentinel batch', () => {
-  let wrapper, lighthouseSentinelBatch
+  let wrapper
 
   beforeEach(() => {
     wrapper = mount(LighthouseSentinelBatch, {
@@ -18,7 +18,6 @@ describe('lighthouse sentinel batch', () => {
         }
       }
     })
-    lighthouseSentinelBatch = wrapper.vm
   })
 
   it('is a Vue instance', () => {
@@ -26,10 +25,34 @@ describe('lighthouse sentinel batch', () => {
   })
 
   it('has a barcode', () => {
-    expect(lighthouseSentinelBatch.boxBarcode).toEqual('lw-ogilvie-4')
+    expect(wrapper.vm.boxBarcode).toEqual('lw-ogilvie-4')
   })
 
-  it('has a positivesOnly flag', () => {
-    expect(lighthouseSentinelBatch.positivesOnly).toBeTruthy()
+  describe('submission', () => {
+    let button
+
+    it('has a submit button', () => {
+      button = wrapper.find('#handleSentinelSampleCreation')
+      expect(button.text()).toEqual('Submit')
+    })
+
+    it('on submit button click it calls handleSentinelSampleCreation', () => {
+      wrapper.vm.handleSentinelSampleCreation = jest.fn()
+      button = wrapper.find('#handleSentinelSampleCreation')
+      button.trigger('click')
+      expect(wrapper.vm.handleSentinelSampleCreation).toBeCalled()
+    })
+
+    it('has a cancel button', () => {
+      button = wrapper.find('#cancelSearch')
+      expect(button.text()).toEqual('Cancel')
+    })
+
+    it('on cancel button click it calls cancelSearch', () => {
+      wrapper.vm.cancelSearch = jest.fn()
+      button = wrapper.find('#cancelSearch')
+      button.trigger('click')
+      expect(wrapper.vm.cancelSearch).toBeCalled()
+    })
   })
 })
