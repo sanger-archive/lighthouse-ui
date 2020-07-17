@@ -1,39 +1,35 @@
-// Module to accept a list of plate barcodes
-// Send a GET request to the lighthouse service api
-// To return the plates metadata
-// Including the RootSampleId and +ve/-ve result
+// Lighthouse Service Module
+// Accepts a list of plateBarcodes in the moduleOptions
+// Send a POST request to the Lighthouse service API
+// To create each plate
+// Return list of responses
 
 import axios from 'axios'
 
-const getMetadata = (samples) => {
-  return samples.map((s) => ({
-    rootSampleID: s['Root Sample ID'],
-    result: s.Result
-  }))
+const handlePromise = async (promise) => {
+  let rawResponse
+  try {
+    rawResponse = await promise
+  } catch (resp) {
+    rawResponse = resp.response.data.errors
+  }
+  return rawResponse
 }
 
-const filterSamplesByPlateBarcode = async (barcode) => {
-  // const url = `http://localhost:5000/samples?where={'plate_barcode':${barcode}}`
-  const url = `http://localhost:5000/samples?where['plate_barcode']=${barcode}`
-
-  const response = await axios.get(url)
-  const result = getMetadata(response.data._items)
-  // console.log('Result: ', result)
-  return result
-}
-
-const getPlateMapMetadataFromLighthouseService = (moduleOptions) => {
+const createPlatesFromBarcodes = async (moduleOptions) => {
   const plateBarcodes = moduleOptions.plateBarcodes
-  const plateMetadata = plateBarcodes.map((plateBarcode) => {
-    filterSamplesByPlateBarcode(plateBarcode)
+
+  const promises = plateBarcodes.map((barcode) => {
+    const url = 'http://localhost:5000/plates/new'
+    return axios.post(url, { barcode })
   })
-  return plateMetadata
+
+  const responses = await Promise.all(
+    promises.map((promise) => handlePromise(promise))
+  )
+  return responses
 }
 
-export {
-  filterSamplesByPlateBarcode,
-  getPlateMapMetadataFromLighthouseService,
-  getMetadata
-}
+export { createPlatesFromBarcodes }
 
-export default getPlateMapMetadataFromLighthouseService
+export default createPlatesFromBarcodes
