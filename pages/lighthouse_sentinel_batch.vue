@@ -6,6 +6,10 @@
       <div class="form-group row">
         <label for="box-barcode" class="col-sm-4 col-form-label">
           Please scan Lighthouse box barcode
+          <p class="labwhere-warning">
+            Box and its contents need to be in LabWhere to autogenerate samples
+            in Sequencescape
+          </p>
         </label>
         <div class="col-sm-8">
           <b-form-input
@@ -22,21 +26,20 @@
           Positives only?
         </label>
         <div>
-          <b-form-checkbox-group
-            id="box-check"
-            v-model="checkBox"
-            class="col-sm-20"
-            name="checkbox-validation"
-            stacked
-            @input="checkCheckBox"
-          >
-            <b-form-checkbox value="positive">
-              +ves
-            </b-form-checkbox>
-            <b-form-checkbox value="positivesAndNegatives">
-              +ves & -ves
-            </b-form-checkbox>
-          </b-form-checkbox-group>
+          <b-form-group label="Positives only?">
+            <b-form-radio
+              v-model="positivesOnly"
+              name="positivesOnly"
+              value="true"
+              >+ves
+            </b-form-radio>
+            <b-form-radio
+              v-model="positivesOnly"
+              name="positivesOnly"
+              value="false"
+              >+ves & -ves
+            </b-form-radio>
+          </b-form-group>
         </div>
         <div class="col-sm-6">
           <b-button
@@ -78,18 +81,43 @@ export default {
     return {
       fields: [
         { key: 'id', label: 'Plate ID', sortable: true },
+        { key: 'plateBarcode', label: 'Plate barcode', sortable: true },
         { key: 'lighthouse', label: 'Lighthouse', sortable: true },
-        { key: 'positiveCount', label: 'Number of positives', sortable: true },
-        { key: 'negativeCount', label: 'Number of negatives', sortable: true },
-        { key: 'voidCount', label: 'Number of voids', sortable: true },
-        { key: 'positivesCreated', label: 'Created positives', sortable: true },
-        { key: 'negativesCreated', label: 'Created negatives', sortable: true },
-        { key: 'voidsCreated', label: 'Created voids', sortable: true }
+        {
+          key: 'availablePositivesCount',
+          label: 'Available +ves count',
+          sortable: true
+        },
+        {
+          key: 'availableNegativesCount',
+          label: 'Available -ves count',
+          sortable: true
+        },
+        {
+          key: 'availableVoidsCount',
+          label: 'Available voids count',
+          sortable: true
+        },
+        {
+          key: 'createdPositivesCount',
+          label: 'Created +ves count',
+          sortable: true
+        },
+        {
+          key: 'createdNegativesCount',
+          label: 'Created -ves count',
+          sortable: true
+        },
+        {
+          key: 'createdVoidsCount',
+          label: 'Created voids count',
+          sortable: true
+        }
       ],
       sortBy: 'id',
       sortDesc: true,
       boxBarcode: '',
-      checkBox: ['positive']
+      positivesOnly: true
     }
   },
   computed: {
@@ -102,13 +130,8 @@ export default {
       return ''
     },
     cancelSearch() {
-      this.checkBox = ['positive']
+      this.positivesOnly = true
       this.boxBarcode = ''
-    },
-    checkCheckBox() {
-      if (this.checkBox.length > 1) {
-        this.checkBox.splice(0, 1)
-      }
     }
   }
 }
@@ -118,5 +141,8 @@ export default {
 form {
   padding: 10px;
   min-height: 160px;
+}
+.labwhere-warning {
+  color: red;
 }
 </style>

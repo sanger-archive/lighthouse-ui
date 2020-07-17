@@ -16,9 +16,80 @@ describe('Lighthouse Sentinel Batch test', () => {
     cy.contains('Lighthouse Sentinel sample creation')
   })
 
-  it('Scans lighthouse box barcode', () => {
+  it('allows scanning of lighthouse box barcode', () => {
+    cy.contains('Box barcode')
+    cy.findByText('Please scan Lighthouse box barcode').type('DN1234567')
+  })
+
+  it('Scans lighthouse box barcode and displays results', () => {
     cy.contains('Box barcode')
     cy.findByText('Please scan Lighthouse box barcode').type('DN1234567')
     cy.findByText('Submit').click()
   })
+
+  it('Allows selection of positives only or positives and negatives', () => {
+    cy.get('[type="radio"]').first().check()
+    // cy.get('[type="radio"]').last().check()
+  })
+
+  describe('creating some new samples', () => {
+
+    beforeEach(() => {
+      cy.findByText('Please scan Lighthouse box barcode').type('DN1234567')
+      cy.findByText('Submit').click()
+    })
+
+    describe.skip('successfully', () => {
+
+      it('displays correct number of records', () => {
+
+      })
+
+      it('displays plate id', () => {
+
+      })
+
+      it('displays plate barcode', () => {
+
+      })
+
+      it('displays the lighthouse', () => {
+
+      })
+
+      it('displays the available +ves count', () => {
+
+      })
+
+      it('displays the available -ves count', () => {
+
+      })
+
+      it('displays the available voids count', () => {
+
+      })
+
+      it('displays the created +ves count', () => {
+
+      })
+
+      it('displays the created -ves count', () => {
+
+      })
+
+      it('displays the created voids count', () => {
+
+      })
+
+    })
+
+    describe.skip('unsuccessfully', () => {
+
+      it('displays an appropriate error message', () => {
+        
+      })
+    })
+  })
+
+ 
 })
