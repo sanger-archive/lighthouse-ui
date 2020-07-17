@@ -1,5 +1,7 @@
 name: CI docker
-
+on: 
+  push:
+    branches: gpl573_add_docker_support
 # on:
 #   push:
 #     branches:
