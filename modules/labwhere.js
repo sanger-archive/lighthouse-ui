@@ -1,19 +1,22 @@
+// import PlatesJson from '../test/data/plates'
 import axios from 'axios'
 import config from '@/nuxt.config'
 
-const labwhereRequest = axios.create({
-  baseURL: config.privateRuntimeConfig.labwhereBaseURL
-})
+const labwhereRequestURL = config.privateRuntimeConfig.labwhereBaseURL
 
-const getPlates = async (request, boxBarcode) => {
+const getPlatesFromBoxBarcode = async (boxBarcode) => {
   try {
-    const plates = await request.get(`/api/locations/${boxBarcode}/children`)
+    const url = `${labwhereRequestURL}/api/locations/${boxBarcode}/labwares`
+    const plates = await axios.get(url)
+
+    // Below stubs the request
+    // const plates = { data: PlatesJson }
     return plates.data.map((plate) => plate.barcode)
   } catch (error) {
     return []
   }
 }
 
-export { labwhereRequest, getPlates }
+export { getPlatesFromBoxBarcode, labwhereRequestURL }
 
-export default getPlates
+export default getPlatesFromBoxBarcode

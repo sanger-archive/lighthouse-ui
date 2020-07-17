@@ -1,6 +1,10 @@
 <template>
   <b-container>
     <h1>Lighthouse Sentinel sample creation</h1>
+    <b-alert :show="showDismissibleAlert">
+      {{ this.alertMessage }}
+    </b-alert>
+
     <h3>Box barcode</h3>
     <form class="border">
       <div class="form-group row">
@@ -40,11 +44,11 @@
         </div>
         <div class="col-sm-6">
           <b-button
-            id="findBoxes"
+            id="handleSentinelSampleCreation"
             variant="success"
             class="float-right"
             :disabled="isDisabled"
-            @click="findBoxes()"
+            @click="handleSentinelSampleCreation()"
             >Submit
           </b-button>
           <b-button
@@ -73,6 +77,8 @@
 </template>
 
 <script>
+import handleApiCall from '../modules/api'
+
 export default {
   data() {
     return {
@@ -89,7 +95,9 @@ export default {
       sortBy: 'id',
       sortDesc: true,
       boxBarcode: '',
-      checkBox: ['positive']
+      checkBox: ['positive'],
+      showDismissibleAlert: false,
+      alertMessage: ''
     }
   },
   computed: {
@@ -98,8 +106,10 @@ export default {
     }
   },
   methods: {
-    findBoxes() {
-      return ''
+    async handleSentinelSampleCreation() {
+      const resp = await handleApiCall(this.boxBarcode)
+      this.alertMessage = resp
+      this.showDismissibleAlert = true
     },
     cancelSearch() {
       this.checkBox = ['positive']

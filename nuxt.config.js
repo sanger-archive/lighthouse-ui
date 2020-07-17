@@ -81,6 +81,7 @@ export default {
     extend(config, ctx) {}
   },
   privateRuntimeConfig: {
-    labwhereBaseURL: process.env.LABWHERE_BASE_URL || 'http://labwhere'
+    labwhereBaseURL:
+      process.env.LABWHERE_BASE_URL || 'http://uat.labwhere.psd.sanger.ac.uk'
   }
 }

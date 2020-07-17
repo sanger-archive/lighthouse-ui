@@ -1,58 +1,55 @@
+import axios from 'axios'
 import PlatesJson from '../data/plates'
-import { labwhereRequest, getPlates } from '@/modules/labwhere'
+import { labwhereRequestURL, getPlatesFromBoxBarcode } from '@/modules/labwhere'
 import config from '@/nuxt.config'
 
-const axios = {
-  get: jest.fn()
-}
-
 describe('Labwhere', () => {
-  describe('#getPlates', () => {
-    let labwareBarcodes, boxBarcode
+  describe('#getPlatesFromBoxBarcode', () => {
+    let labwareBarcodes, boxBarcode, mock, response
 
     beforeEach(() => {
+      mock = jest.spyOn(axios, 'get')
       boxBarcode = 'lw-ogilvie-4'
     })
 
+    afterEach(() => {
+      mock.mockRestore()
+    })
+
     it('successfully', async () => {
-      axios.get.mockResolvedValue({ data: PlatesJson })
-      labwareBarcodes = await getPlates(axios, boxBarcode)
-      expect(labwareBarcodes).toEqual([
-        'lw-aa216-5',
-        'lw-aa215-6',
-        'lw-aa214-7',
-        'lw-aa213-8',
-        'lw-aa212-9',
-        'lw-aa209-10'
-      ])
+      response = { data: PlatesJson }
+      mock.mockResolvedValue(response)
+
+      labwareBarcodes = await getPlatesFromBoxBarcode(boxBarcode)
+      expect(labwareBarcodes).toEqual(['AB123', 'CD456'])
     })
 
     it('labwhere request', () => {
-      expect(labwhereRequest.defaults.baseURL).toEqual(
+      expect(labwhereRequestURL).toEqual(
         config.privateRuntimeConfig.labwhereBaseURL
       )
     })
 
     it('when there is an error', async () => {
-      axios.get.mockImplementationOnce(() =>
+      mock.mockImplementationOnce(() =>
         Promise.reject(new Error('There was an error'))
       )
-      labwareBarcodes = await getPlates(axios, boxBarcode)
+      labwareBarcodes = await getPlatesFromBoxBarcode(boxBarcode)
       expect(labwareBarcodes).toEqual([])
     })
 
     // This is the same as the above but worth adding for consistency
     it('when the box does not exist', async () => {
-      axios.get.mockImplementationOnce(() =>
+      mock.mockImplementationOnce(() =>
         Promise.reject(new Error('There was an error'))
       )
-      labwareBarcodes = await getPlates(axios, 'dodgybarcode')
+      labwareBarcodes = await getPlatesFromBoxBarcode('dodgybarcode')
       expect(labwareBarcodes).toEqual([])
     })
 
     it('when the box has no plates', async () => {
-      axios.get.mockResolvedValue({ data: [] })
-      labwareBarcodes = await getPlates(axios, boxBarcode)
+      mock.mockResolvedValue({ data: [] })
+      labwareBarcodes = await getPlatesFromBoxBarcode(boxBarcode)
       expect(labwareBarcodes).toEqual([])
     })
   })

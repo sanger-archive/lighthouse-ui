@@ -42,15 +42,15 @@ describe('lighthouse sentinel batch', () => {
     let button
 
     it('has a submit button', () => {
-      button = wrapper.find('#findBoxes')
+      button = wrapper.find('#handleSentinelSampleCreation')
       expect(button.text()).toEqual('Submit')
     })
 
-    it('on submit button click it calls findBoxes', () => {
-      wrapper.vm.findBoxes = jest.fn()
-      button = wrapper.find('#findBoxes')
+    it('on submit button click it calls handleSentinelSampleCreation', () => {
+      wrapper.vm.handleSentinelSampleCreation = jest.fn()
+      button = wrapper.find('#handleSentinelSampleCreation')
       button.trigger('click')
-      expect(wrapper.vm.findBoxes).toBeCalled()
+      expect(wrapper.vm.handleSentinelSampleCreation).toBeCalled()
     })
 
     it('has a cancel button', () => {
