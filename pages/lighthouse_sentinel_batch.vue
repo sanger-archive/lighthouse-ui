@@ -1,7 +1,7 @@
 <template>
   <b-container>
     <h1>Lighthouse Sentinel sample creation</h1>
-    <b-alert :show="showDismissibleAlert">
+    <b-alert ref="alert" :show="showDismissibleAlert">
       {{ alertMessage }}
     </b-alert>
 
@@ -26,25 +26,6 @@
         </div>
       </div>
       <div class="form-group row">
-        <label for="positivesOnly" class="col-sm-4 col-form-label">
-          Positives only?
-        </label>
-        <div>
-          <b-form-group label="Positives only?">
-            <b-form-radio
-              v-model="positivesOnly"
-              name="positivesOnly"
-              value="true"
-              >+ves
-            </b-form-radio>
-            <b-form-radio
-              v-model="positivesOnly"
-              name="positivesOnly"
-              value="false"
-              >+ves & -ves
-            </b-form-radio>
-          </b-form-group>
-        </div>
         <div class="col-sm-6">
           <b-button
             id="handleSentinelSampleCreation"
@@ -70,6 +51,7 @@
       id="libraries-table"
       show-empty
       responsive
+      :items="items"
       :fields="fields"
       :sort-by.sync="sortBy"
       :sort-desc.sync="sortDesc"
@@ -86,46 +68,20 @@ export default {
   data() {
     return {
       fields: [
-        { key: 'id', label: 'Plate ID', sortable: true },
-        { key: 'plateBarcode', label: 'Plate barcode', sortable: true },
-        { key: 'lighthouse', label: 'Lighthouse', sortable: true },
+        { key: 'plate_barcode', label: 'Plate barcode', sortable: true },
+        { key: 'centre', label: 'Lighthouse', sortable: true },
         {
-          key: 'availablePositivesCount',
-          label: 'Available +ves count',
-          sortable: true
-        },
-        {
-          key: 'availableNegativesCount',
-          label: 'Available -ves count',
-          sortable: true
-        },
-        {
-          key: 'availableVoidsCount',
-          label: 'Available voids count',
-          sortable: true
-        },
-        {
-          key: 'createdPositivesCount',
+          key: 'number_of_positives',
           label: 'Created +ves count',
-          sortable: true
-        },
-        {
-          key: 'createdNegativesCount',
-          label: 'Created -ves count',
-          sortable: true
-        },
-        {
-          key: 'createdVoidsCount',
-          label: 'Created voids count',
           sortable: true
         }
       ],
-      sortBy: 'id',
+      sortBy: 'plate_barcode',
       sortDesc: true,
       boxBarcode: '',
-      positivesOnly: true,
       showDismissibleAlert: false,
-      alertMessage: ''
+      alertMessage: '',
+      items: []
     }
   },
   computed: {
@@ -136,11 +92,22 @@ export default {
   methods: {
     async handleSentinelSampleCreation() {
       const resp = await handleApiCall(this.boxBarcode)
-      // TODO: populate table
-      return resp
+      this.handleSentinelSampleCreationResponse(resp)
+    },
+    handleSentinelSampleCreationResponse(resp) {
+      const errored = resp.filter((obj) => Object.keys(obj).includes('errors'))
+      if (errored.length > 0) {
+        const msg = errored.map((e) => e.errors.join(', ')).join(', ')
+        this.alertMessage = msg
+        this.showDismissibleAlert = true
+      }
+
+      const successful = resp.filter((obj) => Object.keys(obj).includes('data'))
+      if (successful.length > 0) {
+        this.items = successful.map((obj) => obj.data)
+      }
     },
     cancelSearch() {
-      this.positivesOnly = true
       this.boxBarcode = ''
     }
   }
