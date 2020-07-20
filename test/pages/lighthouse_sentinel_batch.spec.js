@@ -1,6 +1,7 @@
 import BootstrapVue from 'bootstrap-vue'
 import { mount, createLocalVue } from '@vue/test-utils'
 import LighthouseSentinelBatch from '@/pages/lighthouse_sentinel_batch'
+import * as apiModule from '@/modules/api'
 
 const localVue = createLocalVue()
 localVue.use(BootstrapVue)
@@ -58,6 +59,15 @@ describe('lighthouse sentinel batch', () => {
       button = wrapper.find('#cancelSearch')
       button.trigger('click')
       expect(wrapper.vm.cancelSearch).toBeCalled()
+    })
+  })
+
+  describe('methods', () => {
+    it('handleSentinelSampleCreation', async () => {
+      apiModule.handleApiCall = jest.fn().mockReturnValue('mock response')
+      const result = await wrapper.vm.handleSentinelSampleCreation()
+      expect(apiModule.handleApiCall).toBeCalled()
+      expect(result).toEqual('mock response')
     })
   })
 })
