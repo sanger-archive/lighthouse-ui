@@ -13,7 +13,8 @@ describe('lighthouse sentinel batch', () => {
       localVue,
       data() {
         return {
-          boxBarcode: 'lw-ogilvie-4'
+          boxBarcode: 'lw-ogilvie-4',
+          items: []
         }
       }
     })
@@ -25,6 +26,10 @@ describe('lighthouse sentinel batch', () => {
 
   it('has a barcode', () => {
     expect(wrapper.vm.boxBarcode).toEqual('lw-ogilvie-4')
+  })
+
+  it('has items', () => {
+    expect(wrapper.vm.items).toEqual([])
   })
 
   // TODO: Are these necessary. Would this be better done in an integration test.
