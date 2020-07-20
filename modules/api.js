@@ -1,5 +1,5 @@
-import getPlatesFromBoxBarcode from './labwhere'
-import createPlatesFromBarcodes from './lighthouse_service'
+import { getPlatesFromBoxBarcode } from './labwhere'
+import { createPlatesFromBarcodes } from './lighthouse_service'
 
 // Main API handling of requests:
 // 1. Request the plate barcodes in a given box barcode from LabWhere
@@ -11,14 +11,16 @@ const handleApiCall = async (boxBarcode) => {
   const platesForBoxBarcode = await getPlatesFromBoxBarcode(boxBarcode)
 
   if (platesForBoxBarcode.length === 0) {
-    return
+    return {
+      error: `Failed to get plate barcodes for box barcode: ${boxBarcode}`
+    }
   }
 
-  const resp = createPlatesFromBarcodes({
+  const resp = await createPlatesFromBarcodes({
     plateBarcodes: platesForBoxBarcode
   })
 
   return resp
 }
 
-export default handleApiCall
+export { handleApiCall }

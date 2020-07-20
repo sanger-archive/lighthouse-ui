@@ -31,5 +31,3 @@ const createPlatesFromBarcodes = async (moduleOptions) => {
 }
 
 export { createPlatesFromBarcodes }
-
-export default createPlatesFromBarcodes

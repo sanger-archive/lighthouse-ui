@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import handleApiCall from '../modules/api'
+import { handleApiCall } from '../modules/api'
 
 export default {
   data() {
@@ -136,8 +136,8 @@ export default {
   methods: {
     async handleSentinelSampleCreation() {
       const resp = await handleApiCall(this.boxBarcode)
-      this.alertMessage = resp
-      this.showDismissibleAlert = true
+      // TODO: populate table
+      return resp
     },
     cancelSearch() {
       this.positivesOnly = true

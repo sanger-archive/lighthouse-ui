@@ -15,5 +15,3 @@ const getPlatesFromBoxBarcode = async (boxBarcode) => {
 }
 
 export { getPlatesFromBoxBarcode, labwhereRequestURL }
-
-export default getPlatesFromBoxBarcode
