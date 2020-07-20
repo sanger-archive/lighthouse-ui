@@ -1,5 +1,6 @@
 import axios from 'axios'
 import * as Modules from '@/modules/lighthouse_service'
+import config from '@/nuxt.config'
 
 describe('lighthouse_service api', () => {
   describe('#createPlatesFromBarcodes ', () => {
@@ -30,7 +31,7 @@ describe('lighthouse_service api', () => {
       expect(mock).toHaveBeenCalledTimes(1)
       expect(mock).toHaveBeenNthCalledWith(
         1,
-        'http://localhost:5000/plates/new',
+        `${config.privateRuntimeConfig.lighthouseBaseURL}/plates/new`,
         { barcode: plateBarcodes[0] }
       )
     })
@@ -56,7 +57,7 @@ describe('lighthouse_service api', () => {
       expect(mock).toHaveBeenCalledTimes(1)
       expect(mock).toHaveBeenNthCalledWith(
         1,
-        'http://localhost:5000/plates/new',
+        `${config.privateRuntimeConfig.lighthouseBaseURL}/plates/new`,
         { barcode: plateBarcodes[0] }
       )
     })
@@ -83,12 +84,12 @@ describe('lighthouse_service api', () => {
       expect(mock).toHaveBeenCalledTimes(2)
       expect(mock).toHaveBeenNthCalledWith(
         1,
-        'http://localhost:5000/plates/new',
+        `${config.privateRuntimeConfig.lighthouseBaseURL}/plates/new`,
         { barcode: plateBarcodes[0] }
       )
       expect(mock).toHaveBeenNthCalledWith(
         2,
-        'http://localhost:5000/plates/new',
+        `${config.privateRuntimeConfig.lighthouseBaseURL}/plates/new`,
         { barcode: plateBarcodes[1] }
       )
     })
@@ -123,12 +124,12 @@ describe('lighthouse_service api', () => {
       expect(mock).toHaveBeenCalledTimes(2)
       expect(mock).toHaveBeenNthCalledWith(
         1,
-        'http://localhost:5000/plates/new',
+        `${config.privateRuntimeConfig.lighthouseBaseURL}/plates/new`,
         { barcode: plateBarcodes[0] }
       )
       expect(mock).toHaveBeenNthCalledWith(
         2,
-        'http://localhost:5000/plates/new',
+        `${config.privateRuntimeConfig.lighthouseBaseURL}/plates/new`,
         { barcode: plateBarcodes[1] }
       )
     })
@@ -159,12 +160,12 @@ describe('lighthouse_service api', () => {
       expect(mock).toHaveBeenCalledTimes(2)
       expect(mock).toHaveBeenNthCalledWith(
         1,
-        'http://localhost:5000/plates/new',
+        `${config.privateRuntimeConfig.lighthouseBaseURL}/plates/new`,
         { barcode: plateBarcodes[0] }
       )
       expect(mock).toHaveBeenNthCalledWith(
         2,
-        'http://localhost:5000/plates/new',
+        `${config.privateRuntimeConfig.lighthouseBaseURL}/plates/new`,
         { barcode: plateBarcodes[1] }
       )
     })
