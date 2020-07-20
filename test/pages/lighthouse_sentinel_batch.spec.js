@@ -13,8 +13,7 @@ describe('lighthouse sentinel batch', () => {
       localVue,
       data() {
         return {
-          boxBarcode: 'lw-ogilvie-4',
-          checkBox: ['positive']
+          boxBarcode: 'lw-ogilvie-4'
         }
       }
     })
