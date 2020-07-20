@@ -12,7 +12,7 @@ const handlePromise = async (promise) => {
   try {
     rawResponse = await promise
   } catch (resp) {
-    rawResponse = resp.response.data.errors
+    rawResponse = resp.response.data
   }
   return rawResponse
 }
