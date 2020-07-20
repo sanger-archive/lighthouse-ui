@@ -40,15 +40,9 @@ describe('lighthouse_service api', () => {
 
       response = {
         data: {
-          attributes: {
-            uuid: 'ce649e2e-c751-11ea-93a9-fa163e68e77d',
-            purpose_name: 'LHR Stock',
-            study_names: ['Heron Project']
-          },
-          links: {
-            self:
-              'http://uat.sequencescape.psd.sanger.ac.uk/api/v2/plates/26485889'
-          }
+          plate_barcode: 'aBarcode1',
+          centre: 'tst1',
+          number_of_positives: 3
         }
       }
 
@@ -75,7 +69,7 @@ describe('lighthouse_service api', () => {
       }
 
       const response2 = {
-        errors: ['sample does not exist.']
+        errors: ['No samples for this barcode']
       }
 
       mock.mockImplementationOnce(() => response1)
@@ -104,27 +98,17 @@ describe('lighthouse_service api', () => {
 
       const response1 = {
         data: {
-          attributes: {
-            uuid: '11111-111-1111-1111-111111111',
-            purpose_name: 'LHR Stock',
-            study_names: ['Heron Project']
-          },
-          links: {
-            self: 'http://uat.sequencescape.psd.sanger.ac.uk/api/v2/plates/1'
-          }
+          plate_barcode: 'aBarcode1',
+          centre: 'tst1',
+          number_of_positives: 3
         }
       }
 
       const response2 = {
         data: {
-          attributes: {
-            uuid: '22222-2222-2222-2222-222222222',
-            purpose_name: 'LHR Stock',
-            study_names: ['Heron Project']
-          },
-          links: {
-            self: 'http://uat.sequencescape.psd.sanger.ac.uk/api/v2/plates/2'
-          }
+          plate_barcode: 'aBarcode2',
+          centre: 'tst1',
+          number_of_positives: 2
         }
       }
 
@@ -153,19 +137,14 @@ describe('lighthouse_service api', () => {
       plateBarcodes = ['aBarcode1', 'aBarcode2']
 
       const response1 = {
-        errors: ['foreign barcode is already in use.']
+        errors: ['No samples for this barcode']
       }
 
       const response2 = {
         data: {
-          attributes: {
-            uuid: '22222-2222-2222-2222-222222222',
-            purpose_name: 'LHR Stock',
-            study_names: ['Heron Project']
-          },
-          links: {
-            self: 'http://uat.sequencescape.psd.sanger.ac.uk/api/v2/plates/2'
-          }
+          plate_barcode: 'aBarcode2',
+          centre: 'tst1',
+          number_of_positives: 2
         }
       }
 

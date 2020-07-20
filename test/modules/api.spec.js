@@ -4,23 +4,95 @@ import * as lighthouseModule from '@/modules/lighthouse_service'
 
 describe('api', () => {
   describe('#handleApiCall ', () => {
+    beforeEach(() => {
+      boxBarcode = 'aBoxBarcode'
+      plateBarcodes = ['aBarcode1', 'aBarcode2']
+    })
+
     let boxBarcode, plateBarcodes
 
-    it('is successful', async () => {
-      plateBarcodes = ['aBarcode1', 'aBarcode2']
+    it('both getPlatesFromBoxBarcode and createPlatesFromBarcodes are successful', async () => {
       labwareModule.getPlatesFromBoxBarcode = jest
         .fn()
         .mockReturnValue(plateBarcodes)
 
+      const responses = [
+        {
+          data: {
+            plate_barcode: 'aBarcode1',
+            centre: 'tst1',
+            number_of_positives: 3
+          }
+        },
+        {
+          data: {
+            plate_barcode: 'aBarcode2',
+            centre: 'tst1',
+            number_of_positives: 1
+          }
+        }
+      ]
+
       lighthouseModule.createPlatesFromBarcodes = jest
         .fn()
-        .mockReturnValue({ it: 'was successful' })
+        .mockReturnValue(responses)
 
       const result = await handleApiCall(boxBarcode)
 
-      expect(result).toEqual({ it: 'was successful' })
-      expect(labwareModule.getPlatesFromBoxBarcode).toBeCalled()
-      expect(lighthouseModule.createPlatesFromBarcodes).toBeCalled()
+      expect(result).toEqual(responses)
+      expect(labwareModule.getPlatesFromBoxBarcode).toBeCalledWith(boxBarcode)
+      expect(lighthouseModule.createPlatesFromBarcodes).toBeCalledWith({
+        plateBarcodes
+      })
+    })
+
+    it('getPlatesFromBoxBarcode is successful, createPlatesFromBarcodes fails', async () => {
+      labwareModule.getPlatesFromBoxBarcode = jest
+        .fn()
+        .mockReturnValue(plateBarcodes)
+
+      const expected = [
+        {
+          data: {
+            plate_barcode: 'aBarcode1',
+            centre: 'tst1',
+            number_of_positives: 3
+          }
+        },
+        {
+          data: {
+            plate_barcode: 'aBarcode2',
+            centre: 'tst1',
+            number_of_positives: 1
+          }
+        }
+      ]
+
+      lighthouseModule.createPlatesFromBarcodes = jest
+        .fn()
+        .mockReturnValue(expected)
+
+      const result = await handleApiCall(boxBarcode)
+
+      expect(result).toEqual(expected)
+      expect(labwareModule.getPlatesFromBoxBarcode).toBeCalledWith(boxBarcode)
+      expect(lighthouseModule.createPlatesFromBarcodes).toBeCalledWith({
+        plateBarcodes
+      })
+    })
+
+    it('getPlatesFromBoxBarcode fails, createPlatesFromBarcodes is successful', async () => {
+      labwareModule.getPlatesFromBoxBarcode = jest.fn().mockReturnValue([])
+      lighthouseModule.createPlatesFromBarcodes = jest.fn()
+
+      const expected = {
+        error: `Failed to get plate barcodes for box barcode: ${boxBarcode}`
+      }
+      const result = await handleApiCall(boxBarcode)
+
+      expect(result).toEqual(expected)
+      expect(labwareModule.getPlatesFromBoxBarcode).toBeCalledWith(boxBarcode)
+      expect(lighthouseModule.createPlatesFromBarcodes).not.toBeCalled()
     })
   })
 })
