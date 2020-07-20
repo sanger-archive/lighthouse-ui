@@ -92,8 +92,9 @@ export default {
   methods: {
     async handleSentinelSampleCreation() {
       const resp = await handleApiCall(this.boxBarcode)
-      return resp
+      this.handleSentinelSampleCreationResponse(resp)
     },
+    handleSentinelSampleCreationResponse(resp) {},
     cancelSearch() {
       this.boxBarcode = ''
     }
