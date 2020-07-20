@@ -46,18 +46,41 @@ describe('api', () => {
       })
     })
 
-    it('getPlatesFromBoxBarcode is successful, createPlatesFromBarcodes fails', async () => {
+    it('getPlatesFromBoxBarcode is successful, createPlatesFromBarcodes all fail', async () => {
       labwareModule.getPlatesFromBoxBarcode = jest
         .fn()
         .mockReturnValue(plateBarcodes)
 
       const expected = [
         {
-          data: {
-            plate_barcode: 'aBarcode1',
-            centre: 'tst1',
-            number_of_positives: 3
-          }
+          errors: ['No samples for this barcode']
+        },
+        {
+          errors: ['No samples for this barcode']
+        }
+      ]
+
+      lighthouseModule.createPlatesFromBarcodes = jest
+        .fn()
+        .mockReturnValue(expected)
+
+      const result = await handleApiCall(boxBarcode)
+
+      expect(result).toEqual(expected)
+      expect(labwareModule.getPlatesFromBoxBarcode).toBeCalledWith(boxBarcode)
+      expect(lighthouseModule.createPlatesFromBarcodes).toBeCalledWith({
+        plateBarcodes
+      })
+    })
+
+    it('getPlatesFromBoxBarcode is successful, createPlatesFromBarcodes partially fail', async () => {
+      labwareModule.getPlatesFromBoxBarcode = jest
+        .fn()
+        .mockReturnValue(plateBarcodes)
+
+      const expected = [
+        {
+          errors: ['No samples for this barcode']
         },
         {
           data: {
@@ -81,7 +104,7 @@ describe('api', () => {
       })
     })
 
-    it('getPlatesFromBoxBarcode fails, createPlatesFromBarcodes is successful', async () => {
+    it('getPlatesFromBoxBarcode fails', async () => {
       labwareModule.getPlatesFromBoxBarcode = jest.fn().mockReturnValue([])
       lighthouseModule.createPlatesFromBarcodes = jest.fn()
 
