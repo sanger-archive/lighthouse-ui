@@ -5,6 +5,7 @@
 // Return list of responses
 
 import axios from 'axios'
+import config from '@/nuxt.config'
 
 const handlePromise = async (promise) => {
   let rawResponse
@@ -20,7 +21,7 @@ const createPlatesFromBarcodes = async (moduleOptions) => {
   const plateBarcodes = moduleOptions.plateBarcodes
 
   const promises = plateBarcodes.map((barcode) => {
-    const url = 'http://localhost:5000/plates/new'
+    const url = `${config.privateRuntimeConfig.lighthouseBaseURL}/plates/new`
     return axios.post(url, { barcode })
   })
 
