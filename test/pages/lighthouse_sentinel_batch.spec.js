@@ -65,6 +65,7 @@ describe('lighthouse sentinel batch', () => {
   describe('#handleSentinelSampleCreation', () => {
     it('calls handleApiCall', async () => {
       apiModule.handleApiCall = jest.fn()
+      wrapper.vm.handleSentinelSampleCreationResponse = jest.fn()
       await wrapper.vm.handleSentinelSampleCreation()
       expect(apiModule.handleApiCall).toBeCalled()
     })
@@ -77,6 +78,82 @@ describe('lighthouse sentinel batch', () => {
       expect(wrapper.vm.handleSentinelSampleCreationResponse).toBeCalledWith(
         expected
       )
+    })
+  })
+
+  describe('#handleSentinelSampleCreationResponse', () => {
+    let response
+
+    it('on success it populates the table', () => {
+      response = [
+        {
+          data: {
+            plate_barcode: 'aBarcode1',
+            centre: 'tst1',
+            number_of_positives: 3
+          }
+        },
+        {
+          data: {
+            plate_barcode: 'aBarcode2',
+            centre: 'tst1',
+            number_of_positives: 1
+          }
+        }
+      ]
+      wrapper.vm.handleSentinelSampleCreationResponse(response)
+      expect(wrapper.vm.items).toEqual(response.map((r) => r.data))
+    })
+
+    it('on failure it shows an error message', () => {
+      response = [
+        {
+          errors: ['an error 1']
+        },
+        {
+          errors: ['an error 2', 'an error 3']
+        }
+      ]
+
+      wrapper.vm.handleSentinelSampleCreationResponse(response)
+      wrapper.vm.$nextTick(() => {
+        expect(wrapper.findComponent({ ref: 'alert' }).text()).toMatch(
+          /an error 1, an error 2, an error 3/
+        )
+      })
+    })
+
+    it('on partial success/failure', () => {
+      response = [
+        {
+          errors: ['an error 1']
+        },
+        {
+          errors: ['an error 2']
+        },
+        {
+          data: {
+            plate_barcode: 'aBarcode1',
+            centre: 'tst1',
+            number_of_positives: 1
+          }
+        },
+        {
+          data: {
+            plate_barcode: 'aBarcode2',
+            centre: 'tst1',
+            number_of_positives: 1
+          }
+        }
+      ]
+
+      wrapper.vm.handleSentinelSampleCreationResponse(response)
+      wrapper.vm.$nextTick(() => {
+        expect(wrapper.findComponent({ ref: 'alert' }).text()).toMatch(
+          /an error 1/
+        )
+      })
+      expect(wrapper.vm.items).toEqual(response.slice(2).map((obj) => obj.data))
     })
   })
 })

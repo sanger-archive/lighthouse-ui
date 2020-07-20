@@ -1,7 +1,7 @@
 <template>
   <b-container>
     <h1>Lighthouse Sentinel sample creation</h1>
-    <b-alert :show="showDismissibleAlert">
+    <b-alert ref="alert" :show="showDismissibleAlert">
       {{ alertMessage }}
     </b-alert>
 
@@ -94,7 +94,19 @@ export default {
       const resp = await handleApiCall(this.boxBarcode)
       this.handleSentinelSampleCreationResponse(resp)
     },
-    handleSentinelSampleCreationResponse(resp) {},
+    handleSentinelSampleCreationResponse(resp) {
+      const errored = resp.filter((obj) => Object.keys(obj).includes('errors'))
+      if (errored.length > 0) {
+        const msg = errored.map((e) => e.errors.join(', ')).join(', ')
+        this.alertMessage = msg
+        this.showDismissibleAlert = true
+      }
+
+      const successful = resp.filter((obj) => Object.keys(obj).includes('data'))
+      if (successful.length > 0) {
+        this.items = successful.map((obj) => obj.data)
+      }
+    },
     cancelSearch() {
       this.boxBarcode = ''
     }
