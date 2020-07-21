@@ -105,6 +105,8 @@ export default {
       const successful = resp.filter((obj) => Object.keys(obj).includes('data'))
       if (successful.length > 0) {
         this.items = successful.map((obj) => obj.data)
+      } else {
+        this.items = []
       }
     },
     cancelSearch() {

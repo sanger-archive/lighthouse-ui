@@ -121,6 +121,7 @@ describe('lighthouse sentinel batch', () => {
           /an error 1, an error 2, an error 3/
         )
       })
+      expect(wrapper.vm.items).toEqual([])
     })
 
     it('on partial success/failure', () => {
