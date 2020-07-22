@@ -56,7 +56,6 @@
 </template>
 
 <script>
-// import { createPlatesFromBarcodes } from '../modules/api'
 
 export default {
   data() {
@@ -76,9 +75,6 @@ export default {
     }
   },
   methods: {
-    // async performLighthouseRequest(value) {
-    //   await createPlatesFromBarcodes({ plateBarcodes: [value] })
-    // },
     async reportsProvider(ctx) {
       try {
         const result = await this.$axios.$get(`reports`)
