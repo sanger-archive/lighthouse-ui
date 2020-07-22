@@ -1,7 +1,7 @@
 <template>
   <b-container>
     <h1>Lighthouse Sentinel sample creation</h1>
-    <b-alert ref="alert" :show="showDismissibleAlert">
+    <b-alert ref="alert" :show="showDismissibleAlert" variant="danger">
       {{ alertMessage }}
     </b-alert>
 
