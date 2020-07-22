@@ -6,11 +6,6 @@
         <p class="lead">
           Reports generated for Lighthouse samples which are on site
         </p>
-        <!-- <b-form-input
-          id="plate_barcode"
-          placeholder="Barcode"
-          @change="performLighthouseRequest"
-        ></b-form-input> -->
         <p>
           <b-button
             id="createReport"

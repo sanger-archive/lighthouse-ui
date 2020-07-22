@@ -5,7 +5,6 @@
       {{ alertMessage }}
     </b-alert>
 
-    <h3>Box barcode</h3>
     <form class="border">
       <div class="form-group row">
         <label for="box-barcode" class="col-sm-4 col-form-label">
@@ -26,7 +25,7 @@
         </div>
       </div>
       <div class="form-group row">
-        <div class="col-sm-6">
+        <div class="col-sm-12">
           <b-button
             id="handleSentinelSampleCreation"
             variant="success"
@@ -123,5 +122,8 @@ form {
 }
 .labwhere-warning {
   color: red;
+}
+button {
+  margin-right: 5px;
 }
 </style>
