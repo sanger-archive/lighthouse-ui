@@ -48,6 +48,10 @@ describe('lighthouse sentinel batch', () => {
       button.trigger('click')
       expect(wrapper.vm.handleSentinelSampleCreation).toBeCalled()
     })
+  })
+
+  describe('cancel button', () => {
+    let button
 
     it('has a cancel button', () => {
       button = wrapper.find('#cancelSearch')
@@ -59,6 +63,13 @@ describe('lighthouse sentinel batch', () => {
       button = wrapper.find('#cancelSearch')
       button.trigger('click')
       expect(wrapper.vm.cancelSearch).toBeCalled()
+    })
+  })
+
+  describe('#cancelSearch', () => {
+    it('it clears boxBarcode', () => {
+      wrapper.vm.cancelSearch()
+      expect(wrapper.vm.boxBarcode).toEqual('')
     })
   })
 
