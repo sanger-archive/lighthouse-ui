@@ -1,0 +1,26 @@
+name: CI nuxtjs
+
+on:
+  push:
+    paths-ignore:
+      - "README.md"
+
+jobs:
+  build_and_test_job:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v1
+        with:
+          path: ~/.cache/yarn
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Install yarn dependencies
+        run: |
+          yarn install
+      - name: Run tests
+        run: |
+          yarn test
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
