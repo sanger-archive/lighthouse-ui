@@ -9,6 +9,12 @@ const $axios = {
   $post: jest.fn()
 }
 
+const process = {
+  env: {
+    LIGHTHOUSE_BASE_URL: 'lighthouse'
+  }
+}
+
 const localVue = createLocalVue()
 localVue.use(BootstrapVue)
 
@@ -27,12 +33,12 @@ describe('Index', () => {
 
   describe('#reportsProvider', () => {
     beforeEach(() => {
-      wrapper = mount(Index, { localVue, mocks: { $axios } })
+      wrapper = mount(Index, { localVue, mocks: { $axios, process } })
     })
 
     it('when the request is successful', async () => {
-      $axios.$get.mockResolvedValue({ data: ReportsJson })
-      wrapper = mount(Index, { localVue, mocks: { $axios } })
+      $axios.$get.mockResolvedValue(ReportsJson)
+      wrapper = mount(Index, { localVue, mocks: { $axios, process } })
       await flushPromises()
       expect(wrapper.find('tbody').findAll('tr').length).toEqual(
         ReportsJson.reports.length
@@ -43,7 +49,7 @@ describe('Index', () => {
       $axios.$get.mockImplementationOnce(() =>
         Promise.reject(new Error('There was an error'))
       )
-      wrapper = mount(Index, { localVue, mocks: { $axios } })
+      wrapper = mount(Index, { localVue, mocks: { $axios, process } })
       await flushPromises()
       expect(wrapper.find('tbody').findAll('tr').length).toEqual(0)
     })
@@ -51,9 +57,9 @@ describe('Index', () => {
 
   describe('#createReport', () => {
     it('when the request is successful', async () => {
-      $axios.$post.mockResolvedValue({ data: 'success' })
-      $axios.$get.mockResolvedValue({ data: ReportsJson })
-      const wrapper = mount(Index, { localVue, mocks: { $axios } })
+      $axios.$post.mockResolvedValue('success')
+      $axios.$get.mockResolvedValue(ReportsJson)
+      const wrapper = mount(Index, { localVue, mocks: { $axios, process } })
       const button = wrapper.find('#createReport')
       await button.trigger('click')
       await flushPromises()
@@ -66,7 +72,7 @@ describe('Index', () => {
       $axios.$post.mockImplementationOnce(() =>
         Promise.reject(new Error('There was an error'))
       )
-      const wrapper = mount(Index, { localVue, mocks: { $axios } })
+      const wrapper = mount(Index, { localVue, mocks: { $axios, process } })
       const button = wrapper.find('#createReport')
       await button.trigger('click')
       await flushPromises()
