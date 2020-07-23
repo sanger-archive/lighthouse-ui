@@ -1,0 +1,579 @@
+{ "data": 
+  { "_items": 
+    [
+      {
+        "_id": "5f07afa217e0fad7ef0606dd",
+        "Root Sample ID": "HUL00011540",
+        "Viral Prep ID": "AP-kfr-00071313_A01",
+        "RNA ID": "AP-rna-00020176_A01",
+        "RNA-PCR ID": "CFH0VLIU_A01",
+        "Result": "Void",
+        "Date Tested": "2020-05-10 14:00:00 UTC",
+        "Lab ID": "AP",
+        "source": "Alderley",
+        "plate_barcode": "AP-rna-00020176",
+        "coordinate": "A01",
+        "_created": "1970-01-01T00:00:00",
+        "_updated": "1970-01-01T00:00:00",
+        "_etag": "62668c0fb717fbe95efbac3c84643ad5b06f334d",
+        "_links": {
+          "self": {
+            "title": "Sample",
+            "href": "samples/5f07afa217e0fad7ef0606dd"
+          }
+        }
+      },
+      {
+        "_id": "5f07afa217e0fad7ef0606de",
+        "Root Sample ID": "HUL00011523",
+        "Viral Prep ID": "AP-kfr-00071313_B01",
+        "RNA ID": "AP-rna-00020176_B01",
+        "RNA-PCR ID": "CFH0VLIU_B01",
+        "Result": "Void",
+        "Date Tested": "2020-05-10 14:00:00 UTC",
+        "Lab ID": "AP",
+        "source": "Alderley",
+        "plate_barcode": "AP-rna-00020176",
+        "coordinate": "B01",
+        "_created": "1970-01-01T00:00:00",
+        "_updated": "1970-01-01T00:00:00",
+        "_etag": "3994c6bdde7532dd8ddadc3641d6219ffef602a4",
+        "_links": {
+          "self": {
+            "title": "Sample",
+            "href": "samples/5f07afa217e0fad7ef0606de"
+          }
+        }
+      },
+      {
+        "_id": "5f07afa217e0fad7ef0606df",
+        "Root Sample ID": "HUL00011282",
+        "Viral Prep ID": "AP-kfr-00071313_C01",
+        "RNA ID": "AP-rna-00020176_C01",
+        "RNA-PCR ID": "CFH0VLIU_C01",
+        "Result": "Void",
+        "Date Tested": "2020-05-10 14:00:00 UTC",
+        "Lab ID": "AP",
+        "source": "Alderley",
+        "plate_barcode": "AP-rna-00020176",
+        "coordinate": "C01",
+        "_created": "1970-01-01T00:00:00",
+        "_updated": "1970-01-01T00:00:00",
+        "_etag": "43ebdc95e36bf431dd018b8e49582097696caf7a",
+        "_links": {
+          "self": {
+            "title": "Sample",
+            "href": "samples/5f07afa217e0fad7ef0606df"
+          }
+        }
+      },
+      {
+        "_id": "5f07afa217e0fad7ef0606e0",
+        "Root Sample ID": "HUL00011554",
+        "Viral Prep ID": "AP-kfr-00071313_D01",
+        "RNA ID": "AP-rna-00020176_D01",
+        "RNA-PCR ID": "CFH0VLIU_D01",
+        "Result": "Void",
+        "Date Tested": "2020-05-10 14:00:00 UTC",
+        "Lab ID": "AP",
+        "source": "Alderley",
+        "plate_barcode": "AP-rna-00020176",
+        "coordinate": "D01",
+        "_created": "1970-01-01T00:00:00",
+        "_updated": "1970-01-01T00:00:00",
+        "_etag": "6bdf42ab33de07ab8f3bb1cc3eb3e34f4e47acaa",
+        "_links": {
+          "self": {
+            "title": "Sample",
+            "href": "samples/5f07afa217e0fad7ef0606e0"
+          }
+        }
+      },
+      {
+        "_id": "5f07afa217e0fad7ef0606e1",
+        "Root Sample ID": "LEI00009977",
+        "Viral Prep ID": "AP-kfr-00071313_E01",
+        "RNA ID": "AP-rna-00020176_E01",
+        "RNA-PCR ID": "CFH0VLIU_E01",
+        "Result": "Void",
+        "Date Tested": "2020-05-10 14:00:00 UTC",
+        "Lab ID": "AP",
+        "source": "Alderley",
+        "plate_barcode": "AP-rna-00020176",
+        "coordinate": "E01",
+        "_created": "1970-01-01T00:00:00",
+        "_updated": "1970-01-01T00:00:00",
+        "_etag": "7f9d6c24a9dbba78661fd81a95c95bb32b9ca817",
+        "_links": {
+          "self": {
+            "title": "Sample",
+            "href": "samples/5f07afa217e0fad7ef0606e1"
+          }
+        }
+      },
+      {
+        "_id": "5f07afa217e0fad7ef0606e2",
+        "Root Sample ID": "LEI00009297",
+        "Viral Prep ID": "AP-kfr-00071313_F01",
+        "RNA ID": "AP-rna-00020176_F01",
+        "RNA-PCR ID": "CFH0VLIU_F01",
+        "Result": "Void",
+        "Date Tested": "2020-05-10 14:00:00 UTC",
+        "Lab ID": "AP",
+        "source": "Alderley",
+        "plate_barcode": "AP-rna-00020176",
+        "coordinate": "F01",
+        "_created": "1970-01-01T00:00:00",
+        "_updated": "1970-01-01T00:00:00",
+        "_etag": "f17c2beec5f90b0ead6a7046cca49fc61d7577dd",
+        "_links": {
+          "self": {
+            "title": "Sample",
+            "href": "samples/5f07afa217e0fad7ef0606e2"
+          }
+        }
+      },
+      {
+        "_id": "5f07afa217e0fad7ef0606e3",
+        "Root Sample ID": "LEI00009974",
+        "Viral Prep ID": "AP-kfr-00071313_G01",
+        "RNA ID": "AP-rna-00020176_G01",
+        "RNA-PCR ID": "CFH0VLIU_G01",
+        "Result": "Void",
+        "Date Tested": "2020-05-10 14:00:00 UTC",
+        "Lab ID": "AP",
+        "source": "Alderley",
+        "plate_barcode": "AP-rna-00020176",
+        "coordinate": "G01",
+        "_created": "1970-01-01T00:00:00",
+        "_updated": "1970-01-01T00:00:00",
+        "_etag": "91fcb30bdd8447a317dfbf9cfd40299e6949307b",
+        "_links": {
+          "self": {
+            "title": "Sample",
+            "href": "samples/5f07afa217e0fad7ef0606e3"
+          }
+        }
+      },
+      {
+        "_id": "5f07afa217e0fad7ef0606e4",
+        "Root Sample ID": "COV00019385",
+        "Viral Prep ID": "AP-kfr-00071313_H01",
+        "RNA ID": "AP-rna-00020176_H01",
+        "RNA-PCR ID": "CFH0VLIU_H01",
+        "Result": "Void",
+        "Date Tested": "2020-05-10 14:00:00 UTC",
+        "Lab ID": "AP",
+        "source": "Alderley",
+        "plate_barcode": "AP-rna-00020176",
+        "coordinate": "H01",
+        "_created": "1970-01-01T00:00:00",
+        "_updated": "1970-01-01T00:00:00",
+        "_etag": "85db1604a9325819b9648a617f0e0227b90e6031",
+        "_links": {
+          "self": {
+            "title": "Sample",
+            "href": "samples/5f07afa217e0fad7ef0606e4"
+          }
+        }
+      },
+      {
+        "_id": "5f07afa217e0fad7ef0606e5",
+        "Root Sample ID": "COV00012302",
+        "Viral Prep ID": "AP-kfr-00071313_A02",
+        "RNA ID": "AP-rna-00020176_A02",
+        "RNA-PCR ID": "CFH0VLIU_A02",
+        "Result": "Void",
+        "Date Tested": "2020-05-10 14:00:00 UTC",
+        "Lab ID": "AP",
+        "source": "Alderley",
+        "plate_barcode": "AP-rna-00020176",
+        "coordinate": "A02",
+        "_created": "1970-01-01T00:00:00",
+        "_updated": "1970-01-01T00:00:00",
+        "_etag": "39979ef5fb48ceb9375449a9b9d6d332dcaf2755",
+        "_links": {
+          "self": {
+            "title": "Sample",
+            "href": "samples/5f07afa217e0fad7ef0606e5"
+          }
+        }
+      },
+      {
+        "_id": "5f07afa217e0fad7ef0606e6",
+        "Root Sample ID": "COV00010504",
+        "Viral Prep ID": "AP-kfr-00071313_B02",
+        "RNA ID": "AP-rna-00020176_B02",
+        "RNA-PCR ID": "CFH0VLIU_B02",
+        "Result": "Void",
+        "Date Tested": "2020-05-10 14:00:00 UTC",
+        "Lab ID": "AP",
+        "source": "Alderley",
+        "plate_barcode": "AP-rna-00020176",
+        "coordinate": "B02",
+        "_created": "1970-01-01T00:00:00",
+        "_updated": "1970-01-01T00:00:00",
+        "_etag": "e9c5087520eba292273440c4a1600be6cc2821c3",
+        "_links": {
+          "self": {
+            "title": "Sample",
+            "href": "samples/5f07afa217e0fad7ef0606e6"
+          }
+        }
+      },
+      {
+        "_id": "5f07afa217e0fad7ef0606e7",
+        "Root Sample ID": "COV00019341",
+        "Viral Prep ID": "AP-kfr-00071313_C02",
+        "RNA ID": "AP-rna-00020176_C02",
+        "RNA-PCR ID": "CFH0VLIU_C02",
+        "Result": "Void",
+        "Date Tested": "2020-05-10 14:00:00 UTC",
+        "Lab ID": "AP",
+        "source": "Alderley",
+        "plate_barcode": "AP-rna-00020176",
+        "coordinate": "C02",
+        "_created": "1970-01-01T00:00:00",
+        "_updated": "1970-01-01T00:00:00",
+        "_etag": "dc8f63c28899abb8d9a6412b9fa465ba4fc312d3",
+        "_links": {
+          "self": {
+            "title": "Sample",
+            "href": "samples/5f07afa217e0fad7ef0606e7"
+          }
+        }
+      },
+      {
+        "_id": "5f07afa217e0fad7ef0606e8",
+        "Root Sample ID": "COV00019387",
+        "Viral Prep ID": "AP-kfr-00071313_D02",
+        "RNA ID": "AP-rna-00020176_D02",
+        "RNA-PCR ID": "CFH0VLIU_D02",
+        "Result": "Void",
+        "Date Tested": "2020-05-10 14:00:00 UTC",
+        "Lab ID": "AP",
+        "source": "Alderley",
+        "plate_barcode": "AP-rna-00020176",
+        "coordinate": "D02",
+        "_created": "1970-01-01T00:00:00",
+        "_updated": "1970-01-01T00:00:00",
+        "_etag": "68462c871bf30deb7d1a3c25320bc5ad6ea5c49f",
+        "_links": {
+          "self": {
+            "title": "Sample",
+            "href": "samples/5f07afa217e0fad7ef0606e8"
+          }
+        }
+      },
+      {
+        "_id": "5f07afa217e0fad7ef0606e9",
+        "Root Sample ID": "COV00019352",
+        "Viral Prep ID": "AP-kfr-00071313_E02",
+        "RNA ID": "AP-rna-00020176_E02",
+        "RNA-PCR ID": "CFH0VLIU_E02",
+        "Result": "Void",
+        "Date Tested": "2020-05-10 14:00:00 UTC",
+        "Lab ID": "AP",
+        "source": "Alderley",
+        "plate_barcode": "AP-rna-00020176",
+        "coordinate": "E02",
+        "_created": "1970-01-01T00:00:00",
+        "_updated": "1970-01-01T00:00:00",
+        "_etag": "2e38e109a9c3e1c59d3c3d26cb5859b607e0c67a",
+        "_links": {
+          "self": {
+            "title": "Sample",
+            "href": "samples/5f07afa217e0fad7ef0606e9"
+          }
+        }
+      },
+      {
+        "_id": "5f07afa217e0fad7ef0606ea",
+        "Root Sample ID": "BRE00016106",
+        "Viral Prep ID": "AP-kfr-00071313_F02",
+        "RNA ID": "AP-rna-00020176_F02",
+        "RNA-PCR ID": "CFH0VLIU_F02",
+        "Result": "Void",
+        "Date Tested": "2020-05-10 14:00:00 UTC",
+        "Lab ID": "AP",
+        "source": "Alderley",
+        "plate_barcode": "AP-rna-00020176",
+        "coordinate": "F02",
+        "_created": "1970-01-01T00:00:00",
+        "_updated": "1970-01-01T00:00:00",
+        "_etag": "a0128a193af021d4a6d73f907abb04a04111446e",
+        "_links": {
+          "self": {
+            "title": "Sample",
+            "href": "samples/5f07afa217e0fad7ef0606ea"
+          }
+        }
+      },
+      {
+        "_id": "5f07afa217e0fad7ef0606eb",
+        "Root Sample ID": "COV00010515",
+        "Viral Prep ID": "AP-kfr-00071313_G02",
+        "RNA ID": "AP-rna-00020176_G02",
+        "RNA-PCR ID": "CFH0VLIU_G02",
+        "Result": "Void",
+        "Date Tested": "2020-05-10 14:00:00 UTC",
+        "Lab ID": "AP",
+        "source": "Alderley",
+        "plate_barcode": "AP-rna-00020176",
+        "coordinate": "G02",
+        "_created": "1970-01-01T00:00:00",
+        "_updated": "1970-01-01T00:00:00",
+        "_etag": "1cebc4cf09d6ee1a42c278dc809239292276c6d3",
+        "_links": {
+          "self": {
+            "title": "Sample",
+            "href": "samples/5f07afa217e0fad7ef0606eb"
+          }
+        }
+      },
+      {
+        "_id": "5f07afa217e0fad7ef0606ec",
+        "Root Sample ID": "BRE00015539",
+        "Viral Prep ID": "AP-kfr-00071313_H02",
+        "RNA ID": "AP-rna-00020176_H02",
+        "RNA-PCR ID": "CFH0VLIU_H02",
+        "Result": "Void",
+        "Date Tested": "2020-05-10 14:00:00 UTC",
+        "Lab ID": "AP",
+        "source": "Alderley",
+        "plate_barcode": "AP-rna-00020176",
+        "coordinate": "H02",
+        "_created": "1970-01-01T00:00:00",
+        "_updated": "1970-01-01T00:00:00",
+        "_etag": "15ed6427d555e6de79835afbc06038a357936242",
+        "_links": {
+          "self": {
+            "title": "Sample",
+            "href": "samples/5f07afa217e0fad7ef0606ec"
+          }
+        }
+      },
+      {
+        "_id": "5f07afa217e0fad7ef0606ed",
+        "Root Sample ID": "BRE00015985",
+        "Viral Prep ID": "AP-kfr-00071313_A03",
+        "RNA ID": "AP-rna-00020176_A03",
+        "RNA-PCR ID": "CFH0VLIU_A03",
+        "Result": "Void",
+        "Date Tested": "2020-05-10 14:00:00 UTC",
+        "Lab ID": "AP",
+        "source": "Alderley",
+        "plate_barcode": "AP-rna-00020176",
+        "coordinate": "A03",
+        "_created": "1970-01-01T00:00:00",
+        "_updated": "1970-01-01T00:00:00",
+        "_etag": "c6dab40af6259e3551ae58be8389fb638ec64d99",
+        "_links": {
+          "self": {
+            "title": "Sample",
+            "href": "samples/5f07afa217e0fad7ef0606ed"
+          }
+        }
+      },
+      {
+        "_id": "5f07afa217e0fad7ef0606ee",
+        "Root Sample ID": "COV00007553",
+        "Viral Prep ID": "AP-kfr-00071313_B03",
+        "RNA ID": "AP-rna-00020176_B03",
+        "RNA-PCR ID": "CFH0VLIU_B03",
+        "Result": "Void",
+        "Date Tested": "2020-05-10 14:00:00 UTC",
+        "Lab ID": "AP",
+        "source": "Alderley",
+        "plate_barcode": "AP-rna-00020176",
+        "coordinate": "B03",
+        "_created": "1970-01-01T00:00:00",
+        "_updated": "1970-01-01T00:00:00",
+        "_etag": "4b87ad160b92589a4f19243a14dd056727403174",
+        "_links": {
+          "self": {
+            "title": "Sample",
+            "href": "samples/5f07afa217e0fad7ef0606ee"
+          }
+        }
+      },
+      {
+        "_id": "5f07afa217e0fad7ef0606ef",
+        "Root Sample ID": "COV00000645",
+        "Viral Prep ID": "AP-kfr-00071313_C03",
+        "RNA ID": "AP-rna-00020176_C03",
+        "RNA-PCR ID": "CFH0VLIU_C03",
+        "Result": "Void",
+        "Date Tested": "2020-05-10 14:00:00 UTC",
+        "Lab ID": "AP",
+        "source": "Alderley",
+        "plate_barcode": "AP-rna-00020176",
+        "coordinate": "C03",
+        "_created": "1970-01-01T00:00:00",
+        "_updated": "1970-01-01T00:00:00",
+        "_etag": "db057ea451e96f44e899ae84c23dbdefc4566a01",
+        "_links": {
+          "self": {
+            "title": "Sample",
+            "href": "samples/5f07afa217e0fad7ef0606ef"
+          }
+        }
+      },
+      {
+        "_id": "5f07afa217e0fad7ef0606f0",
+        "Root Sample ID": "BRE00015545",
+        "Viral Prep ID": "AP-kfr-00071313_D03",
+        "RNA ID": "AP-rna-00020176_D03",
+        "RNA-PCR ID": "CFH0VLIU_D03",
+        "Result": "Void",
+        "Date Tested": "2020-05-10 14:00:00 UTC",
+        "Lab ID": "AP",
+        "source": "Alderley",
+        "plate_barcode": "AP-rna-00020176",
+        "coordinate": "D03",
+        "_created": "1970-01-01T00:00:00",
+        "_updated": "1970-01-01T00:00:00",
+        "_etag": "fe10ae44de12369540909650f74819bd85162cd9",
+        "_links": {
+          "self": {
+            "title": "Sample",
+            "href": "samples/5f07afa217e0fad7ef0606f0"
+          }
+        }
+      },
+      {
+        "_id": "5f07afa217e0fad7ef0606f1",
+        "Root Sample ID": "COV00010745",
+        "Viral Prep ID": "AP-kfr-00071313_E03",
+        "RNA ID": "AP-rna-00020176_E03",
+        "RNA-PCR ID": "CFH0VLIU_E03",
+        "Result": "Void",
+        "Date Tested": "2020-05-10 14:00:00 UTC",
+        "Lab ID": "AP",
+        "source": "Alderley",
+        "plate_barcode": "AP-rna-00020176",
+        "coordinate": "E03",
+        "_created": "1970-01-01T00:00:00",
+        "_updated": "1970-01-01T00:00:00",
+        "_etag": "3aa3ac6daa07a08ddfaaa48dc075e27aff6ff590",
+        "_links": {
+          "self": {
+            "title": "Sample",
+            "href": "samples/5f07afa217e0fad7ef0606f1"
+          }
+        }
+      },
+      {
+        "_id": "5f07afa217e0fad7ef0606f2",
+        "Root Sample ID": "COV00019345",
+        "Viral Prep ID": "AP-kfr-00071313_F03",
+        "RNA ID": "AP-rna-00020176_F03",
+        "RNA-PCR ID": "CFH0VLIU_F03",
+        "Result": "Void",
+        "Date Tested": "2020-05-10 14:00:00 UTC",
+        "Lab ID": "AP",
+        "source": "Alderley",
+        "plate_barcode": "AP-rna-00020176",
+        "coordinate": "F03",
+        "_created": "1970-01-01T00:00:00",
+        "_updated": "1970-01-01T00:00:00",
+        "_etag": "f2bd0748f8c3c3e773f2feefe5bda55d958afdac",
+        "_links": {
+          "self": {
+            "title": "Sample",
+            "href": "samples/5f07afa217e0fad7ef0606f2"
+          }
+        }
+      },
+      {
+        "_id": "5f07afa217e0fad7ef0606f3",
+        "Root Sample ID": "COV00019353",
+        "Viral Prep ID": "AP-kfr-00071313_G03",
+        "RNA ID": "AP-rna-00020176_G03",
+        "RNA-PCR ID": "CFH0VLIU_G03",
+        "Result": "Void",
+        "Date Tested": "2020-05-10 14:00:00 UTC",
+        "Lab ID": "AP",
+        "source": "Alderley",
+        "plate_barcode": "AP-rna-00020176",
+        "coordinate": "G03",
+        "_created": "1970-01-01T00:00:00",
+        "_updated": "1970-01-01T00:00:00",
+        "_etag": "604bab8e052f35e12154a0c69865824d4b5ab3f5",
+        "_links": {
+          "self": {
+            "title": "Sample",
+            "href": "samples/5f07afa217e0fad7ef0606f3"
+          }
+        }
+      },
+      {
+        "_id": "5f07afa217e0fad7ef0606f4",
+        "Root Sample ID": "COV00019386",
+        "Viral Prep ID": "AP-kfr-00071313_H03",
+        "RNA ID": "AP-rna-00020176_H03",
+        "RNA-PCR ID": "CFH0VLIU_H03",
+        "Result": "Void",
+        "Date Tested": "2020-05-10 14:00:00 UTC",
+        "Lab ID": "AP",
+        "source": "Alderley",
+        "plate_barcode": "AP-rna-00020176",
+        "coordinate": "H03",
+        "_created": "1970-01-01T00:00:00",
+        "_updated": "1970-01-01T00:00:00",
+        "_etag": "77617b5f12ed39859d01f6e4534382f7916183cc",
+        "_links": {
+          "self": {
+            "title": "Sample",
+            "href": "samples/5f07afa217e0fad7ef0606f4"
+          }
+        }
+      },
+      {
+        "_id": "5f07afa217e0fad7ef0606f5",
+        "Root Sample ID": "COV00000662",
+        "Viral Prep ID": "AP-kfr-00071313_A04",
+        "RNA ID": "AP-rna-00020176_A04",
+        "RNA-PCR ID": "CFH0VLIU_A04",
+        "Result": "Void",
+        "Date Tested": "2020-05-10 14:00:00 UTC",
+        "Lab ID": "AP",
+        "source": "Alderley",
+        "plate_barcode": "AP-rna-00020176",
+        "coordinate": "A04",
+        "_created": "1970-01-01T00:00:00",
+        "_updated": "1970-01-01T00:00:00",
+        "_etag": "750b5b899e2812e278968299b117d1d06a73933b",
+        "_links": {
+          "self": {
+            "title": "Sample",
+            "href": "samples/5f07afa217e0fad7ef0606f5"
+          }
+        }
+      }
+    ],
+    "_links": {
+      "parent": {
+        "title": "home",
+        "href": "/"
+      },
+      "self": {
+        "title": "samples",
+        "href": "samples?where={\"plate_barcode\": \"AP-rna-00020176\"}"
+      },
+      "next": {
+        "title": "next page",
+        "href": "samples?where={\"plate_barcode\": \"AP-rna-00020176\"}&page=2"
+      },
+      "last": {
+        "title": "last page",
+        "href": "samples?where={\"plate_barcode\": \"AP-rna-00020176\"}&page=3"
+      }
+    },
+    "_meta": {
+      "page": 1,
+      "max_results": 25,
+      "total": 66
+    }
+  }
+}

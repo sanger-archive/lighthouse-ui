@@ -1,0 +1,48 @@
+[
+  {
+    "barcode": "AB123",
+    "audits": "/api/labwares/AB123/audits",
+    "created_at": "Thursday July 16 2020 16:34",
+    "updated_at": "Thursday July 16 2020 16:34",
+    "location": {
+      "id": 3650,
+      "name": "UK bioCentre box 1",
+      "parent": "/api/locations/lw-aa316-2666",
+      "container": true,
+      "status": "active",
+      "location_type_id": 7,
+      "audits": "/api/locations/lw-uk-biocentre-box-1-3650/audits",
+      "barcode": "lw-uk-biocentre-box-1-3650",
+      "rows": 0,
+      "columns": 0,
+      "parentage": "Sanger / Ogilvie / AA316",
+      "created_at": "Friday April 17 2020 12:28",
+      "updated_at": "Friday April 17 2020 12:28",
+      "labwares": "/api/locations/lw-uk-biocentre-box-1-3650/labwares",
+      "children": "/api/locations/lw-uk-biocentre-box-1-3650/children"
+    }
+  },
+  {
+    "barcode": "CD456",
+    "audits": "/api/labwares/CD456/audits",
+    "created_at": "Thursday July 16 2020 16:34",
+    "updated_at": "Thursday July 16 2020 16:34",
+    "location": {
+      "id": 3650,
+      "name": "UK bioCentre box 1",
+      "parent": "/api/locations/lw-aa316-2666",
+      "container": true,
+      "status": "active",
+      "location_type_id": 7,
+      "audits": "/api/locations/lw-uk-biocentre-box-1-3650/audits",
+      "barcode": "lw-uk-biocentre-box-1-3650",
+      "rows": 0,
+      "columns": 0,
+      "parentage": "Sanger / Ogilvie / AA316",
+      "created_at": "Friday April 17 2020 12:28",
+      "updated_at": "Friday April 17 2020 12:28",
+      "labwares": "/api/locations/lw-uk-biocentre-box-1-3650/labwares",
+      "children": "/api/locations/lw-uk-biocentre-box-1-3650/children"
+    }
+  }
+]

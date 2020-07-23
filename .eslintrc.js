@@ -19,5 +19,6 @@ module.exports = {
   ],
   // add your custom rules here
   rules: {
+    "import/no-named-as-default": 0
   }
 }
