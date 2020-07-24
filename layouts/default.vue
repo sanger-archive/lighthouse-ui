@@ -11,6 +11,9 @@
           <b-nav-item href="lighthouse_sentinel_batch"
             >Sentinel Sample Creation</b-nav-item
           >
+          <b-nav-item href="lighthouse_sentinel_cherrypick"
+            >Sentinel Cherrypick</b-nav-item
+          >
         </b-navbar-nav>
       </b-navbar>
     </div>

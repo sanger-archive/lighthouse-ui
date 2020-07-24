@@ -1,6 +1,6 @@
 <template>
   <b-container>
-    <h1>Lighthouse Sentinel sample creation</h1>
+    <h1>Lighthouse Sentinel cherrypick batch creation</h1>
     <b-alert ref="alert" :show="showDismissibleAlert" variant="danger">
       {{ alertMessage }}
     </b-alert>
@@ -8,10 +8,10 @@
     <form class="border">
       <div class="form-group row">
         <label for="box-barcode" class="col-sm-4 col-form-label">
-          Please scan Lighthouse box barcode
+          Please scan Lighthouse box barcode(s)
           <p class="labwhere-warning">
-            Box and its contents need to be in LabWhere to
-            autogenerate samples in Sequencescape
+            Box and its contents need to be in LabWhere and samples created in
+            Sequencescape, to generate batch
           </p>
         </label>
         <div class="col-sm-8">
