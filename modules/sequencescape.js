@@ -6,20 +6,35 @@ const createCherrypickBatch = async (plateBarcodes) => {
     data: {
       type: 'pick_lists',
       attributes: {
+        asynchronous: true,
         labware_pick_attributes: plateBarcodes.map((plateBarcode) => ({
-          source_labware_barcode: plateBarcode
+          source_labware_barcode: plateBarcode,
+          study_id: 1,
+          project_id: 1
         }))
       }
     }
   }
 
   try {
-    return await axios.post(
+    const response = await axios.post(
       `${config.privateRuntimeConfig.sequencescapeBaseURL}/pick_lists`,
-      payload
+      payload,
+      {
+        headers: {
+          'Content-Type': 'application/vnd.api+json'
+        }
+      }
     )
+    return {
+      success: true,
+      data: response.data.data
+    }
   } catch (error) {
-    return error
+    return {
+      success: false,
+      error
+    }
   }
 }
 

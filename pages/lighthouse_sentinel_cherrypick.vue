@@ -1,8 +1,13 @@
 <template>
   <b-container>
     <h1>Lighthouse Sentinel cherrypick batch creation</h1>
-    <b-alert ref="alert" :show="showDismissibleAlert" variant="danger">
-      {{ alertMessage }}
+    <b-alert
+      ref="alert"
+      :show="showDismissibleAlert"
+      :variant="pickListResponse.variant"
+    >
+      {{ pickListResponse.alertMessage
+      }}<a :href="pickListResponse.link">{{ pickListResponse.link }}</a>
     </b-alert>
 
     <form class="border">
@@ -89,7 +94,8 @@ export default {
       boxBarcodes: '',
       showDismissibleAlert: false,
       alertMessage: '',
-      items: []
+      items: [],
+      pickListResponse: { variant: 'danger' }
     }
   },
   computed: {
@@ -100,40 +106,40 @@ export default {
   methods: {
     async getPlates() {
       const resp = await getPlatesFromBoxBarcodes(this.boxBarcodes)
-      this.items = resp.map((barcode) => ({
-        plate_barcode: barcode,
-        selected: true
-      }))
+      if (resp.length === 0) {
+        this.pickListResponse = {
+          alertMessage: 'Could not retrieve plates from LabWhere',
+          variant: 'danger'
+        }
+        this.showDismissibleAlert = true
+      } else {
+        this.items = resp.map((barcode) => ({
+          plate_barcode: barcode,
+          selected: true
+        }))
+      }
     },
     async createCherrypickingBatch() {
-      console.log(this.items)
       const plateBarcodes = this.items
         .filter((item) => item.selected === true)
         .map((item) => item.plate_barcode)
 
       const resp = await createCherrypickBatch(plateBarcodes)
+      if (resp.success) {
+        this.pickListResponse = {
+          alertMessage:
+            'Cherrypicking batch successfully created. Go to this link to view it: ',
+          variant: 'success',
+          link: resp.data.attributes.links[0].url
+        }
+      } else {
+        this.pickListResponse = {
+          alertMessage: resp.error,
+          variant: 'danger'
+        }
+      }
+      this.showDismissibleAlert = true
     }
-    // async handleSentinelSampleCreation() {
-    //   const resp = await handleApiCall(this.boxBarcode)
-    //   this.handleSentinelSampleCreationResponse(resp)
-    // },
-    // handleSentinelSampleCreationResponse(resp) {
-    //   const errored = resp.filter((obj) => Object.keys(obj).includes('errors'))
-    //   if (errored.length > 0) {
-    //     const msg = errored.map((e) => e.errors.join(', ')).join(', ')
-    //     this.alertMessage = msg
-    //     this.showDismissibleAlert = true
-    //   }
-    //   const successful = resp.filter((obj) => Object.keys(obj).includes('data'))
-    //   if (successful.length > 0) {
-    //     this.items = successful.map((obj) => obj.data).map((obj) => obj.data)
-    //   } else {
-    //     this.items = []
-    //   }
-    // },
-    // cancelSearch() {
-    //   this.boxBarcode = ''
-    // }
   }
 }
 </script>
