@@ -15,13 +15,12 @@
           </p>
         </label>
         <div class="col-sm-8">
-          <b-form-input
-            id="box-barcode"
-            v-model="boxBarcode"
-            type="text"
-            class="form-control"
-            name="box-barcode"
-          />
+          <b-form-textarea
+            id="box-barcodes"
+            v-model="boxBarcodes"
+            rows="5"
+            max-rows="6"
+          ></b-form-textarea>
         </div>
       </div>
       <div class="form-group row">
@@ -31,7 +30,7 @@
             variant="success"
             class="float-right"
             :disabled="isDisabled"
-            @click="handleSentinelSampleCreation()"
+            @click="getPlates()"
             >Submit
           </b-button>
           <b-button
@@ -44,7 +43,15 @@
         </div>
       </div>
     </form>
-    <h3>Lighthouse Samples created</h3>
+    <h3>Plates to include in batch</h3>
+    <b-button
+      id="handleSentinelSampleCreation"
+      variant="success"
+      class="float-right"
+      :disabled="isDisabled"
+      @click="createCherrypickingBatch()"
+      >Submit
+    </b-button>
 
     <b-table
       id="libraries-table"
@@ -55,29 +62,31 @@
       :sort-by.sync="sortBy"
       :sort-desc.sync="sortDesc"
       hover
+      selectable
     >
+      <template v-slot:cell(selected)="row">
+        <b-form-group>
+          <input v-model="row.item.selected" type="checkbox" />
+        </b-form-group>
+      </template>
     </b-table>
   </b-container>
 </template>
 
 <script>
-import { handleApiCall } from '../modules/api'
+import { getPlatesFromBoxBarcodes } from '../modules/labwhere'
+import { createCherrypickBatch } from '../modules/sequencescape'
 
 export default {
   data() {
     return {
       fields: [
         { key: 'plate_barcode', label: 'Plate barcode', sortable: true },
-        { key: 'centre', label: 'Lighthouse', sortable: true },
-        {
-          key: 'number_of_positives',
-          label: 'Created +ves count',
-          sortable: true
-        }
+        { key: 'selected', label: 'Include in batch?' }
       ],
       sortBy: 'plate_barcode',
       sortDesc: true,
-      boxBarcode: '',
+      boxBarcodes: '',
       showDismissibleAlert: false,
       alertMessage: '',
       items: []
@@ -85,32 +94,46 @@ export default {
   },
   computed: {
     isDisabled() {
-      return this.boxBarcode.length === 0
+      return this.boxBarcodes.length === 0
     }
   },
   methods: {
-    async handleSentinelSampleCreation() {
-      const resp = await handleApiCall(this.boxBarcode)
-      this.handleSentinelSampleCreationResponse(resp)
+    async getPlates() {
+      const resp = await getPlatesFromBoxBarcodes(this.boxBarcodes)
+      this.items = resp.map((barcode) => ({
+        plate_barcode: barcode,
+        selected: true
+      }))
     },
-    handleSentinelSampleCreationResponse(resp) {
-      const errored = resp.filter((obj) => Object.keys(obj).includes('errors'))
-      if (errored.length > 0) {
-        const msg = errored.map((e) => e.errors.join(', ')).join(', ')
-        this.alertMessage = msg
-        this.showDismissibleAlert = true
-      }
+    async createCherrypickingBatch() {
+      console.log(this.items)
+      const plateBarcodes = this.items
+        .filter((item) => item.selected === true)
+        .map((item) => item.plate_barcode)
 
-      const successful = resp.filter((obj) => Object.keys(obj).includes('data'))
-      if (successful.length > 0) {
-        this.items = successful.map((obj) => obj.data).map((obj) => obj.data)
-      } else {
-        this.items = []
-      }
-    },
-    cancelSearch() {
-      this.boxBarcode = ''
+      const resp = await createCherrypickBatch(plateBarcodes)
     }
+    // async handleSentinelSampleCreation() {
+    //   const resp = await handleApiCall(this.boxBarcode)
+    //   this.handleSentinelSampleCreationResponse(resp)
+    // },
+    // handleSentinelSampleCreationResponse(resp) {
+    //   const errored = resp.filter((obj) => Object.keys(obj).includes('errors'))
+    //   if (errored.length > 0) {
+    //     const msg = errored.map((e) => e.errors.join(', ')).join(', ')
+    //     this.alertMessage = msg
+    //     this.showDismissibleAlert = true
+    //   }
+    //   const successful = resp.filter((obj) => Object.keys(obj).includes('data'))
+    //   if (successful.length > 0) {
+    //     this.items = successful.map((obj) => obj.data).map((obj) => obj.data)
+    //   } else {
+    //     this.items = []
+    //   }
+    // },
+    // cancelSearch() {
+    //   this.boxBarcode = ''
+    // }
   }
 }
 </script>

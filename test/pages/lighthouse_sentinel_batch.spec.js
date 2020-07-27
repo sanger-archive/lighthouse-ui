@@ -74,16 +74,16 @@ describe('lighthouse sentinel batch', () => {
   })
 
   describe('#handleSentinelSampleCreation', () => {
-    it('calls handleApiCall', async () => {
-      apiModule.handleApiCall = jest.fn()
+    it('calls createSamples', async () => {
+      apiModule.createSamples = jest.fn()
       wrapper.vm.handleSentinelSampleCreationResponse = jest.fn()
       await wrapper.vm.handleSentinelSampleCreation()
-      expect(apiModule.handleApiCall).toBeCalled()
+      expect(apiModule.createSamples).toBeCalled()
     })
 
-    it('calls handleApiCall', async () => {
+    it('calls createSamples', async () => {
       const expected = [{ it: 'worked' }]
-      apiModule.handleApiCall = jest.fn().mockReturnValue(expected)
+      apiModule.createSamples = jest.fn().mockReturnValue(expected)
       wrapper.vm.handleSentinelSampleCreationResponse = jest.fn()
       await wrapper.vm.handleSentinelSampleCreation()
       expect(wrapper.vm.handleSentinelSampleCreationResponse).toBeCalledWith(

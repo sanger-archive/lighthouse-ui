@@ -10,8 +10,8 @@
         <label for="box-barcode" class="col-sm-4 col-form-label">
           Please scan Lighthouse box barcode
           <p class="labwhere-warning">
-            Box and its contents need to be in LabWhere to
-            autogenerate samples in Sequencescape
+            Box and its contents need to be in LabWhere to autogenerate samples
+            in Sequencescape
           </p>
         </label>
         <div class="col-sm-8">
@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import { handleApiCall } from '../modules/api'
+import { createSamples } from '../modules/api'
 
 export default {
   data() {
@@ -90,7 +90,7 @@ export default {
   },
   methods: {
     async handleSentinelSampleCreation() {
-      const resp = await handleApiCall(this.boxBarcode)
+      const resp = await createSamples(this.boxBarcode)
       this.handleSentinelSampleCreationResponse(resp)
     },
     handleSentinelSampleCreationResponse(resp) {

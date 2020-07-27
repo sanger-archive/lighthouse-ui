@@ -1,5 +1,6 @@
-import { getPlatesFromBoxBarcode } from './labwhere'
+import { getPlatesFromBoxBarcodes } from './labwhere'
 import { createPlatesFromBarcodes } from './lighthouse_service'
+import { createCherrypickBatch } from './sequencescape'
 
 // Main API handling of requests:
 // 1. Request the plate barcodes in a given box barcode from LabWhere
@@ -20,8 +21,8 @@ import { createPlatesFromBarcodes } from './lighthouse_service'
 //   }
 // ]
 
-const handleApiCall = async (boxBarcode) => {
-  const platesForBoxBarcode = await getPlatesFromBoxBarcode(boxBarcode)
+const createSamples = async (boxBarcode) => {
+  const platesForBoxBarcode = await getPlatesFromBoxBarcodes(boxBarcode)
 
   if (platesForBoxBarcode.length === 0) {
     return [
@@ -38,4 +39,20 @@ const handleApiCall = async (boxBarcode) => {
   return response
 }
 
-export { handleApiCall }
+const createCherrypickingBatch = async (boxBarcodes) => {
+  const platesForBoxBarcodes = await getPlatesFromBoxBarcodes(boxBarcodes)
+
+  if (platesForBoxBarcodes.length === 0) {
+    return [
+      {
+        errors: [`Failed to get plate barcodes for box barcode: ${boxBarcodes}`]
+      }
+    ]
+  }
+
+  const response = await createCherrypickBatch(platesForBoxBarcodes)
+
+  return response
+}
+
+export { createSamples, createCherrypickingBatch }

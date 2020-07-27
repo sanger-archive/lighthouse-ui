@@ -1,10 +1,13 @@
 import axios from 'axios'
 import PlatesJson from '../data/labwhere_plates'
-import { labwhereRequestURL, getPlatesFromBoxBarcode } from '@/modules/labwhere'
+import {
+  labwhereRequestURL,
+  getPlatesFromBoxBarcodes
+} from '@/modules/labwhere'
 import config from '@/nuxt.config'
 
 describe('Labwhere', () => {
-  describe('#getPlatesFromBoxBarcode', () => {
+  describe('#getPlatesFromBoxBarcodes', () => {
     let labwareBarcodes, boxBarcode, mock, response
 
     beforeEach(() => {
@@ -20,7 +23,7 @@ describe('Labwhere', () => {
       response = { data: PlatesJson }
       mock.mockResolvedValue(response)
 
-      labwareBarcodes = await getPlatesFromBoxBarcode(boxBarcode)
+      labwareBarcodes = await getPlatesFromBoxBarcodes(boxBarcode)
       expect(labwareBarcodes).toEqual(['AB123', 'CD456'])
     })
 
@@ -34,7 +37,7 @@ describe('Labwhere', () => {
       mock.mockImplementationOnce(() =>
         Promise.reject(new Error('There was an error'))
       )
-      labwareBarcodes = await getPlatesFromBoxBarcode(boxBarcode)
+      labwareBarcodes = await getPlatesFromBoxBarcodes(boxBarcode)
       expect(labwareBarcodes).toEqual([])
     })
 
@@ -43,13 +46,13 @@ describe('Labwhere', () => {
       mock.mockImplementationOnce(() =>
         Promise.reject(new Error('There was an error'))
       )
-      labwareBarcodes = await getPlatesFromBoxBarcode('dodgybarcode')
+      labwareBarcodes = await getPlatesFromBoxBarcodes('dodgybarcode')
       expect(labwareBarcodes).toEqual([])
     })
 
     it('when the box has no plates', async () => {
       mock.mockResolvedValue({ data: [] })
-      labwareBarcodes = await getPlatesFromBoxBarcode(boxBarcode)
+      labwareBarcodes = await getPlatesFromBoxBarcodes(boxBarcode)
       expect(labwareBarcodes).toEqual([])
     })
   })

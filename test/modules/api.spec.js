@@ -1,9 +1,10 @@
-import { handleApiCall } from '@/modules/api'
-import * as labwareModule from '@/modules/labwhere'
+import { createSamples, createCherrypickingBatch } from '@/modules/api'
+import * as labwhereModule from '@/modules/labwhere'
 import * as lighthouseModule from '@/modules/lighthouse_service'
+import * as sequencescapeModule from '@/modules/sequencescape'
 
 describe('api', () => {
-  describe('#handleApiCall ', () => {
+  describe('#createSamples ', () => {
     beforeEach(() => {
       boxBarcode = 'aBoxBarcode'
       plateBarcodes = ['aBarcode1', 'aBarcode2']
@@ -11,8 +12,8 @@ describe('api', () => {
 
     let boxBarcode, plateBarcodes
 
-    it('both getPlatesFromBoxBarcode and createPlatesFromBarcodes are successful', async () => {
-      labwareModule.getPlatesFromBoxBarcode = jest
+    it('both getPlatesFromBoxBarcodes and createPlatesFromBarcodes are successful', async () => {
+      labwhereModule.getPlatesFromBoxBarcodes = jest
         .fn()
         .mockReturnValue(plateBarcodes)
 
@@ -37,17 +38,17 @@ describe('api', () => {
         .fn()
         .mockReturnValue(expected)
 
-      const result = await handleApiCall(boxBarcode)
+      const result = await createSamples(boxBarcode)
 
       expect(result).toEqual(expected)
-      expect(labwareModule.getPlatesFromBoxBarcode).toBeCalledWith(boxBarcode)
+      expect(labwhereModule.getPlatesFromBoxBarcodes).toBeCalledWith(boxBarcode)
       expect(lighthouseModule.createPlatesFromBarcodes).toBeCalledWith({
         plateBarcodes
       })
     })
 
-    it('getPlatesFromBoxBarcode is successful, createPlatesFromBarcodes all fail', async () => {
-      labwareModule.getPlatesFromBoxBarcode = jest
+    it('getPlatesFromBoxBarcodes is successful, createPlatesFromBarcodes all fail', async () => {
+      labwhereModule.getPlatesFromBoxBarcodes = jest
         .fn()
         .mockReturnValue(plateBarcodes)
 
@@ -64,17 +65,17 @@ describe('api', () => {
         .fn()
         .mockReturnValue(expected)
 
-      const result = await handleApiCall(boxBarcode)
+      const result = await createSamples(boxBarcode)
 
       expect(result).toEqual(expected)
-      expect(labwareModule.getPlatesFromBoxBarcode).toBeCalledWith(boxBarcode)
+      expect(labwhereModule.getPlatesFromBoxBarcodes).toBeCalledWith(boxBarcode)
       expect(lighthouseModule.createPlatesFromBarcodes).toBeCalledWith({
         plateBarcodes
       })
     })
 
-    it('getPlatesFromBoxBarcode is successful, createPlatesFromBarcodes partially fail', async () => {
-      labwareModule.getPlatesFromBoxBarcode = jest
+    it('getPlatesFromBoxBarcodes is successful, createPlatesFromBarcodes partially fail', async () => {
+      labwhereModule.getPlatesFromBoxBarcodes = jest
         .fn()
         .mockReturnValue(plateBarcodes)
 
@@ -95,17 +96,17 @@ describe('api', () => {
         .fn()
         .mockReturnValue(expected)
 
-      const result = await handleApiCall(boxBarcode)
+      const result = await createSamples(boxBarcode)
 
       expect(result).toEqual(expected)
-      expect(labwareModule.getPlatesFromBoxBarcode).toBeCalledWith(boxBarcode)
+      expect(labwhereModule.getPlatesFromBoxBarcodes).toBeCalledWith(boxBarcode)
       expect(lighthouseModule.createPlatesFromBarcodes).toBeCalledWith({
         plateBarcodes
       })
     })
 
-    it('getPlatesFromBoxBarcode fails', async () => {
-      labwareModule.getPlatesFromBoxBarcode = jest.fn().mockReturnValue([])
+    it('getPlatesFromBoxBarcodes fails', async () => {
+      labwhereModule.getPlatesFromBoxBarcodes = jest.fn().mockReturnValue([])
       lighthouseModule.createPlatesFromBarcodes = jest.fn()
 
       const expected = [
@@ -115,11 +116,88 @@ describe('api', () => {
           ]
         }
       ]
-      const result = await handleApiCall(boxBarcode)
+      const result = await createSamples(boxBarcode)
 
       expect(result).toEqual(expected)
-      expect(labwareModule.getPlatesFromBoxBarcode).toBeCalledWith(boxBarcode)
+      expect(labwhereModule.getPlatesFromBoxBarcodes).toBeCalledWith(boxBarcode)
       expect(lighthouseModule.createPlatesFromBarcodes).not.toBeCalled()
+    })
+  })
+
+  describe('#createCherrypickingBatch ', () => {
+    beforeEach(() => {
+      boxBarcodes = 'aBoxBarcode'
+      plateBarcodes = ['aBarcode1', 'aBarcode2']
+    })
+
+    let boxBarcodes, plateBarcodes
+
+    it('both getPlatesFromBoxBarcodes and createCherrypickBatch are successful', async () => {
+      labwhereModule.getPlatesFromBoxBarcodes = jest
+        .fn()
+        .mockReturnValue(plateBarcodes)
+
+      const expected = { data: 'testURL' }
+
+      sequencescapeModule.createCherrypickBatch = jest
+        .fn()
+        .mockReturnValue(expected)
+
+      const result = await createCherrypickingBatch(boxBarcodes)
+
+      expect(result).toEqual(expected)
+      expect(labwhereModule.getPlatesFromBoxBarcodes).toBeCalledWith(
+        boxBarcodes
+      )
+      expect(sequencescapeModule.createCherrypickBatch).toBeCalledWith(
+        plateBarcodes
+      )
+    })
+
+    it('getPlatesFromBoxBarcodes is successful, createCherrypickBatch all fail', async () => {
+      labwhereModule.getPlatesFromBoxBarcodes = jest
+        .fn()
+        .mockReturnValue(plateBarcodes)
+
+      const expected = [
+        {
+          errors: ['Cherrypick batch coudnt be created']
+        }
+      ]
+
+      sequencescapeModule.createCherrypickBatch = jest
+        .fn()
+        .mockReturnValue(expected)
+
+      const result = await createCherrypickingBatch(boxBarcodes)
+
+      expect(result).toEqual(expected)
+      expect(labwhereModule.getPlatesFromBoxBarcodes).toBeCalledWith(
+        boxBarcodes
+      )
+      expect(sequencescapeModule.createCherrypickBatch).toBeCalledWith(
+        plateBarcodes
+      )
+    })
+
+    it('getPlatesFromBoxBarcodes fails', async () => {
+      labwhereModule.getPlatesFromBoxBarcodes = jest.fn().mockReturnValue([])
+      sequencescapeModule.createCherrypickBatch = jest.fn()
+
+      const expected = [
+        {
+          errors: [
+            `Failed to get plate barcodes for box barcode: ${boxBarcodes}`
+          ]
+        }
+      ]
+      const result = await createCherrypickingBatch(boxBarcodes)
+
+      expect(result).toEqual(expected)
+      expect(labwhereModule.getPlatesFromBoxBarcodes).toBeCalledWith(
+        boxBarcodes
+      )
+      expect(sequencescapeModule.createCherrypickBatch).not.toBeCalled()
     })
   })
 })
