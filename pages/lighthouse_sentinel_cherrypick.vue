@@ -127,6 +127,9 @@ export default {
   methods: {
     async getPlates() {
       const resp = await getPlatesFromBoxBarcodes(this.boxBarcodes)
+      this.handleGetPlatesResponse(resp)
+    },
+    handleGetPlatesResponse(resp) {
       if (resp.length === 0) {
         this.pickListResponse = {
           alertMessage: 'Could not retrieve plates from LabWhere',
@@ -146,6 +149,9 @@ export default {
         .map((item) => item.plate_barcode)
 
       const resp = await createCherrypickBatch(plateBarcodes)
+      this.handleCherrypickResponse(resp)
+    },
+    handleCherrypickResponse(resp) {
       if (resp.success) {
         this.pickListResponse = {
           alertMessage:
