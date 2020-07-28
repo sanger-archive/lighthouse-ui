@@ -39,20 +39,4 @@ const createSamples = async (boxBarcode) => {
   return response
 }
 
-const createCherrypickingBatch = async (boxBarcodes) => {
-  const platesForBoxBarcodes = await getPlatesFromBoxBarcodes(boxBarcodes)
-
-  if (platesForBoxBarcodes.length === 0) {
-    return [
-      {
-        errors: [`Failed to get plate barcodes for box barcode: ${boxBarcodes}`]
-      }
-    ]
-  }
-
-  const response = await createCherrypickBatch(platesForBoxBarcodes)
-
-  return response
-}
-
-export { createSamples, createCherrypickingBatch }
+export { createSamples }

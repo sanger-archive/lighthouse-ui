@@ -9,8 +9,8 @@ const createCherrypickBatch = async (plateBarcodes) => {
         asynchronous: true,
         labware_pick_attributes: plateBarcodes.map((plateBarcode) => ({
           source_labware_barcode: plateBarcode,
-          study_id: 1,
-          project_id: 1
+          study_id: config.publicRuntimeConfig.studyID,
+          project_id: config.publicRuntimeConfig.projectID
         }))
       }
     }
