@@ -3,7 +3,7 @@ import { createCherrypickBatch } from '@/modules/sequencescape'
 
 describe('Sequencescape', () => {
   describe('#createCherrypickBatch', () => {
-    let labwareBarcodes, mock, response, batchURL
+    let labwareBarcodes, mock, response, expected
 
     beforeEach(() => {
       mock = jest.spyOn(axios, 'post')
@@ -15,19 +15,18 @@ describe('Sequencescape', () => {
     })
 
     it('successfully', async () => {
-      response = { data: 'testURL' }
-      mock.mockResolvedValue(response)
-
-      batchURL = await createCherrypickBatch(labwareBarcodes)
-      expect(batchURL).toEqual(response)
+      expected = { data: { data: 'testURL' } }
+      mock.mockResolvedValue(expected)
+      response = await createCherrypickBatch(labwareBarcodes)
+      expect(response.data).toEqual(expected.data.data)
     })
 
     it('when there is an error', async () => {
       mock.mockImplementationOnce(() =>
         Promise.reject(new Error('There was an error'))
       )
-      batchURL = await createCherrypickBatch(labwareBarcodes)
-      expect(batchURL).toEqual(new Error('There was an error'))
+      response = await createCherrypickBatch(labwareBarcodes)
+      expect(response.error).toEqual(new Error('There was an error'))
     })
   })
 })

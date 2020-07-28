@@ -1,7 +1,6 @@
 import BootstrapVue from 'bootstrap-vue'
 import { mount, createLocalVue } from '@vue/test-utils'
 import LighthouseSentinelCherrypick from '@/pages/lighthouse_sentinel_cherrypick'
-import * as apiModule from '@/modules/api'
 
 const localVue = createLocalVue()
 localVue.use(BootstrapVue)
@@ -14,7 +13,7 @@ describe('lighthouse sentinel cherrypick', () => {
       localVue,
       data() {
         return {
-          boxBarcodes: ['lw-ogilvie-4', 'lw-ogilvie-5', 'lw-ogilvie-6'],
+          boxBarcodes: 'lw-ogilvie-4\nlw-ogilvie-5\nlw-ogilvie-6',
           items: []
         }
       }
@@ -28,11 +27,9 @@ describe('lighthouse sentinel cherrypick', () => {
   })
 
   it('has a barcode', () => {
-    expect(wrapper.vm.boxBarcodes).toEqual([
-      'lw-ogilvie-4',
-      'lw-ogilvie-5',
-      'lw-ogilvie-6'
-    ])
+    expect(wrapper.vm.boxBarcodes).toEqual(
+      'lw-ogilvie-4\nlw-ogilvie-5\nlw-ogilvie-6'
+    )
   })
 
   it('has items', () => {
