@@ -147,6 +147,7 @@ export default {
       const plateBarcodes = this.items
         .filter((item) => item.selected === true)
         .map((item) => item.plate_barcode)
+
       if(plateBarcodes.length > 0) {
         const resp = await createCherrypickBatch(plateBarcodes)
         this.handleCreateBatchResponse(resp)
