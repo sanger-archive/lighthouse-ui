@@ -1,10 +1,6 @@
 import axios from 'axios'
 import PlatesJson from '../data/labwhere_plates'
-import {
-  labwhereRequestURL,
-  getPlatesFromBoxBarcodes
-} from '@/modules/labwhere'
-import config from '@/nuxt.config'
+import { getPlatesFromBoxBarcodes } from '@/modules/labwhere'
 
 describe('Labwhere', () => {
   describe('#getPlatesFromBoxBarcodes', () => {
@@ -25,12 +21,6 @@ describe('Labwhere', () => {
 
       labwareBarcodes = await getPlatesFromBoxBarcodes(boxBarcode)
       expect(labwareBarcodes).toEqual(['AB123', 'CD456'])
-    })
-
-    it('labwhere request', () => {
-      expect(labwhereRequestURL).toEqual(
-        config.privateRuntimeConfig.labwhereBaseURL
-      )
     })
 
     it('when there is an error', async () => {
