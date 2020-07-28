@@ -1,13 +1,58 @@
 import axios from 'axios'
-import { createCherrypickBatch } from '@/modules/sequencescape'
+import {
+  createPayloadForCherrypickBatch,
+  createCherrypickBatch
+} from '@/modules/sequencescape'
+
+const config = {
+  publicRuntimeConfig: {
+    asynchronous: false,
+    studyId: 1,
+    projectId: 1
+  }
+}
 
 describe('Sequencescape', () => {
+  let labwareBarcodes
+
+  beforeEach(() => {
+    labwareBarcodes = ['123', '456']
+  })
+
+  describe('#createPayloadForCherrypickBatch', () => {
+    let payload, payloadAttributes
+
+    beforeEach(() => {
+      payload = createPayloadForCherrypickBatch(
+        labwareBarcodes,
+        config.publicRuntimeConfig
+      )
+      payloadAttributes = payload.data.attributes
+    })
+
+    it('should have correct value for asynchronous', () => {
+      expect(payloadAttributes.asynchronous).toBeFalsy()
+    })
+
+    it('should have the correct number of labware_pick_attributes', () => {
+      expect(payloadAttributes.labware_pick_attributes.length).toEqual(2)
+    })
+
+    it('should have a study id, project id and barcode', () => {
+      const labwarePickAttribute = payloadAttributes.labware_pick_attributes[0]
+      expect(labwarePickAttribute.source_labware_barcode).toEqual(
+        labwareBarcodes[0]
+      )
+      expect(labwarePickAttribute.study_id).toBeGreaterThanOrEqual(1)
+      expect(labwarePickAttribute.project_id).toBeGreaterThanOrEqual(1)
+    })
+  })
+
   describe('#createCherrypickBatch', () => {
-    let labwareBarcodes, mock, response, expected
+    let mock, response, expected
 
     beforeEach(() => {
       mock = jest.spyOn(axios, 'post')
-      labwareBarcodes = ['123', '456']
     })
 
     afterEach(() => {

@@ -1,6 +1,5 @@
 import { getPlatesFromBoxBarcodes } from './labwhere'
 import { createPlatesFromBarcodes } from './lighthouse_service'
-import { createCherrypickBatch } from './sequencescape'
 
 // Main API handling of requests:
 // 1. Request the plate barcodes in a given box barcode from LabWhere

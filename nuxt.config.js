@@ -88,7 +88,7 @@ export default {
       process.env.SEQUENCESCAPE_BASE_URL || 'http://sequencescape'
   },
   publicRuntimeConfig: {
-    projectID: process.env.PROJECT_ID,
-    studyID: process.env.STUDY_ID
+    projectId: process.env.PROJECT_ID,
+    studyId: process.env.STUDY_ID
   }
 }

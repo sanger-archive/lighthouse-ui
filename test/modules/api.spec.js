@@ -1,7 +1,6 @@
-import { createSamples, createCherrypickingBatch } from '@/modules/api'
+import { createSamples } from '@/modules/api'
 import * as labwhereModule from '@/modules/labwhere'
 import * as lighthouseModule from '@/modules/lighthouse_service'
-import * as sequencescapeModule from '@/modules/sequencescape'
 
 describe('api', () => {
   describe('#createSamples ', () => {
@@ -123,5 +122,4 @@ describe('api', () => {
       expect(lighthouseModule.createPlatesFromBarcodes).not.toBeCalled()
     })
   })
-
 })
