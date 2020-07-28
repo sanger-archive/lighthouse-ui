@@ -1,17 +1,17 @@
 import BootstrapVue from 'bootstrap-vue'
 import { mount, createLocalVue } from '@vue/test-utils'
-import LighthouseSentinelCherrypick from '@/pages/lighthouse_sentinel_cherrypick'
+import SentinelCherrypick from '@/pages/sentinel_cherrypick'
 import * as labwhereModule from '@/modules/labwhere'
 import * as sequencescapeModule from '@/modules/sequencescape'
 
 const localVue = createLocalVue()
 localVue.use(BootstrapVue)
 
-describe('lighthouse sentinel cherrypick', () => {
+describe('sentinel cherrypick', () => {
   let wrapper
 
   beforeEach(() => {
-    wrapper = mount(LighthouseSentinelCherrypick, {
+    wrapper = mount(SentinelCherrypick, {
       localVue,
       data() {
         return {
@@ -24,7 +24,7 @@ describe('lighthouse sentinel cherrypick', () => {
 
   it('is a Vue instance', () => {
     expect(
-      wrapper.findComponent(LighthouseSentinelCherrypick).exists()
+      wrapper.findComponent(SentinelCherrypick).exists()
     ).toBeTruthy()
   })
 

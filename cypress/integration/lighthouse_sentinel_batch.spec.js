@@ -9,7 +9,7 @@
 
 describe('Lighthouse Sentinel Batch test', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:3000/lighthouse_sentinel_batch')
+    cy.visit('http://localhost:3000/sentinel_create_samples')
   })
 
   it('Visits the page', () => {
