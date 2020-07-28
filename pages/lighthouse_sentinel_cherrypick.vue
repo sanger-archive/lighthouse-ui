@@ -31,12 +31,12 @@
       <div class="form-group row">
         <div class="col-sm-12">
           <b-button
-            id="handleSentinelSampleCreation"
+            id="handlePlatesRetrieval"
             variant="success"
             class="float-right"
-            :disabled="isDisabled"
+            :disabled="platesRetrievalDisabled"
             @click="getPlates()"
-            >Submit
+            >Get plates
           </b-button>
           <b-button
             id="cancelSearch"
@@ -50,14 +50,12 @@
     </form>
     <h3>Plates to include in batch</h3>
     <b-button
-      id="handleSentinelSampleCreation"
+      id="handleSentinelBatchCreationTop"
       variant="success"
-      class="float-right"
-      :disabled="isDisabled"
+      :disabled="batchCreationDisabled"
       @click="createCherrypickingBatch()"
-      >Submit
+      >Create cherrypick batch
     </b-button>
-
     <b-table
       id="libraries-table"
       show-empty
@@ -75,6 +73,13 @@
         </b-form-group>
       </template>
     </b-table>
+    <b-button
+      id="handleSentinelBatchCreationBottom"
+      variant="success"
+      :disabled="batchCreationDisabled"
+      @click="createCherrypickingBatch()"
+      >Create cherrypick batch
+    </b-button>
   </b-container>
 </template>
 
@@ -99,8 +104,11 @@ export default {
     }
   },
   computed: {
-    isDisabled() {
+    platesRetrievalDisabled() {
       return this.boxBarcodes.length === 0
+    },
+    batchCreationDisabled() {
+      return this.items.length === 0
     }
   },
   methods: {
@@ -139,6 +147,9 @@ export default {
         }
       }
       this.showDismissibleAlert = true
+    },
+    cancelSearch() {
+      this.boxBarcodes = ''
     }
   }
 }
@@ -153,6 +164,6 @@ form {
   color: red;
 }
 button {
-  margin-right: 5px;
+  margin: 5px;
 }
 </style>
