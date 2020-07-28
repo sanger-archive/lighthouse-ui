@@ -47,7 +47,7 @@
     <h3>Lighthouse Samples created</h3>
 
     <b-table
-      id="libraries-table"
+      id="samples-table"
       show-empty
       responsive
       :items="items"

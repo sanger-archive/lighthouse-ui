@@ -57,7 +57,7 @@
       >Create cherrypick batch
     </b-button>
     <b-table
-      id="libraries-table"
+      id="labware-table"
       show-empty
       responsive
       :items="items"
@@ -66,6 +66,8 @@
       :sort-desc.sync="sortDesc"
       hover
       selectable
+      :per-page="perPage"
+      :current-page="currentPage"
     >
       <template v-slot:cell(selected)="row">
         <b-form-group>
@@ -73,6 +75,12 @@
         </b-form-group>
       </template>
     </b-table>
+    <b-pagination
+      v-model="currentPage"
+      :total-rows="rows"
+      :per-page="perPage"
+      aria-table="labware-table"
+    ></b-pagination>
     <b-button
       id="handleSentinelBatchCreationBottom"
       variant="success"
@@ -92,7 +100,7 @@ export default {
     return {
       fields: [
         { key: 'plate_barcode', label: 'Plate barcode', sortable: true },
-        { key: 'selected', label: 'Include in batch?' }
+        { key: 'selected', label: 'Include in batch?', sortable: true }
       ],
       sortBy: 'plate_barcode',
       sortDesc: true,
@@ -100,7 +108,9 @@ export default {
       showDismissibleAlert: false,
       alertMessage: '',
       items: [],
-      pickListResponse: { variant: 'danger' }
+      pickListResponse: { variant: 'danger' },
+      perPage: 10,
+      currentPage: 1
     }
   },
   computed: {
@@ -109,6 +119,9 @@ export default {
     },
     batchCreationDisabled() {
       return this.items.length === 0
+    },
+    rows() {
+      return this.items.length
     }
   },
   methods: {
