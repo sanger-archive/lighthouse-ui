@@ -38,7 +38,7 @@ describe('lighthouse sentinel cherrypick', () => {
     expect(wrapper.vm.items).toEqual([])
   })
 
-  describe('getting plates', () => {
+  describe('get plates button', () => {
     let button
 
     it('has a get plates button', () => {
@@ -112,11 +112,188 @@ describe('lighthouse sentinel cherrypick', () => {
 
       wrapper.vm.handleGetPlatesResponse(response)
       wrapper.vm.$nextTick(() => {
-        expect(wrapper.findComponent({ ref: 'alert' }).text()).toMatch(
-          /Could not retrieve plates from LabWhere/
+        expect(wrapper.findComponent({ ref: 'alert' }).text()).toEqual(
+          'Could not retrieve plates from LabWhere'
         )
       })
       expect(wrapper.vm.items).toEqual([])
+    })
+  })
+
+  describe('create batch button, no items', () => {
+    let button
+
+    it('has a create batch button at the top of the table', () => {
+      button = wrapper.find('#handleSentinelBatchCreationTop')
+      expect(button.text()).toEqual('Create cherrypick batch')
+    })
+
+    it('has a create batch button at the bottom of the table', () => {
+      button = wrapper.find('#handleSentinelBatchCreationBottom')
+      expect(button.text()).toEqual('Create cherrypick batch')
+    })
+
+    it('create batch button (top) is disabled', () => {
+      wrapper.vm.createBatch = jest.fn()
+      button = wrapper.find('#handleSentinelBatchCreationTop')
+      button.trigger('click')
+      expect(wrapper.vm.createBatch).not.toBeCalled()
+    })
+
+    it('create batch button (bottom) is disabled', () => {
+      wrapper.vm.createBatch = jest.fn()
+      button = wrapper.find('#handleSentinelBatchCreationBottom')
+      button.trigger('click')
+      expect(wrapper.vm.createBatch).not.toBeCalled()
+    })
+  })
+
+  describe('batch creation, all selected', () => {
+    beforeEach(() => {
+      wrapper.vm.items = [
+        {
+          "plate_barcode": 'aBarcode1',
+          "selected": true
+        },
+        {
+          "plate_barcode": 'aBarcode2',
+          "selected": true
+        }
+      ]
+    })
+
+    describe('create batch button', () => {
+      let button
+
+      it('on create batch button (top) click it calls createBatch', () => {
+        wrapper.vm.createBatch = jest.fn()
+        button = wrapper.find('#handleSentinelBatchCreationTop')
+        button.trigger('click')
+        expect(wrapper.vm.createBatch).toBeCalled()
+      })
+
+      it('on create batch button (bottom) click it calls createBatch', () => {
+        wrapper.vm.createBatch = jest.fn()
+        button = wrapper.find('#handleSentinelBatchCreationBottom')
+        button.trigger('click')
+        expect(wrapper.vm.createBatch).toBeCalled()
+      })
+    })
+
+    describe('#createBatch', () => {
+      it('calls createCherrypickBatch', async () => {
+        sequencescapeModule.createCherrypickBatch = jest.fn()
+        wrapper.vm.handleCreateBatchResponse = jest.fn()
+        await wrapper.vm.createBatch()
+        expect(sequencescapeModule.createCherrypickBatch).toBeCalled()
+      })
+    })
+
+    describe('#handleCreateBatchResponse', () => {
+      let response
+
+      it('on success it shows a link', () => {
+
+        response = {
+          "success": true,
+          "data": {
+            "id": "4",
+            "type": "pick_lists",
+            "links": {
+                "self": "http://localhost:3010/api/v2/pick_lists/4"
+            },
+            "attributes": {
+                "created_at": "2020-07-28T11:54:45+01:00",
+                "updated_at": "2020-07-28T11:54:45+01:00",
+                "state": "pending",
+                "links": [
+                    {
+                        "name": "Pick-list 4",
+                        "url": "http://localhost:3000/pick_lists/4"
+                    }
+                ],
+                "pick_attributes": [
+                    {
+                        "source_receptacle_id": 101,
+                        "study_id": 1,
+                        "project_id": 1
+                    }
+                ],
+                "asynchronous": true
+            }
+          }
+        }
+
+        wrapper.vm.handleCreateBatchResponse(response)
+        wrapper.vm.$nextTick(() => {
+          expect(wrapper.findComponent({ ref: 'alert' }).text()).toEqual(
+            'Cherrypicking batch successfully created. Go to this link to view it: http://localhost:3000/pick_lists/4'
+          )
+        })
+
+      })
+
+      it('on failure it shows an error message', () => {
+        response = {
+          "success": false,
+          "error": 'Test error'
+        }
+
+        wrapper.vm.handleCreateBatchResponse(response)
+        wrapper.vm.$nextTick(() => {
+          expect(wrapper.findComponent({ ref: 'alert' }).text()).toEqual(
+            'Test error'
+          )
+        })
+      })
+    })
+  })
+
+  describe('batch creation, not all selected', () => {
+    beforeEach(() => {
+      wrapper.vm.items = [
+        {
+          "plate_barcode": 'aBarcode1',
+          "selected": false
+        },
+        {
+          "plate_barcode": 'aBarcode2',
+          "selected": true
+        }
+      ]
+    })
+
+    describe('#createBatch', () => {
+      it('calls createCherrypickBatch with only selected items', async () => {
+        sequencescapeModule.createCherrypickBatch = jest.fn()
+        wrapper.vm.handleCreateBatchResponse = jest.fn()
+        await wrapper.vm.createBatch()
+        expect(sequencescapeModule.createCherrypickBatch).toBeCalledWith(['aBarcode2'])
+      })
+    })
+  })
+
+  describe('batch creation, none selected', () => {
+    beforeEach(() => {
+      wrapper.vm.items = [
+        {
+          "plate_barcode": 'aBarcode1',
+          "selected": false
+        },
+        {
+          "plate_barcode": 'aBarcode2',
+          "selected": false
+        }
+      ]
+    })
+
+    describe('#createBatch', () => {
+      it('doesn\'t call createCherrypickBatch', async () => {
+        sequencescapeModule.createCherrypickBatch = jest.fn()
+        wrapper.vm.handleCreateBatchResponse = jest.fn()
+        await wrapper.vm.createBatch()
+        expect(sequencescapeModule.createCherrypickBatch).not.toBeCalled()
+      })
     })
   })
 })

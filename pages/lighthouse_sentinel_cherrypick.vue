@@ -53,7 +53,7 @@
       id="handleSentinelBatchCreationTop"
       variant="success"
       :disabled="batchCreationDisabled"
-      @click="createCherrypickingBatch()"
+      @click="createBatch()"
       >Create cherrypick batch
     </b-button>
     <b-table
@@ -85,7 +85,7 @@
       id="handleSentinelBatchCreationBottom"
       variant="success"
       :disabled="batchCreationDisabled"
-      @click="createCherrypickingBatch()"
+      @click="createBatch()"
       >Create cherrypick batch
     </b-button>
   </b-container>
@@ -143,15 +143,21 @@ export default {
         }))
       }
     },
-    async createCherrypickingBatch() {
+    async createBatch() {
       const plateBarcodes = this.items
         .filter((item) => item.selected === true)
         .map((item) => item.plate_barcode)
-
-      const resp = await createCherrypickBatch(plateBarcodes)
-      this.handleCherrypickResponse(resp)
+      if(plateBarcodes.length > 0) {
+        const resp = await createCherrypickBatch(plateBarcodes)
+        this.handleCreateBatchResponse(resp)
+      } else {
+        this.pickListResponse = {
+          alertMessage: 'Please select one or more plates',
+          variant: 'warning'
+        }
+      }
     },
-    handleCherrypickResponse(resp) {
+    handleCreateBatchResponse(resp) {
       if (resp.success) {
         this.pickListResponse = {
           alertMessage:
