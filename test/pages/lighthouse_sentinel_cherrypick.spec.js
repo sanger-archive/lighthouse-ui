@@ -90,17 +90,17 @@ describe('lighthouse sentinel cherrypick', () => {
     let response
 
     it('on success it populates the table', () => {
-      response = ['aBarcode1','aBarcode2']
+      response = ['aBarcode1', 'aBarcode2']
       wrapper.vm.handleGetPlatesResponse(response)
 
-      let expected = [
+      const expected = [
         {
-          "plate_barcode": response[0],
-          "selected": true
+          plate_barcode: response[0],
+          selected: true
         },
         {
-          "plate_barcode": response[1],
-          "selected": true
+          plate_barcode: response[1],
+          selected: true
         }
       ]
 
@@ -152,12 +152,12 @@ describe('lighthouse sentinel cherrypick', () => {
     beforeEach(() => {
       wrapper.vm.items = [
         {
-          "plate_barcode": 'aBarcode1',
-          "selected": true
+          plate_barcode: 'aBarcode1',
+          selected: true
         },
         {
-          "plate_barcode": 'aBarcode2',
-          "selected": true
+          plate_barcode: 'aBarcode2',
+          selected: true
         }
       ]
     })
@@ -193,33 +193,32 @@ describe('lighthouse sentinel cherrypick', () => {
       let response
 
       it('on success it shows a link', () => {
-
         response = {
-          "success": true,
-          "data": {
-            "id": "4",
-            "type": "pick_lists",
-            "links": {
-                "self": "http://localhost:3010/api/v2/pick_lists/4"
+          success: true,
+          data: {
+            id: '4',
+            type: 'pick_lists',
+            links: {
+              self: 'http://localhost:3010/api/v2/pick_lists/4'
             },
-            "attributes": {
-                "created_at": "2020-07-28T11:54:45+01:00",
-                "updated_at": "2020-07-28T11:54:45+01:00",
-                "state": "pending",
-                "links": [
-                    {
-                        "name": "Pick-list 4",
-                        "url": "http://localhost:3000/pick_lists/4"
-                    }
-                ],
-                "pick_attributes": [
-                    {
-                        "source_receptacle_id": 101,
-                        "study_id": 1,
-                        "project_id": 1
-                    }
-                ],
-                "asynchronous": true
+            attributes: {
+              created_at: '2020-07-28T11:54:45+01:00',
+              updated_at: '2020-07-28T11:54:45+01:00',
+              state: 'pending',
+              links: [
+                {
+                  name: 'Pick-list 4',
+                  url: 'http://localhost:3000/pick_lists/4'
+                }
+              ],
+              pick_attributes: [
+                {
+                  source_receptacle_id: 101,
+                  study_id: 1,
+                  project_id: 1
+                }
+              ],
+              asynchronous: true
             }
           }
         }
@@ -230,13 +229,12 @@ describe('lighthouse sentinel cherrypick', () => {
             'Cherrypicking batch successfully created. Go to this link to view it: http://localhost:3000/pick_lists/4'
           )
         })
-
       })
 
       it('on failure it shows an error message', () => {
         response = {
-          "success": false,
-          "error": 'Test error'
+          success: false,
+          error: 'Test error'
         }
 
         wrapper.vm.handleCreateBatchResponse(response)
@@ -253,12 +251,12 @@ describe('lighthouse sentinel cherrypick', () => {
     beforeEach(() => {
       wrapper.vm.items = [
         {
-          "plate_barcode": 'aBarcode1',
-          "selected": false
+          plate_barcode: 'aBarcode1',
+          selected: false
         },
         {
-          "plate_barcode": 'aBarcode2',
-          "selected": true
+          plate_barcode: 'aBarcode2',
+          selected: true
         }
       ]
     })
@@ -268,7 +266,9 @@ describe('lighthouse sentinel cherrypick', () => {
         sequencescapeModule.createCherrypickBatch = jest.fn()
         wrapper.vm.handleCreateBatchResponse = jest.fn()
         await wrapper.vm.createBatch()
-        expect(sequencescapeModule.createCherrypickBatch).toBeCalledWith(['aBarcode2'])
+        expect(sequencescapeModule.createCherrypickBatch).toBeCalledWith([
+          'aBarcode2'
+        ])
       })
     })
   })
@@ -277,18 +277,18 @@ describe('lighthouse sentinel cherrypick', () => {
     beforeEach(() => {
       wrapper.vm.items = [
         {
-          "plate_barcode": 'aBarcode1',
-          "selected": false
+          plate_barcode: 'aBarcode1',
+          selected: false
         },
         {
-          "plate_barcode": 'aBarcode2',
-          "selected": false
+          plate_barcode: 'aBarcode2',
+          selected: false
         }
       ]
     })
 
     describe('#createBatch', () => {
-      it('doesn\'t call createCherrypickBatch', async () => {
+      it("doesn't call createCherrypickBatch", async () => {
         sequencescapeModule.createCherrypickBatch = jest.fn()
         wrapper.vm.handleCreateBatchResponse = jest.fn()
         await wrapper.vm.createBatch()

@@ -93,6 +93,7 @@ export default {
       const resp = await createSamples(this.boxBarcode)
       this.handleSentinelSampleCreationResponse(resp)
     },
+    // TODO: make this more javascripty? destructuring?
     handleSentinelSampleCreationResponse(resp) {
       const errored = resp.filter((obj) => Object.keys(obj).includes('errors'))
       if (errored.length > 0) {
