@@ -126,7 +126,8 @@ export default {
   },
   methods: {
     async getPlates() {
-      const resp = await getPlatesFromBoxBarcodes(this.boxBarcodes)
+      const boxBarcodesList = this.parseBoxBarcodes(this.boxBarcodes)
+      const resp = await getPlatesFromBoxBarcodes(boxBarcodesList)
       this.handleGetPlatesResponse(resp)
     },
     handleGetPlatesResponse(resp) {
@@ -176,6 +177,11 @@ export default {
     },
     cancelSearch() {
       this.boxBarcodes = ''
+    },
+    parseBoxBarcodes(boxBarcodes) {
+      const listNoBlanks = boxBarcodes.split(/\s+/).filter((b) => b !== '')
+      const listUnique = [...new Set(listNoBlanks)]
+      return listUnique
     }
   }
 }

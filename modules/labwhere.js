@@ -1,9 +1,10 @@
 import axios from 'axios'
 import config from '@/nuxt.config'
 
-const getPlatesFromBoxBarcodes = async (boxBarcode) => {
+const getPlatesFromBoxBarcodes = async (boxBarcodes) => {
   try {
-    const url = `${config.privateRuntimeConfig.labwhereBaseURL}/labwares?location_barcodes=${boxBarcode}`
+    const boxBarcodesParam = makeBoxBarcodesParam(boxBarcodes)
+    const url = `${config.privateRuntimeConfig.labwhereBaseURL}/labwares?location_barcodes=${boxBarcodesParam}`
     const plates = await axios.get(url)
 
     return plates.data.map((plate) => plate.barcode)
@@ -12,4 +13,8 @@ const getPlatesFromBoxBarcodes = async (boxBarcode) => {
   }
 }
 
-export { getPlatesFromBoxBarcodes }
+const makeBoxBarcodesParam = (boxBarcodes) => {
+  return boxBarcodes.join(',')
+}
+
+export { getPlatesFromBoxBarcodes, makeBoxBarcodesParam }

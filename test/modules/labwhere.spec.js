@@ -1,14 +1,14 @@
 import axios from 'axios'
 import PlatesJson from '../data/labwhere_plates'
-import { getPlatesFromBoxBarcodes } from '@/modules/labwhere'
+import { getPlatesFromBoxBarcodes, makeBoxBarcodesParam } from '@/modules/labwhere'
 
 describe('Labwhere', () => {
   describe('#getPlatesFromBoxBarcodes', () => {
-    let labwareBarcodes, boxBarcode, mock, response
+    let labwareBarcodes, boxBarcodes, mock, response
 
     beforeEach(() => {
       mock = jest.spyOn(axios, 'get')
-      boxBarcode = 'lw-ogilvie-4'
+      boxBarcodes = ['lw-ogilvie-4', 'lw-ogilvie-5']
     })
 
     afterEach(() => {
@@ -19,7 +19,7 @@ describe('Labwhere', () => {
       response = { data: PlatesJson }
       mock.mockResolvedValue(response)
 
-      labwareBarcodes = await getPlatesFromBoxBarcodes(boxBarcode)
+      labwareBarcodes = await getPlatesFromBoxBarcodes(boxBarcodes)
       expect(labwareBarcodes).toEqual(['AB123', 'CD456'])
     })
 
@@ -27,7 +27,7 @@ describe('Labwhere', () => {
       mock.mockImplementationOnce(() =>
         Promise.reject(new Error('There was an error'))
       )
-      labwareBarcodes = await getPlatesFromBoxBarcodes(boxBarcode)
+      labwareBarcodes = await getPlatesFromBoxBarcodes(boxBarcodes)
       expect(labwareBarcodes).toEqual([])
     })
 
@@ -42,8 +42,13 @@ describe('Labwhere', () => {
 
     it('when the box has no plates', async () => {
       mock.mockResolvedValue({ data: [] })
-      labwareBarcodes = await getPlatesFromBoxBarcodes(boxBarcode)
+      labwareBarcodes = await getPlatesFromBoxBarcodes(boxBarcodes)
       expect(labwareBarcodes).toEqual([])
     })
+  })
+
+  describe('#makeBoxBarcodesParam', () => {
+    const output = makeBoxBarcodesParam(['lw-ogilvie-4', 'lw-ogilvie-5'])
+    expect(output).toEqual('lw-ogilvie-4,lw-ogilvie-5')
   })
 })

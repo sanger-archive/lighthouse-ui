@@ -77,6 +77,23 @@ describe('sentinel cherrypick', () => {
     })
   })
 
+  describe('#parseBoxBarcodes', () => {
+    it('splits on whitespace', () => {
+      const output = wrapper.vm.parseBoxBarcodes('lw-ogilvie-4\nlw-ogilvie-5\nlw-ogilvie-6')
+      expect(output).toEqual(['lw-ogilvie-4', 'lw-ogilvie-5', 'lw-ogilvie-6'])
+    })
+
+    it('removes duplicates', () => {
+      const output = wrapper.vm.parseBoxBarcodes('lw-ogilvie-4\nlw-ogilvie-4\nlw-ogilvie-6')
+      expect(output).toEqual(['lw-ogilvie-4', 'lw-ogilvie-6'])
+    })
+
+    it('trims whitespace', () => {
+      const output = wrapper.vm.parseBoxBarcodes(' lw-ogilvie-4 \nlw-ogilvie-5  \n lw-ogilvie-6  ')
+      expect(output).toEqual(['lw-ogilvie-4', 'lw-ogilvie-5', 'lw-ogilvie-6'])
+    })
+  })
+
   describe('#getPlates', () => {
     it('calls getPlatesFromBoxBarcodes', async () => {
       labwhereModule.getPlatesFromBoxBarcodes = jest.fn()
