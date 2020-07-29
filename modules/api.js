@@ -21,7 +21,7 @@ import { createPlatesFromBarcodes } from './lighthouse_service'
 // ]
 
 const createSamples = async (boxBarcode) => {
-  const platesForBoxBarcode = await getPlatesFromBoxBarcodes(boxBarcode)
+  const platesForBoxBarcode = await getPlatesFromBoxBarcodes([boxBarcode])
 
   if (platesForBoxBarcode.length === 0) {
     return [
