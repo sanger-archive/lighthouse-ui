@@ -1,11 +1,10 @@
 import axios from 'axios'
 import config from '@/nuxt.config'
 
-const labwhereRequestURL = config.privateRuntimeConfig.labwhereBaseURL
-
-const getPlatesFromBoxBarcode = async (boxBarcode) => {
+const getPlatesFromBoxBarcodes = async (boxBarcodes) => {
   try {
-    const url = `${labwhereRequestURL}/locations/${boxBarcode}/labwares`
+    const boxBarcodesParam = makeBoxBarcodesParam(boxBarcodes)
+    const url = `${config.privateRuntimeConfig.labwhereBaseURL}/labwares?location_barcodes=${boxBarcodesParam}`
     const plates = await axios.get(url)
 
     return plates.data.map((plate) => plate.barcode)
@@ -14,4 +13,8 @@ const getPlatesFromBoxBarcode = async (boxBarcode) => {
   }
 }
 
-export { getPlatesFromBoxBarcode, labwhereRequestURL }
+const makeBoxBarcodesParam = (boxBarcodes) => {
+  return boxBarcodes.join(',')
+}
+
+export { getPlatesFromBoxBarcodes, makeBoxBarcodesParam }

@@ -47,7 +47,7 @@
     <h3>Lighthouse Samples created</h3>
 
     <b-table
-      id="libraries-table"
+      id="samples-table"
       show-empty
       responsive
       :items="items"
@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import { handleApiCall } from '../modules/api'
+import { createSamples } from '../modules/api'
 
 export default {
   data() {
@@ -90,9 +90,10 @@ export default {
   },
   methods: {
     async handleSentinelSampleCreation() {
-      const resp = await handleApiCall(this.boxBarcode)
+      const resp = await createSamples(this.boxBarcode)
       this.handleSentinelSampleCreationResponse(resp)
     },
+    // TODO: make this more javascripty? destructuring?
     handleSentinelSampleCreationResponse(resp) {
       const errored = resp.filter((obj) => Object.keys(obj).includes('errors'))
       if (errored.length > 0) {

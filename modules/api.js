@@ -1,4 +1,4 @@
-import { getPlatesFromBoxBarcode } from './labwhere'
+import { getPlatesFromBoxBarcodes } from './labwhere'
 import { createPlatesFromBarcodes } from './lighthouse_service'
 
 // Main API handling of requests:
@@ -20,8 +20,8 @@ import { createPlatesFromBarcodes } from './lighthouse_service'
 //   }
 // ]
 
-const handleApiCall = async (boxBarcode) => {
-  const platesForBoxBarcode = await getPlatesFromBoxBarcode(boxBarcode)
+const createSamples = async (boxBarcode) => {
+  const platesForBoxBarcode = await getPlatesFromBoxBarcodes([boxBarcode])
 
   if (platesForBoxBarcode.length === 0) {
     return [
@@ -38,4 +38,4 @@ const handleApiCall = async (boxBarcode) => {
   return response
 }
 
-export { handleApiCall }
+export { createSamples }

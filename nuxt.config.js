@@ -86,5 +86,10 @@ export default {
     labwhereBaseURL: process.env.LABWHERE_BASE_URL || 'http://labwhere',
     sequencescapeBaseURL:
       process.env.SEQUENCESCAPE_BASE_URL || 'http://sequencescape'
+  },
+  publicRuntimeConfig: {
+    asynchronous: true,
+    projectId: process.env.PROJECT_ID,
+    studyId: process.env.STUDY_ID
   }
 }

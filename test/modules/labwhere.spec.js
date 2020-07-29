@@ -1,15 +1,14 @@
 import axios from 'axios'
 import PlatesJson from '../data/labwhere_plates'
-import { labwhereRequestURL, getPlatesFromBoxBarcode } from '@/modules/labwhere'
-import config from '@/nuxt.config'
+import { getPlatesFromBoxBarcodes, makeBoxBarcodesParam } from '@/modules/labwhere'
 
 describe('Labwhere', () => {
-  describe('#getPlatesFromBoxBarcode', () => {
-    let labwareBarcodes, boxBarcode, mock, response
+  describe('#getPlatesFromBoxBarcodes', () => {
+    let labwareBarcodes, boxBarcodes, mock, response
 
     beforeEach(() => {
       mock = jest.spyOn(axios, 'get')
-      boxBarcode = 'lw-ogilvie-4'
+      boxBarcodes = ['lw-ogilvie-4', 'lw-ogilvie-5']
     })
 
     afterEach(() => {
@@ -20,21 +19,15 @@ describe('Labwhere', () => {
       response = { data: PlatesJson }
       mock.mockResolvedValue(response)
 
-      labwareBarcodes = await getPlatesFromBoxBarcode(boxBarcode)
+      labwareBarcodes = await getPlatesFromBoxBarcodes(boxBarcodes)
       expect(labwareBarcodes).toEqual(['AB123', 'CD456'])
-    })
-
-    it('labwhere request', () => {
-      expect(labwhereRequestURL).toEqual(
-        config.privateRuntimeConfig.labwhereBaseURL
-      )
     })
 
     it('when there is an error', async () => {
       mock.mockImplementationOnce(() =>
         Promise.reject(new Error('There was an error'))
       )
-      labwareBarcodes = await getPlatesFromBoxBarcode(boxBarcode)
+      labwareBarcodes = await getPlatesFromBoxBarcodes(boxBarcodes)
       expect(labwareBarcodes).toEqual([])
     })
 
@@ -43,14 +36,19 @@ describe('Labwhere', () => {
       mock.mockImplementationOnce(() =>
         Promise.reject(new Error('There was an error'))
       )
-      labwareBarcodes = await getPlatesFromBoxBarcode('dodgybarcode')
+      labwareBarcodes = await getPlatesFromBoxBarcodes('dodgybarcode')
       expect(labwareBarcodes).toEqual([])
     })
 
     it('when the box has no plates', async () => {
       mock.mockResolvedValue({ data: [] })
-      labwareBarcodes = await getPlatesFromBoxBarcode(boxBarcode)
+      labwareBarcodes = await getPlatesFromBoxBarcodes(boxBarcodes)
       expect(labwareBarcodes).toEqual([])
     })
+  })
+
+  describe('#makeBoxBarcodesParam', () => {
+    const output = makeBoxBarcodesParam(['lw-ogilvie-4', 'lw-ogilvie-5'])
+    expect(output).toEqual('lw-ogilvie-4,lw-ogilvie-5')
   })
 })
