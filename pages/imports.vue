@@ -15,7 +15,7 @@
       id="imports-table"
       show-empty
       responsive
-      :items="getItemsProvider"
+      :items="items"
       :fields="fields"
       :sort-by.sync="sortBy"
       :sort-desc.sync="sortDesc"
@@ -29,6 +29,12 @@
         </b-form-group>
       </template>
     </b-table>
+    <b-pagination
+      v-model="currentPage"
+      :total-rows="rows"
+      :per-page="perPage"
+      aria-table="imports-table"
+    ></b-pagination>
   </b-container>
 </template>
 
@@ -50,7 +56,11 @@ export default {
       perPage: 10,
       currentPage: 1,
       showDismissibleAlert: false,
-      alertData: { variant: '', message: '' }
+      alertData: { variant: '', message: '' },
+      items: [],
+  computed: {
+    rows() {
+      return this.items.length
     }
   },
   methods: {
@@ -67,7 +77,13 @@ export default {
         this.showDismissibleAlert = true
         return []
       }
+    },
+    async provider() {
+      this.items = await this.getItemsProvider()
     }
+  },
+  created() {
+    this.provider()
   }
 }
 </script>

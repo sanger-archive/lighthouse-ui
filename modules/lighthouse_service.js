@@ -34,7 +34,7 @@ const createPlatesFromBarcodes = async (moduleOptions) => {
 const getImports = async () => {
   try {
     const response = await axios.get(
-      `${config.privateRuntimeConfig.lighthouseBaseURL}/imports`
+      `${config.privateRuntimeConfig.lighthouseBaseURL}/imports?max_results=10000`
     )
     return {
       success: true,
