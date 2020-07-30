@@ -23,9 +23,7 @@ describe('sentinel cherrypick', () => {
   })
 
   it('is a Vue instance', () => {
-    expect(
-      wrapper.findComponent(SentinelCherrypick).exists()
-    ).toBeTruthy()
+    expect(wrapper.findComponent(SentinelCherrypick).exists()).toBeTruthy()
   })
 
   it('has barcodes', () => {
@@ -79,17 +77,23 @@ describe('sentinel cherrypick', () => {
 
   describe('#parseBoxBarcodes', () => {
     it('splits on whitespace', () => {
-      const output = wrapper.vm.parseBoxBarcodes('lw-ogilvie-4\nlw-ogilvie-5\nlw-ogilvie-6')
+      const output = wrapper.vm.parseBoxBarcodes(
+        'lw-ogilvie-4\nlw-ogilvie-5\nlw-ogilvie-6'
+      )
       expect(output).toEqual(['lw-ogilvie-4', 'lw-ogilvie-5', 'lw-ogilvie-6'])
     })
 
     it('removes duplicates', () => {
-      const output = wrapper.vm.parseBoxBarcodes('lw-ogilvie-4\nlw-ogilvie-4\nlw-ogilvie-6')
+      const output = wrapper.vm.parseBoxBarcodes(
+        'lw-ogilvie-4\nlw-ogilvie-4\nlw-ogilvie-6'
+      )
       expect(output).toEqual(['lw-ogilvie-4', 'lw-ogilvie-6'])
     })
 
     it('trims whitespace', () => {
-      const output = wrapper.vm.parseBoxBarcodes(' lw-ogilvie-4 \nlw-ogilvie-5  \n lw-ogilvie-6  ')
+      const output = wrapper.vm.parseBoxBarcodes(
+        ' lw-ogilvie-4 \nlw-ogilvie-5  \n lw-ogilvie-6  '
+      )
       expect(output).toEqual(['lw-ogilvie-4', 'lw-ogilvie-5', 'lw-ogilvie-6'])
     })
   })

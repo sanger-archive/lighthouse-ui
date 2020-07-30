@@ -31,4 +31,21 @@ const createPlatesFromBarcodes = async (moduleOptions) => {
   return responses
 }
 
-export { createPlatesFromBarcodes }
+const getImports = async () => {
+  try {
+    const response = await axios.get(
+      `${config.privateRuntimeConfig.lighthouseBaseURL}/imports`
+    )
+    return {
+      success: true,
+      data: response.data
+    }
+  } catch (error) {
+    return {
+      success: false,
+      error
+    }
+  }
+}
+
+export { createPlatesFromBarcodes, getImports }
