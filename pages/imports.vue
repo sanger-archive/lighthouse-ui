@@ -41,10 +41,12 @@
       :per-page="perPage"
       :current-page="currentPage"
     >
-      <template v-slot:cell(selected)="row">
-        <b-form-group>
-          <input v-model="row.item.selected" type="checkbox" />
-        </b-form-group>
+      <template v-slot:cell(errors)="row">
+        <ul>
+          <li v-for="error in row.item.errors" :key="error">
+            {{ error }}
+          </li>
+        </ul>
       </template>
     </b-table>
     <b-pagination
