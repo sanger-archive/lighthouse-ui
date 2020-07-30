@@ -65,7 +65,16 @@ export default {
   data() {
     return {
       fields: [
-        { key: 'date', label: 'Date', sortable: true },
+        {
+          key: 'date',
+          label: 'Date',
+          sortable: true,
+          formatter: (value, key, item) => {
+            const d = new Date(value)
+            return d.toLocaleString()
+          },
+          filterByFormatted: true
+        },
         { key: 'centre_name', label: 'Centre', sortable: true },
         { key: 'csv_file_used', label: 'File', sortable: true },
         { key: 'number_of_records', label: 'Num of records', sortable: true },
