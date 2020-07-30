@@ -182,7 +182,7 @@ describe('lighthouse_service api', () => {
       mock.mockRestore()
     })
 
-    it('successfully', async () => {
+    it('returns data successfully', async () => {
       expected = { data: { items: [] } }
       mock.mockResolvedValue(expected)
       response = await Modules.getImports()
