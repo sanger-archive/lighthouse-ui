@@ -18,6 +18,7 @@ describe('Imports', () => {
         }
       }
     })
+    wrapper.vm.provider = jest.fn()
   })
 
   it('is a Vue instance', () => {
