@@ -20,7 +20,6 @@
       :sort-by.sync="sortBy"
       :sort-desc.sync="sortDesc"
       hover
-      selectable
       :per-page="perPage"
       :current-page="currentPage"
     >
