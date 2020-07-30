@@ -76,4 +76,31 @@ describe('Imports', () => {
       })
     })
   })
+
+  describe('table filtering', () => {
+    beforeEach(() => {
+      wrapper = mount(Imports, {
+        localVue,
+        data() {
+          return {
+            items: [
+              { centre_name: 'I should be hidden' },
+              { centre_name: 'pick me!' }
+            ]
+          }
+        }
+      })
+      wrapper.vm.provider = jest.fn()
+    })
+
+    it('filters based on entered search term', () => {
+      wrapper.vm.filter = 'me'
+
+      wrapper.vm.$nextTick(() => {
+        expect(wrapper.find('#imports-table').html()).toMatch(/pick me!/)
+        expect(wrapper.find('#imports-table').html()).not.toMatch(/I should be hidden/)
+      })
+    })
+
+  })
 })

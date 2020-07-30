@@ -10,7 +10,24 @@
     >
       {{ alertData.message }}
     </b-alert>
-
+    <br/>
+    <b-form-group label="Filter"
+                  label-cols-sm="1"
+                  label-align-sm="right"
+                  label-for="filterInput"
+                  class="mb-0">
+      <b-input-group>
+        <b-form-input v-model="filter"
+                      type="search"
+                      id="filterInput"
+                      placeholder="Type to Search">
+        </b-form-input>
+        <b-input-group-append>
+          <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
+        </b-input-group-append>
+      </b-input-group>
+    </b-form-group>
+    <br/>
     <b-table
       id="imports-table"
       show-empty
@@ -19,6 +36,7 @@
       :fields="fields"
       :sort-by.sync="sortBy"
       :sort-desc.sync="sortDesc"
+      :filter="filter"
       hover
       :per-page="perPage"
       :current-page="currentPage"
@@ -58,6 +76,9 @@ export default {
       showDismissibleAlert: false,
       alertData: { variant: '', message: '' },
       items: [],
+      filter: null
+    }
+  },
   computed: {
     rows() {
       return this.items.length
