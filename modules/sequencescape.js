@@ -5,7 +5,7 @@ const createPayloadForCherrypickBatch = (
   plateBarcodes,
   runtimeOptions = config.publicRuntimeConfig
 ) => {
-  const { asynchronous, studyId, projectId } = runtimeOptions
+  let { asynchronous, studyId, projectId } = runtimeOptions
   return {
     data: {
       type: 'pick_lists',
@@ -13,8 +13,8 @@ const createPayloadForCherrypickBatch = (
         asynchronous,
         labware_pick_attributes: plateBarcodes.map((plateBarcode) => ({
           source_labware_barcode: plateBarcode,
-          study_id: studyId,
-          project_id: projectId
+          study_id: parseInt(studyId),
+          project_id: parseInt(projectId)
         }))
       }
     }
