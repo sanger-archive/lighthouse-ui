@@ -23,9 +23,7 @@ describe('sentinel cherrypick', () => {
   })
 
   it('is a Vue instance', () => {
-    expect(
-      wrapper.findComponent(SentinelCherrypick).exists()
-    ).toBeTruthy()
+    expect(wrapper.findComponent(SentinelCherrypick).exists()).toBeTruthy()
   })
 
   it('has barcodes', () => {
@@ -79,17 +77,23 @@ describe('sentinel cherrypick', () => {
 
   describe('#parseBoxBarcodes', () => {
     it('splits on whitespace', () => {
-      const output = wrapper.vm.parseBoxBarcodes('lw-ogilvie-4\nlw-ogilvie-5\nlw-ogilvie-6')
+      const output = wrapper.vm.parseBoxBarcodes(
+        'lw-ogilvie-4\nlw-ogilvie-5\nlw-ogilvie-6'
+      )
       expect(output).toEqual(['lw-ogilvie-4', 'lw-ogilvie-5', 'lw-ogilvie-6'])
     })
 
     it('removes duplicates', () => {
-      const output = wrapper.vm.parseBoxBarcodes('lw-ogilvie-4\nlw-ogilvie-4\nlw-ogilvie-6')
+      const output = wrapper.vm.parseBoxBarcodes(
+        'lw-ogilvie-4\nlw-ogilvie-4\nlw-ogilvie-6'
+      )
       expect(output).toEqual(['lw-ogilvie-4', 'lw-ogilvie-6'])
     })
 
     it('trims whitespace', () => {
-      const output = wrapper.vm.parseBoxBarcodes(' lw-ogilvie-4 \nlw-ogilvie-5  \n lw-ogilvie-6  ')
+      const output = wrapper.vm.parseBoxBarcodes(
+        ' lw-ogilvie-4 \nlw-ogilvie-5  \n lw-ogilvie-6  '
+      )
       expect(output).toEqual(['lw-ogilvie-4', 'lw-ogilvie-5', 'lw-ogilvie-6'])
     })
   })
@@ -107,16 +111,16 @@ describe('sentinel cherrypick', () => {
     let response
 
     it('on success it populates the table', () => {
-      response = ['aBarcode1', 'aBarcode2']
+      response = { success: true, plateBarcodes: ['aBarcode1', 'aBarcode2'] }
       wrapper.vm.handleGetPlatesResponse(response)
 
       const expected = [
         {
-          plate_barcode: response[0],
+          plate_barcode: response.plateBarcodes[0],
           selected: true
         },
         {
-          plate_barcode: response[1],
+          plate_barcode: response.plateBarcodes[1],
           selected: true
         }
       ]
@@ -125,7 +129,7 @@ describe('sentinel cherrypick', () => {
     })
 
     it('on failure it shows an error message', () => {
-      response = []
+      response = { success: false, error: 'There was an error' }
 
       wrapper.vm.handleGetPlatesResponse(response)
       wrapper.vm.$nextTick(() => {
