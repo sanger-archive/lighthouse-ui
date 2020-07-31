@@ -4,11 +4,17 @@ import config from '@/nuxt.config'
 const getPlatesFromBoxBarcodes = async (boxBarcode) => {
   try {
     const url = `${config.privateRuntimeConfig.labwhereBaseURL}/labwares?location_barcodes=${boxBarcode}`
-    const plates = await axios.get(url)
+    const response = await axios.get(url)
 
-    return plates.data.map((plate) => plate.barcode)
+    const plateBarcodes = response.data.map((plate) => plate.barcode)
+
+    if (plateBarcodes.length) {
+      return { success: true, plateBarcodes }
+    } else {
+      return { success: false, error: 'The box has no plates' }
+    }
   } catch (error) {
-    return []
+    return { success: false, error }
   }
 }
 

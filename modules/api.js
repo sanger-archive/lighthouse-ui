@@ -23,7 +23,7 @@ import { createPlatesFromBarcodes } from './lighthouse_service'
 const createSamples = async (boxBarcode) => {
   const platesForBoxBarcode = await getPlatesFromBoxBarcodes(boxBarcode)
 
-  if (platesForBoxBarcode.length === 0) {
+  if (!platesForBoxBarcode.success) {
     return [
       {
         errors: [`Failed to get plate barcodes for box barcode: ${boxBarcode}`]
@@ -31,9 +31,7 @@ const createSamples = async (boxBarcode) => {
     ]
   }
 
-  const response = await createPlatesFromBarcodes({
-    plateBarcodes: platesForBoxBarcode
-  })
+  const response = await createPlatesFromBarcodes(platesForBoxBarcode)
 
   return response
 }

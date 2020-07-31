@@ -90,16 +90,16 @@ describe('lighthouse sentinel cherrypick', () => {
     let response
 
     it('on success it populates the table', () => {
-      response = ['aBarcode1', 'aBarcode2']
+      response = { success: true, plateBarcodes: ['aBarcode1', 'aBarcode2'] }
       wrapper.vm.handleGetPlatesResponse(response)
 
       const expected = [
         {
-          plate_barcode: response[0],
+          plate_barcode: response.plateBarcodes[0],
           selected: true
         },
         {
-          plate_barcode: response[1],
+          plate_barcode: response.plateBarcodes[1],
           selected: true
         }
       ]
@@ -108,7 +108,7 @@ describe('lighthouse sentinel cherrypick', () => {
     })
 
     it('on failure it shows an error message', () => {
-      response = []
+      response = { success: false, error: 'There was an error' }
 
       wrapper.vm.handleGetPlatesResponse(response)
       wrapper.vm.$nextTick(() => {
