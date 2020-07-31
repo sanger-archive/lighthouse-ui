@@ -102,6 +102,5 @@ describe('Imports', () => {
         expect(wrapper.find('#imports-table').html()).not.toMatch(/I should be hidden/)
       })
     })
-
   })
 })
