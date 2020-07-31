@@ -7,46 +7,51 @@ import {
 
 describe('Labwhere', () => {
   describe('#getPlatesFromBoxBarcodes', () => {
-    let labwareBarcodes, boxBarcodes, mock, response
+    let boxBarcodes, response, mockGet, mockResponse
 
     beforeEach(() => {
-      mock = jest.spyOn(axios, 'get')
+      mockGet = jest.spyOn(axios, 'get')
       boxBarcodes = ['lw-ogilvie-4', 'lw-ogilvie-5']
     })
 
     afterEach(() => {
-      mock.mockRestore()
+      mockGet.mockRestore()
     })
 
     it('successfully', async () => {
-      response = { data: PlatesJson }
-      mock.mockResolvedValue(response)
+      mockResponse = { data: PlatesJson }
+      mockGet.mockResolvedValue(mockResponse)
 
-      labwareBarcodes = await getPlatesFromBoxBarcodes(boxBarcodes)
-      expect(labwareBarcodes).toEqual(['AB123', 'CD456'])
+      response = await getPlatesFromBoxBarcodes(boxBarcodes)
+      expect(response.success).toBeTruthy()
+      expect(response.plateBarcodes).toEqual(['AB123', 'CD456'])
     })
 
     it('when there is an error', async () => {
-      mock.mockImplementationOnce(() =>
+      mockGet.mockImplementationOnce(() =>
         Promise.reject(new Error('There was an error'))
       )
-      labwareBarcodes = await getPlatesFromBoxBarcodes(boxBarcodes)
-      expect(labwareBarcodes).toEqual([])
+      response = await getPlatesFromBoxBarcodes(boxBarcodes)
+      expect(response.success).toBeFalsy()
+      expect(response.plateBarcodes).not.toBeDefined()
     })
 
     // This is the same as the above but worth adding for consistency
     it('when the box does not exist', async () => {
-      mock.mockImplementationOnce(() =>
+      mockGet.mockImplementationOnce(() =>
         Promise.reject(new Error('There was an error'))
       )
-      labwareBarcodes = await getPlatesFromBoxBarcodes('dodgybarcode')
-      expect(labwareBarcodes).toEqual([])
+      response = await getPlatesFromBoxBarcodes(['dodgybarcode'])
+      expect(response.success).toBeFalsy()
+      expect(response.plateBarcodes).not.toBeDefined()
+      expect(response.error).toEqual(new Error('There was an error'))
     })
 
     it('when the box has no plates', async () => {
-      mock.mockResolvedValue({ data: [] })
-      labwareBarcodes = await getPlatesFromBoxBarcodes(boxBarcodes)
-      expect(labwareBarcodes).toEqual([])
+      mockGet.mockResolvedValue({ data: [] })
+      response = await getPlatesFromBoxBarcodes(boxBarcodes)
+      expect(response.success).toBeFalsy()
+      expect(response.error).toEqual('The box has no plates')
     })
   })
 

@@ -6,15 +6,18 @@ describe('api', () => {
   describe('#createSamples ', () => {
     beforeEach(() => {
       boxBarcode = 'aBoxBarcode'
-      plateBarcodes = ['aBarcode1', 'aBarcode2']
+      labwhereResponse = {
+        success: true,
+        plateBarcodes: ['aBarcode1', 'aBarcode2']
+      }
     })
 
-    let boxBarcode, plateBarcodes
+    let boxBarcode, labwhereResponse
 
     it('both getPlatesFromBoxBarcodes and createPlatesFromBarcodes are successful', async () => {
       labwhereModule.getPlatesFromBoxBarcodes = jest
         .fn()
-        .mockReturnValue(plateBarcodes)
+        .mockReturnValue(labwhereResponse)
 
       const expected = [
         {
@@ -43,15 +46,15 @@ describe('api', () => {
       expect(labwhereModule.getPlatesFromBoxBarcodes).toBeCalledWith([
         boxBarcode
       ])
-      expect(lighthouseModule.createPlatesFromBarcodes).toBeCalledWith({
-        plateBarcodes
-      })
+      expect(lighthouseModule.createPlatesFromBarcodes).toBeCalledWith(
+        labwhereResponse
+      )
     })
 
     it('getPlatesFromBoxBarcodes is successful, createPlatesFromBarcodes all fail', async () => {
       labwhereModule.getPlatesFromBoxBarcodes = jest
         .fn()
-        .mockReturnValue(plateBarcodes)
+        .mockReturnValue(labwhereResponse)
 
       const expected = [
         {
@@ -72,15 +75,15 @@ describe('api', () => {
       expect(labwhereModule.getPlatesFromBoxBarcodes).toBeCalledWith([
         boxBarcode
       ])
-      expect(lighthouseModule.createPlatesFromBarcodes).toBeCalledWith({
-        plateBarcodes
-      })
+      expect(lighthouseModule.createPlatesFromBarcodes).toBeCalledWith(
+        labwhereResponse
+      )
     })
 
     it('getPlatesFromBoxBarcodes is successful, createPlatesFromBarcodes partially fail', async () => {
       labwhereModule.getPlatesFromBoxBarcodes = jest
         .fn()
-        .mockReturnValue(plateBarcodes)
+        .mockReturnValue(labwhereResponse)
 
       const expected = [
         {
@@ -105,9 +108,9 @@ describe('api', () => {
       expect(labwhereModule.getPlatesFromBoxBarcodes).toBeCalledWith([
         boxBarcode
       ])
-      expect(lighthouseModule.createPlatesFromBarcodes).toBeCalledWith({
-        plateBarcodes
-      })
+      expect(lighthouseModule.createPlatesFromBarcodes).toBeCalledWith(
+        labwhereResponse
+      )
     })
 
     it('getPlatesFromBoxBarcodes fails', async () => {

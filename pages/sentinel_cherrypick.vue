@@ -131,14 +131,14 @@ export default {
       this.handleGetPlatesResponse(resp)
     },
     handleGetPlatesResponse(resp) {
-      if (resp.length === 0) {
+      if (!resp.success) {
         this.pickListResponse = {
           alertMessage: 'Could not retrieve plates from LabWhere',
           variant: 'danger'
         }
         this.showDismissibleAlert = true
       } else {
-        this.items = resp.map((barcode) => ({
+        this.items = resp.plateBarcodes.map((barcode) => ({
           plate_barcode: barcode,
           selected: true
         }))

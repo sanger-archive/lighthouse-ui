@@ -13,8 +13,8 @@ const createPayloadForCherrypickBatch = (
         asynchronous,
         labware_pick_attributes: plateBarcodes.map((plateBarcode) => ({
           source_labware_barcode: plateBarcode,
-          study_id: studyId,
-          project_id: projectId
+          study_id: parseInt(studyId),
+          project_id: parseInt(projectId)
         }))
       }
     }
