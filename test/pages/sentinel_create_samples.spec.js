@@ -1,16 +1,16 @@
 import BootstrapVue from 'bootstrap-vue'
 import { mount, createLocalVue } from '@vue/test-utils'
-import LighthouseSentinelBatch from '@/pages/lighthouse_sentinel_batch'
+import SentinelCreateSamples from '@/pages/sentinel_create_samples'
 import * as apiModule from '@/modules/api'
 
 const localVue = createLocalVue()
 localVue.use(BootstrapVue)
 
-describe('lighthouse sentinel batch', () => {
+describe('lighthouse sentinel cherrypick', () => {
   let wrapper
 
   beforeEach(() => {
-    wrapper = mount(LighthouseSentinelBatch, {
+    wrapper = mount(SentinelCreateSamples, {
       localVue,
       data() {
         return {
@@ -22,7 +22,7 @@ describe('lighthouse sentinel batch', () => {
   })
 
   it('is a Vue instance', () => {
-    expect(wrapper.findComponent(LighthouseSentinelBatch).exists()).toBeTruthy()
+    expect(wrapper.findComponent(SentinelCreateSamples).exists()).toBeTruthy()
   })
 
   it('has a barcode', () => {

@@ -1,17 +1,17 @@
 import BootstrapVue from 'bootstrap-vue'
 import { mount, createLocalVue } from '@vue/test-utils'
-import LighthouseSentinelCherrypick from '@/pages/lighthouse_sentinel_cherrypick'
+import SentinelCherrypick from '@/pages/sentinel_cherrypick'
 import * as labwhereModule from '@/modules/labwhere'
 import * as sequencescapeModule from '@/modules/sequencescape'
 
 const localVue = createLocalVue()
 localVue.use(BootstrapVue)
 
-describe('lighthouse sentinel cherrypick', () => {
+describe('sentinel cherrypick', () => {
   let wrapper
 
   beforeEach(() => {
-    wrapper = mount(LighthouseSentinelCherrypick, {
+    wrapper = mount(SentinelCherrypick, {
       localVue,
       data() {
         return {
@@ -23,9 +23,7 @@ describe('lighthouse sentinel cherrypick', () => {
   })
 
   it('is a Vue instance', () => {
-    expect(
-      wrapper.findComponent(LighthouseSentinelCherrypick).exists()
-    ).toBeTruthy()
+    expect(wrapper.findComponent(SentinelCherrypick).exists()).toBeTruthy()
   })
 
   it('has barcodes', () => {
@@ -74,6 +72,29 @@ describe('lighthouse sentinel cherrypick', () => {
     it('it clears boxBarcode', () => {
       wrapper.vm.cancelSearch()
       expect(wrapper.vm.boxBarcodes).toEqual('')
+    })
+  })
+
+  describe('#parseBoxBarcodes', () => {
+    it('splits on whitespace', () => {
+      const output = wrapper.vm.parseBoxBarcodes(
+        'lw-ogilvie-4\nlw-ogilvie-5\nlw-ogilvie-6'
+      )
+      expect(output).toEqual(['lw-ogilvie-4', 'lw-ogilvie-5', 'lw-ogilvie-6'])
+    })
+
+    it('removes duplicates', () => {
+      const output = wrapper.vm.parseBoxBarcodes(
+        'lw-ogilvie-4\nlw-ogilvie-4\nlw-ogilvie-6'
+      )
+      expect(output).toEqual(['lw-ogilvie-4', 'lw-ogilvie-6'])
+    })
+
+    it('trims whitespace', () => {
+      const output = wrapper.vm.parseBoxBarcodes(
+        ' lw-ogilvie-4 \nlw-ogilvie-5  \n lw-ogilvie-6  '
+      )
+      expect(output).toEqual(['lw-ogilvie-4', 'lw-ogilvie-5', 'lw-ogilvie-6'])
     })
   })
 

@@ -1,14 +1,17 @@
 import axios from 'axios'
 import PlatesJson from '../data/labwhere_plates'
-import { getPlatesFromBoxBarcodes } from '@/modules/labwhere'
+import {
+  getPlatesFromBoxBarcodes,
+  makeBoxBarcodesParam
+} from '@/modules/labwhere'
 
 describe('Labwhere', () => {
   describe('#getPlatesFromBoxBarcodes', () => {
-    let boxBarcode, response, mockGet, mockResponse
+    let boxBarcodes, response, mockGet, mockResponse
 
     beforeEach(() => {
       mockGet = jest.spyOn(axios, 'get')
-      boxBarcode = 'lw-ogilvie-4'
+      boxBarcodes = ['lw-ogilvie-4', 'lw-ogilvie-5']
     })
 
     afterEach(() => {
@@ -19,7 +22,7 @@ describe('Labwhere', () => {
       mockResponse = { data: PlatesJson }
       mockGet.mockResolvedValue(mockResponse)
 
-      response = await getPlatesFromBoxBarcodes(boxBarcode)
+      response = await getPlatesFromBoxBarcodes(boxBarcodes)
       expect(response.success).toBeTruthy()
       expect(response.plateBarcodes).toEqual(['AB123', 'CD456'])
     })
@@ -28,7 +31,7 @@ describe('Labwhere', () => {
       mockGet.mockImplementationOnce(() =>
         Promise.reject(new Error('There was an error'))
       )
-      response = await getPlatesFromBoxBarcodes(boxBarcode)
+      response = await getPlatesFromBoxBarcodes(boxBarcodes)
       expect(response.success).toBeFalsy()
       expect(response.plateBarcodes).not.toBeDefined()
     })
@@ -38,7 +41,7 @@ describe('Labwhere', () => {
       mockGet.mockImplementationOnce(() =>
         Promise.reject(new Error('There was an error'))
       )
-      response = await getPlatesFromBoxBarcodes('dodgybarcode')
+      response = await getPlatesFromBoxBarcodes(['dodgybarcode'])
       expect(response.success).toBeFalsy()
       expect(response.plateBarcodes).not.toBeDefined()
       expect(response.error).toEqual(new Error('There was an error'))
@@ -46,9 +49,14 @@ describe('Labwhere', () => {
 
     it('when the box has no plates', async () => {
       mockGet.mockResolvedValue({ data: [] })
-      response = await getPlatesFromBoxBarcodes(boxBarcode)
+      response = await getPlatesFromBoxBarcodes(boxBarcodes)
       expect(response.success).toBeFalsy()
       expect(response.error).toEqual('The box has no plates')
     })
+  })
+
+  describe('#makeBoxBarcodesParam', () => {
+    const output = makeBoxBarcodesParam(['lw-ogilvie-4', 'lw-ogilvie-5'])
+    expect(output).toEqual('lw-ogilvie-4,lw-ogilvie-5')
   })
 })
