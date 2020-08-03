@@ -23,7 +23,7 @@ describe('Index', () => {
 
   it('has a navbar', () => {
     expect(wrapper.findComponent({ ref: 'navbar' }).text()).toMatch(
-      /Lighthouse {2}Reports Sentinel Sample Creation/
+      /Lighthouse {2}Reports Sentinel Sample Creation Sentinel Cherrypick Imports/
     )
   })
 })

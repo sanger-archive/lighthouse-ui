@@ -14,6 +14,7 @@
           <b-nav-item href="sentinel_cherrypick"
             >Sentinel Cherrypick</b-nav-item
           >
+          <b-nav-item href="imports">Imports</b-nav-item>
         </b-navbar-nav>
       </b-navbar>
     </div>
