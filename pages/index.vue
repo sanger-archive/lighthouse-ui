@@ -8,6 +8,7 @@
         </p>
         <p>
           <b-button
+            id="createReport"
             variant="success"
             :disabled="isCreating"
             @click="createReport"
@@ -75,7 +76,10 @@ export default {
   methods: {
     async reportsProvider(ctx) {
       try {
-        const data = await this.$axios.$get(`reports`)
+        const data = await this.$axios.$get(
+          // TODO: we need to use config. But cant get it loaded
+          `${process.env.LIGHTHOUSE_BASE_URL}/reports`
+        )
         return data.reports
       } catch (error) {
         return []
@@ -84,7 +88,10 @@ export default {
     async createReport() {
       try {
         this.isCreating = true
-        await this.$axios.$post(`reports/new`)
+        await this.$axios.$post(
+          // TODO: we need to use config. But cant get it loaded
+          `${process.env.LIGHTHOUSE_BASE_URL}/reports/new`
+        )
         this.refreshTable()
         this.isCreated = true
         this.isCreating = false

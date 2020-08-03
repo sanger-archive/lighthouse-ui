@@ -1,5 +1,22 @@
 <template>
   <div>
+    <div>
+      <b-navbar ref="navbar" toggleable="lg" type="dark" variant="info">
+        <b-navbar-brand href="/">Lighthouse</b-navbar-brand>
+
+        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+
+        <b-navbar-nav class="ml-auto">
+          <b-nav-item href="/">Reports</b-nav-item>
+          <b-nav-item href="sentinel_create_samples"
+            >Sentinel Sample Creation</b-nav-item
+          >
+          <b-nav-item href="sentinel_cherrypick"
+            >Sentinel Cherrypick</b-nav-item
+          >
+        </b-navbar-nav>
+      </b-navbar>
+    </div>
     <nuxt />
   </div>
 </template>

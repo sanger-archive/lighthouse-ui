@@ -1,6 +1,6 @@
-# lighthouse_reports
+# lighthouse-ui
 
-> Basic website for Lighthouse reports
+> Basic website for Lighthouse
 
 ## Build Setup
 
