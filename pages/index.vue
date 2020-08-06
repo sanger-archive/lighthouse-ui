@@ -83,7 +83,7 @@ export default {
         { key: 'filename', sortable: true },
         'size',
         { key: 'download_link', label: '' },
-        { key: 'selected', label: 'delete' }
+        { key: 'selected', label: 'Delete' }
       ],
       status: statuses.Idle,
       alertMessage: '',
