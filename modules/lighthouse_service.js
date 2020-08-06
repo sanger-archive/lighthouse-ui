@@ -48,4 +48,25 @@ const getImports = async () => {
   }
 }
 
-export { createPlatesFromBarcodes, getImports }
+const deleteReports = async (filenames) => {
+  try {
+    await axios.post(
+      `${config.privateRuntimeConfig.lighthouseBaseURL}/delete_reports`,
+      {
+        data: {
+          filenames
+        }
+      }
+    )
+    return {
+      success: true
+    }
+  } catch (error) {
+    return {
+      success: false,
+      error
+    }
+  }
+}
+
+export { createPlatesFromBarcodes, getImports, deleteReports }

@@ -1,9 +1,6 @@
 import axios from 'axios'
 import PlatesJson from '../data/labwhere_plates'
-import {
-  getPlatesFromBoxBarcodes,
-  makeBoxBarcodesParam
-} from '@/modules/labwhere'
+import { getPlatesFromBoxBarcodes } from '@/modules/labwhere'
 
 describe('Labwhere', () => {
   describe('#getPlatesFromBoxBarcodes', () => {
@@ -53,10 +50,5 @@ describe('Labwhere', () => {
       expect(response.success).toBeFalsy()
       expect(response.error).toEqual('The box has no plates')
     })
-  })
-
-  describe('#makeBoxBarcodesParam', () => {
-    const output = makeBoxBarcodesParam(['lw-ogilvie-4', 'lw-ogilvie-5'])
-    expect(output).toEqual('lw-ogilvie-4,lw-ogilvie-5')
   })
 })

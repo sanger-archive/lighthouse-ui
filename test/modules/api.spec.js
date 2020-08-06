@@ -43,9 +43,7 @@ describe('api', () => {
       const result = await createSamples(boxBarcode)
 
       expect(result).toEqual(expected)
-      expect(labwhereModule.getPlatesFromBoxBarcodes).toBeCalledWith([
-        boxBarcode
-      ])
+      expect(labwhereModule.getPlatesFromBoxBarcodes).toBeCalledWith(boxBarcode)
       expect(lighthouseModule.createPlatesFromBarcodes).toBeCalledWith(
         labwhereResponse
       )
@@ -72,9 +70,7 @@ describe('api', () => {
       const result = await createSamples(boxBarcode)
 
       expect(result).toEqual(expected)
-      expect(labwhereModule.getPlatesFromBoxBarcodes).toBeCalledWith([
-        boxBarcode
-      ])
+      expect(labwhereModule.getPlatesFromBoxBarcodes).toBeCalledWith(boxBarcode)
       expect(lighthouseModule.createPlatesFromBarcodes).toBeCalledWith(
         labwhereResponse
       )
@@ -105,9 +101,7 @@ describe('api', () => {
       const result = await createSamples(boxBarcode)
 
       expect(result).toEqual(expected)
-      expect(labwhereModule.getPlatesFromBoxBarcodes).toBeCalledWith([
-        boxBarcode
-      ])
+      expect(labwhereModule.getPlatesFromBoxBarcodes).toBeCalledWith(boxBarcode)
       expect(lighthouseModule.createPlatesFromBarcodes).toBeCalledWith(
         labwhereResponse
       )
@@ -127,9 +121,7 @@ describe('api', () => {
       const result = await createSamples(boxBarcode)
 
       expect(result).toEqual(expected)
-      expect(labwhereModule.getPlatesFromBoxBarcodes).toBeCalledWith([
-        boxBarcode
-      ])
+      expect(labwhereModule.getPlatesFromBoxBarcodes).toBeCalledWith(boxBarcode)
       expect(lighthouseModule.createPlatesFromBarcodes).not.toBeCalled()
     })
   })

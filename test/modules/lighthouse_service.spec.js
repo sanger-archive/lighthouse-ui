@@ -197,4 +197,39 @@ describe('lighthouse_service api', () => {
       expect(response.error).toEqual(new Error('There was an error'))
     })
   })
+
+  describe('#deleteReports', () => {
+    let mock, response, expected, filenames
+
+    beforeEach(() => {
+      filenames = [
+        '200716_1345_positives_with_locations.xlsx',
+        '200716_1618_positives_with_locations.xlsx',
+        '200716_1640_positives_with_locations.xlsx',
+        '200716_1641_positives_with_locations.xlsx',
+        '200716_1642_positives_with_locations.xlsx'
+      ]
+      mock = jest.spyOn(axios, 'post')
+    })
+
+    afterEach(() => {
+      mock.mockRestore()
+    })
+
+    it('when it is successful', async () => {
+      expected = { data: {} }
+      mock.mockResolvedValue(expected)
+      response = await Modules.deleteReports(filenames)
+      expect(response.success).toBeTruthy()
+    })
+
+    it('when there is an error', async () => {
+      mock.mockImplementationOnce(() =>
+        Promise.reject(new Error('There was an error'))
+      )
+      response = await Modules.deleteReports()
+      expect(response.success).toBeFalsy()
+      expect(response.error).toEqual(new Error('There was an error'))
+    })
+  })
 })
