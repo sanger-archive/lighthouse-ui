@@ -23,9 +23,8 @@ localVue.use(BootstrapVue)
 describe('Index', () => {
   let wrapper
 
-  beforeEach(() => {
-    $axios.$get = jest.fn()
-    $axios.$post = jest.fn()
+  afterEach(() => {
+    jest.resetAllMocks()
   })
 
   it('is a Vue instance', () => {
@@ -145,13 +144,14 @@ describe('Index', () => {
   // TODO: Again would be better with an integration test
   // I also think this the complexity of this test is a bit of a code smell. Defo needs a refactor
   describe('#deleteReports', () => {
-    let rows, reportFilenames
+    let rows, reportFilenames, lessReportsJson
 
     beforeEach(() => {
       axios.post = jest.fn()
       reportFilenames = ReportsJson.reports
         .map((report) => report.filename)
         .slice(0, 3)
+      lessReportsJson = { reports: ReportsJson.reports.slice(3, 5) }
       $axios.$get.mockResolvedValue(ReportsJson)
     })
 
@@ -167,12 +167,13 @@ describe('Index', () => {
           .find('.selected input[type="checkbox"]')
           .setChecked(true)
       })
-      expect(wrapper.vm.reportsToDelete.length).toEqual(3)
       expect(wrapper.vm.reportsToDelete).toEqual(reportFilenames)
+      $axios.$get.mockResolvedValue(lessReportsJson)
       const button = wrapper.find('#deleteReports')
       await button.trigger('click')
       await flushPromises()
       expect(wrapper.text()).toMatch(/Reports successfully deleted/)
+      expect(wrapper.find('tbody').findAll('tr').length).toEqual(2)
     })
 
     it('when the request fails', async () => {
