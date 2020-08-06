@@ -141,8 +141,8 @@ export default {
           // TODO: we need to use config. But cant get it loaded
           `${process.env.LIGHTHOUSE_BASE_URL}/reports/new`
         )
-        this.refreshTable()
         this.setStatus('Success', 'Report successfully created')
+        this.refreshTable()
       } catch (error) {
         this.setStatus('Error', 'There was an error creating the report')
         return []
@@ -154,13 +154,14 @@ export default {
       const response = await deleteReports(this.reportsToDelete)
 
       if (response.success) {
-        this.refreshTable()
         this.setStatus('Success', 'Reports successfully deleted')
+        this.refreshTable()
       } else {
         this.setStatus('Error', response.error)
       }
     },
     refreshTable() {
+      console.log('refreshing table ...')
       this.$refs.reports_table.refresh()
     },
     async provider() {

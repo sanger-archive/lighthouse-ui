@@ -56,6 +56,11 @@ const deleteReports = async (filenames) => {
         data: {
           filenames
         }
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
       }
     )
     return {
