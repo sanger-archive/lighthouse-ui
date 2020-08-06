@@ -161,7 +161,7 @@ export default {
       }
     },
     refreshTable() {
-      console.log('refreshing table ...')
+      this.provider()
       this.$refs.reports_table.refresh()
     },
     async provider() {
