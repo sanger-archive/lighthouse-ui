@@ -170,4 +170,31 @@ describe('lighthouse_service api', () => {
       )
     })
   })
+
+  describe('#getImports', () => {
+    let mock, response, expected
+
+    beforeEach(() => {
+      mock = jest.spyOn(axios, 'get')
+    })
+
+    afterEach(() => {
+      mock.mockRestore()
+    })
+
+    it('returns data successfully', async () => {
+      expected = { data: { items: [] } }
+      mock.mockResolvedValue(expected)
+      response = await Modules.getImports()
+      expect(response.data).toEqual(expected.data)
+    })
+
+    it('when there is an error', async () => {
+      mock.mockImplementationOnce(() =>
+        Promise.reject(new Error('There was an error'))
+      )
+      response = await Modules.getImports()
+      expect(response.error).toEqual(new Error('There was an error'))
+    })
+  })
 })
