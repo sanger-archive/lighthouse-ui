@@ -1,7 +1,7 @@
 import BootstrapVue from 'bootstrap-vue'
 import { mount, createLocalVue } from '@vue/test-utils'
 import Imports from '@/pages/imports'
-import * as lighthouseServiceModule from '@/modules/lighthouse_service'
+import lighthouse from '@/modules/lighthouse_service'
 
 const localVue = createLocalVue()
 localVue.use(BootstrapVue)
@@ -30,14 +30,14 @@ describe('Imports', () => {
       const items = [{ test: 1 }]
       const expectedResponse = { success: true, data: { _items: items } }
 
-      lighthouseServiceModule.getImports = jest.fn()
+      lighthouse.getImports = jest.fn()
       wrapper.vm.handleItemsResponse = jest.fn()
 
-      lighthouseServiceModule.getImports.mockReturnValue(expectedResponse)
+      lighthouse.getImports.mockReturnValue(expectedResponse)
 
       await wrapper.vm.getItemsProvider()
 
-      expect(lighthouseServiceModule.getImports).toBeCalled()
+      expect(lighthouse.getImports).toBeCalled()
       expect(wrapper.vm.handleItemsResponse).toBeCalledWith(expectedResponse)
     })
   })

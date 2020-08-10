@@ -1,21 +1,14 @@
 import BootstrapVue from 'bootstrap-vue'
 import { mount, createLocalVue } from '@vue/test-utils'
 import flushPromises from 'flush-promises'
-import axios from 'axios'
 import ReportsJson from '../data/reports'
 import Index from '@/pages/index.vue'
 import statuses from '@/modules/statuses'
+import lighthouse from '@/modules/lighthouse_service'
 
-const $axios = {
-  $get: jest.fn(),
-  $post: jest.fn()
-}
-
-const process = {
-  env: {
-    LIGHTHOUSE_BASE_URL: 'lighthouse'
-  }
-}
+// Mock the whole module. Returning jest.fn() allows you to mock methods here
+// jest.mock('@/modules/lighthouse_service', () => jest.fn())
+jest.mock('@/modules/lighthouse_service')
 
 const localVue = createLocalVue()
 localVue.use(BootstrapVue)
@@ -24,10 +17,14 @@ describe('Index', () => {
   let wrapper
 
   afterEach(() => {
-    jest.resetAllMocks()
+    jest.clearAllMocks()
   })
 
   it('is a Vue instance', () => {
+    lighthouse.getReports.mockResolvedValue({
+      success: true,
+      reports: ReportsJson.reports
+    })
     wrapper = mount(Index, { localVue })
     expect(wrapper.findComponent(Index).exists()).toBeTruthy()
   })
@@ -36,6 +33,10 @@ describe('Index', () => {
     let index
 
     it('default should be idle', () => {
+      lighthouse.getReports.mockResolvedValue({
+        success: true,
+        reports: ReportsJson.reports
+      })
       index = mount(Index, { localVue }).vm
       expect(index.isIdle).toBeTruthy()
     })
@@ -87,13 +88,12 @@ describe('Index', () => {
   })
 
   describe('#reportsProvider', () => {
-    beforeEach(() => {
-      wrapper = mount(Index, { localVue, mocks: { $axios, process } })
-    })
-
     it('when the request is successful', async () => {
-      $axios.$get.mockResolvedValue(ReportsJson)
-      wrapper = mount(Index, { localVue, mocks: { $axios, process } })
+      lighthouse.getReports.mockResolvedValue({
+        success: true,
+        reports: ReportsJson.reports
+      })
+      wrapper = mount(Index, { localVue })
       await flushPromises()
       expect(wrapper.find('tbody').findAll('tr').length).toEqual(
         ReportsJson.reports.length
@@ -101,10 +101,11 @@ describe('Index', () => {
     })
 
     it('when the request fails', async () => {
-      $axios.$get.mockImplementationOnce(() =>
-        Promise.reject(new Error('There was an error'))
-      )
-      wrapper = mount(Index, { localVue, mocks: { $axios, process } })
+      lighthouse.getReports.mockReturnValue({
+        success: false,
+        error: 'There was an error'
+      })
+      wrapper = mount(Index, { localVue })
       await flushPromises()
       expect(wrapper.find('tbody').findAll('tr').length).toEqual(0)
     })
@@ -112,9 +113,15 @@ describe('Index', () => {
 
   describe('#createReport', () => {
     it('when the request is successful', async () => {
-      $axios.$post.mockResolvedValue('success')
-      $axios.$get.mockResolvedValue(ReportsJson)
-      const wrapper = mount(Index, { localVue, mocks: { $axios, process } })
+      lighthouse.createReport.mockResolvedValue({
+        success: true,
+        reports: [ReportsJson.reports[0]]
+      })
+      lighthouse.getReports.mockResolvedValue({
+        success: true,
+        reports: ReportsJson.reports
+      })
+      const wrapper = mount(Index, { localVue })
       const button = wrapper.find('#createReport')
       await button.trigger('click')
       await flushPromises()
@@ -127,14 +134,14 @@ describe('Index', () => {
     })
 
     it('when the request fails', async () => {
-      $axios.$post.mockImplementationOnce(() =>
-        Promise.reject(new Error('There was an error'))
-      )
-      const wrapper = mount(Index, { localVue, mocks: { $axios, process } })
+      lighthouse.createReport.mockReturnValue({
+        success: false,
+        error: 'There was an error'
+      })
+      const wrapper = mount(Index, { localVue })
       const button = wrapper.find('#createReport')
       await button.trigger('click')
       await flushPromises()
-      expect(wrapper.find('tbody').findAll('tr').length).toEqual(0)
       expect(wrapper.find('.alert').text()).toMatch(
         'There was an error creating the report'
       )
@@ -147,17 +154,19 @@ describe('Index', () => {
     let rows, reportFilenames, lessReportsJson
 
     beforeEach(() => {
-      axios.post = jest.fn()
       reportFilenames = ReportsJson.reports
         .map((report) => report.filename)
         .slice(0, 3)
       lessReportsJson = { reports: ReportsJson.reports.slice(3, 5) }
-      $axios.$get.mockResolvedValue(ReportsJson)
+      lighthouse.getReports.mockResolvedValue({
+        success: true,
+        reports: ReportsJson.reports
+      })
     })
 
     it('when the request is successful', async () => {
-      axios.post.mockResolvedValue('success')
-      const wrapper = mount(Index, { localVue, mocks: { $axios, process } })
+      lighthouse.deleteReports.mockResolvedValue({ success: true })
+      const wrapper = mount(Index, { localVue })
       await flushPromises()
       rows = wrapper.find('tbody').findAll('tr')
       const arr = [0, 1, 2]
@@ -168,7 +177,10 @@ describe('Index', () => {
           .setChecked(true)
       })
       expect(wrapper.vm.reportsToDelete).toEqual(reportFilenames)
-      $axios.$get.mockResolvedValue(lessReportsJson)
+      lighthouse.getReports.mockResolvedValue({
+        success: true,
+        reports: lessReportsJson.reports
+      })
       const button = wrapper.find('#deleteReports')
       await button.trigger('click')
       await flushPromises()
@@ -177,10 +189,11 @@ describe('Index', () => {
     })
 
     it('when the request fails', async () => {
-      axios.post.mockImplementationOnce(() =>
-        Promise.reject(new Error('There was an error'))
-      )
-      const wrapper = mount(Index, { localVue, mocks: { $axios, process } })
+      lighthouse.deleteReports.mockResolvedValue({
+        success: false,
+        error: 'There was an error'
+      })
+      const wrapper = mount(Index, { localVue })
       await flushPromises()
       rows = wrapper.find('tbody').findAll('tr')
       rows
@@ -191,7 +204,7 @@ describe('Index', () => {
       const button = wrapper.find('#deleteReports')
       await button.trigger('click')
       await flushPromises()
-      expect(wrapper.find('.alert').text()).toMatch('Error: There was an error')
+      expect(wrapper.find('.alert').text()).toMatch('There was an error')
     })
   })
 })

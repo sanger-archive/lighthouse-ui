@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import { getImports } from '../modules/lighthouse_service'
+import lighthouse from '../modules/lighthouse_service'
 
 export default {
   data() {
@@ -104,7 +104,7 @@ export default {
   },
   methods: {
     async getItemsProvider() {
-      const resp = await getImports()
+      const resp = await lighthouse.getImports()
       return this.handleItemsResponse(resp)
     },
     handleItemsResponse(response) {

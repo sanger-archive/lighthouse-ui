@@ -69,7 +69,7 @@
 </template>
 
 <script>
-import { deleteReports } from '@/modules/lighthouse_service'
+import lighthouse from '@/modules/lighthouse_service'
 import statuses from '@/modules/statuses'
 
 export default {
@@ -115,43 +115,34 @@ export default {
   },
   methods: {
     async reportsProvider(ctx) {
-      try {
-        // TODO: move to lighthouse service module
-        const data = await this.$axios.$get(
-          // TODO: we need to use config. But cant get it loaded
-          `${process.env.LIGHTHOUSE_BASE_URL}/reports`
-        )
-        const reports = data.reports.map((report) => ({
+      const response = await lighthouse.getReports()
+      if (response.success) {
+        const reports = response.reports.map((report) => ({
           ...report,
           selected: false
         }))
         return reports
-      } catch (error) {
+      } else {
         return []
       }
     },
     async createReport() {
-      try {
-        this.setStatus(
-          'Busy',
-          'Report creation takes about 30s to complete, please do not refresh the page'
-        )
-        // TODO: move this to lighthouse service module
-        await this.$axios.$post(
-          // TODO: we need to use config. But cant get it loaded
-          `${process.env.LIGHTHOUSE_BASE_URL}/reports/new`
-        )
+      this.setStatus(
+        'Busy',
+        'Report creation takes about 30s to complete, please do not refresh the page'
+      )
+      const response = await lighthouse.createReport()
+      if (response.success) {
         this.setStatus('Success', 'Report successfully created')
         this.refreshTable()
-      } catch (error) {
+      } else {
         this.setStatus('Error', 'There was an error creating the report')
-        return []
       }
     },
     async deleteReports() {
       if (this.reportsToDelete.length === 0) return
       this.setStatus('Busy', 'Deleting reports ...')
-      const response = await deleteReports(this.reportsToDelete)
+      const response = await lighthouse.deleteReports(this.reportsToDelete)
 
       if (response.success) {
         this.setStatus('Success', 'Reports successfully deleted')
