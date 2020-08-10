@@ -1,7 +1,7 @@
 import BootstrapVue from 'bootstrap-vue'
 import { mount, createLocalVue } from '@vue/test-utils'
 import Imports from '@/pages/imports'
-import * as lighthouseServiceModule from '@/modules/lighthouse_service'
+import lighthouse from '@/modules/lighthouse_service'
 
 const localVue = createLocalVue()
 localVue.use(BootstrapVue)
@@ -30,14 +30,14 @@ describe('Imports', () => {
       const items = [{ test: 1 }]
       const expectedResponse = { success: true, data: { _items: items } }
 
-      lighthouseServiceModule.getImports = jest.fn()
+      lighthouse.getImports = jest.fn()
       wrapper.vm.handleItemsResponse = jest.fn()
 
-      lighthouseServiceModule.getImports.mockReturnValue(expectedResponse)
+      lighthouse.getImports.mockReturnValue(expectedResponse)
 
       await wrapper.vm.getItemsProvider()
 
-      expect(lighthouseServiceModule.getImports).toBeCalled()
+      expect(lighthouse.getImports).toBeCalled()
       expect(wrapper.vm.handleItemsResponse).toBeCalledWith(expectedResponse)
     })
   })
@@ -81,14 +81,28 @@ describe('Imports', () => {
   describe('table filtering', () => {
     it('filters based on entered search term', () => {
       wrapper.vm.items = [
-        { date: 'something', centre_name: 'I should be hidden', csv_file_used: 'test_file', number_of_records: '2', errors: ['nothing'] },
-        { date: 'something 2', centre_name: 'pick me!', csv_file_used: 'test_file_2', number_of_records: '2', errors: ['nothing'] }
+        {
+          date: 'something',
+          centre_name: 'I should be hidden',
+          csv_file_used: 'test_file',
+          number_of_records: '2',
+          errors: ['nothing']
+        },
+        {
+          date: 'something 2',
+          centre_name: 'pick me!',
+          csv_file_used: 'test_file_2',
+          number_of_records: '2',
+          errors: ['nothing']
+        }
       ]
       wrapper.vm.filter = 'me!'
 
       wrapper.vm.$nextTick(() => {
         expect(wrapper.find('#imports-table').html()).toMatch(/pick me!/)
-        expect(wrapper.find('#imports-table').html()).not.toMatch(/I should be hidden/)
+        expect(wrapper.find('#imports-table').html()).not.toMatch(
+          /I should be hidden/
+        )
       })
     })
   })

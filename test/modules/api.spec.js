@@ -1,6 +1,6 @@
 import { createSamples } from '@/modules/api'
 import * as labwhereModule from '@/modules/labwhere'
-import * as lighthouseModule from '@/modules/lighthouse_service'
+import lighthouse from '@/modules/lighthouse_service'
 
 describe('api', () => {
   describe('#createSamples ', () => {
@@ -36,17 +36,13 @@ describe('api', () => {
         }
       ]
 
-      lighthouseModule.createPlatesFromBarcodes = jest
-        .fn()
-        .mockReturnValue(expected)
+      lighthouse.createPlatesFromBarcodes = jest.fn().mockReturnValue(expected)
 
       const result = await createSamples(boxBarcode)
 
       expect(result).toEqual(expected)
-      expect(labwhereModule.getPlatesFromBoxBarcodes).toBeCalledWith([
-        boxBarcode
-      ])
-      expect(lighthouseModule.createPlatesFromBarcodes).toBeCalledWith(
+      expect(labwhereModule.getPlatesFromBoxBarcodes).toBeCalledWith(boxBarcode)
+      expect(lighthouse.createPlatesFromBarcodes).toBeCalledWith(
         labwhereResponse
       )
     })
@@ -65,17 +61,13 @@ describe('api', () => {
         }
       ]
 
-      lighthouseModule.createPlatesFromBarcodes = jest
-        .fn()
-        .mockReturnValue(expected)
+      lighthouse.createPlatesFromBarcodes = jest.fn().mockReturnValue(expected)
 
       const result = await createSamples(boxBarcode)
 
       expect(result).toEqual(expected)
-      expect(labwhereModule.getPlatesFromBoxBarcodes).toBeCalledWith([
-        boxBarcode
-      ])
-      expect(lighthouseModule.createPlatesFromBarcodes).toBeCalledWith(
+      expect(labwhereModule.getPlatesFromBoxBarcodes).toBeCalledWith(boxBarcode)
+      expect(lighthouse.createPlatesFromBarcodes).toBeCalledWith(
         labwhereResponse
       )
     })
@@ -98,24 +90,20 @@ describe('api', () => {
         }
       ]
 
-      lighthouseModule.createPlatesFromBarcodes = jest
-        .fn()
-        .mockReturnValue(expected)
+      lighthouse.createPlatesFromBarcodes = jest.fn().mockReturnValue(expected)
 
       const result = await createSamples(boxBarcode)
 
       expect(result).toEqual(expected)
-      expect(labwhereModule.getPlatesFromBoxBarcodes).toBeCalledWith([
-        boxBarcode
-      ])
-      expect(lighthouseModule.createPlatesFromBarcodes).toBeCalledWith(
+      expect(labwhereModule.getPlatesFromBoxBarcodes).toBeCalledWith(boxBarcode)
+      expect(lighthouse.createPlatesFromBarcodes).toBeCalledWith(
         labwhereResponse
       )
     })
 
     it('getPlatesFromBoxBarcodes fails', async () => {
       labwhereModule.getPlatesFromBoxBarcodes = jest.fn().mockReturnValue([])
-      lighthouseModule.createPlatesFromBarcodes = jest.fn()
+      lighthouse.createPlatesFromBarcodes = jest.fn()
 
       const expected = [
         {
@@ -127,10 +115,8 @@ describe('api', () => {
       const result = await createSamples(boxBarcode)
 
       expect(result).toEqual(expected)
-      expect(labwhereModule.getPlatesFromBoxBarcodes).toBeCalledWith([
-        boxBarcode
-      ])
-      expect(lighthouseModule.createPlatesFromBarcodes).not.toBeCalled()
+      expect(labwhereModule.getPlatesFromBoxBarcodes).toBeCalledWith(boxBarcode)
+      expect(lighthouse.createPlatesFromBarcodes).not.toBeCalled()
     })
   })
 })

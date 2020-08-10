@@ -10,24 +10,28 @@
     >
       {{ alertData.message }}
     </b-alert>
-    <br/>
-    <b-form-group label="Filter"
-                  label-cols-sm="1"
-                  label-align-sm="right"
-                  label-for="filterInput"
-                  class="mb-0">
+    <br />
+    <b-form-group
+      label="Filter"
+      label-cols-sm="1"
+      label-align-sm="right"
+      label-for="filterInput"
+      class="mb-0"
+    >
       <b-input-group>
-        <b-form-input v-model="filter"
-                      type="search"
-                      id="filterInput"
-                      placeholder="Type to Search">
+        <b-form-input
+          id="filterInput"
+          v-model="filter"
+          type="search"
+          placeholder="Type to Search"
+        >
         </b-form-input>
         <b-input-group-append>
           <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
         </b-input-group-append>
       </b-input-group>
     </b-form-group>
-    <br/>
+    <br />
     <b-table
       id="imports-table"
       show-empty
@@ -59,7 +63,7 @@
 </template>
 
 <script>
-import { getImports } from '../modules/lighthouse_service'
+import lighthouse from '../modules/lighthouse_service'
 
 export default {
   data() {
@@ -95,9 +99,12 @@ export default {
       return this.items.length
     }
   },
+  created() {
+    this.provider()
+  },
   methods: {
     async getItemsProvider() {
-      const resp = await getImports()
+      const resp = await lighthouse.getImports()
       return this.handleItemsResponse(resp)
     },
     handleItemsResponse(response) {
@@ -113,9 +120,6 @@ export default {
     async provider() {
       this.items = await this.getItemsProvider()
     }
-  },
-  created() {
-    this.provider()
   }
 }
 </script>
