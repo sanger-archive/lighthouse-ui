@@ -36,9 +36,7 @@ describe('api', () => {
         }
       ]
 
-      lighthouse.createPlatesFromBarcodes = jest
-        .fn()
-        .mockReturnValue(expected)
+      lighthouse.createPlatesFromBarcodes = jest.fn().mockReturnValue(expected)
 
       const result = await createSamples(boxBarcode)
 
@@ -63,9 +61,7 @@ describe('api', () => {
         }
       ]
 
-      lighthouse.createPlatesFromBarcodes = jest
-        .fn()
-        .mockReturnValue(expected)
+      lighthouse.createPlatesFromBarcodes = jest.fn().mockReturnValue(expected)
 
       const result = await createSamples(boxBarcode)
 
@@ -94,9 +90,7 @@ describe('api', () => {
         }
       ]
 
-      lighthouse.createPlatesFromBarcodes = jest
-        .fn()
-        .mockReturnValue(expected)
+      lighthouse.createPlatesFromBarcodes = jest.fn().mockReturnValue(expected)
 
       const result = await createSamples(boxBarcode)
 

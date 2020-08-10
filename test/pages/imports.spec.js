@@ -81,8 +81,20 @@ describe('Imports', () => {
   describe('table filtering', () => {
     it('filters based on entered search term', () => {
       wrapper.vm.items = [
-        { date: 'something', centre_name: 'I should be hidden', csv_file_used: 'test_file', number_of_records: '2', errors: ['nothing'] },
-        { date: 'something 2', centre_name: 'pick me!', csv_file_used: 'test_file_2', number_of_records: '2', errors: ['nothing'] }
+        {
+          date: 'something',
+          centre_name: 'I should be hidden',
+          csv_file_used: 'test_file',
+          number_of_records: '2',
+          errors: ['nothing']
+        },
+        {
+          date: 'something 2',
+          centre_name: 'pick me!',
+          csv_file_used: 'test_file_2',
+          number_of_records: '2',
+          errors: ['nothing']
+        }
       ]
       wrapper.vm.filter = 'me!'
 
