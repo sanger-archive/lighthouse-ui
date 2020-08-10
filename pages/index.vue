@@ -121,8 +121,10 @@ export default {
           ...report,
           selected: false
         }))
+        // this.items = reports
         return reports
       } else {
+        // this.items = []
         return []
       }
     },

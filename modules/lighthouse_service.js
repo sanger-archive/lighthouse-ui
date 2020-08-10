@@ -78,7 +78,7 @@ const getReports = async () => {
     )
     return {
       success: true,
-      reports: response.reports
+      reports: response.data.reports
     }
   } catch (error) {
     return {
@@ -96,7 +96,7 @@ const createReport = async () => {
     )
     return {
       success: true,
-      reports: response.reports
+      reports: response.data.reports
     }
   } catch (error) {
     return {
@@ -111,8 +111,7 @@ const lighthouse = {
   getImports,
   deleteReports,
   getReports,
-  createReport,
-  test
+  createReport
 }
 
 export default lighthouse

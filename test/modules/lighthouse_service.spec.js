@@ -234,7 +234,7 @@ describe('lighthouse_service api', () => {
     })
 
     it('when the request is successful', async () => {
-      axios.get.mockResolvedValue(ReportsJson)
+      axios.get.mockResolvedValue({data: ReportsJson})
 
       response = await lighthouse.getReports()
       expect(response.success).toBeTruthy()
@@ -258,7 +258,7 @@ describe('lighthouse_service api', () => {
     })
 
     it('when the request is successful', async () => {
-      axios.post.mockResolvedValue({ reports: [ReportsJson.reports[0]] })
+      axios.post.mockResolvedValue({ data: { reports: [ReportsJson.reports[0]] }})
       response = await lighthouse.createReport()
 
       expect(response.success).toBeTruthy()
