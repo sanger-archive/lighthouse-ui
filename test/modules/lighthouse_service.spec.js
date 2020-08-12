@@ -1,17 +1,20 @@
 import axios from 'axios'
-import * as Modules from '@/modules/lighthouse_service'
+import ReportsJson from '../data/reports'
+import lighthouse from '@/modules/lighthouse_service'
 import config from '@/nuxt.config'
 
 describe('lighthouse_service api', () => {
+  let mock, response
+
+  afterEach(() => {
+    jest.resetAllMocks()
+  })
+
   describe('#createPlatesFromBarcodes ', () => {
-    let mock, plateBarcodes, response
+    let plateBarcodes
 
     beforeEach(() => {
       mock = jest.spyOn(axios, 'post')
-    })
-
-    afterEach(() => {
-      mock.mockRestore()
     })
 
     it('for a single barcode on failure', async () => {
@@ -23,7 +26,7 @@ describe('lighthouse_service api', () => {
 
       mock.mockResolvedValue(response)
 
-      const result = await Modules.createPlatesFromBarcodes({
+      const result = await lighthouse.createPlatesFromBarcodes({
         plateBarcodes
       })
 
@@ -49,7 +52,7 @@ describe('lighthouse_service api', () => {
 
       mock.mockResolvedValue(response)
 
-      const result = await Modules.createPlatesFromBarcodes({
+      const result = await lighthouse.createPlatesFromBarcodes({
         plateBarcodes
       })
 
@@ -76,7 +79,7 @@ describe('lighthouse_service api', () => {
       mock.mockImplementationOnce(() => response1)
       mock.mockImplementationOnce(() => response2)
 
-      const result = await Modules.createPlatesFromBarcodes({
+      const result = await lighthouse.createPlatesFromBarcodes({
         plateBarcodes
       })
 
@@ -116,7 +119,7 @@ describe('lighthouse_service api', () => {
       mock.mockImplementationOnce(() => response1)
       mock.mockImplementationOnce(() => response2)
 
-      const result = await Modules.createPlatesFromBarcodes({
+      const result = await lighthouse.createPlatesFromBarcodes({
         plateBarcodes
       })
 
@@ -152,7 +155,7 @@ describe('lighthouse_service api', () => {
       mock.mockImplementationOnce(() => response1)
       mock.mockImplementationOnce(() => response2)
 
-      const result = await Modules.createPlatesFromBarcodes({
+      const result = await lighthouse.createPlatesFromBarcodes({
         plateBarcodes
       })
 
@@ -172,20 +175,16 @@ describe('lighthouse_service api', () => {
   })
 
   describe('#getImports', () => {
-    let mock, response, expected
+    let expected
 
     beforeEach(() => {
       mock = jest.spyOn(axios, 'get')
     })
 
-    afterEach(() => {
-      mock.mockRestore()
-    })
-
     it('returns data successfully', async () => {
       expected = { data: { items: [] } }
       mock.mockResolvedValue(expected)
-      response = await Modules.getImports()
+      response = await lighthouse.getImports()
       expect(response.data).toEqual(expected.data)
     })
 
@@ -193,7 +192,89 @@ describe('lighthouse_service api', () => {
       mock.mockImplementationOnce(() =>
         Promise.reject(new Error('There was an error'))
       )
-      response = await Modules.getImports()
+      response = await lighthouse.getImports()
+      expect(response.error).toEqual(new Error('There was an error'))
+    })
+  })
+
+  describe('#deleteReports', () => {
+    let expected, filenames
+
+    beforeEach(() => {
+      filenames = [
+        '200716_1345_positives_with_locations.xlsx',
+        '200716_1618_positives_with_locations.xlsx',
+        '200716_1640_positives_with_locations.xlsx',
+        '200716_1641_positives_with_locations.xlsx',
+        '200716_1642_positives_with_locations.xlsx'
+      ]
+      mock = jest.spyOn(axios, 'post')
+    })
+
+    it('when it is successful', async () => {
+      expected = { data: {} }
+      mock.mockResolvedValue(expected)
+      response = await lighthouse.deleteReports(filenames)
+      expect(response.success).toBeTruthy()
+    })
+
+    it('when there is an error', async () => {
+      mock.mockImplementationOnce(() =>
+        Promise.reject(new Error('There was an error'))
+      )
+      response = await lighthouse.deleteReports()
+      expect(response.success).toBeFalsy()
+      expect(response.error).toEqual(new Error('There was an error'))
+    })
+  })
+
+  describe('#getReports', () => {
+    beforeEach(() => {
+      mock = jest.spyOn(axios, 'get')
+    })
+
+    it('when the request is successful', async () => {
+      axios.get.mockResolvedValue({ data: ReportsJson })
+
+      response = await lighthouse.getReports()
+      expect(response.success).toBeTruthy()
+      expect(response.reports).toEqual(ReportsJson.reports)
+    })
+
+    it('when the request fails', async () => {
+      axios.get.mockImplementationOnce(() =>
+        Promise.reject(new Error('There was an error'))
+      )
+
+      response = await lighthouse.getReports()
+      expect(response.success).toBeFalsy()
+      expect(response.error).toEqual(new Error('There was an error'))
+    })
+  })
+
+  describe('#createReport', () => {
+    beforeEach(() => {
+      mock = jest.spyOn(axios, 'post')
+    })
+
+    it('when the request is successful', async () => {
+      axios.post.mockResolvedValue({
+        data: { reports: [ReportsJson.reports[0]] }
+      })
+      response = await lighthouse.createReport()
+
+      expect(response.success).toBeTruthy()
+      expect(response.reports).toEqual([ReportsJson.reports[0]])
+    })
+
+    it('when the request fails', async () => {
+      axios.post.mockImplementationOnce(() =>
+        Promise.reject(new Error('There was an error'))
+      )
+
+      response = await lighthouse.createReport()
+
+      expect(response.success).toBeFalsy()
       expect(response.error).toEqual(new Error('There was an error'))
     })
   })

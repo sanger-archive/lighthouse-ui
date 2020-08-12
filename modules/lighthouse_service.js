@@ -1,8 +1,4 @@
 // Lighthouse Service Module
-// Accepts a list of plateBarcodes in the moduleOptions
-// Send a POST request to the Lighthouse service API
-// To create each plate
-// Return list of responses
 
 import axios from 'axios'
 import config from '@/nuxt.config'
@@ -17,6 +13,10 @@ const handlePromise = async (promise) => {
   return rawResponse
 }
 
+// Accepts a list of plateBarcodes in the moduleOptions
+// Send a POST request to the Lighthouse service API
+// To create each plate
+// Return list of responses
 const createPlatesFromBarcodes = async (moduleOptions) => {
   const plateBarcodes = moduleOptions.plateBarcodes
 
@@ -48,4 +48,70 @@ const getImports = async () => {
   }
 }
 
-export { createPlatesFromBarcodes, getImports }
+// Delete list of reports using full filenames
+const deleteReports = async (filenames) => {
+  try {
+    await axios.post(
+      `${config.privateRuntimeConfig.lighthouseBaseURL}/delete_reports`,
+      {
+        data: {
+          filenames
+        }
+      }
+    )
+    return {
+      success: true
+    }
+  } catch (error) {
+    return {
+      success: false,
+      error
+    }
+  }
+}
+
+// Get all of the reports
+const getReports = async () => {
+  try {
+    const response = await axios.get(
+      `${config.privateRuntimeConfig.lighthouseBaseURL}/reports`
+    )
+    return {
+      success: true,
+      reports: response.data.reports
+    }
+  } catch (error) {
+    return {
+      success: false,
+      error
+    }
+  }
+}
+
+// Create a reports
+const createReport = async () => {
+  try {
+    const response = await axios.post(
+      `${config.privateRuntimeConfig.lighthouseBaseURL}/reports`
+    )
+    return {
+      success: true,
+      reports: response.data.reports
+    }
+  } catch (error) {
+    return {
+      success: false,
+      error
+    }
+  }
+}
+
+const lighthouse = {
+  createPlatesFromBarcodes,
+  getImports,
+  deleteReports,
+  getReports,
+  createReport
+}
+
+export default lighthouse
