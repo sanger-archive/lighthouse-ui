@@ -92,7 +92,7 @@ const getReports = async () => {
 const createReport = async () => {
   try {
     const response = await axios.post(
-      `${config.privateRuntimeConfig.lighthouseBaseURL}/reports`
+      `${config.privateRuntimeConfig.lighthouseBaseURL}/reports/new`
     )
     return {
       success: true,
