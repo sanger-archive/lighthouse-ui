@@ -7,14 +7,13 @@
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
         <b-navbar-nav class="ml-auto">
-          <b-nav-item href="/">Reports</b-nav-item>
-          <b-nav-item href="sentinel_create_samples"
+          <b-nav-item to="/">Reports</b-nav-item>
+          <b-nav-item to="box_buster">Box Buster</b-nav-item>
+          <b-nav-item to="sentinel_create_samples"
             >Sentinel Sample Creation</b-nav-item
           >
-          <b-nav-item href="sentinel_cherrypick"
-            >Sentinel Cherrypick</b-nav-item
-          >
-          <b-nav-item href="imports">Imports</b-nav-item>
+          <b-nav-item to="sentinel_cherrypick">Sentinel Cherrypick</b-nav-item>
+          <b-nav-item to="imports">Imports</b-nav-item>
         </b-navbar-nav>
       </b-navbar>
     </div>
