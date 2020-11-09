@@ -57,6 +57,11 @@ const createPrintRequestBody = ({numberOfBarcodes, printer}) => ({
   }
 })
 
+/*
+  accepts numberOfBarcodes and printer
+  will create the print request body
+  and send a request to sprint to print labels
+*/
 const printLabels = async ({numberOfBarcodes, printer}) => {
   const body = createPrintRequestBody({numberOfBarcodes, printer})
   try {
