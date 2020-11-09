@@ -1,0 +1,35 @@
+{
+  "printer": "heron-bc1",
+  "printRequest": {
+    "layouts": [
+        {
+          "barcodeFields": [
+            {
+              "x": 16,
+              "y": 1,
+              "cellWidth": 0.2,
+              "barcodeType": "code39",
+              "value": "barcode",
+              "height": 5
+            }
+          ],
+          "textFields": [
+            {
+              "x": 3,
+              "y": 3,
+              "value": "barcode_text",
+              "font": "proportional",
+              "fontSize": 1.7
+            },
+            {
+              "x": 57,
+              "y": 3,
+              "value": "LHTR",
+              "font": "proportional",
+              "fontSize": 1.7
+            }
+          ]
+        }
+    ]
+  }
+}
