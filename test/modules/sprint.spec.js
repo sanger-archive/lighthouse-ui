@@ -33,10 +33,6 @@ const layout = {
 
 describe('Sprint', () => {
 
-  it('works', () => {
-   expect(true).toBeTruthy()
-  })
-
   it('#createLayout', () => {
     expect(sprint.createLayout("DN111111", "DN222222")).toEqual(layout)
   })
@@ -84,7 +80,7 @@ describe('Sprint', () => {
     it('successfully', async () => {
       mock.mockResolvedValue({})
       const response = await sprint.printLabels(args)
-      expect(mock).toHaveBeenCalledWith(config.privateRuntimeConfig.sprintBaseURL, sprint.createPrintRequestBody(args))
+      expect(mock).toHaveBeenCalledWith(config.privateRuntimeConfig.sprintBaseURL, sprint.createPrintRequestBody(args), sprint.headers)
       expect(response.success).toBeTruthy()
       expect(response.message).toEqual('successfully printed 10 labels to heron-bc3')
     })

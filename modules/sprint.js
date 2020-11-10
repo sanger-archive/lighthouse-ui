@@ -6,6 +6,12 @@ const query = `mutation printRequest($printRequest: PrintRequest!, $printer: Str
     jobId
   }`
 
+const headers = {
+  headers: {
+    'Content-Type': 'application/json'
+  }
+}
+
 // Will create a new layout object for a print job
 // Requires barcode which will be used for barcode and text field
 const createLayout = (barcode) => ({
@@ -63,10 +69,12 @@ const createPrintRequestBody = ({numberOfBarcodes, printer}) => ({
   and send a request to sprint to print labels
 */
 const printLabels = async ({numberOfBarcodes, printer}) => {
-  const body = createPrintRequestBody({numberOfBarcodes, printer})
+  const payload = createPrintRequestBody({numberOfBarcodes, printer})
   try {
     await axios.post(
-      config.privateRuntimeConfig.sprintBaseURL, body
+      config.privateRuntimeConfig.sprintBaseURL,
+      payload,
+      headers
     )
     return {
       success: true,
@@ -84,7 +92,8 @@ const sprint = {
   createLayout,
   createPrintRequestBody,
   createBarcodes,
-  printLabels
+  printLabels,
+  headers
 }
 
 export default sprint
