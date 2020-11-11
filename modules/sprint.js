@@ -1,4 +1,5 @@
 import axios from 'axios'
+import plateBarcode from '@/modules/plate_barcode'
 import config from '@/nuxt.config'
 
 const query = `mutation printRequest($printRequest: PrintRequest!, $printer: String!) {
@@ -54,25 +55,26 @@ const createBarcodes = (n) => [...Array(n)].map((barcode) => 'DN111111')
   the number of layouts is dependent on the numberOfBarcodes
   the printer must be specified
 */
-const createPrintRequestBody = ({ numberOfBarcodes, printer }) => ({
+const createPrintRequestBody = ({ barcodes, printer }) => ({
   query,
   printer,
   printRequest: {
     // creates n barcodes and then turns each barcode into a layout
-    layouts: createBarcodes(numberOfBarcodes).map((barcode) =>
-      createLayout(barcode)
-    )
+    layouts: barcodes.map((barcode) => createLayout(barcode))
   }
 })
 
 /*
   accepts numberOfBarcodes and printer
+  creates the barcodes via a call to plate barcpde
   will create the print request body
   and send a request to sprint to print labels
 */
 const printLabels = async ({ numberOfBarcodes, printer }) => {
-  const payload = createPrintRequestBody({ numberOfBarcodes, printer })
   try {
+    const barcodes = await plateBarcode.createBarcodes(numberOfBarcodes)
+    const payload = createPrintRequestBody({ barcodes, printer })
+
     await axios.post(
       config.privateRuntimeConfig.sprintBaseURL,
       payload,
@@ -80,7 +82,9 @@ const printLabels = async ({ numberOfBarcodes, printer }) => {
     )
     return {
       success: true,
-      message: `successfully printed ${numberOfBarcodes} labels to ${printer}`
+      // not sure if this is the best way to highlight partial failure. It is an edge case but dont
+      // want to add too much complexity to the code for something that will happen once in a blue moon
+      message: `successfully printed ${barcodes.length} of ${numberOfBarcodes} labels to ${printer}`
     }
   } catch (error) {
     return {

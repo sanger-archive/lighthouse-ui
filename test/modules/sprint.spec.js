@@ -1,6 +1,13 @@
 import axios from 'axios'
 import sprint from '@/modules/sprint'
+import plateBarcode from '@/modules/plate_barcode'
 import config from '@/nuxt.config'
+
+jest.mock('@/modules/plate_barcode')
+
+// TODO: move out into helper
+const errorResponse = new Error('There was an error')
+const rejectPromise = () => Promise.reject(errorResponse)
 
 const layout = {
   barcodeFields: [
@@ -49,7 +56,7 @@ describe('Sprint', () => {
   describe('#createPrintRequestBody', () => {
     it('should produce the correct json if there is a single barcode', () => {
       const body = sprint.createPrintRequestBody({
-        numberOfBarcodes: 1,
+        barcodes: ['DN111111'],
         printer: 'heron-bc3'
       })
       expect(body.query).toBeDefined()
@@ -60,14 +67,15 @@ describe('Sprint', () => {
 
     it('should produce the correct json if there are multiple barcodes', () => {
       expect(
-        sprint.createPrintRequestBody({ numberOfBarcodes: 3 }).printRequest
-          .layouts.length
+        sprint.createPrintRequestBody({
+          barcodes: ['DN111111', 'DN222222', 'DN333333']
+        }).printRequest.layouts.length
       ).toEqual(3)
     })
   })
 
   describe('#printLabels', () => {
-    let mock, args
+    let mock, args, barcodes
 
     afterEach(() => {
       jest.resetAllMocks()
@@ -75,30 +83,44 @@ describe('Sprint', () => {
 
     beforeEach(() => {
       mock = jest.spyOn(axios, 'post')
-      args = { numberOfBarcodes: 10, printer: 'heron-bc3' }
+      args = { numberOfBarcodes: 5, printer: 'heron-bc3' }
+      barcodes = ['DN111111', 'DN222222', 'DN333333', 'DN444444', 'DN555555']
     })
 
     it('successfully', async () => {
+      plateBarcode.createBarcodes.mockResolvedValue(barcodes)
       mock.mockResolvedValue({})
       const response = await sprint.printLabels(args)
       expect(mock).toHaveBeenCalledWith(
         config.privateRuntimeConfig.sprintBaseURL,
-        sprint.createPrintRequestBody(args),
+        sprint.createPrintRequestBody({ ...args, barcodes }),
         sprint.headers
       )
       expect(response.success).toBeTruthy()
       expect(response.message).toEqual(
-        'successfully printed 10 labels to heron-bc3'
+        'successfully printed 5 of 5 labels to heron-bc3'
       )
     })
 
-    it('unsuccessfully', async () => {
-      mock.mockImplementation(() =>
-        Promise.reject(new Error('There was an error'))
+    it('when plate barcode doesnt return the full compliment of barcodes', async () => {
+      plateBarcode.createBarcodes.mockResolvedValue(barcodes.slice(1))
+      mock.mockResolvedValue({})
+      const response = await sprint.printLabels(args)
+      expect(response.success).toBeTruthy()
+      expect(response.message).toEqual(
+        'successfully printed 4 of 5 labels to heron-bc3'
       )
+    })
+
+    it('when sprint fails', async () => {
+      plateBarcode.createBarcodes.mockResolvedValue(barcodes)
+      mock.mockImplementation(() => rejectPromise())
       const response = await sprint.printLabels(args)
       expect(response.success).toBeFalsy()
-      expect(response.error).toEqual(new Error('There was an error'))
+      expect(response.error).toEqual(errorResponse)
     })
+
+    // TODO: not sure if this is necesssary or how to implement
+    it.skip('when plate barcode service fails', async () => {})
   })
 })
