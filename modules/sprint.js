@@ -15,30 +15,30 @@ const headers = {
 // Will create a new layout object for a print job
 // Requires barcode which will be used for barcode and text field
 const createLayout = (barcode) => ({
-  "barcodeFields": [
+  barcodeFields: [
     {
-      "x": 16,
-      "y": 1,
-      "cellWidth": 0.2,
-      "barcodeType": "code39",
-      "value": barcode,
-      "height": 5
+      x: 16,
+      y: 1,
+      cellWidth: 0.2,
+      barcodeType: 'code39',
+      value: barcode,
+      height: 5
     }
   ],
-  "textFields": [
+  textFields: [
     {
-      "x": 3,
-      "y": 3,
-      "value": barcode,
-      "font": "proportional",
-      "fontSize": 1.7
+      x: 3,
+      y: 3,
+      value: barcode,
+      font: 'proportional',
+      fontSize: 1.7
     },
     {
-      "x": 57,
-      "y": 3,
-      "value": "LHTR",
-      "font": "proportional",
-      "fontSize": 1.7
+      x: 57,
+      y: 3,
+      value: 'LHTR',
+      font: 'proportional',
+      fontSize: 1.7
     }
   ]
 })
@@ -46,7 +46,7 @@ const createLayout = (barcode) => ({
 // TODO: currently this is just a placeholder for creating barcodes
 // n = number of barcodes
 // e.g. if n = 3 returns ['DN111111', 'DN111111', 'DN111111']
-const createBarcodes = (n) => Array.from(Array(n)).map(barcode => 'DN111111')
+const createBarcodes = (n) => [...Array(n)].map((barcode) => 'DN111111')
 
 /* 
   Creates the print request body
@@ -54,12 +54,14 @@ const createBarcodes = (n) => Array.from(Array(n)).map(barcode => 'DN111111')
   the number of layouts is dependent on the numberOfBarcodes
   the printer must be specified
 */
-const createPrintRequestBody = ({numberOfBarcodes, printer}) => ({
-  "query": query,
+const createPrintRequestBody = ({ numberOfBarcodes, printer }) => ({
+  query,
   printer,
-  "printRequest": {
+  printRequest: {
     // creates n barcodes and then turns each barcode into a layout
-    layouts: createBarcodes(numberOfBarcodes).map(barcode => createLayout(barcode))
+    layouts: createBarcodes(numberOfBarcodes).map((barcode) =>
+      createLayout(barcode)
+    )
   }
 })
 
@@ -68,8 +70,8 @@ const createPrintRequestBody = ({numberOfBarcodes, printer}) => ({
   will create the print request body
   and send a request to sprint to print labels
 */
-const printLabels = async ({numberOfBarcodes, printer}) => {
-  const payload = createPrintRequestBody({numberOfBarcodes, printer})
+const printLabels = async ({ numberOfBarcodes, printer }) => {
+  const payload = createPrintRequestBody({ numberOfBarcodes, printer })
   try {
     await axios.post(
       config.privateRuntimeConfig.sprintBaseURL,

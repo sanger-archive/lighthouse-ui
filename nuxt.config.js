@@ -86,10 +86,9 @@ export default {
     labwhereBaseURL: process.env.LABWHERE_BASE_URL || 'http://labwhere',
     sequencescapeBaseURL:
       process.env.SEQUENCESCAPE_BASE_URL || 'http://sequencescape',
-    sprintBaseURL:
-      process.env.SPRINT_BASE_URL || 'http://sprint',
+    sprintBaseURL: process.env.SPRINT_BASE_URL || 'http://sprint',
     plateBarcodeBaseURL:
-      process.env.PLATE_BARCODE_BASE_URL || 'http://plate_barcode',
+      process.env.PLATE_BARCODE_BASE_URL || 'http://plate_barcode'
   },
   publicRuntimeConfig: {
     asynchronous: process.env.ASYNCHRONOUS,
