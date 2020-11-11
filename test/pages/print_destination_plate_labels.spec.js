@@ -18,7 +18,8 @@ describe('print destination plate labels', () => {
   })
 
   it('is a Vue instance', () => {
-    expect(wrapper.findComponent(PrintDestinationPlateLabels).exists()).toBeTruthy()
+    expect(
+      wrapper.findComponent(PrintDestinationPlateLabels).exists()
+    ).toBeTruthy()
   })
-
 })

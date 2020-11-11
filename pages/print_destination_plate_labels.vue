@@ -3,8 +3,7 @@
     <b-row>
       <b-col>
         <h1>Print destination plate labels</h1>
-        <p class="lead">
-        </p>
+        <p class="lead"></p>
         <p>
           <b-button
             id="printLabels"
@@ -40,7 +39,7 @@ export default {
   data() {
     return {
       status: statuses.Idle,
-      alertMessage: '',
+      alertMessage: ''
     }
   },
   computed: {
@@ -63,9 +62,7 @@ export default {
       this.status = statuses[status]
       this.alertMessage = message
     },
-    printLabels() {
-      return
-    }
+    printLabels() {}
   }
 }
 </script>
