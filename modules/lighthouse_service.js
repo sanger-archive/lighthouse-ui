@@ -31,6 +31,20 @@ const createPlatesFromBarcodes = async (moduleOptions) => {
   return responses
 }
 
+// Accepts a list of plateBarcodes in the moduleOptions
+// Send a GET request to the Lighthouse service API
+const findPlatesFromBarcodes = async ({ plateBarcodes }) => {
+  const url = `${config.privateRuntimeConfig.lighthouseBaseURL}/plates`
+  try {
+    const response = await axios.get(url, {
+      params: { barcodes: plateBarcodes }
+    })
+    return { success: true, plates: response.data.plates }
+  } catch (error) {
+    return { success: false, error }
+  }
+}
+
 const getImports = async () => {
   try {
     const response = await axios.get(
@@ -108,6 +122,7 @@ const createReport = async () => {
 
 const lighthouse = {
   createPlatesFromBarcodes,
+  findPlatesFromBarcodes,
   getImports,
   deleteReports,
   getReports,

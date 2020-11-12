@@ -174,6 +174,69 @@ describe('lighthouse_service api', () => {
     })
   })
 
+  describe('#findPlatesFromBarcodes ', () => {
+
+    beforeEach(() => {
+      mock = jest.spyOn(axios, 'get')
+    })
+
+    it('for a single barcode on success', async () => {
+      const plateBarcodes = ['aBarcode1']
+      const plates = [{
+        plate_barcode: 'aBarcode1',
+        centre: 'tst1',
+        number_of_positives: 3
+      }]
+
+      response = { data: { plates } }
+
+      mock.mockResolvedValue(response)
+
+      const result = await lighthouse.findPlatesFromBarcodes({
+        plateBarcodes
+      })
+      const expected = { success: true, plates }
+
+      expect(result).toEqual(expected)
+      expect(mock).toHaveBeenCalledTimes(1)
+      expect(mock).toHaveBeenNthCalledWith(
+        1,
+        `${config.privateRuntimeConfig.lighthouseBaseURL}/plates`,
+        { params: { barcodes: plateBarcodes } }
+      )
+    })
+
+    it('#for multiple barcodes on success', async () => {
+      const plateBarcodes = ['aBarcode1', 'aBarcode2']
+      const plates = [{
+        plate_barcode: 'aBarcode1',
+        centre: 'tst1',
+        number_of_positives: 3
+      }, {
+        plate_barcode: 'aBarcode2',
+        centre: 'tst1',
+        number_of_positives: 2
+      }]
+      const response = { data: { plates } }
+
+      mock.mockImplementationOnce(() => response)
+
+      const result = await lighthouse.findPlatesFromBarcodes({
+        plateBarcodes
+      })
+      const expected = { success: true, plates }
+
+      expect(mock).toHaveBeenCalledTimes(1)
+      expect(mock).toHaveBeenNthCalledWith(
+        1,
+        `${config.privateRuntimeConfig.lighthouseBaseURL}/plates`,
+        { params: { barcodes: plateBarcodes } }
+      )
+      expect(result).toEqual(expected)
+    })
+  })
+
+
   describe('#getImports', () => {
     let expected
 
