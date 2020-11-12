@@ -114,7 +114,8 @@ export default {
       return this.labwhereResponse.success
     },
     labwhereFeedback() {
-      return extractError(this.labwhereResponse)
+      const error = extractError(this.labwhereResponse)
+      return `${error}. Looking up barcode as plate.`
     },
     showTable() {
       // We show the table if we've made a labwhere request, or have
