@@ -163,10 +163,7 @@ export default {
       const response = await lighthouse.findPlatesFromBarcodes(labwhereResponse)
       this.lighthouseResponse = response
       if (response.success) {
-        console.log('Lighthouse response:', response)
         this.plates = response.plates || []
-      } else {
-        console.error('Failed Response:', response)
       }
     }
   }
