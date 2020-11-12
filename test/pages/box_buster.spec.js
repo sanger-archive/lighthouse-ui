@@ -19,11 +19,11 @@ const squish = (text) => text.replace(/\s+/g, ' ')
 const localVue = createLocalVue()
 
 // List of example plates to use in testing.
-const plate_a = { plate_barcode: 'AP-rna-1-8-posi', plateMap: true, positiveCount: 8 }
-const plate_b = { plate_barcode: 'AP-rna-2-2-posi', plateMap: true, positiveCount: 2 }
-const plate_c = { plate_barcode: 'AP-rna-3-0-nmap', plateMap: false, positiveCount: null }
-const plate_d = { plate_barcode: 'AP-rna-4-5-posi', plateMap: true, positiveCount: 5 }
-const plate_e = { plate_barcode: 'AP-rna-5-0-posi', plateMap: true, positiveCount: 0 }
+const plate_a = { plate_barcode: 'AP-rna-1-8-posi', plate_map: true, number_of_positives: 8 }
+const plate_b = { plate_barcode: 'AP-rna-2-2-posi', plate_map: true, number_of_positives: 2 }
+const plate_c = { plate_barcode: 'AP-rna-3-0-nmap', plate_map: false, number_of_positives: null }
+const plate_d = { plate_barcode: 'AP-rna-4-5-posi', plate_map: true, number_of_positives: 5 }
+const plate_e = { plate_barcode: 'AP-rna-5-0-posi', plate_map: true, number_of_positives: 0 }
 const examplePlates = [ plate_a, plate_b, plate_c, plate_d, plate_e ]
 const expectedPlateTotal = 5
 const expectedMapTotal = 4
@@ -55,12 +55,19 @@ describe('BoxBuster', () => {
     expect(table_text).toContain('AP-rna-3-0-nmap')
   })
 
-  it('shows a table with the expected headers', () => {
+  it('shows a table with the expected headers', async () => {
     const wrapper = mount(BoxBuster, { localVue })
+    await wrapper.setData({ labwhereResponse: { success: true }})
     const header = wrapper.find('table').findAll('th')
     expect(header.at(0).text()).toContain('Barcode')
     expect(header.at(1).text()).toContain('Plate Map')
-    expect(header.at(2).text()).toContain('Positive Count')
+    expect(header.at(2).text()).toContain('Number Of Positives')
+  })
+
+  it('only shows the table once we\'ve scanned the Box', async () => {
+    const wrapper = mount(BoxBuster, { localVue })
+    await wrapper.setData({ labwhereResponse: { success: null } })
+    expect(wrapper.find('table').exists()).toBe(false)
   })
 
   it('sorts list of plates by plateMap and positive count', async () => {
@@ -189,6 +196,7 @@ describe('BoxBuster', () => {
     ]
     lighthouse.findPlatesFromBarcodes.mockResolvedValue({ success: false, error: new Error('Lighthouse error') })
     wrapper = mount(BoxBuster, { localVue })
+    await wrapper.setData({ labwhereResponse: { success: true } })
     await wrapper.vm.findPlates({ success: true, plateBarcodes })
     await flushPromises()
     expect(wrapper.vm.plates).toEqual([])

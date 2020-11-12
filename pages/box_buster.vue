@@ -24,11 +24,12 @@
       </b-form-input>
     </b-form-group>
     <b-table
+      v-if="showTable"
       :items="plates"
       :tbody-tr-class="rowClass"
       show-empty
-      :empty-text="emptyText"
-      sort-by="positiveCount"
+      :empty-text="lighthouseFeedback"
+      sort-by="number_of_positives"
       :sort-desc="true"
       :fields="fields"
     >
@@ -48,14 +49,24 @@ import lighthouse from '../modules/lighthouse_service'
 import { getPlatesFromBoxBarcodes } from '@/modules/labwhere'
 
 // import lighthouse from '../modules/lighthouse_service'
-const countWithMap = (accumulator, { plateMap }) =>
-  accumulator + (plateMap ? 1 : 0)
-const countWithoutMap = (accumulator, { plateMap }) =>
-  accumulator + (plateMap ? 0 : 1)
-const sumPositives = (accumulator, { positiveCount }) =>
-  accumulator + positiveCount
+const countWithMap = (accumulator, plate) =>
+  accumulator + (plate.plate_map ? 1 : 0)
+const countWithoutMap = (accumulator, plate) =>
+  accumulator + (plate.plate_map ? 0 : 1)
+const sumPositives = (accumulator, plate) =>
+  accumulator + plate.number_of_positives
 const mapFormatter = (value) => (value ? 'Yes' : 'No')
-const countFormatter = (value, _key, item) => (item.plateMap ? value : 'N/A')
+const countFormatter = (value, _key, item) => (item.plate_map ? value : 'N/A')
+const extractError = (response) => {
+  if (response.error) {
+    return response.error.message || response.error || 'Unidentified Error'
+  } else {
+    // In practice the user should never see this. However, if they do, it
+    // probably means something unexpected happened, so we'll make sure
+    // we don't just fail silently.
+    return defaultResponse.error
+  }
+}
 
 const defaultResponse = {
   success: null,
@@ -72,19 +83,18 @@ export default {
       fields: [
         { key: 'plate_barcode', sortable: true },
         {
-          key: 'plateMap',
+          key: 'plate_map',
           sortable: true,
           sortDirection: 'desc',
           formatter: mapFormatter
         },
         {
-          key: 'positiveCount',
+          key: 'number_of_positives',
           sortable: true,
           sortDirection: 'desc',
           formatter: countFormatter
         }
-      ],
-      emptyText: 'No plates'
+      ]
     }
   },
   computed: {
@@ -104,14 +114,18 @@ export default {
       return this.labwhereResponse.success
     },
     labwhereFeedback() {
-      if (this.labwhereResponse.error) {
-        return (
-          this.labwhereResponse.error.message ||
-          this.labwhereResponse.error ||
-          'Unidentified Error'
-        )
+      return extractError(this.labwhereResponse)
+    },
+    showTable() {
+      // We show the table if we've made a labwhere request, or have
+      // populates the plates via some other means.
+      return this.labwhereState !== null || this.plates.length !== 0
+    },
+    lighthouseFeedback() {
+      if (this.lighthouseResponse.success === null) {
+        return 'Waiting for response from lighthouse...'
       } else {
-        return defaultResponse.error
+        return extractError(this.lighthouseResponse)
       }
     }
   },
@@ -119,7 +133,7 @@ export default {
   methods: {
     rowClass(item, type) {
       if (item && type === 'row') {
-        return item.plateMap ? 'table-success' : 'table-danger'
+        return item.plate_map ? 'table-success' : 'table-danger'
       } else {
         // Hit with, for example, row empty
         return 'table-warning'
@@ -141,16 +155,17 @@ export default {
     },
     reset() {
       this.labwhereResponse = defaultResponse
+      this.lighthouseResponse = defaultResponse
       this.plates = []
     },
     async findPlates(labwhereResponse) {
       const response = await lighthouse.findPlatesFromBarcodes(labwhereResponse)
+      this.lighthouseResponse = response
       if (response.success) {
         console.log('Lighthouse response:', response)
         this.plates = response.plates || []
       } else {
         console.error('Failed Response:', response)
-        this.emptyText = response.error.message || response.error
       }
     }
   }
