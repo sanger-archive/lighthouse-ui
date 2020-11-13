@@ -11,7 +11,7 @@
             :disabled="isBusy"
             @click="printLabels"
           >
-            Create report
+            Print labels
             <b-spinner v-show="isBusy" small></b-spinner>
           </b-button>
         </p>
@@ -27,19 +27,43 @@
             {{ alertMessage }}
           </b-alert>
         </p>
+        <p>
+          <b-form-select
+            id="selectPrinter"
+            v-model="printer"
+            :options="printers"
+          ></b-form-select>
+        </p>
+        <b-form-input
+          id="numberOfBarcodes"
+          v-model="numberOfBarcodes"
+          type="number"
+        ></b-form-input>
+        <p>{{ printer }}</p>
       </b-col>
     </b-row>
   </b-container>
 </template>
 
 <script>
+
 import statuses from '@/modules/statuses'
 
 export default {
+  props: {
+    printers: {
+      type: Array,
+      default() {
+        return ['heron-bc1', 'heron-bc3', 'heron-bc5']
+      }
+    }
+  },
   data() {
     return {
       status: statuses.Idle,
-      alertMessage: ''
+      alertMessage: '',
+      printer: '',
+      numberOfBarcodes: 0,
     }
   },
   computed: {
