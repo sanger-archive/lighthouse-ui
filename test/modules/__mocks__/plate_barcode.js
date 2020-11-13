@@ -1,5 +1,5 @@
-const plateBarcode = {
+const PlateBarcode = {
   createBarcodes: jest.fn()
 }
 
-export default plateBarcode
+export default PlateBarcode

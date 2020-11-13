@@ -1,5 +1,5 @@
 import axios from 'axios'
-import plateBarcode from '@/modules/plate_barcode'
+import PlateBarcode from '@/modules/plate_barcode'
 
 const errorResponse = new Error('There was an error')
 const rejectPromise = () => Promise.reject(errorResponse)
@@ -22,31 +22,31 @@ describe('PlateBarcode', () => {
 
   describe('#extractBarcode', () => {
     it('when the barcode is 6 digits', () => {
-      expect(plateBarcode.extractBarcode(xml)).toEqual('DN702261')
+      expect(PlateBarcode.extractBarcode(xml)).toEqual('DN702261')
     })
 
     it('when the barcode is 7 digits', () => {
       xml = `<?xml version="1.0" encoding="UTF-8"?><plate_barcodes><barcode>7022617</barcode></plate_barcodes>`
-      expect(plateBarcode.extractBarcode(xml)).toEqual('DN7022617')
+      expect(PlateBarcode.extractBarcode(xml)).toEqual('DN7022617')
     })
 
     it('when the xml is mashed up and there is no barcode', () => {
       xml = `<?xml version="1.0" encoding="UTF-8"?><plate_barcodes>this is a dodgy bit of xml</plate_barcodes>`
-      expect(plateBarcode.extractBarcode(xml)).not.toBeDefined()
+      expect(PlateBarcode.extractBarcode(xml)).not.toBeDefined()
     })
   })
 
   describe('#createBarcode', () => {
     it('successfully', async () => {
       mock.mockResolvedValue({ data: xml })
-      const response = await plateBarcode.createBarcode()
+      const response = await PlateBarcode.createBarcode()
       expect(response.success).toBeTruthy()
       expect(response.barcode).toEqual('DN702261')
     })
 
     it('unsuccessfully', async () => {
       mock.mockImplementation(() => rejectPromise())
-      const response = await plateBarcode.createBarcode()
+      const response = await PlateBarcode.createBarcode()
       expect(response.success).toBeFalsy()
       expect(response.error).toEqual(errorResponse)
     })
@@ -55,7 +55,7 @@ describe('PlateBarcode', () => {
   describe('#createBarcodes', () => {
     it('successfully', async () => {
       mock.mockResolvedValue({ data: xml })
-      const barcodes = await plateBarcode.createBarcodes(5)
+      const barcodes = await PlateBarcode.createBarcodes(5)
       expect(barcodes).toEqual([
         'DN702261',
         'DN702261',
@@ -67,7 +67,7 @@ describe('PlateBarcode', () => {
 
     it('unsuccessfully - total failure', async () => {
       mock.mockImplementation(() => rejectPromise())
-      await expect(plateBarcode.createBarcodes(5)).rejects.toThrow(
+      await expect(PlateBarcode.createBarcodes(5)).rejects.toThrow(
         'Barcodes could not be created'
       )
     })
@@ -75,7 +75,7 @@ describe('PlateBarcode', () => {
     it('unsuccessfully - partial failure', async () => {
       mock.mockResolvedValue({ data: xml })
       mock.mockImplementationOnce(() => rejectPromise())
-      const barcodes = await plateBarcode.createBarcodes(5)
+      const barcodes = await PlateBarcode.createBarcodes(5)
       expect(barcodes).toEqual(['DN702261', 'DN702261', 'DN702261', 'DN702261'])
     })
   })

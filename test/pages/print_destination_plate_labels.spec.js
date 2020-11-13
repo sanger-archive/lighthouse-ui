@@ -2,7 +2,7 @@ import BootstrapVue from 'bootstrap-vue'
 import { mount, createLocalVue } from '@vue/test-utils'
 import PrintDestinationPlateLabels from '@/pages/print_destination_plate_labels'
 import statuses from '@/modules/statuses'
-import sprint from '@/modules/sprint'
+import Sprint from '@/modules/sprint'
 
 jest.mock('@/modules/sprint')
 
@@ -123,7 +123,7 @@ describe('print destination plate labels', () => {
     })
 
     it('successfully', async () => {
-      sprint.printLabels.mockReturnValue({
+      Sprint.printLabels.mockReturnValue({
         success: true,
         message: 'Labels successfully printed'
       })
@@ -134,7 +134,7 @@ describe('print destination plate labels', () => {
     })
 
     it('unsuccessfully', async () => {
-      sprint.printLabels.mockReturnValue({
+      Sprint.printLabels.mockReturnValue({
         success: false,
         error: 'There was an error'
       })

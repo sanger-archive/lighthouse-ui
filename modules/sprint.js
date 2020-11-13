@@ -1,5 +1,5 @@
 import axios from 'axios'
-import plateBarcode from '@/modules/plate_barcode'
+import PlateBarcode from '@/modules/plate_barcode'
 import config from '@/nuxt.config'
 
 const query = `mutation printRequest($printRequest: PrintRequest!, $printer: String!) {
@@ -72,7 +72,7 @@ const createPrintRequestBody = ({ barcodes, printer }) => ({
 */
 const printLabels = async ({ numberOfBarcodes, printer }) => {
   try {
-    const barcodes = await plateBarcode.createBarcodes(numberOfBarcodes)
+    const barcodes = await PlateBarcode.createBarcodes(numberOfBarcodes)
     const payload = createPrintRequestBody({ barcodes, printer })
 
     await axios.post(
@@ -94,7 +94,7 @@ const printLabels = async ({ numberOfBarcodes, printer }) => {
   }
 }
 
-const sprint = {
+const Sprint = {
   createLayout,
   createPrintRequestBody,
   createBarcodes,
@@ -102,4 +102,4 @@ const sprint = {
   headers
 }
 
-export default sprint
+export default Sprint

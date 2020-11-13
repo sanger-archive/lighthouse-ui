@@ -52,10 +52,10 @@ const createBarcodes = async (n) => {
     .map((response) => response.barcode)
 }
 
-const plateBarcode = {
+const PlateBarcode = {
   extractBarcode,
   createBarcode,
   createBarcodes
 }
 
-export default plateBarcode
+export default PlateBarcode

@@ -1,5 +1,5 @@
-const sprint = {
+const Sprint = {
   printLabels: jest.fn()
 }
 
-export default sprint
+export default Sprint

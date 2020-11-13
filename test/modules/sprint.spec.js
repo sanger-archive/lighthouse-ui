@@ -1,6 +1,6 @@
 import axios from 'axios'
-import sprint from '@/modules/sprint'
-import plateBarcode from '@/modules/plate_barcode'
+import Sprint from '@/modules/sprint'
+import PlateBarcode from '@/modules/plate_barcode'
 import config from '@/nuxt.config'
 
 jest.mock('@/modules/plate_barcode')
@@ -40,22 +40,22 @@ const layout = {
 
 describe('Sprint', () => {
   it('#createLayout', () => {
-    expect(sprint.createLayout('DN111111', 'DN222222')).toEqual(layout)
+    expect(Sprint.createLayout('DN111111', 'DN222222')).toEqual(layout)
   })
 
   describe('#createBarcodes', () => {
     it('will produce a single barcode with no arguments', () => {
-      expect(sprint.createBarcodes()).toEqual(['DN111111'])
+      expect(Sprint.createBarcodes()).toEqual(['DN111111'])
     })
 
     it('will produce n barcodes', () => {
-      expect(sprint.createBarcodes(10).length).toEqual(10)
+      expect(Sprint.createBarcodes(10).length).toEqual(10)
     })
   })
 
   describe('#createPrintRequestBody', () => {
     it('should produce the correct json if there is a single barcode', () => {
-      const body = sprint.createPrintRequestBody({
+      const body = Sprint.createPrintRequestBody({
         barcodes: ['DN111111'],
         printer: 'heron-bc3'
       })
@@ -67,7 +67,7 @@ describe('Sprint', () => {
 
     it('should produce the correct json if there are multiple barcodes', () => {
       expect(
-        sprint.createPrintRequestBody({
+        Sprint.createPrintRequestBody({
           barcodes: ['DN111111', 'DN222222', 'DN333333']
         }).printRequest.layouts.length
       ).toEqual(3)
@@ -88,13 +88,13 @@ describe('Sprint', () => {
     })
 
     it('successfully', async () => {
-      plateBarcode.createBarcodes.mockResolvedValue(barcodes)
+      PlateBarcode.createBarcodes.mockResolvedValue(barcodes)
       mock.mockResolvedValue({})
-      const response = await sprint.printLabels(args)
+      const response = await Sprint.printLabels(args)
       expect(mock).toHaveBeenCalledWith(
         config.privateRuntimeConfig.sprintBaseURL,
-        sprint.createPrintRequestBody({ ...args, barcodes }),
-        sprint.headers
+        Sprint.createPrintRequestBody({ ...args, barcodes }),
+        Sprint.headers
       )
       expect(response.success).toBeTruthy()
       expect(response.message).toEqual(
@@ -103,9 +103,9 @@ describe('Sprint', () => {
     })
 
     it('when plate barcode doesnt return the full compliment of barcodes', async () => {
-      plateBarcode.createBarcodes.mockResolvedValue(barcodes.slice(1))
+      PlateBarcode.createBarcodes.mockResolvedValue(barcodes.slice(1))
       mock.mockResolvedValue({})
-      const response = await sprint.printLabels(args)
+      const response = await Sprint.printLabels(args)
       expect(response.success).toBeTruthy()
       expect(response.message).toEqual(
         'successfully printed 4 of 5 labels to heron-bc3'
@@ -113,9 +113,9 @@ describe('Sprint', () => {
     })
 
     it('when sprint fails', async () => {
-      plateBarcode.createBarcodes.mockResolvedValue(barcodes)
+      PlateBarcode.createBarcodes.mockResolvedValue(barcodes)
       mock.mockImplementation(() => rejectPromise())
-      const response = await sprint.printLabels(args)
+      const response = await Sprint.printLabels(args)
       expect(response.success).toBeFalsy()
       expect(response.error).toEqual(errorResponse)
     })
