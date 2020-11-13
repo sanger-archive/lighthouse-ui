@@ -42,9 +42,9 @@ describe('print destination plate labels', () => {
   })
 
   it('should be able to select a number of labels', () => {
-    let input = wrapper.find('#numberOfBarcodes')
+    const input = wrapper.find('#numberOfBarcodes')
     input.setValue(10)
-    expect(vm.numberOfBarcodes).toEqual("10")
+    expect(vm.numberOfBarcodes).toEqual('10')
   })
 
   describe('setting the status', () => {
@@ -61,7 +61,7 @@ describe('print destination plate labels', () => {
         data() {
           return {
             status: statuses.Success,
-            alertMessage: 'I am a success',
+            alertMessage: 'I am a success'
           }
         }
       })
@@ -102,12 +102,8 @@ describe('print destination plate labels', () => {
   })
 
   describe('#printLabels', () => {
-    it('successfully', () => {
+    it('successfully', () => {})
 
-    })
-
-    it('unsuccessfully', () => {
-
-    })
+    it('unsuccessfully', () => {})
   })
 })

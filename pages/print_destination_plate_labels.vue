@@ -46,7 +46,6 @@
 </template>
 
 <script>
-
 import statuses from '@/modules/statuses'
 
 export default {
@@ -63,7 +62,7 @@ export default {
       status: statuses.Idle,
       alertMessage: '',
       printer: '',
-      numberOfBarcodes: 0,
+      numberOfBarcodes: 0
     }
   },
   computed: {
