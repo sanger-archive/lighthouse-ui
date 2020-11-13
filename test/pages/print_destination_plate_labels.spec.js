@@ -42,11 +42,12 @@ describe('print destination plate labels', () => {
   })
 
   it('should be able to select a number of labels', () => {
-    const input = wrapper.find('#numberOfBarcodes')
+    let input = wrapper.find('#numberOfBarcodes')
     input.setValue(10)
-    expect(vm.numberOfBarcodes).toEqual('10')
+    expect(vm.numberOfBarcodes).toEqual("10")
   })
 
+  // TODO: These tests are duplicated so will be removed once refactored. Need to get it to pass code coverage.
   describe('setting the status', () => {
     let vm
 
@@ -61,7 +62,7 @@ describe('print destination plate labels', () => {
         data() {
           return {
             status: statuses.Success,
-            alertMessage: 'I am a success'
+            alertMessage: 'I am a success',
           }
         }
       })
@@ -101,9 +102,13 @@ describe('print destination plate labels', () => {
     })
   })
 
-  describe('#printLabels', () => {
-    it('successfully', () => {})
+  describe('printing labels', () => {
+    it('successfully', () => {
 
-    it('unsuccessfully', () => {})
+    })
+
+    it('unsuccessfully', () => {
+
+    })
   })
 })
