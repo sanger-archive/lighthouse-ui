@@ -47,6 +47,7 @@
 
 <script>
 import statuses from '@/modules/statuses'
+import sprint from '@/modules/sprint'
 
 export default {
   props: {
@@ -85,7 +86,18 @@ export default {
       this.status = statuses[status]
       this.alertMessage = message
     },
-    printLabels() {}
+    async printLabels() {
+      const response = await sprint.printLabels({
+        numberOfBarcodes: this.numberOfBarcodes,
+        printer: this.printer
+      })
+
+      if (response.success) {
+        this.setStatus('Success', response.message)
+      } else {
+        this.setStatus('Error', response.error)
+      }
+    }
   }
 }
 </script>
