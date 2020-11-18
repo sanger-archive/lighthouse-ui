@@ -48,7 +48,6 @@
 import lighthouse from '../modules/lighthouse_service'
 import { getPlatesFromBoxBarcodes } from '@/modules/labwhere'
 
-// import lighthouse from '../modules/lighthouse_service'
 const countWithMap = (accumulator, plate) =>
   accumulator + (plate.plate_map ? 1 : 0)
 const countWithoutMap = (accumulator, plate) =>
