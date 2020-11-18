@@ -71,9 +71,9 @@ const createPrintRequestBody = ({ barcodes, printer }) => ({
   will create the print request body
   and send a request to sprint to print labels
 */
-const printLabels = async ({ count, printer }) => {
+const printLabels = async ({ numberOfBarcodes, printer }) => {
   try {
-    const barcodes = await Baracoda.createBarcodes(count)
+    const barcodes = await Baracoda.createBarcodes({ count: numberOfBarcodes })
     const payload = createPrintRequestBody({ barcodes, printer })
 
     await axios.post(
@@ -83,7 +83,7 @@ const printLabels = async ({ count, printer }) => {
     )
     return {
       success: true,
-      message: `successfully printed ${count} labels to ${printer}`
+      message: `successfully printed ${numberOfBarcodes} labels to ${printer}`
     }
   } catch (error) {
     return {
