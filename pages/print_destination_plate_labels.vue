@@ -45,6 +45,8 @@
             id="numberOfBarcodes"
             v-model="numberOfBarcodes"
             type="number"
+            value="1"
+            min="1"
           ></b-form-input>
         </p>
       </b-col>
@@ -69,8 +71,8 @@ export default {
     return {
       status: statuses.Idle,
       alertMessage: '',
-      printer: '',
-      numberOfBarcodes: 0
+      printer: 'heron-bc1',
+      numberOfBarcodes: 1
     }
   },
   computed: {
