@@ -94,7 +94,7 @@ describe('Sprint', () => {
     })
 
     it('successfully', async () => {
-      Baracoda.createBarcodes.mockResolvedValue(barcodes)
+      Baracoda.createBarcodes.mockResolvedValue({ success: true, barcodes })
       mock.mockResolvedValue({})
       const response = await Sprint.printLabels(args)
       expect(mock).toHaveBeenCalledWith(
@@ -109,14 +109,17 @@ describe('Sprint', () => {
     })
 
     it('when baracoda fails', async () => {
-      Baracoda.createBarcodes.mockImplementation(() => rejectPromise())
+      Baracoda.createBarcodes.mockResolvedValue({
+        success: false,
+        error: errorResponse
+      })
       const response = await Sprint.printLabels(args)
       expect(response.success).toBeFalsy()
       expect(response.error).toEqual(errorResponse)
     })
 
     it('when sprint fails', async () => {
-      Baracoda.createBarcodes.mockResolvedValue(barcodes)
+      Baracoda.createBarcodes.mockResolvedValue({ success: true, barcodes })
       mock.mockImplementation(() => rejectPromise())
       const response = await Sprint.printLabels(args)
       expect(response.success).toBeFalsy()

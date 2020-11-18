@@ -10,7 +10,7 @@ const createBarcodes = async ({ count }) => {
     )
     return {
       success: true,
-      barcodes: response.data.barcodes_group.barcodes
+      ...response.data.barcodes_group
     }
   } catch (error) {
     return {

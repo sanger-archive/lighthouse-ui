@@ -73,8 +73,14 @@ const createPrintRequestBody = ({ barcodes, printer }) => ({
 */
 const printLabels = async ({ numberOfBarcodes, printer }) => {
   try {
-    const barcodes = await Baracoda.createBarcodes({ count: numberOfBarcodes })
-    const payload = createPrintRequestBody({ barcodes, printer })
+    const response = await Baracoda.createBarcodes({ count: numberOfBarcodes })
+
+    // we don't want to proceed unless the barcodes have been created
+    if (!response.success) throw response.error
+
+    // we know that if it is successfull it will contain the barcodes so we
+    // can throw the whole response at it.
+    const payload = createPrintRequestBody({ ...response, printer })
 
     await axios.post(
       config.privateRuntimeConfig.sprintBaseURL,
