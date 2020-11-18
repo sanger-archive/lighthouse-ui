@@ -1,5 +1,5 @@
 import axios from 'axios'
-import PlateBarcode from '@/modules/plate_barcode'
+import Baracoda from '@/modules/baracoda'
 import config from '@/nuxt.config'
 
 const query = `mutation printRequest($printRequest: PrintRequest!, $printer: String!) {
@@ -65,14 +65,15 @@ const createPrintRequestBody = ({ barcodes, printer }) => ({
 })
 
 /*
-  accepts numberOfBarcodes and printer
+  accepts count and printer
+  count is the number of barcodes which is what baracoda needs
   creates the barcodes via a call to plate barcpde
   will create the print request body
   and send a request to sprint to print labels
 */
-const printLabels = async ({ numberOfBarcodes, printer }) => {
+const printLabels = async ({ count, printer }) => {
   try {
-    const barcodes = await PlateBarcode.createBarcodes(numberOfBarcodes)
+    const barcodes = await Baracoda.createBarcodes(count)
     const payload = createPrintRequestBody({ barcodes, printer })
 
     await axios.post(
@@ -82,9 +83,7 @@ const printLabels = async ({ numberOfBarcodes, printer }) => {
     )
     return {
       success: true,
-      // not sure if this is the best way to highlight partial failure. It is an edge case but dont
-      // want to add too much complexity to the code for something that will happen once in a blue moon
-      message: `successfully printed ${barcodes.length} of ${numberOfBarcodes} labels to ${printer}`
+      message: `successfully printed ${count} labels to ${printer}`
     }
   } catch (error) {
     return {

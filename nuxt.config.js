@@ -87,8 +87,8 @@ export default {
     sequencescapeBaseURL:
       process.env.SEQUENCESCAPE_BASE_URL || 'http://sequencescape',
     sprintBaseURL: process.env.SPRINT_BASE_URL || 'http://sprint',
-    plateBarcodeBaseURL:
-      process.env.PLATE_BARCODE_BASE_URL || 'http://plate_barcode'
+    baracodaBaseURL:
+      process.env.BARACODA_BASE_URL || 'http://baracoda'
   },
   publicRuntimeConfig: {
     asynchronous: process.env.ASYNCHRONOUS,

@@ -1,9 +1,9 @@
 import axios from 'axios'
 import Sprint from '@/modules/sprint'
-import PlateBarcode from '@/modules/plate_barcode'
+import Baracoda from '@/modules/baracoda'
 import config from '@/nuxt.config'
 
-jest.mock('@/modules/plate_barcode')
+jest.mock('@/modules/baracoda')
 
 // TODO: move out into helper
 const errorResponse = new Error('There was an error')
@@ -83,12 +83,12 @@ describe('Sprint', () => {
 
     beforeEach(() => {
       mock = jest.spyOn(axios, 'post')
-      args = { numberOfBarcodes: 5, printer: 'heron-bc3' }
-      barcodes = ['DN111111', 'DN222222', 'DN333333', 'DN444444', 'DN555555']
+      args = { count: 5, printer: 'heron-bc3' }
+      barcodes = ['HT-111116', 'HT-111117', 'HT-111118', 'HT-111119', 'HT-111120']
     })
 
     it('successfully', async () => {
-      PlateBarcode.createBarcodes.mockResolvedValue(barcodes)
+      Baracoda.createBarcodes.mockResolvedValue(barcodes)
       mock.mockResolvedValue({})
       const response = await Sprint.printLabels(args)
       expect(mock).toHaveBeenCalledWith(
@@ -98,29 +98,24 @@ describe('Sprint', () => {
       )
       expect(response.success).toBeTruthy()
       expect(response.message).toEqual(
-        'successfully printed 5 of 5 labels to heron-bc3'
+        'successfully printed 5 labels to heron-bc3'
       )
     })
 
-    it('when plate barcode doesnt return the full compliment of barcodes', async () => {
-      PlateBarcode.createBarcodes.mockResolvedValue(barcodes.slice(1))
-      mock.mockResolvedValue({})
+    it('when baracoda fails', async () => {
+      Baracoda.createBarcodes.mockImplementation(() => rejectPromise())
       const response = await Sprint.printLabels(args)
-      expect(response.success).toBeTruthy()
-      expect(response.message).toEqual(
-        'successfully printed 4 of 5 labels to heron-bc3'
-      )
+      expect(response.success).toBeFalsy()
+      expect(response.error).toEqual(errorResponse)
     })
 
     it('when sprint fails', async () => {
-      PlateBarcode.createBarcodes.mockResolvedValue(barcodes)
+      Baracoda.createBarcodes.mockResolvedValue(barcodes)
       mock.mockImplementation(() => rejectPromise())
       const response = await Sprint.printLabels(args)
       expect(response.success).toBeFalsy()
       expect(response.error).toEqual(errorResponse)
     })
 
-    // TODO: not sure if this is necesssary or how to implement
-    it.skip('when plate barcode service fails', async () => {})
   })
 })
