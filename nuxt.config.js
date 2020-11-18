@@ -87,8 +87,7 @@ export default {
     sequencescapeBaseURL:
       process.env.SEQUENCESCAPE_BASE_URL || 'http://sequencescape',
     sprintBaseURL: process.env.SPRINT_BASE_URL || 'http://sprint',
-    baracodaBaseURL:
-      process.env.BARACODA_BASE_URL || 'http://baracoda'
+    baracodaBaseURL: process.env.BARACODA_BASE_URL || 'http://baracoda'
   },
   publicRuntimeConfig: {
     asynchronous: process.env.ASYNCHRONOUS,

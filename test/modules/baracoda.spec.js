@@ -9,13 +9,7 @@ describe('PlateBarcode', () => {
 
   afterEach(() => {
     jest.resetAllMocks()
-    barcodes = [
-      "HT-111116",
-      "HT-111117",
-      "HT-111118",
-      "HT-111119",
-      "HT-111120"
-    ]
+    barcodes = ['HT-111116', 'HT-111117', 'HT-111118', 'HT-111119', 'HT-111120']
   })
 
   beforeEach(() => {
@@ -24,12 +18,14 @@ describe('PlateBarcode', () => {
 
   describe('#createBarcodes', () => {
     it('successfully', async () => {
-      mock.mockResolvedValue({ data: {
-        barcodes_group: {
+      mock.mockResolvedValue({
+        data: {
+          barcodes_group: {
             barcodes,
             id: 3
+          }
         }
-    } })
+      })
       const response = await Baracoda.createBarcodes(5)
       expect(response.success).toBeTruthy()
       expect(response.barcodes).toEqual(barcodes)
@@ -41,6 +37,5 @@ describe('PlateBarcode', () => {
       expect(response.success).toBeFalsy()
       expect(response.error).toEqual(errorResponse)
     })
-
   })
 })

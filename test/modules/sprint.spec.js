@@ -84,7 +84,13 @@ describe('Sprint', () => {
     beforeEach(() => {
       mock = jest.spyOn(axios, 'post')
       args = { numberOfBarcodes: 5, printer: 'heron-bc3' }
-      barcodes = ['HT-111116', 'HT-111117', 'HT-111118', 'HT-111119', 'HT-111120']
+      barcodes = [
+        'HT-111116',
+        'HT-111117',
+        'HT-111118',
+        'HT-111119',
+        'HT-111120'
+      ]
     })
 
     it('successfully', async () => {
@@ -116,6 +122,5 @@ describe('Sprint', () => {
       expect(response.success).toBeFalsy()
       expect(response.error).toEqual(errorResponse)
     })
-
   })
 })
