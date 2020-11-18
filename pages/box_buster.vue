@@ -151,7 +151,7 @@ export default {
       } else {
         // If it isn't a box, perhaps its a plate.
         // Requirements were that we should allow plate lookups
-        this.findPlates({ plateBarcodes: [this.barcode] })
+        this.findPlates({ barcodes: [this.barcode] })
       }
     },
     reset() {

@@ -111,16 +111,16 @@ describe('sentinel cherrypick', () => {
     let response
 
     it('on success it populates the table', () => {
-      response = { success: true, plateBarcodes: ['aBarcode1', 'aBarcode2'] }
+      response = { success: true, barcodes: ['aBarcode1', 'aBarcode2'] }
       wrapper.vm.handleGetPlatesResponse(response)
 
       const expected = [
         {
-          plate_barcode: response.plateBarcodes[0],
+          plate_barcode: response.barcodes[0],
           selected: true
         },
         {
-          plate_barcode: response.plateBarcodes[1],
+          plate_barcode: response.barcodes[1],
           selected: true
         }
       ]

@@ -187,19 +187,19 @@ describe('BoxBuster', () => {
     await barcodeField.trigger('change')
     await flushPromises()
     expect(lighthouse.findPlatesFromBarcodes).toHaveBeenCalledWith({
-      plateBarcodes: ['12345']
+      barcodes: ['12345']
     })
   })
 
   it('looks up barcodes in labwhere', async () => {
-    const plateBarcodes = [
+    const barcodes = [
       'AP-rna-1-8-posi',
       'AP-rna-2-2-posi',
       'AP-rna-3-0-nmap',
       'AP-rna-4-5-posi',
       'AP-rna-5-0-posi'
     ]
-    getPlatesFromBoxBarcodes.mockResolvedValue({ success: true, plateBarcodes })
+    getPlatesFromBoxBarcodes.mockResolvedValue({ success: true, barcodes })
     lighthouse.findPlatesFromBarcodes.mockResolvedValue({
       success: true,
       plates: []
@@ -214,14 +214,14 @@ describe('BoxBuster', () => {
   })
 
   it('looks up plates in lighthouse', async () => {
-    const plateBarcodes = [
+    const barcodes = [
       'AP-rna-1-8-posi',
       'AP-rna-2-2-posi',
       'AP-rna-3-0-nmap',
       'AP-rna-4-5-posi',
       'AP-rna-5-0-posi'
     ]
-    getPlatesFromBoxBarcodes.mockResolvedValue({ success: true, plateBarcodes })
+    getPlatesFromBoxBarcodes.mockResolvedValue({ success: true, barcodes })
     lighthouse.findPlatesFromBarcodes.mockResolvedValue({
       success: true,
       plates: []
@@ -233,12 +233,12 @@ describe('BoxBuster', () => {
     await flushPromises()
     expect(lighthouse.findPlatesFromBarcodes).toHaveBeenCalledWith({
       success: true,
-      plateBarcodes
+      barcodes
     })
   })
 
   it('populates plates from lighthouse', async () => {
-    const plateBarcodes = [
+    const barcodes = [
       'AP-rna-1-8-posi',
       'AP-rna-2-2-posi',
       'AP-rna-3-0-nmap',
@@ -250,17 +250,17 @@ describe('BoxBuster', () => {
       plates: examplePlates
     })
     wrapper = mount(BoxBuster, { localVue })
-    wrapper.vm.findPlates({ success: true, plateBarcodes })
+    wrapper.vm.findPlates({ success: true, barcodes })
     await flushPromises()
     expect(lighthouse.findPlatesFromBarcodes).toHaveBeenCalledWith({
       success: true,
-      plateBarcodes
+      barcodes
     })
     expect(wrapper.vm.plates).toEqual(examplePlates)
   })
 
   it('displays lighthouse errors', async () => {
-    const plateBarcodes = [
+    const barcodes = [
       'AP-rna-1-8-posi',
       'AP-rna-2-2-posi',
       'AP-rna-3-0-nmap',
@@ -273,7 +273,7 @@ describe('BoxBuster', () => {
     })
     wrapper = mount(BoxBuster, { localVue })
     await wrapper.setData({ labwhereResponse: { success: true } })
-    await wrapper.vm.findPlates({ success: true, plateBarcodes })
+    await wrapper.vm.findPlates({ success: true, barcodes })
     await flushPromises()
     expect(wrapper.vm.plates).toEqual([])
     expect(wrapper.text()).toContain('Lighthouse error')
