@@ -3,6 +3,7 @@ import { mount, createLocalVue } from '@vue/test-utils'
 import PrintDestinationPlateLabels from '@/pages/print_destination_plate_labels'
 import statuses from '@/modules/statuses'
 import Sprint from '@/modules/sprint'
+import config from '@/nuxt.config'
 
 jest.mock('@/modules/sprint')
 
@@ -10,9 +11,10 @@ const localVue = createLocalVue()
 localVue.use(BootstrapVue)
 
 describe('print destination plate labels', () => {
-  let wrapper, vm
+  let wrapper, vm, printers
 
   beforeEach(() => {
+    printers = config.publicRuntimeConfig.printers.split(',')
     wrapper = mount(PrintDestinationPlateLabels, {
       localVue,
       data() {
@@ -34,11 +36,13 @@ describe('print destination plate labels', () => {
 
   it('should have some printers', () => {
     expect(vm.printers).toBeDefined()
-    expect(vm.printers.length).toEqual(3)
+    expect(vm.printers).toEqual(printers)
   })
 
   it('should be able to select a printer', () => {
-    expect(wrapper.find('#selectPrinter').findAll('option').length).toEqual(3)
+    expect(wrapper.find('#selectPrinter').findAll('option').length).toEqual(
+      printers.length
+    )
   })
 
   it('should be able to select a number of labels', () => {

@@ -60,16 +60,18 @@ describe('Sprint', () => {
         printer: 'heron-bc3'
       })
       expect(body.query).toBeDefined()
-      expect(body.printer).toEqual('heron-bc3')
-      expect(body.printRequest).toBeDefined()
-      expect(body.printRequest.layouts[0]).toEqual(layout)
+      const variables = body.variables
+      expect(variables).toBeDefined()
+      expect(variables.printer).toEqual('heron-bc3')
+      expect(variables.printRequest).toBeDefined()
+      expect(variables.printRequest.layouts[0]).toEqual(layout)
     })
 
     it('should produce the correct json if there are multiple barcodes', () => {
       expect(
         Sprint.createPrintRequestBody({
           barcodes: ['DN111111', 'DN222222', 'DN333333']
-        }).printRequest.layouts.length
+        }).variables.printRequest.layouts.length
       ).toEqual(3)
     })
   })
@@ -95,7 +97,13 @@ describe('Sprint', () => {
 
     it('successfully', async () => {
       Baracoda.createBarcodes.mockResolvedValue({ success: true, barcodes })
-      mock.mockResolvedValue({})
+      mock.mockResolvedValue({
+        data: {
+          print: {
+            jobId: 'heron-bc1:eb5a7d75-2510-4355-a3c1-33c1ce8742ba'
+          }
+        }
+      })
       const response = await Sprint.printLabels(args)
       expect(mock).toHaveBeenCalledWith(
         config.privateRuntimeConfig.sprintBaseURL,
@@ -124,6 +132,27 @@ describe('Sprint', () => {
       const response = await Sprint.printLabels(args)
       expect(response.success).toBeFalsy()
       expect(response.error).toEqual(errorResponse)
+    })
+
+    it('when sprint returns an error', async () => {
+      Baracoda.createBarcodes.mockResolvedValue({ success: true, barcodes })
+      mock.mockResolvedValue({
+        data: {
+          errors: [
+            {
+              message:
+                'Exception while fetching data (/print) : Unknown printer without explicit printer type: bug'
+            }
+          ]
+        }
+      })
+      const response = await Sprint.printLabels(args)
+      expect(response.success).toBeFalsy()
+      expect(response.error).toEqual(
+        new Error(
+          'Exception while fetching data (/print) : Unknown printer without explicit printer type: bug'
+        )
+      )
     })
   })
 })

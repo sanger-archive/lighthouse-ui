@@ -5,7 +5,8 @@ import config from '@/nuxt.config'
 const query = `mutation printRequest($printRequest: PrintRequest!, $printer: String!) {
   print(printRequest: $printRequest, printer: $printer) {
     jobId
-  }`
+  }
+}`
 
 const headers = {
   headers: {
@@ -57,10 +58,12 @@ const createBarcodes = (n) => [...Array(n)].map((barcode) => 'DN111111')
 */
 const createPrintRequestBody = ({ barcodes, printer }) => ({
   query,
-  printer,
-  printRequest: {
-    // creates n barcodes and then turns each barcode into a layout
-    layouts: barcodes.map((barcode) => createLayout(barcode))
+  variables: {
+    printer,
+    printRequest: {
+      // creates n barcodes and then turns each barcode into a layout
+      layouts: barcodes.map((barcode) => createLayout(barcode))
+    }
   }
 })
 
@@ -73,7 +76,7 @@ const createPrintRequestBody = ({ barcodes, printer }) => ({
 */
 const printLabels = async ({ numberOfBarcodes, printer }) => {
   try {
-    const response = await Baracoda.createBarcodes({ count: numberOfBarcodes })
+    let response = await Baracoda.createBarcodes({ count: numberOfBarcodes })
 
     // we don't want to proceed unless the barcodes have been created
     if (!response.success) throw response.error
@@ -82,11 +85,19 @@ const printLabels = async ({ numberOfBarcodes, printer }) => {
     // can throw the whole response at it.
     const payload = createPrintRequestBody({ ...response, printer })
 
-    await axios.post(
+    response = await axios.post(
       config.privateRuntimeConfig.sprintBaseURL,
       payload,
       headers
     )
+
+    // because this is GraphQL it will always be a success unless it is a 500
+    // so we need to extract the error messages and turn it into an error object
+    if (response.data.errors)
+      throw new Error(
+        response.data.errors.map(({ message }) => message).join(',')
+      )
+
     return {
       success: true,
       message: `successfully printed ${numberOfBarcodes} labels to ${printer}`

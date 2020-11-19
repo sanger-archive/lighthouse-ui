@@ -57,13 +57,14 @@
 <script>
 import statuses from '@/modules/statuses'
 import sprint from '@/modules/sprint'
+import config from '@/nuxt.config'
 
 export default {
   props: {
     printers: {
       type: Array,
       default() {
-        return ['heron-bc1', 'heron-bc3', 'heron-bc5']
+        return config.publicRuntimeConfig.printers.split(',')
       }
     }
   },

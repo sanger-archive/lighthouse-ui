@@ -92,6 +92,7 @@ export default {
   publicRuntimeConfig: {
     asynchronous: process.env.ASYNCHRONOUS,
     projectId: process.env.PROJECT_ID,
-    studyId: process.env.STUDY_ID
+    studyId: process.env.STUDY_ID,
+    printers: process.env.PRINTERS
   }
 }
