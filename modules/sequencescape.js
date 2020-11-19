@@ -2,7 +2,7 @@ import axios from 'axios'
 import config from '@/nuxt.config'
 
 const createPayloadForCherrypickBatch = (
-  plateBarcodes,
+  barcodes,
   runtimeOptions = config.publicRuntimeConfig
 ) => {
   const { asynchronous, studyId, projectId } = runtimeOptions
@@ -11,7 +11,7 @@ const createPayloadForCherrypickBatch = (
       type: 'pick_lists',
       attributes: {
         asynchronous,
-        labware_pick_attributes: plateBarcodes.map((plateBarcode) => ({
+        labware_pick_attributes: barcodes.map((plateBarcode) => ({
           source_labware_barcode: plateBarcode,
           study_id: parseInt(studyId),
           project_id: parseInt(projectId)
@@ -21,8 +21,8 @@ const createPayloadForCherrypickBatch = (
   }
 }
 
-const createCherrypickBatch = async (plateBarcodes) => {
-  const payload = createPayloadForCherrypickBatch(plateBarcodes)
+const createCherrypickBatch = async (barcodes) => {
+  const payload = createPayloadForCherrypickBatch(barcodes)
 
   try {
     const response = await axios.post(
