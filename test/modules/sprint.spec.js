@@ -43,16 +43,6 @@ describe('Sprint', () => {
     expect(Sprint.createLayout('DN111111', 'DN222222')).toEqual(layout)
   })
 
-  describe('#createBarcodes', () => {
-    it('will produce a single barcode with no arguments', () => {
-      expect(Sprint.createBarcodes()).toEqual(['DN111111'])
-    })
-
-    it('will produce n barcodes', () => {
-      expect(Sprint.createBarcodes(10).length).toEqual(10)
-    })
-  })
-
   describe('#createPrintRequestBody', () => {
     it('should produce the correct json if there is a single barcode', () => {
       const body = Sprint.createPrintRequestBody({

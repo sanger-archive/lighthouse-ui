@@ -45,11 +45,6 @@ const createLayout = (barcode) => ({
   ]
 })
 
-// TODO: currently this is just a placeholder for creating barcodes
-// n = number of barcodes
-// e.g. if n = 3 returns ['DN111111', 'DN111111', 'DN111111']
-const createBarcodes = (n) => [...Array(n)].map((barcode) => 'DN111111')
-
 /* 
   Creates the print request body
   A query can have multiple layouts
@@ -113,7 +108,6 @@ const printLabels = async ({ numberOfBarcodes, printer }) => {
 const Sprint = {
   createLayout,
   createPrintRequestBody,
-  createBarcodes,
   printLabels,
   headers
 }
