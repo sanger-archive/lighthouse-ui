@@ -6,21 +6,6 @@
 
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
-<<<<<<< HEAD
-        <b-navbar-nav class="ml-auto">
-          <b-nav-item href="/">Reports</b-nav-item>
-          <b-nav-item href="sentinel_create_samples"
-            >Sentinel Sample Creation</b-nav-item
-          >
-          <b-nav-item href="sentinel_cherrypick"
-            >Sentinel Cherrypick</b-nav-item
-          >
-          <b-nav-item href="imports">Imports</b-nav-item>
-          <b-nav-item href="print_destination_plate_labels"
-            >Print Labels</b-nav-item
-          >
-        </b-navbar-nav>
-=======
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav class="ml-auto">
             <b-nav-item to="/">Reports</b-nav-item>
@@ -32,9 +17,11 @@
               >Sentinel Cherrypick</b-nav-item
             >
             <b-nav-item to="imports">Imports</b-nav-item>
+            <b-nav-item href="print_destination_plate_labels"
+              >Print Labels</b-nav-item
+            >
           </b-navbar-nav>
         </b-collapse>
->>>>>>> develop
       </b-navbar>
     </div>
     <nuxt />
