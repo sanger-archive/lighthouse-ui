@@ -1,11 +1,12 @@
 <template>
   <div>
     <div>
-      <b-navbar ref="navbar" toggleable="lg" type="dark" variant="info">
-        <b-navbar-brand href="/">Lighthouse</b-navbar-brand>
+      <b-navbar ref="navbar" toggleable="md" type="dark" variant="info">
+        <b-navbar-brand to="/">Lighthouse</b-navbar-brand>
 
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
+<<<<<<< HEAD
         <b-navbar-nav class="ml-auto">
           <b-nav-item href="/">Reports</b-nav-item>
           <b-nav-item href="sentinel_create_samples"
@@ -19,6 +20,21 @@
             >Print Labels</b-nav-item
           >
         </b-navbar-nav>
+=======
+        <b-collapse id="nav-collapse" is-nav>
+          <b-navbar-nav class="ml-auto">
+            <b-nav-item to="/">Reports</b-nav-item>
+            <b-nav-item to="box_buster">Box Buster</b-nav-item>
+            <b-nav-item to="sentinel_create_samples"
+              >Sentinel Sample Creation</b-nav-item
+            >
+            <b-nav-item to="sentinel_cherrypick"
+              >Sentinel Cherrypick</b-nav-item
+            >
+            <b-nav-item to="imports">Imports</b-nav-item>
+          </b-navbar-nav>
+        </b-collapse>
+>>>>>>> develop
       </b-navbar>
     </div>
     <nuxt />

@@ -21,7 +21,7 @@ describe('Labwhere', () => {
 
       response = await getPlatesFromBoxBarcodes(boxBarcodes)
       expect(response.success).toBeTruthy()
-      expect(response.plateBarcodes).toEqual(['AB123', 'CD456'])
+      expect(response.barcodes).toEqual(['AB123', 'CD456'])
     })
 
     it('when there is an error', async () => {
@@ -30,7 +30,7 @@ describe('Labwhere', () => {
       )
       response = await getPlatesFromBoxBarcodes(boxBarcodes)
       expect(response.success).toBeFalsy()
-      expect(response.plateBarcodes).not.toBeDefined()
+      expect(response.barcodes).not.toBeDefined()
     })
 
     // This is the same as the above but worth adding for consistency
@@ -40,7 +40,7 @@ describe('Labwhere', () => {
       )
       response = await getPlatesFromBoxBarcodes(['dodgybarcode'])
       expect(response.success).toBeFalsy()
-      expect(response.plateBarcodes).not.toBeDefined()
+      expect(response.barcodes).not.toBeDefined()
       expect(response.error).toEqual(new Error('There was an error'))
     })
 

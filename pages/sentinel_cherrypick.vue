@@ -138,19 +138,19 @@ export default {
         }
         this.showDismissibleAlert = true
       } else {
-        this.items = resp.plateBarcodes.map((barcode) => ({
+        this.items = resp.barcodes.map((barcode) => ({
           plate_barcode: barcode,
           selected: true
         }))
       }
     },
     async createBatch() {
-      const plateBarcodes = this.items
+      const barcodes = this.items
         .filter((item) => item.selected === true)
         .map((item) => item.plate_barcode)
 
-      if (plateBarcodes.length > 0) {
-        const resp = await createCherrypickBatch(plateBarcodes)
+      if (barcodes.length > 0) {
+        const resp = await createCherrypickBatch(barcodes)
         this.handleCreateBatchResponse(resp)
       } else {
         this.pickListResponse = {

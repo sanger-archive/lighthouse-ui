@@ -13,14 +13,12 @@ const handlePromise = async (promise) => {
   return rawResponse
 }
 
-// Accepts a list of plateBarcodes in the moduleOptions
+// Accepts a list of barcodes in the moduleOptions
 // Send a POST request to the Lighthouse service API
 // To create each plate
 // Return list of responses
-const createPlatesFromBarcodes = async (moduleOptions) => {
-  const plateBarcodes = moduleOptions.plateBarcodes
-
-  const promises = plateBarcodes.map((barcode) => {
+const createPlatesFromBarcodes = async ({ barcodes }) => {
+  const promises = barcodes.map((barcode) => {
     const url = `${config.privateRuntimeConfig.lighthouseBaseURL}/plates/new`
     return axios.post(url, { barcode })
   })
@@ -29,6 +27,20 @@ const createPlatesFromBarcodes = async (moduleOptions) => {
     promises.map((promise) => handlePromise(promise))
   )
   return responses
+}
+
+// Accepts a list of barcodes in the moduleOptions
+// Send a GET request to the Lighthouse service API
+const findPlatesFromBarcodes = async ({ barcodes }) => {
+  const url = `${config.privateRuntimeConfig.lighthouseBaseURL}/plates`
+  try {
+    const response = await axios.get(url, {
+      params: { barcodes }
+    })
+    return { success: true, ...response.data }
+  } catch (error) {
+    return { success: false, error }
+  }
 }
 
 const getImports = async () => {
@@ -108,6 +120,7 @@ const createReport = async () => {
 
 const lighthouse = {
   createPlatesFromBarcodes,
+  findPlatesFromBarcodes,
   getImports,
   deleteReports,
   getReports,
