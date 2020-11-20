@@ -16,6 +16,7 @@ const headers = {
 
 // Will create a new layout object for a print job
 // Requires barcode which will be used for barcode and text field
+// TODO: how do we turn this into external json
 const createLayout = (barcode) => ({
   barcodeFields: [
     {
