@@ -4,17 +4,7 @@
       <b-col>
         <h1>Print destination plate labels</h1>
         <p class="lead"></p>
-        <p>
-          <b-button
-            id="printLabels"
-            variant="success"
-            :disabled="isBusy"
-            @click="printLabels"
-          >
-            Print labels
-            <b-spinner v-show="isBusy" small></b-spinner>
-          </b-button>
-        </p>
+
         <!-- TODO: better in a component of its own? -->
         <p>
           <b-alert :show="isError" dismissible variant="danger">
@@ -48,6 +38,19 @@
             value="1"
             min="1"
           ></b-form-input>
+        </p>
+        <p class="text-right">
+          <b-button
+            id="printLabels"
+            block
+            size="lg"
+            variant="success"
+            :disabled="isBusy"
+            @click="printLabels"
+          >
+            Print labels
+            <b-spinner v-show="isBusy" small></b-spinner>
+          </b-button>
         </p>
       </b-col>
     </b-row>
@@ -97,6 +100,7 @@ export default {
       this.alertMessage = message
     },
     async printLabels() {
+      this.setStatus('Busy', 'Printing labels ...')
       const response = await sprint.printLabels({
         numberOfBarcodes: this.numberOfBarcodes,
         printer: this.printer

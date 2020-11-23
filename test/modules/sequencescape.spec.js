@@ -40,9 +40,7 @@ describe('Sequencescape', () => {
 
     it('should have a study id, project id and barcode', () => {
       const labwarePickAttribute = payloadAttributes.labware_pick_attributes[0]
-      expect(labwarePickAttribute.source_labware_barcode).toEqual(
-        barcodes[0]
-      )
+      expect(labwarePickAttribute.source_labware_barcode).toEqual(barcodes[0])
       expect(labwarePickAttribute.study_id).toBeGreaterThanOrEqual(1)
       expect(labwarePickAttribute.project_id).toBeGreaterThanOrEqual(1)
     })
