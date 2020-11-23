@@ -17,6 +17,9 @@
               >Sentinel Cherrypick</b-nav-item
             >
             <b-nav-item to="imports">Imports</b-nav-item>
+            <b-nav-item href="print_destination_plate_labels"
+              >Print Labels</b-nav-item
+            >
           </b-navbar-nav>
         </b-collapse>
       </b-navbar>
