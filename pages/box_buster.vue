@@ -32,6 +32,7 @@
       sort-by="number_of_positives"
       :sort-desc="true"
       :fields="fields"
+      caption-top
     >
       <template #table-caption>
         <span>Box Summary:</span>
