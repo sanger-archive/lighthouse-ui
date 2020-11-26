@@ -118,13 +118,95 @@ const createReport = async () => {
   }
 }
 
+// Get Robots
+const getRobots = async () => {
+  // TODO: Will this handle errors?
+
+  try {
+    const response = await axios.get(
+      `${config.privateRuntimeConfig.lighthouseBaseURL}/beckman/robots`
+    )
+    return {
+      success: true,
+      robots: response.data.robots
+    }
+  } catch (error) {
+    return {
+      success: false,
+      error
+    }
+  }
+}
+
+// Get Failure Types
+const getFailureTypes = async () => {
+  // TODO: Will this handle errors?
+
+  try {
+    const response = await axios.get(
+      `${config.privateRuntimeConfig.lighthouseBaseURL}/beckman/failure-types`
+    )
+    return {
+      success: true,
+      failure_types: response.data.failure_types
+    }
+  } catch (error) {
+    return {
+      success: false,
+      error
+    }
+  }
+}
+
+// Create Destination Plate
+const createDestinationPlate = async (username, barcode, robot_serial_number) => {
+  // TODO: Will this handle errors?
+  try {
+    const response = await axios.get(
+      `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypicked-plates/create?barcode=${barcode}&robot=${robot_serial_number}?user_id=${username}`
+    )
+    return {
+      success: true,
+      response: `Successfully created destination plate with barcode: ${barcode}`
+    }
+  } catch (error) {
+    return {
+      success: false,
+      error
+    }
+  }
+}
+
+// Fail Destination Plate
+const failDestinationPlate = async (username, barcode, robot_serial_number, failure_type) => {
+  // TODO: Will this handle errors?
+  try {
+    const response = await axios.get(
+      `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypicked-plates/fail?barcode=${barcode}&robot=${robot_serial_number}?user_id=${username}&failure_type=${failure_type}`
+    )
+    return {
+      success: true,
+      response: `Successfully failed destination plate with barcode: ${barcode}`
+    }
+  } catch (error) {
+    return {
+      success: false,
+      error
+    }
+  }
+}
+
 const lighthouse = {
   createPlatesFromBarcodes,
   findPlatesFromBarcodes,
   getImports,
   deleteReports,
   getReports,
-  createReport
+  createReport,
+  getRobots,
+  getFailureTypes,
+  createDestinationPlate,
+  failDestinationPlate
 }
 
 export default lighthouse
