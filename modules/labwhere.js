@@ -6,10 +6,10 @@ const getPlatesFromBoxBarcodes = async (...boxBarcodes) => {
     const url = `${config.privateRuntimeConfig.labwhereBaseURL}/labwares?location_barcodes=${boxBarcodes}`
     const response = await axios.get(url)
 
-    const plateBarcodes = response.data.map((plate) => plate.barcode)
+    const barcodes = response.data.map((plate) => plate.barcode)
 
-    if (plateBarcodes.length) {
-      return { success: true, plateBarcodes }
+    if (barcodes.length) {
+      return { success: true, barcodes }
     } else {
       return { success: false, error: 'The box has no plates' }
     }

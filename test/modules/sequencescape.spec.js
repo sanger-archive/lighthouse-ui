@@ -13,10 +13,10 @@ const config = {
 }
 
 describe('Sequencescape', () => {
-  let labwareBarcodes
+  let barcodes
 
   beforeEach(() => {
-    labwareBarcodes = ['123', '456']
+    barcodes = ['123', '456']
   })
 
   describe('#createPayloadForCherrypickBatch', () => {
@@ -24,7 +24,7 @@ describe('Sequencescape', () => {
 
     beforeEach(() => {
       payload = createPayloadForCherrypickBatch(
-        labwareBarcodes,
+        barcodes,
         config.publicRuntimeConfig
       )
       payloadAttributes = payload.data.attributes
@@ -40,9 +40,7 @@ describe('Sequencescape', () => {
 
     it('should have a study id, project id and barcode', () => {
       const labwarePickAttribute = payloadAttributes.labware_pick_attributes[0]
-      expect(labwarePickAttribute.source_labware_barcode).toEqual(
-        labwareBarcodes[0]
-      )
+      expect(labwarePickAttribute.source_labware_barcode).toEqual(barcodes[0])
       expect(labwarePickAttribute.study_id).toBeGreaterThanOrEqual(1)
       expect(labwarePickAttribute.project_id).toBeGreaterThanOrEqual(1)
     })
@@ -62,7 +60,7 @@ describe('Sequencescape', () => {
     it('successfully', async () => {
       expected = { data: { data: 'testURL' } }
       mock.mockResolvedValue(expected)
-      response = await createCherrypickBatch(labwareBarcodes)
+      response = await createCherrypickBatch(barcodes)
       expect(response.data).toEqual(expected.data.data)
     })
 
@@ -70,7 +68,7 @@ describe('Sequencescape', () => {
       mock.mockImplementationOnce(() =>
         Promise.reject(new Error('There was an error'))
       )
-      response = await createCherrypickBatch(labwareBarcodes)
+      response = await createCherrypickBatch(barcodes)
       expect(response.error).toEqual(new Error('There was an error'))
     })
   })

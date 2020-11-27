@@ -8,7 +8,7 @@ describe('api', () => {
       boxBarcode = 'aBoxBarcode'
       labwhereResponse = {
         success: true,
-        plateBarcodes: ['aBarcode1', 'aBarcode2']
+        barcodes: ['aBarcode1', 'aBarcode2']
       }
     })
 

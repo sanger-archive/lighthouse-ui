@@ -85,11 +85,14 @@ export default {
     lighthouseBaseURL: process.env.LIGHTHOUSE_BASE_URL || 'http://lighthouse',
     labwhereBaseURL: process.env.LABWHERE_BASE_URL || 'http://labwhere',
     sequencescapeBaseURL:
-      process.env.SEQUENCESCAPE_BASE_URL || 'http://sequencescape'
+      process.env.SEQUENCESCAPE_BASE_URL || 'http://sequencescape',
+    sprintBaseURL: process.env.SPRINT_BASE_URL || 'http://sprint',
+    baracodaBaseURL: process.env.BARACODA_BASE_URL || 'http://baracoda'
   },
   publicRuntimeConfig: {
     asynchronous: process.env.ASYNCHRONOUS,
     projectId: process.env.PROJECT_ID,
-    studyId: process.env.STUDY_ID
+    studyId: process.env.STUDY_ID,
+    printers: process.env.PRINTERS || 'a,b,c'
   }
 }
