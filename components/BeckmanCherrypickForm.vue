@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import lighthouse from '@/modules/lighthouse_service'
 
 // This form is used in the BeckmanCherrypick view
 // For both Create and Fail Destination Plate
@@ -66,61 +67,35 @@ export default {
       return commonValidation
     }
   },
-  async mounted () {
-    try {
-      await this.getRobots()
-      await this.getFailuresTypes()
-    } catch (error) {
-      // error
-    }
-  },
   methods: {
     async getRobots() {
-      // Uncomment below when API ready
-      // const response = await lighthouse.getRobots()
-
-      // Remove response when API ready
-      let response = {
-        success: true,
-        robots: [
-          {'name': 'robot 1', 'serial_number': 'B00000001'},
-          {'name': 'robot 2', 'serial_number': 'B00000002'}
-        ]
-      }
+      const response = await lighthouse.getRobots()
 
       // TODO: check on failure
-
       if (response.success) {
-        // console.log(response.robots)
         this.robots = response.robots
       } else {
+        this.robots = []
         // TODO: show error
         // this.setStatus('Error', 'There was an error creating the report')
       }
     },
-    async getFailuresTypes() {
-      // Uncomment below when API ready
-      // const response = await lighthouse.getFailureTypes()
-
-      // Remove response when API ready
-      let response = {
-        success: true,
-        failure_types: [
-          {'type': 'Type 1', 'description': 'Description of error 1'},
-          {'type': 'Type 2', 'description': 'Description of error 2'}
-        ]
-      }
+    async getFailureTypes() {
+      const response = await lighthouse.getFailureTypes()
 
       // TODO: check on failure
-
       if (response.success) {
-        // console.log(response.failure_types)
         this.failureTypes = response.failure_types
       } else {
+        this.failureTypes = []
         // TODO: show error
         // this.setStatus('Error', 'There was an error creating the report')
       }
     },
+  },
+  async created () {
+    await this.getRobots()
+    await this.getFailureTypes()
   }
 }
 </script>

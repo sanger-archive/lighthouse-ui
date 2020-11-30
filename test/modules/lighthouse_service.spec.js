@@ -1,5 +1,7 @@
 import axios from 'axios'
 import ReportsJson from '../data/reports'
+import RobotsJson from '../data/robots'
+import FailureTypesJson from '../data/failures_types.json'
 import lighthouse from '@/modules/lighthouse_service'
 import config from '@/nuxt.config'
 
@@ -339,6 +341,58 @@ describe('lighthouse_service api', () => {
       )
 
       response = await lighthouse.createReport()
+
+      expect(response.success).toBeFalsy()
+      expect(response.error).toEqual(new Error('There was an error'))
+    })
+  })
+
+  describe('#getRobots', () => {
+    beforeEach(() => {
+      mock = jest.spyOn(axios, 'get')
+    })
+
+    it('when the request is successful', async () => {
+      axios.get.mockResolvedValue({
+        data: { robots: RobotsJson.robots }
+      })
+      response = await lighthouse.getRobots()
+
+      expect(response.success).toBeTruthy()
+      expect(response.robots).toEqual(RobotsJson.robots)
+    })
+
+    it('when the request fails', async () => {
+      axios.get.mockImplementationOnce(() =>
+        Promise.reject(new Error('There was an error'))
+      )
+      response = await lighthouse.getRobots()
+
+      expect(response.success).toBeFalsy()
+      expect(response.error).toEqual(new Error('There was an error'))
+    })
+  })
+
+  describe('#getFailureTypes', () => {
+    beforeEach(() => {
+      mock = jest.spyOn(axios, 'get')
+    })
+
+    it('when the request is successful', async () => {
+      axios.get.mockResolvedValue({
+        data: { failure_types: FailureTypesJson.failure_types }
+      })
+      response = await lighthouse.getFailureTypes()
+
+      expect(response.success).toBeTruthy()
+      expect(response.failure_types).toEqual(FailureTypesJson.failure_types)
+    })
+
+    it('when the request fails', async () => {
+      axios.get.mockImplementationOnce(() =>
+        Promise.reject(new Error('There was an error'))
+      )
+      response = await lighthouse.getFailureTypes()
 
       expect(response.success).toBeFalsy()
       expect(response.error).toEqual(new Error('There was an error'))

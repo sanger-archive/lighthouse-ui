@@ -28,7 +28,7 @@
 // https://ssg-confluence.internal.sanger.ac.uk/display/PSDPUB/Cherrypicking+Events
 
 import BeckmanCherrypickForm from '@/components/BeckmanCherrypickForm'
-import lighthouse from '../modules/lighthouse_service'
+import lighthouse from '@/modules/lighthouse_service'
 
 export default {
   components: {

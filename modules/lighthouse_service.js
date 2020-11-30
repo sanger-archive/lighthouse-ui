@@ -121,14 +121,22 @@ const createReport = async () => {
 // Get Robots
 const getRobots = async () => {
   // TODO: Will this handle errors?
-
+  // check success
   try {
-    const response = await axios.get(
-      `${config.privateRuntimeConfig.lighthouseBaseURL}/beckman/robots`
-    )
+    // const response = await axios.get(
+    //   `${config.privateRuntimeConfig.lighthouseBaseURL}/beckman/robots`
+    // )
+    // return {
+    //   success: true,
+    //   robots: response.data.robots
+    // }
+
     return {
       success: true,
-      robots: response.data.robots
+      robots: [
+        {'name': 'robot 1', 'serial_number': 'B00000001'},
+        {'name': 'robot 2', 'serial_number': 'B00000002'}
+      ]
     }
   } catch (error) {
     return {
@@ -141,14 +149,21 @@ const getRobots = async () => {
 // Get Failure Types
 const getFailureTypes = async () => {
   // TODO: Will this handle errors?
-
+  // check success
   try {
-    const response = await axios.get(
-      `${config.privateRuntimeConfig.lighthouseBaseURL}/beckman/failure-types`
-    )
+    // const response = await axios.get(
+    //   `${config.privateRuntimeConfig.lighthouseBaseURL}/beckman/failure-types`
+    // )
+    // return {
+    //   success: true,
+    //   failure_types: response.data.failure_types
+    // }
     return {
       success: true,
-      failure_types: response.data.failure_types
+      failure_types: [
+        {'type': 'Type 1', 'description': 'Description of error 1'},
+        {'type': 'Type 2', 'description': 'Description of error 2'}
+      ]
     }
   } catch (error) {
     return {
@@ -160,7 +175,10 @@ const getFailureTypes = async () => {
 
 // Create Destination Plate
 const createDestinationPlate = async (username, barcode, robot_serial_number) => {
-  // TODO: Will this handle errors?
+  // check responses
+  // 200: no errors
+  // 404
+  // 500
   try {
     const response = await axios.get(
       `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypicked-plates/create?barcode=${barcode}&robot=${robot_serial_number}?user_id=${username}`
@@ -179,7 +197,11 @@ const createDestinationPlate = async (username, barcode, robot_serial_number) =>
 
 // Fail Destination Plate
 const failDestinationPlate = async (username, barcode, robot_serial_number, failure_type) => {
-  // TODO: Will this handle errors?
+  // check responses
+  // 200: no errors
+  // 200: errors
+  // 404
+  // 500
   try {
     const response = await axios.get(
       `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypicked-plates/fail?barcode=${barcode}&robot=${robot_serial_number}?user_id=${username}&failure_type=${failure_type}`

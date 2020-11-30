@@ -1,0 +1,6 @@
+{
+  "robots": [
+    {"name": "robot 1", "serial_number": "B00000001"},
+    {"name": "robot 2", "serial_number": "B00000002"}
+  ]
+}
