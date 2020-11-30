@@ -1,37 +1,36 @@
 <template>
   <b-form>
-    <b-form-group id="input-group-1" label="Plate Barcode:" label-for="input-1">
-      <b-form-input id="input-1" v-model="form.barcode" trim></b-form-input>
+    <b-form-group id='input-group-1' label='Plate Barcode:' label-for='input-1'>
+      <b-form-input id='input-1' v-model='form.barcode' trim></b-form-input>
     </b-form-group>
 
-    <b-form-group id="input-group-2" label="Username:" label-for="input-2">
-      <b-form-input id="input-2" v-model="form.username" trim></b-form-input>
+    <b-form-group id='input-group-2' label='Username:' label-for='input-2'>
+      <b-form-input id='input-2' v-model='form.username' trim></b-form-input>
     </b-form-group>
 
-    <b-form-group id="input-group-2" label="Robots:" label-for="input-2">
+    <b-form-group id='input-group-2' label='Robots:' label-for='input-2'>
       <b-form-select
-        id="input-robot-select"
-        v-model="form.robot_serial_number"
-        :options="robots"
-        value-field="serial_number"
-        text-field="name"
-
+        id='input-robot-select'
+        v-model='form.robotSerialNumber'
+        :options='robots'
+        value-field='serial_number'
+        text-field='name'
       ></b-form-select>
     </b-form-group>
 
-    <b-form-group v-if="this.action==='fail'" id="input-group-4" label="Failure Type:" label-for="input-4">
+    <b-form-group v-if="this.action==='fail'" id='input-group-4' label='Failure Type:' label-for='input-4'>
       <b-form-select
-        id="input-4"
-        v-model="form.failure_type"
-        :options="failure_types"
-        value-field="type"
-        text-field="description"
+        id='input-4'
+        v-model='form.failureType'
+        :options='failureTypes'
+        value-field='type'
+        text-field='description'
 
       ></b-form-select>
     </b-form-group>
 
     <!-- Below slot is filled with the actions button -->
-    <slot v-bind="{ form, formInvalid }"></slot>
+    <slot v-bind='{ form, formInvalid }'></slot>
   </b-form>
 </template>
 
@@ -41,35 +40,39 @@
 // For both Create and Fail Destination Plate
 export default {
   name: 'BeckmanCherrypickForm',
-  data () {
-    return {
-      form: {
-        username: '',
-        barcode: '',
-        robot_serial_number: '',
-        failure_type: '',
-      },
-      robots: [],
-      failure_types: [],
-    }
-  },
   props: {
     action: {
       type: String
     }
   },
+  data () {
+    return {
+      form: {
+        username: '',
+        barcode: '',
+        robotSerialNumber: '',
+        failureType: '',
+      },
+      robots: [],
+      failureTypes: [],
+    }
+  },
   computed: {
     formInvalid() {
-      let commonValidation = this.form.username === '' || this.form.barcode === '' || this.form.robot_serial_number === ''
+      const commonValidation = this.form.username === '' || this.form.barcode === '' || this.form.robotSerialNumber === ''
       if (this.action === 'fail') {
-        return commonValidation || this.form.failure_type === ''
+        return commonValidation || this.form.failureType === ''
       }
       return commonValidation
     }
   },
-  created() {
-    this.getRobots()
-    this.getFailuresTypes()
+  async mounted () {
+    try {
+      await this.getRobots()
+      await this.getFailuresTypes()
+    } catch (error) {
+      // error
+    }
   },
   methods: {
     async getRobots() {
@@ -80,8 +83,8 @@ export default {
       let response = {
         success: true,
         robots: [
-          {"name": "robot 1", "serial_number": "B00000001"},
-          {"name": "robot 2", "serial_number": "B00000002"}
+          {'name': 'robot 1', 'serial_number': 'B00000001'},
+          {'name': 'robot 2', 'serial_number': 'B00000002'}
         ]
       }
 
@@ -103,8 +106,8 @@ export default {
       let response = {
         success: true,
         failure_types: [
-          {"type": "Type 1", "description": "Description of error 1"},
-          {"type": "Type 2", "description": "Description of error 2"}
+          {'type': 'Type 1', 'description': 'Description of error 1'},
+          {'type': 'Type 2', 'description': 'Description of error 2'}
         ]
       }
 
@@ -112,7 +115,7 @@ export default {
 
       if (response.success) {
         // console.log(response.failure_types)
-        this.failure_types = response.failure_types
+        this.failureTypes = response.failure_types
       } else {
         // TODO: show error
         // this.setStatus('Error', 'There was an error creating the report')
@@ -122,6 +125,6 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang='scss'>
 
 </style>

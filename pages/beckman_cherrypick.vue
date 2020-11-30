@@ -6,7 +6,7 @@
       <b-tabs card>
         <b-tab title="Create">
           <b-card title="Create Destination Plate" sub-title="Generate destination plate from DART data so it can continue in pipeline partially filled.">
-            <BeckmanCherrypickForm v-bind:action="'create'" v-slot="{form, formInvalid}">
+            <BeckmanCherrypickForm v-slot="{form, formInvalid}" v-bind:action="'create'">
               <b-button @click="create(form)" variant="success" :disabled="formInvalid">Create Destination Plate</b-button>
             </BeckmanCherrypickForm>
           </b-card>
@@ -14,7 +14,7 @@
 
         <b-tab title="Fail">
           <b-card title="Fail Destination Plate" sub-title="Fail destination plate with a reason.">
-            <BeckmanCherrypickForm v-bind:action="'fail'" v-slot="{form, formInvalid}">
+            <BeckmanCherrypickForm v-slot="{form, formInvalid}" v-bind:action="'fail'">
               <b-button @click="fail(form)" variant="danger" :disabled="formInvalid">Fail Destination Plate</b-button>
             </BeckmanCherrypickForm>
           </b-card>
