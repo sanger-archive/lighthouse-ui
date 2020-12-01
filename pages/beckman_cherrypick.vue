@@ -49,6 +49,7 @@ export default {
       } else {
         this.robots = []
         // TODO: handle error
+        console.log(response.errors)
         // this.setStatus('Error', 'There was an error creating the report')
       }
     },
@@ -60,18 +61,17 @@ export default {
       } else {
         this.failureTypes = []
         // TODO: handle error
+        console.log(response.errors)
         // this.setStatus('Error', 'There was an error creating the report')
       }
     },
     async create(form) {
-      console.log('create')
-      console.log(form)
-      // const response = await lighthouse.createDestinationPlate(form.username, form.barcode, form.robot_serial_number)
+      const response = await lighthouse.createDestinationPlate(form.username, form.barcode, form.robot_serial_number)
+      console.log(response)
     },
     async fail(form) {
-      console.log('fail')
-      console.log(form)
-      // const response = await lighthouse.failDestinationPlate(form.username, form.barcode, form.robot_serial_number, form.failure_type)
+      const response = await lighthouse.failDestinationPlate(form.username, form.barcode, form.robot_serial_number, form.failure_type)
+      console.log(response)
     }
   },
   async mounted () {

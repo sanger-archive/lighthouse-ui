@@ -158,34 +158,37 @@ const getFailureTypes = async () => {
 
 // Create Destination Plate
 const createDestinationPlate = async (username, barcode, robot_serial_number) => {
-  // check responses
+  // TODO check:
   // 200: no errors
   // 404
   // 500
   try {
+    // TODO: check response
     const response = await axios.get(
-      `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypicked-plates/create?barcode=${barcode}&robot=${robot_serial_number}?user_id=${username}`
+      `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypicked-plates/create?barcode=${barcode}&robot=${robot_serial_number}&user_id=${username}`
     )
     return {
       success: true,
       response: `Successfully created destination plate with barcode: ${barcode}`
     }
-  } catch (error) {
+  } catch (resp) {
+    const errors = resp.response.data
     return {
       success: false,
-      error
+      ...errors
     }
   }
 }
 
 // Fail Destination Plate
 const failDestinationPlate = async (username, barcode, robot_serial_number, failure_type) => {
-  // check responses
+  // TODO: check
   // 200: no errors
   // 200: errors
   // 404
   // 500
   try {
+    // TODO: check response
     const response = await axios.get(
       `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypicked-plates/fail?barcode=${barcode}&robot=${robot_serial_number}?user_id=${username}&failure_type=${failure_type}`
     )
@@ -193,10 +196,11 @@ const failDestinationPlate = async (username, barcode, robot_serial_number, fail
       success: true,
       response: `Successfully failed destination plate with barcode: ${barcode}`
     }
-  } catch (error) {
+  } catch (resp) {
+    const errors = resp.response.data
     return {
       success: false,
-      error
+      ...errors
     }
   }
 }
