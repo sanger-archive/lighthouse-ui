@@ -158,18 +158,14 @@ const getFailureTypes = async () => {
 
 // Create Destination Plate
 const createDestinationPlate = async (username, barcode, robot_serial_number) => {
-  // TODO check:
-  // 200: no errors
-  // 404
-  // 500
   try {
-    // TODO: check response
     const response = await axios.get(
       `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypicked-plates/create?barcode=${barcode}&robot=${robot_serial_number}&user_id=${username}`
     )
+    let responseData = response.data.data
     return {
       success: true,
-      response: `Successfully created destination plate with barcode: ${barcode}`
+      response: `Successfully created destination plate, with barcode: ${responseData.plate_barcode}, and ${responseData.number_of_positives} positive sample(s)`
     }
   } catch (resp) {
     const errors = resp.response.data
@@ -182,15 +178,9 @@ const createDestinationPlate = async (username, barcode, robot_serial_number) =>
 
 // Fail Destination Plate
 const failDestinationPlate = async (username, barcode, robot_serial_number, failure_type) => {
-  // TODO: check
-  // 200: no errors
-  // 200: errors
-  // 404
-  // 500
   try {
-    // TODO: check response
-    const response = await axios.get(
-      `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypicked-plates/fail?barcode=${barcode}&robot=${robot_serial_number}?user_id=${username}&failure_type=${failure_type}`
+    await axios.get(
+      `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypicked-plates/fail?barcode=${barcode}&robot=${robot_serial_number}&user_id=${username}&failure_type=${failure_type}`
     )
     return {
       success: true,

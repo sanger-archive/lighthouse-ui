@@ -66,11 +66,13 @@ export default {
       }
     },
     async create(form) {
-      const response = await lighthouse.createDestinationPlate(form.username, form.barcode, form.robot_serial_number)
+      const response = await lighthouse.createDestinationPlate(form.username, form.barcode, form.robotSerialNumber)
+      // TODO: handle response
       console.log(response)
     },
     async fail(form) {
-      const response = await lighthouse.failDestinationPlate(form.username, form.barcode, form.robot_serial_number, form.failure_type)
+      const response = await lighthouse.failDestinationPlate(form.username, form.barcode, form.robotSerialNumber, form.failureType)
+      // TODO: handle response
       console.log(response)
     }
   },
