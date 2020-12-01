@@ -1,9 +1,6 @@
 import { mount, createLocalVue } from '@vue/test-utils'
 import BootstrapVue from 'bootstrap-vue'
 import BeckmanCherrypickForm from '@/components/BeckmanCherrypickForm'
-import lighthouse from '@/modules/lighthouse_service'
-
-jest.mock('@/modules/lighthouse_service')
 
 const localVue = createLocalVue()
 localVue.use(BootstrapVue)
@@ -12,23 +9,7 @@ describe('BeckmanCherrypickForm.vue', () => {
   let wrapper, form, props
 
   beforeEach(() => {
-    props = { action: 'create' }
-
-    lighthouse.getRobots.mockReturnValue({
-      success: true,
-      robots: [
-        {'name': 'robot 1', 'serial_number': 'B00000001'},
-        {'name': 'robot 2', 'serial_number': 'B00000002'}
-      ]
-    })
-
-    lighthouse.getFailureTypes.mockReturnValue({
-      success: true,
-      failure_types: [
-        {'type': 'Type 1', 'description': 'Description of error 1'},
-        {'type': 'Type 2', 'description': 'Description of error 2'}
-      ]
-    })
+    props = { action: 'create', robots: [], failureTypes: [] }
 
     wrapper = mount(BeckmanCherrypickForm, {
       propsData: props,
@@ -37,16 +18,15 @@ describe('BeckmanCherrypickForm.vue', () => {
     form = wrapper.vm
   })
 
-  describe('created', () => {
-    it('calls lighthouse initialiser methods', () => {
-      expect(lighthouse.getRobots).toHaveBeenCalled()
-      expect(lighthouse.getFailureTypes).toHaveBeenCalled()
-    })
-  })
-
   describe('props', () => {
     it('has a action property', () => {
       expect(form.action).toEqual(props.action)
+    })
+    it('has a robots property', () => {
+      expect(form.robots).toEqual(props.robots)
+    })
+    it('has a failureTypes property', () => {
+      expect(form.failureTypes).toEqual(props.failureTypes)
     })
   })
 
@@ -85,44 +65,4 @@ describe('BeckmanCherrypickForm.vue', () => {
     })
   })
 
-  describe('#getRobots', () => {
-    it('on success it sets the robots data', () => {
-      form.getRobots()
-      expect(form.robots.length).toEqual(2)
-    })
-
-    // TODO handler error
-    it('on failure it does something', () => {
-      lighthouse.getRobots.mockReturnValue({
-        success: false,
-      })
-
-      wrapper = mount(BeckmanCherrypickForm, {
-        propsData: props,
-        localVue,
-      })
-      expect(wrapper.vm.robots.length).toEqual(0)
-    })
-  })
-
-  describe('#getFailureTypes', () => {
-    it('sets the failure types data', () => {
-      form.getFailureTypes()
-      expect(form.failureTypes.length).toEqual(2)
-    })
-
-    // TODO handler error
-    it('on failure it does something', () => {
-      lighthouse.getFailureTypes.mockReturnValue({
-        success: false,
-        robots: []
-      })
-
-      wrapper = mount(BeckmanCherrypickForm, {
-        propsData: props,
-        localVue,
-      })
-      expect(wrapper.vm.failureTypes.length).toEqual(0)
-    })
-  })
 })

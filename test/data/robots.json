@@ -1,6 +1,20 @@
 {
   "robots": [
-    {"name": "robot 1", "serial_number": "B00000001"},
-    {"name": "robot 2", "serial_number": "B00000002"}
+    {
+      "name": "Robot 1",
+      "serial_number": "BKRB0001"
+    },
+    {
+      "name": "Robot 2",
+      "serial_number": "BKRB0002"
+    },
+    {
+      "name": "Robot 3",
+      "serial_number": "BKRB0003"
+    },
+    {
+      "name": "Robot 4",
+      "serial_number": "BKRB0004"
+    }
   ]
 }

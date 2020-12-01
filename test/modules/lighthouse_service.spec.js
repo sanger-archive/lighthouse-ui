@@ -353,13 +353,13 @@ describe('lighthouse_service api', () => {
     })
 
     it('when the request is successful', async () => {
-      axios.get.mockResolvedValue({
-        data: { robots: RobotsJson.robots }
-      })
-      response = await lighthouse.getRobots()
+      response = { data: { robots: RobotsJson.robots } }
+      mock.mockResolvedValue(response)
 
-      expect(response.success).toBeTruthy()
-      expect(response.robots).toEqual(RobotsJson.robots)
+      const result = await lighthouse.getRobots()
+      const expected = { success: true, robots: RobotsJson.robots }
+
+      expect(result).toEqual(expected)
     })
 
     // TODO: fix once know response
@@ -380,13 +380,13 @@ describe('lighthouse_service api', () => {
     })
 
     it('when the request is successful', async () => {
-      axios.get.mockResolvedValue({
-        data: { failure_types: FailureTypesJson.failure_types }
-      })
-      response = await lighthouse.getFailureTypes()
+      response = { data: { failure_types: FailureTypesJson.failure_types } }
+      mock.mockResolvedValue(response)
 
-      expect(response.success).toBeTruthy()
-      expect(response.failure_types).toEqual(FailureTypesJson.failure_types)
+      const result = await lighthouse.getFailureTypes()
+      const expected = { success: true, failure_types: FailureTypesJson.failure_types }
+
+      expect(result).toEqual(expected)
     })
 
     // TODO: fix once know response

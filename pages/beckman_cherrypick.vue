@@ -6,7 +6,7 @@
       <b-tabs card>
         <b-tab title="Create">
           <b-card title="Create Destination Plate" sub-title="Generate destination plate from DART data so it can continue in pipeline partially filled.">
-            <BeckmanCherrypickForm v-slot="{form, formInvalid}" v-bind:action="'create'">
+            <BeckmanCherrypickForm v-slot="{form, formInvalid}" v-bind:action="'create'" v-bind:robots="this.robots">
               <b-button @click="create(form)" variant="success" :disabled="formInvalid">Create Destination Plate</b-button>
             </BeckmanCherrypickForm>
           </b-card>
@@ -14,7 +14,7 @@
 
         <b-tab title="Fail">
           <b-card title="Fail Destination Plate" sub-title="Fail destination plate with a reason.">
-            <BeckmanCherrypickForm v-slot="{form, formInvalid}" v-bind:action="'fail'">
+            <BeckmanCherrypickForm v-slot="{form, formInvalid}" v-bind:action="'fail'" v-bind:robots="this.robots" v-bind:failureTypes="this.failureTypes">
               <b-button @click="fail(form)" variant="danger" :disabled="formInvalid">Fail Destination Plate</b-button>
             </BeckmanCherrypickForm>
           </b-card>
@@ -34,7 +34,35 @@ export default {
   components: {
     BeckmanCherrypickForm,
   },
+  data () {
+    return {
+      robots: [],
+      failureTypes: [],
+    }
+  },
   methods: {
+    async getRobots() {
+      const response = await lighthouse.getRobots()
+
+      if (response.success) {
+        this.robots = response.robots
+      } else {
+        this.robots = []
+        // TODO: handle error
+        // this.setStatus('Error', 'There was an error creating the report')
+      }
+    },
+    async getFailureTypes() {
+      const response = await lighthouse.getFailureTypes()
+
+      if (response.success) {
+        this.failureTypes = response.failure_types
+      } else {
+        this.failureTypes = []
+        // TODO: handle error
+        // this.setStatus('Error', 'There was an error creating the report')
+      }
+    },
     async create(form) {
       console.log('create')
       console.log(form)
@@ -45,6 +73,10 @@ export default {
       console.log(form)
       // const response = await lighthouse.failDestinationPlate(form.username, form.barcode, form.robot_serial_number, form.failure_type)
     }
+  },
+  async mounted () {
+    await this.getRobots()
+    await this.getFailureTypes()
   }
 }
 </script>

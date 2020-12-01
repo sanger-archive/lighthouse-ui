@@ -35,8 +35,6 @@
 </template>
 
 <script>
-import lighthouse from '@/modules/lighthouse_service'
-
 // This form is used in the BeckmanCherrypick view
 // For both Create and Fail Destination Plate
 export default {
@@ -44,6 +42,12 @@ export default {
   props: {
     action: {
       type: String
+    },
+    robots: {
+      type: Array
+    },
+    failureTypes: {
+      type: Array
     }
   },
   data () {
@@ -53,9 +57,7 @@ export default {
         barcode: '',
         robotSerialNumber: '',
         failureType: '',
-      },
-      robots: [],
-      failureTypes: [],
+      }
     }
   },
   computed: {
@@ -66,36 +68,6 @@ export default {
       }
       return commonValidation
     }
-  },
-  methods: {
-    async getRobots() {
-      const response = await lighthouse.getRobots()
-
-      // TODO: check on failure
-      if (response.success) {
-        this.robots = response.robots
-      } else {
-        this.robots = []
-        // TODO: show error
-        // this.setStatus('Error', 'There was an error creating the report')
-      }
-    },
-    async getFailureTypes() {
-      const response = await lighthouse.getFailureTypes()
-
-      // TODO: check on failure
-      if (response.success) {
-        this.failureTypes = response.failure_types
-      } else {
-        this.failureTypes = []
-        // TODO: show error
-        // this.setStatus('Error', 'There was an error creating the report')
-      }
-    },
-  },
-  async created () {
-    await this.getRobots()
-    await this.getFailureTypes()
   }
 }
 </script>

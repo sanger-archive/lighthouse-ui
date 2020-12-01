@@ -120,55 +120,38 @@ const createReport = async () => {
 
 // Get Robots
 const getRobots = async () => {
-  // TODO: Will this handle errors?
-  // check success
   try {
-    // const response = await axios.get(
-    //   `${config.privateRuntimeConfig.lighthouseBaseURL}/beckman/robots`
-    // )
-    // return {
-    //   success: true,
-    //   robots: response.data.robots
-    // }
-
+    const response = await axios.get(
+      `${config.privateRuntimeConfig.lighthouseBaseURL}/beckman/robots`
+    )
     return {
       success: true,
-      robots: [
-        {'name': 'robot 1', 'serial_number': 'B00000001'},
-        {'name': 'robot 2', 'serial_number': 'B00000002'}
-      ]
+      robots: response.data.robots
     }
-  } catch (error) {
+  } catch (resp) {
+    const errors = resp.response.data
     return {
       success: false,
-      error
+      ...errors
     }
   }
 }
 
 // Get Failure Types
 const getFailureTypes = async () => {
-  // TODO: Will this handle errors?
-  // check success
   try {
-    // const response = await axios.get(
-    //   `${config.privateRuntimeConfig.lighthouseBaseURL}/beckman/failure-types`
-    // )
-    // return {
-    //   success: true,
-    //   failure_types: response.data.failure_types
-    // }
+    const response = await axios.get(
+      `${config.privateRuntimeConfig.lighthouseBaseURL}/beckman/failure-types`
+    )
     return {
       success: true,
-      failure_types: [
-        {'type': 'Type 1', 'description': 'Description of error 1'},
-        {'type': 'Type 2', 'description': 'Description of error 2'}
-      ]
+      failure_types: response.data.failure_types
     }
-  } catch (error) {
+  } catch (resp) {
+    const errors = resp.response.data
     return {
       success: false,
-      error
+      ...errors
     }
   }
 }
