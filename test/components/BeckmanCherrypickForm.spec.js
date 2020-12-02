@@ -78,12 +78,18 @@ describe('BeckmanCherrypickForm.vue', () => {
       })
     })
     describe('when the action is fail', () => {
+      let wrapperWithFailAction
+
       beforeEach(() => {
         props = { action: 'fail' }
+        wrapperWithFailAction = mount(BeckmanCherrypickForm, {
+          propsData: props,
+          localVue
+        })
       })
 
       it('returns true when the data is invalid #1', () => {
-        wrapper.setData({
+        wrapperWithFailAction.setData({
           form: {
             username: '',
             barcode: '',
@@ -91,21 +97,21 @@ describe('BeckmanCherrypickForm.vue', () => {
             failureType: ''
           }
         })
-        expect(form.formInvalid).toEqual(true)
+        expect(wrapperWithFailAction.vm.formInvalid).toEqual(true)
       })
       it('returns true when the data is invalid #2', () => {
-        wrapper.setData({
+        wrapperWithFailAction.setData({
           form: {
-            username: '    ',
+            username: 'aUsername',
             barcode: 'aBarcode',
             robotSerialNumber: 'aRobotNum',
             failureType: ''
           }
         })
-        expect(form.formInvalid).toEqual(true)
+        expect(wrapperWithFailAction.vm.formInvalid).toEqual(true)
       })
       it('returns false when the data is valid', () => {
-        wrapper.setData({
+        wrapperWithFailAction.setData({
           form: {
             username: 'aUsername',
             barcode: 'aBarcode',
@@ -113,7 +119,7 @@ describe('BeckmanCherrypickForm.vue', () => {
             failureType: 'aFailureType'
           }
         })
-        expect(form.formInvalid).toEqual(false)
+        expect(wrapperWithFailAction.vm.formInvalid).toEqual(false)
       })
     })
   })
