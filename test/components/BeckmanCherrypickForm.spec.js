@@ -28,6 +28,24 @@ describe('BeckmanCherrypickForm.vue', () => {
     it('has a failureTypes property', () => {
       expect(form.failureTypes).toEqual(props.failureTypes)
     })
+
+    describe('defaults', () => {
+      let wrapperNoProps
+      beforeEach(() => {
+        wrapperNoProps = mount(BeckmanCherrypickForm, {
+          localVue
+        })
+      })
+      it('has a action property', () => {
+        expect(wrapperNoProps.vm.action).toEqual('')
+      })
+      it('has a robots property', () => {
+        expect(wrapperNoProps.vm.robots).toEqual([])
+      })
+      it('has a failureTypes property', () => {
+        expect(wrapperNoProps.vm.failureTypes).toEqual([])
+      })
+    })
   })
 
   describe('#formInvalid', () => {
