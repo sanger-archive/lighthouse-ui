@@ -28,9 +28,19 @@ describe('Alert.vue', () => {
     expect(wrapper.vm.type).toBe('primary')
   })
 
+  it('has a showDismissibleAlert', () => {
+    wrapper = mount(Alert, {
+      localVue,
+      data() {
+        return { showDismissibleAlert: true }
+      }
+    })
+    expect(wrapper.vm.showDismissibleAlert).toBe(true)
+  })
+
   it('is hidden as default', () => {
     wrapper = mount(Alert, { localVue })
-    expect(wrapper.vm.showDismissibleAlert).toBeFalsy()
+    expect(wrapper.vm.showDismissibleAlert).toBe(false)
     expect(wrapper.find('#showAlert').element).toBeTruthy()
   })
 
@@ -56,8 +66,9 @@ describe('Alert.vue', () => {
 
   it('#show sets the data', () => {
     const alert = mount(Alert, { localVue }).vm
-    alert.show('msg', 'primary')
+    alert.show('msg')
     expect(alert.message).toBe('msg')
     expect(alert.type).toBe('primary')
+    expect(alert.showDismissibleAlert).toBe(true)
   })
 })
