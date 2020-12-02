@@ -42,38 +42,60 @@ export default {
   },
   methods: {
     async getRobots() {
+      let msg, status
       const response = await lighthouse.getRobots()
 
       if (response.success) {
         this.robots = response.robots
       } else {
         this.robots = []
-        // TODO: handle error
-        console.log(response.errors)
-        // this.setStatus('Error', 'There was an error creating the report')
+        msg = response.errors.join(', ')
+        status = 'danger'
+        // Alert
       }
     },
     async getFailureTypes() {
       const response = await lighthouse.getFailureTypes()
-
+      let msg, status
       if (response.success) {
         this.failureTypes = response.failure_types
       } else {
         this.failureTypes = []
-        // TODO: handle error
-        console.log(response.errors)
-        // this.setStatus('Error', 'There was an error creating the report')
+        msg = response.errors.join(', ')
+        status = 'danger'
+        // Alert
       }
     },
     async create(form) {
+      let msg, status
+
       const response = await lighthouse.createDestinationPlate(form.username, form.barcode, form.robotSerialNumber)
-      // TODO: handle response
-      console.log(response)
+      if (response.success) {
+        msg = response.response
+        status = 'success'
+      } else {
+        msg = response.errors.join(', ')
+        status = 'danger'
+      }
+      // Alert
     },
     async fail(form) {
+      let msg, status
       const response = await lighthouse.failDestinationPlate(form.username, form.barcode, form.robotSerialNumber, form.failureType)
-      // TODO: handle response
-      console.log(response)
+
+      if (response.success) {
+        if (response.errors ){
+          msg = response.errors.join(', ')
+          status = 'warning'
+        } else {
+          msg = response.response
+          status = 'success'
+        }
+      } else {
+        msg = response.errors.join(', ')
+        status = 'danger'
+      }
+      // Alert
     }
   },
   async mounted () {

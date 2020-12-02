@@ -352,8 +352,8 @@ describe('lighthouse_service api', () => {
       mock = jest.spyOn(axios, 'get')
     })
 
-    it('when the request is successful', async () => {
-      response = { data: { robots: RobotsJson.robots } }
+    it('on success', async () => {
+      response = { data: { errors: [], robots: RobotsJson.robots } }
       mock.mockResolvedValue(response)
 
       const result = await lighthouse.getRobots()
@@ -362,16 +362,15 @@ describe('lighthouse_service api', () => {
       expect(result).toEqual(expected)
     })
 
-    // TODO: fix once know response
-    // it('when the request fails', async () => {
-    //   axios.get.mockImplementationOnce(() =>
-    //     Promise.reject(new Error('There was an error'))
-    //   )
-    //   response = await lighthouse.getRobots()
+    it('on failure', async () => {
+      axios.get.mockImplementationOnce(() =>
+        Promise.reject({ response: { data: { errors: ["There was an error"], robots: [] } } })
+      )
+      const result = await lighthouse.getRobots()
+      const expected = { success: false, errors: ["There was an error"], robots: [] }
 
-    //   expect(response.success).toBeFalsy()
-    //   expect(response.error).toEqual(new Error('There was an error'))
-    // })
+      expect(result).toEqual(expected)
+    })
   })
 
   describe('#getFailureTypes', () => {
@@ -380,7 +379,7 @@ describe('lighthouse_service api', () => {
     })
 
     it('when the request is successful', async () => {
-      response = { data: { failure_types: FailureTypesJson.failure_types } }
+      response = { data: { failure_types: FailureTypesJson.failure_types, errors: [] } }
       mock.mockResolvedValue(response)
 
       const result = await lighthouse.getFailureTypes()
@@ -389,15 +388,87 @@ describe('lighthouse_service api', () => {
       expect(result).toEqual(expected)
     })
 
-    // TODO: fix once know response
-    // it('when the request fails', async () => {
-    //   axios.get.mockImplementationOnce(() =>
-    //     Promise.reject(new Error('There was an error'))
-    //   )
-    //   response = await lighthouse.getFailureTypes()
+    it('on failure', async () => {
+      axios.get.mockImplementationOnce(() =>
+        Promise.reject({ response: { data: { errors: ["There was an error"], failure_types: [] } } })
+      )
+      const result = await lighthouse.getFailureTypes()
+      const expected = { success: false, errors: ["There was an error"], failure_types: [] }
 
-    //   expect(response.success).toBeFalsy()
-    //   expect(response.error).toEqual(new Error('There was an error'))
-    // })
+      expect(result).toEqual(expected)
+    })
+  })
+
+  describe('#createDestinationPlate', () => {
+    beforeEach(() => {
+      mock = jest.spyOn(axios, 'get')
+    })
+
+    it('on success', async () => {
+      let barcode = 'aBarcode'
+      response = {
+        data: {
+          data: {
+            plate_barcode: 'barcode',
+            centre: 'centre_prefix',
+            number_of_positives: 'len(samples)',
+          }
+        }
+      }
+      mock.mockResolvedValue(response)
+
+      let responseData = response.data.data
+      const result = await lighthouse.createDestinationPlate('username', barcode, 'x', 'aType')
+      const expected = { success: true, response: `Successfully created destination plate, with barcode: ${responseData.plate_barcode}, and ${responseData.number_of_positives} positive sample(s)` }
+
+      expect(result).toEqual(expected)
+    })
+
+    it('on failure', async () => {
+      axios.get.mockImplementationOnce(() =>
+        Promise.reject({ response: { data: { errors: ["There was an error"] } } })
+      )
+      const result = await lighthouse.createDestinationPlate('username', 'aBarcode', 'x', 'aType')
+
+      const expected = { success: false, errors: ["There was an error"] }
+      expect(result).toEqual(expected)
+    })
+  })
+
+  describe('#failDestinationPlate', () => {
+    beforeEach(() => {
+      mock = jest.spyOn(axios, 'get')
+    })
+
+    it('on success', async () => {
+      let barcode = 'aBarcode'
+      response = {data: { errors : [] } }
+      mock.mockResolvedValue(response)
+
+      const result = await lighthouse.failDestinationPlate('username', barcode, 'x', 'aType')
+      const expected = { success: true, response: `Successfully failed destination plate with barcode: ${barcode}` }
+
+      expect(result).toEqual(expected)
+    })
+
+    it('on partial success', async () => {
+      response = { data: { errors: ["some partial error message"] } }
+      mock.mockResolvedValue(response)
+
+      const result = await lighthouse.failDestinationPlate('username', 'aBarcode', 'x', 'aType')
+      const expected = { success: true, errors: ["some partial error message"] }
+
+      expect(result).toEqual(expected)
+    })
+
+    it('on failure', async () => {
+      axios.get.mockImplementationOnce(() =>
+        Promise.reject({ response: { data: { errors: ["There was an error"] } } })
+      )
+      const result = await lighthouse.failDestinationPlate('username', 'aBarcode', 'x', 'aType')
+
+      const expected = { success: false, errors: ["There was an error"] }
+      expect(result).toEqual(expected)
+    })
   })
 })

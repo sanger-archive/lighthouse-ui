@@ -157,18 +157,24 @@ const getFailureTypes = async () => {
 }
 
 // Create Destination Plate
+// Returned on success:
+//  { success: true, response: "A successful message" }
+// Returned on failure:
+//  { success: false, errors: ["A failure message"] }
 const createDestinationPlate = async (username, barcode, robot_serial_number) => {
   try {
     const response = await axios.get(
       `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypicked-plates/create?barcode=${barcode}&robot=${robot_serial_number}&user_id=${username}`
     )
     let responseData = response.data.data
+    // success
     return {
       success: true,
       response: `Successfully created destination plate, with barcode: ${responseData.plate_barcode}, and ${responseData.number_of_positives} positive sample(s)`
     }
   } catch (resp) {
     const errors = resp.response.data
+    // failure
     return {
       success: false,
       ...errors
@@ -177,17 +183,32 @@ const createDestinationPlate = async (username, barcode, robot_serial_number) =>
 }
 
 // Fail Destination Plate
+// Returned on success:
+//  { success: true, errors: [] }
+// Returned on partial success:
+//  { success: true, errors: ["A successful error message"] }
+// Returned on failure:
+//  { success: false, errors: ["A failure message"] }
 const failDestinationPlate = async (username, barcode, robot_serial_number, failure_type) => {
   try {
-    await axios.get(
+    let response = await axios.get(
       `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypicked-plates/fail?barcode=${barcode}&robot=${robot_serial_number}&user_id=${username}&failure_type=${failure_type}`
     )
+    // partial success
+    if (response.data.errors.length > 0) {
+      return {
+        success: true,
+        errors: response.data.errors
+      }
+    }
+    // success
     return {
       success: true,
       response: `Successfully failed destination plate with barcode: ${barcode}`
     }
   } catch (resp) {
     const errors = resp.response.data
+    // faliure
     return {
       success: false,
       ...errors
