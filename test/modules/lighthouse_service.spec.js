@@ -371,8 +371,20 @@ describe('lighthouse_service api', () => {
       const result = await lighthouse.getRobots()
       const expected = {
         success: false,
-        errors: ['There was an error'],
-        robots: []
+        errors: ['There was an error']
+      }
+
+      expect(result).toEqual(expected)
+    })
+
+    it('on unknown failure', async () => {
+      response = { message: 'Network Error' }
+      mock.mockRejectedValue(response)
+
+      const result = await lighthouse.getRobots()
+      const expected = {
+        success: false,
+        errors: ['Network Error: Failed to get Robots from Lighthouse Service']
       }
 
       expect(result).toEqual(expected)
@@ -410,8 +422,22 @@ describe('lighthouse_service api', () => {
       const result = await lighthouse.getFailureTypes()
       const expected = {
         success: false,
-        errors: ['There was an error'],
-        failure_types: []
+        errors: ['There was an error']
+      }
+
+      expect(result).toEqual(expected)
+    })
+
+    it('on unknown failure', async () => {
+      response = { message: 'Network Error' }
+      mock.mockRejectedValue(response)
+
+      const result = await lighthouse.getFailureTypes()
+      const expected = {
+        success: false,
+        errors: [
+          'Network Error: Failed to get Failure Types from Lighthouse Service'
+        ]
       }
 
       expect(result).toEqual(expected)

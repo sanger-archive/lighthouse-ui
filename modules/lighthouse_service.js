@@ -129,10 +129,12 @@ const getRobots = async () => {
       robots: response.data.robots
     }
   } catch (resp) {
-    const errors = resp.response.data
+    const errors = resp.response
+      ? resp.response.data.errors
+      : [resp.message + ': Failed to get Robots from Lighthouse Service']
     return {
       success: false,
-      ...errors
+      errors
     }
   }
 }
@@ -148,10 +150,12 @@ const getFailureTypes = async () => {
       failure_types: response.data.failure_types
     }
   } catch (resp) {
-    const errors = resp.response.data
+    const errors = resp.response
+      ? resp.response.data.errors
+      : [resp.message + ': Failed to get Failure Types from Lighthouse Service']
     return {
       success: false,
-      ...errors
+      errors
     }
   }
 }
