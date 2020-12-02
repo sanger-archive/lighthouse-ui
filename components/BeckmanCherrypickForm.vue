@@ -1,11 +1,11 @@
 <template>
   <b-form>
     <b-form-group id="input-group-1" label="Plate Barcode:" label-for="input-1">
-      <b-form-input id="input-1" v-model="form.barcode" trim></b-form-input>
+      <b-form-input id="input-1" v-model="form.barcode"></b-form-input>
     </b-form-group>
 
     <b-form-group id="input-group-2" label="Username:" label-for="input-2">
-      <b-form-input id="input-2" v-model="form.username" trim></b-form-input>
+      <b-form-input id="input-2" v-model="form.username"></b-form-input>
     </b-form-group>
 
     <b-form-group id="input-group-2" label="Robots:" label-for="input-2">
@@ -74,8 +74,8 @@ export default {
   computed: {
     formInvalid() {
       const commonValidation =
-        this.form.username === '' ||
-        this.form.barcode === '' ||
+        this.form.username.trim() === '' ||
+        this.form.barcode.trim() === '' ||
         this.form.robotSerialNumber === ''
       if (this.action === 'fail') {
         return commonValidation || this.form.failureType === ''
