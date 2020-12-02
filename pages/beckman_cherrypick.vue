@@ -1,21 +1,46 @@
 <template>
   <b-container>
     <h1>Beckman Cherrypick</h1>
-    <Alert ref='alert'></Alert>
+    <Alert ref="alert"></Alert>
     <b-card no-body>
       <b-tabs card>
         <b-tab title="Create">
-          <b-card title="Create Destination Plate" sub-title="Generate destination plate from DART data so it can continue in pipeline partially filled.">
-            <BeckmanCherrypickForm v-slot="{form, formInvalid}" v-bind:action="'create'" v-bind:robots="this.robots">
-              <b-button @click="create(form)" variant="success" :disabled="formInvalid">Create Destination Plate</b-button>
+          <b-card
+            title="Create Destination Plate"
+            sub-title="Generate destination plate from DART data so it can continue in pipeline partially filled."
+          >
+            <BeckmanCherrypickForm
+              v-slot="{ form, formInvalid }"
+              :action="'create'"
+              :robots="this.robots"
+            >
+              <b-button
+                variant="success"
+                :disabled="formInvalid"
+                @click="create(form)"
+                >Create Destination Plate</b-button
+              >
             </BeckmanCherrypickForm>
           </b-card>
         </b-tab>
 
         <b-tab title="Fail">
-          <b-card title="Fail Destination Plate" sub-title="Fail destination plate with a reason.">
-            <BeckmanCherrypickForm v-slot="{form, formInvalid}" v-bind:action="'fail'" v-bind:robots="this.robots" v-bind:failureTypes="this.failureTypes">
-              <b-button @click="fail(form)" variant="danger" :disabled="formInvalid">Fail Destination Plate</b-button>
+          <b-card
+            title="Fail Destination Plate"
+            sub-title="Fail destination plate with a reason."
+          >
+            <BeckmanCherrypickForm
+              v-slot="{ form, formInvalid }"
+              :action="'fail'"
+              :robots="this.robots"
+              :failure-types="this.failureTypes"
+            >
+              <b-button
+                variant="danger"
+                :disabled="formInvalid"
+                @click="fail(form)"
+                >Fail Destination Plate</b-button
+              >
             </BeckmanCherrypickForm>
           </b-card>
         </b-tab>
@@ -36,11 +61,15 @@ export default {
     BeckmanCherrypickForm,
     Alert
   },
-  data () {
+  data() {
     return {
       robots: [],
-      failureTypes: [],
+      failureTypes: []
     }
+  },
+  async mounted() {
+    await this.getRobots()
+    await this.getFailureTypes()
   },
   methods: {
     async getRobots() {
@@ -50,8 +79,8 @@ export default {
         this.robots = response.robots
       } else {
         this.robots = []
-        let message = response.errors.join(', ')
-        let type = 'danger'
+        const message = response.errors.join(', ')
+        const type = 'danger'
         this.showAlert(message, type)
       }
     },
@@ -62,15 +91,19 @@ export default {
         this.failureTypes = response.failure_types
       } else {
         this.failureTypes = []
-        let message = response.errors.join(', ')
-        let type = 'danger'
+        const message = response.errors.join(', ')
+        const type = 'danger'
         this.showAlert(message, type)
       }
     },
     async create(form) {
       let message, type
 
-      const response = await lighthouse.createDestinationPlate(form.username, form.barcode, form.robotSerialNumber)
+      const response = await lighthouse.createDestinationPlate(
+        form.username,
+        form.barcode,
+        form.robotSerialNumber
+      )
       if (response.success) {
         message = response.response
         type = 'success'
@@ -82,10 +115,15 @@ export default {
     },
     async fail(form) {
       let message, type
-      const response = await lighthouse.failDestinationPlate(form.username, form.barcode, form.robotSerialNumber, form.failureType)
+      const response = await lighthouse.failDestinationPlate(
+        form.username,
+        form.barcode,
+        form.robotSerialNumber,
+        form.failureType
+      )
 
       if (response.success) {
-        if (response.errors ){
+        if (response.errors) {
           message = response.errors.join(', ')
           type = 'warning'
         } else {
@@ -101,13 +139,8 @@ export default {
     showAlert(message, type) {
       return this.$refs.alert.show(message, type)
     }
-  },
-  async mounted () {
-    await this.getRobots()
-    await this.getFailureTypes()
   }
 }
 </script>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>

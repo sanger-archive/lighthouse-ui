@@ -5,7 +5,8 @@
       :variant="type"
       dismissible
       :show="showDismissibleAlert"
-      @dismissed="showDismissibleAlert=false">
+      @dismissed="showDismissibleAlert = false"
+    >
       {{ this.message }}
     </b-alert>
   </div>
@@ -14,7 +15,7 @@
 <script>
 export default {
   name: 'Alert',
-  data () {
+  data() {
     return {
       message: '',
       type: '',
@@ -32,6 +33,6 @@ export default {
       this.type = type
       this.showDismissibleAlert = true
     }
-  },
+  }
 }
 </script>

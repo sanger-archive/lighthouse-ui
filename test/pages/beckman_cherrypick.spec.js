@@ -1,10 +1,10 @@
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 import BootstrapVue from 'bootstrap-vue'
+import RobotsJson from '../data/robots'
+import FailureTypesJson from '../data/failures_types.json'
 import BeckmanCherrypick from '@/pages/beckman_cherrypick.vue'
 import lighthouse from '@/modules/lighthouse_service'
 import Alert from '@/components/Alert'
-import RobotsJson from '../data/robots'
-import FailureTypesJson from '../data/failures_types.json'
 jest.mock('@/modules/lighthouse_service')
 
 const localVue = createLocalVue()
@@ -15,18 +15,18 @@ describe('Beckman Cherrypick', () => {
 
   beforeEach(() => {
     robots = [
-      {'name': 'robot 1', 'serial_number': 'B00000001'},
-      {'name': 'robot 2', 'serial_number': 'B00000002'}
+      { name: 'robot 1', serial_number: 'B00000001' },
+      { name: 'robot 2', serial_number: 'B00000002' }
     ]
 
     failureTypes = [
-      {'type': 'Type 1', 'description': 'Description of error 1'},
-      {'type': 'Type 2', 'description': 'Description of error 2'}
+      { type: 'Type 1', description: 'Description of error 1' },
+      { type: 'Type 2', description: 'Description of error 2' }
     ]
 
     lighthouse.getRobots.mockReturnValue({
       success: true,
-      robots: robots
+      robots
     })
 
     lighthouse.getFailureTypes.mockReturnValue({
@@ -35,7 +35,7 @@ describe('Beckman Cherrypick', () => {
     })
 
     wrapper = shallowMount(BeckmanCherrypick, {
-      localVue,
+      localVue
     })
     page = wrapper.vm
   })
@@ -70,13 +70,16 @@ describe('Beckman Cherrypick', () => {
     it('on failure calls showAlert', async () => {
       page.showAlert = jest.fn()
       lighthouse.getRobots.mockReturnValue({
-        errors: ["No information exists for any Beckman robots"],
+        errors: ['No information exists for any Beckman robots'],
         robots: []
       })
 
       await page.getRobots()
       expect(page.robots.length).toEqual(0)
-      expect(page.showAlert).toHaveBeenCalledWith("No information exists for any Beckman robots", 'danger')
+      expect(page.showAlert).toHaveBeenCalledWith(
+        'No information exists for any Beckman robots',
+        'danger'
+      )
     })
   })
 
@@ -89,13 +92,16 @@ describe('Beckman Cherrypick', () => {
     it('on failure calls showAlert', async () => {
       page.showAlert = jest.fn()
       lighthouse.getFailureTypes.mockReturnValue({
-        errors: ["No information exists for any Beckman failure types"],
+        errors: ['No information exists for any Beckman failure types'],
         failure_types: []
       })
 
       await page.getFailureTypes()
       expect(page.failureTypes.length).toEqual(0)
-      expect(page.showAlert).toHaveBeenCalledWith("No information exists for any Beckman failure types", 'danger')
+      expect(page.showAlert).toHaveBeenCalledWith(
+        'No information exists for any Beckman failure types',
+        'danger'
+      )
     })
   })
 
@@ -103,7 +109,11 @@ describe('Beckman Cherrypick', () => {
     let form
 
     beforeEach(() => {
-      form = { username: 'username', barcode: 'barcode', robotSerialNumber: 'robotSerialNumber' }
+      form = {
+        username: 'username',
+        barcode: 'barcode',
+        robotSerialNumber: 'robotSerialNumber'
+      }
     })
 
     it('on success it shows an alert', async () => {
@@ -114,7 +124,10 @@ describe('Beckman Cherrypick', () => {
       })
 
       await page.create(form)
-      expect(page.showAlert).toHaveBeenCalledWith('A successful response message', 'success')
+      expect(page.showAlert).toHaveBeenCalledWith(
+        'A successful response message',
+        'success'
+      )
     })
 
     it('on failure calls showAlert', async () => {
@@ -133,7 +146,12 @@ describe('Beckman Cherrypick', () => {
     let form
 
     beforeEach(() => {
-      form = { username: 'username', barcode: 'barcode', robotSerialNumber: 'robotSerialNumber', failureType: 'failureType' }
+      form = {
+        username: 'username',
+        barcode: 'barcode',
+        robotSerialNumber: 'robotSerialNumber',
+        failureType: 'failureType'
+      }
     })
 
     it('on success it shows an alertx', async () => {
@@ -144,7 +162,10 @@ describe('Beckman Cherrypick', () => {
       })
 
       await page.fail(form)
-      expect(page.showAlert).toHaveBeenCalledWith('A successful response message', 'success')
+      expect(page.showAlert).toHaveBeenCalledWith(
+        'A successful response message',
+        'success'
+      )
     })
 
     it('on partial success it shows an alert', async () => {

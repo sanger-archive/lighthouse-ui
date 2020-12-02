@@ -13,7 +13,7 @@ describe('BeckmanCherrypickForm.vue', () => {
 
     wrapper = mount(BeckmanCherrypickForm, {
       propsData: props,
-      localVue,
+      localVue
     })
     form = wrapper.vm
   })
@@ -33,15 +33,29 @@ describe('BeckmanCherrypickForm.vue', () => {
   describe('#formInvalid', () => {
     describe('when the action is create', () => {
       it('returns true when the data is invalid #1', () => {
-        wrapper.setData({ form: { username: '', barcode: '', robotSerialNumber: '' } } )
+        wrapper.setData({
+          form: { username: '', barcode: '', robotSerialNumber: '' }
+        })
         expect(form.formInvalid).toBeTruthy
       })
       it('returns true when the data is invalid #2', () => {
-        wrapper.setData({ form: { username: '    ', barcode: 'aBarcode', robotSerialNumber: 'aRobotNum' } } )
+        wrapper.setData({
+          form: {
+            username: '    ',
+            barcode: 'aBarcode',
+            robotSerialNumber: 'aRobotNum'
+          }
+        })
         expect(form.formInvalid).toBeTruthy
       })
       it('returns false when the data is valid', () => {
-        wrapper.setData({ form: { username: 'aUsername', barcode: 'aBarcode', robotSerialNumber: 'aRobotNum' } } )
+        wrapper.setData({
+          form: {
+            username: 'aUsername',
+            barcode: 'aBarcode',
+            robotSerialNumber: 'aRobotNum'
+          }
+        })
         expect(form.formInvalid).toBeFalsey
       })
     })
@@ -51,18 +65,38 @@ describe('BeckmanCherrypickForm.vue', () => {
       })
 
       it('returns true when the data is invalid #1', () => {
-        wrapper.setData({ form: { username: '', barcode: '', robotSerialNumber: '', failureType: '' } } )
+        wrapper.setData({
+          form: {
+            username: '',
+            barcode: '',
+            robotSerialNumber: '',
+            failureType: ''
+          }
+        })
         expect(form.formInvalid).toBeTruthy
       })
       it('returns true when the data is invalid #2', () => {
-        wrapper.setData({ form: { username: '    ', barcode: 'aBarcode', robotSerialNumber: 'aRobotNum', failureType: '' } } )
+        wrapper.setData({
+          form: {
+            username: '    ',
+            barcode: 'aBarcode',
+            robotSerialNumber: 'aRobotNum',
+            failureType: ''
+          }
+        })
         expect(form.formInvalid).toBeTruthy
       })
       it('returns false when the data is valid', () => {
-        wrapper.setData({ form: { username: 'aUsername', barcode: 'aBarcode', robotSerialNumber: 'aRobotNum', failureType: 'aFailureType' } } )
+        wrapper.setData({
+          form: {
+            username: 'aUsername',
+            barcode: 'aBarcode',
+            robotSerialNumber: 'aRobotNum',
+            failureType: 'aFailureType'
+          }
+        })
         expect(form.formInvalid).toBeFalsey
       })
     })
   })
-
 })
