@@ -1,7 +1,5 @@
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 import BootstrapVue from 'bootstrap-vue'
-import RobotsJson from '../data/robots'
-import FailureTypesJson from '../data/failures_types.json'
 import BeckmanCherrypick from '@/pages/beckman_cherrypick.vue'
 import lighthouse from '@/modules/lighthouse_service'
 import Alert from '@/components/Alert'

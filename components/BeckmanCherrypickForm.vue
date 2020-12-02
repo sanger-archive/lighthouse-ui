@@ -19,7 +19,7 @@
     </b-form-group>
 
     <b-form-group
-      v-if="this.action === 'fail'"
+      v-if="action === 'fail'"
       id="input-group-4"
       label="Failure Type:"
       label-for="input-4"
@@ -45,13 +45,20 @@ export default {
   name: 'BeckmanCherrypickForm',
   props: {
     action: {
-      type: String
+      type: String,
+      default: ''
     },
     robots: {
-      type: Array
+      type: Array,
+      default() {
+        return []
+      }
     },
     failureTypes: {
-      type: Array
+      type: Array,
+      default() {
+        return []
+      }
     }
   },
   data() {

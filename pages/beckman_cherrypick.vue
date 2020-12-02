@@ -12,7 +12,7 @@
             <BeckmanCherrypickForm
               v-slot="{ form, formInvalid }"
               :action="'create'"
-              :robots="this.robots"
+              :robots="robots"
             >
               <b-button
                 variant="success"
@@ -32,8 +32,8 @@
             <BeckmanCherrypickForm
               v-slot="{ form, formInvalid }"
               :action="'fail'"
-              :robots="this.robots"
-              :failure-types="this.failureTypes"
+              :robots="robots"
+              :failure-types="failureTypes"
             >
               <b-button
                 variant="danger"

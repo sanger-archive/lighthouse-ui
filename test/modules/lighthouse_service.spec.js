@@ -363,11 +363,11 @@ describe('lighthouse_service api', () => {
     })
 
     it('on failure', async () => {
-      axios.get.mockImplementationOnce(() =>
-        Promise.reject({
-          response: { data: { errors: ['There was an error'], robots: [] } }
-        })
-      )
+      response = {
+        response: { data: { errors: ['There was an error'], robots: [] } }
+      }
+      mock.mockRejectedValue(response)
+
       const result = await lighthouse.getRobots()
       const expected = {
         success: false,
@@ -400,13 +400,13 @@ describe('lighthouse_service api', () => {
     })
 
     it('on failure', async () => {
-      axios.get.mockImplementationOnce(() =>
-        Promise.reject({
-          response: {
-            data: { errors: ['There was an error'], failure_types: [] }
-          }
-        })
-      )
+      response = {
+        response: {
+          data: { errors: ['There was an error'], failure_types: [] }
+        }
+      }
+      mock.mockRejectedValue(response)
+
       const result = await lighthouse.getFailureTypes()
       const expected = {
         success: false,
@@ -452,11 +452,11 @@ describe('lighthouse_service api', () => {
     })
 
     it('on failure', async () => {
-      axios.get.mockImplementationOnce(() =>
-        Promise.reject({
-          response: { data: { errors: ['There was an error'] } }
-        })
-      )
+      const response = {
+        response: { data: { errors: ['There was an error'] } }
+      }
+      mock.mockRejectedValue(response)
+
       const result = await lighthouse.createDestinationPlate(
         'username',
         'aBarcode',
@@ -509,11 +509,11 @@ describe('lighthouse_service api', () => {
     })
 
     it('on failure', async () => {
-      axios.get.mockImplementationOnce(() =>
-        Promise.reject({
-          response: { data: { errors: ['There was an error'] } }
-        })
-      )
+      const response = {
+        response: { data: { errors: ['There was an error'] } }
+      }
+      mock.mockRejectedValue(response)
+
       const result = await lighthouse.failDestinationPlate(
         'username',
         'aBarcode',

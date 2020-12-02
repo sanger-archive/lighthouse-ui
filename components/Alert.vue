@@ -7,7 +7,7 @@
       :show="showDismissibleAlert"
       @dismissed="showDismissibleAlert = false"
     >
-      {{ this.message }}
+      {{ message }}
     </b-alert>
   </div>
 </template>

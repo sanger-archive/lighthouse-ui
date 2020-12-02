@@ -36,7 +36,7 @@ describe('BeckmanCherrypickForm.vue', () => {
         wrapper.setData({
           form: { username: '', barcode: '', robotSerialNumber: '' }
         })
-        expect(form.formInvalid).toBeTruthy
+        expect(form.formInvalid).toBeTruthy()
       })
       it('returns true when the data is invalid #2', () => {
         wrapper.setData({
@@ -46,7 +46,7 @@ describe('BeckmanCherrypickForm.vue', () => {
             robotSerialNumber: 'aRobotNum'
           }
         })
-        expect(form.formInvalid).toBeTruthy
+        expect(form.formInvalid).toBeTruthy()
       })
       it('returns false when the data is valid', () => {
         wrapper.setData({
@@ -56,7 +56,7 @@ describe('BeckmanCherrypickForm.vue', () => {
             robotSerialNumber: 'aRobotNum'
           }
         })
-        expect(form.formInvalid).toBeFalsey
+        expect(form.formInvalid).toBeFalsey()
       })
     })
     describe('when the action is fail', () => {
@@ -73,7 +73,7 @@ describe('BeckmanCherrypickForm.vue', () => {
             failureType: ''
           }
         })
-        expect(form.formInvalid).toBeTruthy
+        expect(form.formInvalid).toBeTruthy()
       })
       it('returns true when the data is invalid #2', () => {
         wrapper.setData({
@@ -84,7 +84,7 @@ describe('BeckmanCherrypickForm.vue', () => {
             failureType: ''
           }
         })
-        expect(form.formInvalid).toBeTruthy
+        expect(form.formInvalid).toBeTruthy()
       })
       it('returns false when the data is valid', () => {
         wrapper.setData({
@@ -95,7 +95,7 @@ describe('BeckmanCherrypickForm.vue', () => {
             failureType: 'aFailureType'
           }
         })
-        expect(form.formInvalid).toBeFalsey
+        expect(form.formInvalid).toBeFalsey()
       })
     })
   })
