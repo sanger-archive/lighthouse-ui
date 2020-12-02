@@ -3,30 +3,35 @@ import BootstrapVue from 'bootstrap-vue'
 import BeckmanCherrypick from '@/pages/beckman_cherrypick.vue'
 import lighthouse from '@/modules/lighthouse_service'
 import Alert from '@/components/Alert'
-
+import RobotsJson from '../data/robots'
+import FailureTypesJson from '../data/failures_types.json'
 jest.mock('@/modules/lighthouse_service')
 
 const localVue = createLocalVue()
 localVue.use(BootstrapVue)
 
 describe('Beckman Cherrypick', () => {
-  let wrapper, page
+  let wrapper, page, robots, failureTypes
 
   beforeEach(() => {
+    robots = [
+      {'name': 'robot 1', 'serial_number': 'B00000001'},
+      {'name': 'robot 2', 'serial_number': 'B00000002'}
+    ]
+
+    failureTypes = [
+      {'type': 'Type 1', 'description': 'Description of error 1'},
+      {'type': 'Type 2', 'description': 'Description of error 2'}
+    ]
+
     lighthouse.getRobots.mockReturnValue({
       success: true,
-      robots: [
-        {'name': 'robot 1', 'serial_number': 'B00000001'},
-        {'name': 'robot 2', 'serial_number': 'B00000002'}
-      ]
+      robots: robots
     })
 
     lighthouse.getFailureTypes.mockReturnValue({
       success: true,
-      failure_types: [
-        {'type': 'Type 1', 'description': 'Description of error 1'},
-        {'type': 'Type 2', 'description': 'Description of error 2'}
-      ]
+      failure_types: failureTypes
     })
 
     wrapper = shallowMount(BeckmanCherrypick, {
@@ -43,6 +48,16 @@ describe('Beckman Cherrypick', () => {
     it('calls lighthouse initialiser methods', () => {
       expect(lighthouse.getRobots).toHaveBeenCalled()
       expect(lighthouse.getFailureTypes).toHaveBeenCalled()
+    })
+  })
+
+  describe('data', () => {
+    it('has robots data', () => {
+      expect(page.robots).toEqual(robots)
+    })
+
+    it('has failure types data', () => {
+      expect(page.failureTypes).toEqual(failureTypes)
     })
   })
 
