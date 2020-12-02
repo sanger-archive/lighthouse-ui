@@ -1,8 +1,8 @@
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 import BootstrapVue from 'bootstrap-vue'
 import BeckmanCherrypick from '@/pages/beckman_cherrypick.vue'
-import BeckmanCherrypickForm from '@/components/BeckmanCherrypickForm'
 import lighthouse from '@/modules/lighthouse_service'
+import Alert from '@/components/Alert'
 
 jest.mock('@/modules/lighthouse_service')
 
@@ -47,42 +47,117 @@ describe('Beckman Cherrypick', () => {
   })
 
   describe('#getRobots', () => {
-    it('on success it sets the robots data', () => {
-      page.getRobots()
+    it('on success it sets the robots data', async () => {
+      await page.getRobots()
       expect(page.robots.length).toEqual(2)
     })
 
-    // TODO handler error
-    it('on failure it does something', () => {
+    it('on failure calls showAlert', async () => {
+      page.showAlert = jest.fn()
       lighthouse.getRobots.mockReturnValue({
-        success: false,
-        errors: ["An unexpected error occurred fetching Beckman robot information"]
+        errors: ["No information exists for any Beckman robots"],
+        robots: []
       })
 
-      wrapper = shallowMount(BeckmanCherrypick, {
-        localVue,
-      })
-      expect(wrapper.vm.robots.length).toEqual(0)
+      await page.getRobots()
+      expect(page.robots.length).toEqual(0)
+      expect(page.showAlert).toHaveBeenCalledWith("No information exists for any Beckman robots", 'danger')
     })
   })
 
   describe('#getFailureTypes', () => {
-    it('sets the failure types data', () => {
-      page.getFailureTypes()
+    it('sets the failure types data', async () => {
+      await page.getFailureTypes()
       expect(page.failureTypes.length).toEqual(2)
     })
 
-    // TODO handler error
-    it('on failure it does something', () => {
+    it('on failure calls showAlert', async () => {
+      page.showAlert = jest.fn()
       lighthouse.getFailureTypes.mockReturnValue({
-        success: false,
-        errors: ["No information exists for any Beckman failure types"]
+        errors: ["No information exists for any Beckman failure types"],
+        failure_types: []
       })
 
-      wrapper = shallowMount(BeckmanCherrypick, {
-        localVue,
+      await page.getFailureTypes()
+      expect(page.failureTypes.length).toEqual(0)
+      expect(page.showAlert).toHaveBeenCalledWith("No information exists for any Beckman failure types", 'danger')
+    })
+  })
+
+  describe('#create', () => {
+    let form
+
+    beforeEach(() => {
+      form = { username: 'username', barcode: 'barcode', robotSerialNumber: 'robotSerialNumber' }
+    })
+
+    it('on success it shows an alert', async () => {
+      page.showAlert = jest.fn()
+      lighthouse.createDestinationPlate.mockReturnValue({
+        success: true,
+        response: 'A successful response message'
       })
-      expect(wrapper.vm.failureTypes.length).toEqual(0)
+
+      await page.create(form)
+      expect(page.showAlert).toHaveBeenCalledWith('A successful response message', 'success')
+    })
+
+    it('on failure calls showAlert', async () => {
+      page.showAlert = jest.fn()
+      lighthouse.createDestinationPlate.mockReturnValue({
+        success: false,
+        errors: ['an error']
+      })
+
+      await page.create(form)
+      expect(page.showAlert).toHaveBeenCalledWith('an error', 'danger')
+    })
+  })
+
+  describe('#fail', () => {
+    let form
+
+    beforeEach(() => {
+      form = { username: 'username', barcode: 'barcode', robotSerialNumber: 'robotSerialNumber', failureType: 'failureType' }
+    })
+
+    it('on success it shows an alertx', async () => {
+      page.showAlert = jest.fn()
+      lighthouse.failDestinationPlate.mockReturnValue({
+        success: true,
+        response: 'A successful response message'
+      })
+
+      await page.fail(form)
+      expect(page.showAlert).toHaveBeenCalledWith('A successful response message', 'success')
+    })
+
+    it('on partial success it shows an alert', async () => {
+      page.showAlert = jest.fn()
+      lighthouse.failDestinationPlate.mockReturnValue({
+        success: true,
+        errors: ['A error message']
+      })
+
+      await page.fail(form)
+      expect(page.showAlert).toHaveBeenCalledWith('A error message', 'warning')
+    })
+
+    it('on failure calls showAlert', async () => {
+      page.showAlert = jest.fn()
+      lighthouse.failDestinationPlate.mockReturnValue({
+        success: false,
+        errors: ['an error']
+      })
+
+      await page.fail(form)
+      expect(page.showAlert).toHaveBeenCalledWith('an error', 'danger')
+    })
+  })
+
+  describe('alert', () => {
+    it('has a alert', () => {
+      expect(wrapper.findComponent(Alert).exists()).toBeTruthy()
     })
   })
 })

@@ -1,7 +1,7 @@
 <template>
   <b-container>
     <h1>Beckman Cherrypick</h1>
-
+    <Alert ref='alert'></Alert>
     <b-card no-body>
       <b-tabs card>
         <b-tab title="Create">
@@ -29,10 +29,12 @@
 
 import BeckmanCherrypickForm from '@/components/BeckmanCherrypickForm'
 import lighthouse from '@/modules/lighthouse_service'
+import Alert from '@/components/Alert'
 
 export default {
   components: {
     BeckmanCherrypickForm,
+    Alert
   },
   data () {
     return {
@@ -42,60 +44,62 @@ export default {
   },
   methods: {
     async getRobots() {
-      let msg, status
       const response = await lighthouse.getRobots()
 
       if (response.success) {
         this.robots = response.robots
       } else {
         this.robots = []
-        msg = response.errors.join(', ')
-        status = 'danger'
-        // Alert
+        let message = response.errors.join(', ')
+        let type = 'danger'
+        this.showAlert(message, type)
       }
     },
     async getFailureTypes() {
       const response = await lighthouse.getFailureTypes()
-      let msg, status
+
       if (response.success) {
         this.failureTypes = response.failure_types
       } else {
         this.failureTypes = []
-        msg = response.errors.join(', ')
-        status = 'danger'
-        // Alert
+        let message = response.errors.join(', ')
+        let type = 'danger'
+        this.showAlert(message, type)
       }
     },
     async create(form) {
-      let msg, status
+      let message, type
 
       const response = await lighthouse.createDestinationPlate(form.username, form.barcode, form.robotSerialNumber)
       if (response.success) {
-        msg = response.response
-        status = 'success'
+        message = response.response
+        type = 'success'
       } else {
-        msg = response.errors.join(', ')
-        status = 'danger'
+        message = response.errors.join(', ')
+        type = 'danger'
       }
-      // Alert
+      this.showAlert(message, type)
     },
     async fail(form) {
-      let msg, status
+      let message, type
       const response = await lighthouse.failDestinationPlate(form.username, form.barcode, form.robotSerialNumber, form.failureType)
 
       if (response.success) {
         if (response.errors ){
-          msg = response.errors.join(', ')
-          status = 'warning'
+          message = response.errors.join(', ')
+          type = 'warning'
         } else {
-          msg = response.response
-          status = 'success'
+          message = response.response
+          type = 'success'
         }
       } else {
-        msg = response.errors.join(', ')
-        status = 'danger'
+        message = response.errors.join(', ')
+        type = 'danger'
       }
-      // Alert
+      this.showAlert(message, type)
+    },
+    showAlert(message, type) {
+      return this.$refs.alert.show(message, type)
     }
   },
   async mounted () {
