@@ -1,4 +1,4 @@
-import { createLocalVue, shallowMount, mount } from '@vue/test-utils'
+import { createLocalVue, shallowMount } from '@vue/test-utils'
 import BootstrapVue from 'bootstrap-vue'
 import BeckmanCherrypick from '@/pages/beckman_cherrypick.vue'
 import lighthouse from '@/modules/lighthouse_service'
@@ -197,7 +197,7 @@ describe('Beckman Cherrypick', () => {
 
   describe('#showAlert', () => {
     it('calls alert show', () => {
-      const parent = mount(BeckmanCherrypick, {
+      const parent = shallowMount(BeckmanCherrypick, {
         localVue
       })
 
