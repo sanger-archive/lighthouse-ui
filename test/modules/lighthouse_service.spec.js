@@ -405,7 +405,7 @@ describe('lighthouse_service api', () => {
       const result = await lighthouse.getFailureTypes()
       const expected = {
         success: true,
-        failure_types: FailureTypesJson.failure_types
+        failureTypes: FailureTypesJson.failure_types
       }
 
       expect(result).toEqual(expected)

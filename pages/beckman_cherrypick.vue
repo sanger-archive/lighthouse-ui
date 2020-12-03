@@ -72,29 +72,23 @@ export default {
     await this.getFailureTypes()
   },
   methods: {
-    async getRobots() {
-      const response = await lighthouse.getRobots()
+    async getDataFromLighthouse(lighthouseFunction, dataAttribute) {
+      const response = await lighthouseFunction
 
       if (response.success) {
-        this.robots = response.robots
+        this[dataAttribute] = response[dataAttribute]
       } else {
-        this.robots = []
+        this[dataAttribute] = []
         const message = response.errors.join(', ')
         const type = 'danger'
         this.showAlert(message, type)
       }
     },
-    async getFailureTypes() {
-      const response = await lighthouse.getFailureTypes()
-
-      if (response.success) {
-        this.failureTypes = response.failure_types
-      } else {
-        this.failureTypes = []
-        const message = response.errors.join(', ')
-        const type = 'danger'
-        this.showAlert(message, type)
-      }
+    getRobots() {
+      this.getDataFromLighthouse(lighthouse.getRobots(), 'robots')
+    },
+    getFailureTypes() {
+      this.getDataFromLighthouse(lighthouse.getFailureTypes(), 'failureTypes')
     },
     async create(form) {
       let message, type

@@ -29,7 +29,7 @@ describe('Beckman Cherrypick', () => {
 
     lighthouse.getFailureTypes.mockReturnValue({
       success: true,
-      failure_types: failureTypes
+      failureTypes
     })
 
     wrapper = shallowMount(BeckmanCherrypick, {
@@ -91,7 +91,7 @@ describe('Beckman Cherrypick', () => {
       page.showAlert = jest.fn()
       lighthouse.getFailureTypes.mockReturnValue({
         errors: ['No information exists for any Beckman failure types'],
-        failure_types: []
+        failureTypes: []
       })
 
       await page.getFailureTypes()

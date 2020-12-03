@@ -147,7 +147,7 @@ const getFailureTypes = async () => {
     )
     return {
       success: true,
-      failure_types: response.data.failure_types
+      failureTypes: response.data.failure_types
     }
   } catch (resp) {
     const errors = resp.response
