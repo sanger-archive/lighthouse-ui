@@ -91,31 +91,15 @@ export default {
       this.getDataFromLighthouse(lighthouse.getFailureTypes(), 'failureTypes')
     },
     async create(form) {
-      let message, type
-
-      const response = await lighthouse.createDestinationPlate(
-        form.username,
-        form.barcode,
-        form.robotSerialNumber
-      )
-      if (response.success) {
-        message = response.response
-        type = 'success'
-      } else {
-        message = response.errors.join(', ')
-        type = 'danger'
-      }
-      this.showAlert(message, type)
+      const response = await lighthouse.createDestinationPlate(form)
+      this.handleResponse(response)
     },
     async fail(form) {
+      const response = await lighthouse.failDestinationPlate(form)
+      this.handleResponse(response)
+    },
+    handleResponse(response) {
       let message, type
-      const response = await lighthouse.failDestinationPlate(
-        form.username,
-        form.barcode,
-        form.robotSerialNumber,
-        form.failureType
-      )
-
       if (response.success) {
         if (response.errors) {
           message = response.errors.join(', ')

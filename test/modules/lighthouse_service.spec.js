@@ -496,21 +496,24 @@ describe('lighthouse_service api', () => {
   })
 
   describe('#failDestinationPlate', () => {
+    let form, barcode
+
     beforeEach(() => {
       mock = jest.spyOn(axios, 'get')
+      barcode = 'aBarcode'
+      form = {
+        username: 'username',
+        barcode,
+        robotSerialNumber: 'x',
+        failureType: 'aType'
+      }
     })
 
     it('on success', async () => {
-      const barcode = 'aBarcode'
       response = { data: { errors: [] } }
       mock.mockResolvedValue(response)
 
-      const result = await lighthouse.failDestinationPlate(
-        'username',
-        barcode,
-        'x',
-        'aType'
-      )
+      const result = await lighthouse.failDestinationPlate(form)
       const expected = {
         success: true,
         response: `Successfully failed destination plate with barcode: ${barcode}`
@@ -523,12 +526,7 @@ describe('lighthouse_service api', () => {
       response = { data: { errors: ['some partial error message'] } }
       mock.mockResolvedValue(response)
 
-      const result = await lighthouse.failDestinationPlate(
-        'username',
-        'aBarcode',
-        'x',
-        'aType'
-      )
+      const result = await lighthouse.failDestinationPlate(form)
       const expected = { success: true, errors: ['some partial error message'] }
 
       expect(result).toEqual(expected)
@@ -540,12 +538,7 @@ describe('lighthouse_service api', () => {
       }
       mock.mockRejectedValue(response)
 
-      const result = await lighthouse.failDestinationPlate(
-        'username',
-        'aBarcode',
-        'x',
-        'aType'
-      )
+      const result = await lighthouse.failDestinationPlate(form)
 
       const expected = { success: false, errors: ['There was an error'] }
       expect(result).toEqual(expected)
