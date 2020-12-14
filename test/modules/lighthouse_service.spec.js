@@ -1,5 +1,7 @@
 import axios from 'axios'
 import ReportsJson from '../data/reports'
+import RobotsJson from '../data/robots'
+import FailureTypesJson from '../data/failures_types.json'
 import lighthouse from '@/modules/lighthouse_service'
 import config from '@/nuxt.config'
 
@@ -342,6 +344,204 @@ describe('lighthouse_service api', () => {
 
       expect(response.success).toBeFalsy()
       expect(response.error).toEqual(new Error('There was an error'))
+    })
+  })
+
+  describe('#getRobots', () => {
+    beforeEach(() => {
+      mock = jest.spyOn(axios, 'get')
+    })
+
+    it('on success', async () => {
+      response = { data: { errors: [], robots: RobotsJson.robots } }
+      mock.mockResolvedValue(response)
+
+      const result = await lighthouse.getRobots()
+      const expected = { success: true, robots: RobotsJson.robots }
+
+      expect(result).toEqual(expected)
+    })
+
+    it('on failure', async () => {
+      response = {
+        response: { data: { errors: ['There was an error'], robots: [] } }
+      }
+      mock.mockRejectedValue(response)
+
+      const result = await lighthouse.getRobots()
+      const expected = {
+        success: false,
+        errors: ['There was an error']
+      }
+
+      expect(result).toEqual(expected)
+    })
+
+    it('on unknown failure', async () => {
+      response = { message: 'Network Error' }
+      mock.mockRejectedValue(response)
+
+      const result = await lighthouse.getRobots()
+      const expected = {
+        success: false,
+        errors: ['Network Error: Failed to get Robots from Lighthouse Service']
+      }
+
+      expect(result).toEqual(expected)
+    })
+  })
+
+  describe('#getFailureTypes', () => {
+    beforeEach(() => {
+      mock = jest.spyOn(axios, 'get')
+    })
+
+    it('when the request is successful', async () => {
+      response = {
+        data: { failure_types: FailureTypesJson.failure_types, errors: [] }
+      }
+      mock.mockResolvedValue(response)
+
+      const result = await lighthouse.getFailureTypes()
+      const expected = {
+        success: true,
+        failureTypes: FailureTypesJson.failure_types
+      }
+
+      expect(result).toEqual(expected)
+    })
+
+    it('on failure', async () => {
+      response = {
+        response: {
+          data: { errors: ['There was an error'], failure_types: [] }
+        }
+      }
+      mock.mockRejectedValue(response)
+
+      const result = await lighthouse.getFailureTypes()
+      const expected = {
+        success: false,
+        errors: ['There was an error']
+      }
+
+      expect(result).toEqual(expected)
+    })
+
+    it('on unknown failure', async () => {
+      response = { message: 'Network Error' }
+      mock.mockRejectedValue(response)
+
+      const result = await lighthouse.getFailureTypes()
+      const expected = {
+        success: false,
+        errors: [
+          'Network Error: Failed to get Failure Types from Lighthouse Service'
+        ]
+      }
+
+      expect(result).toEqual(expected)
+    })
+  })
+
+  describe('#createDestinationPlate', () => {
+    beforeEach(() => {
+      mock = jest.spyOn(axios, 'get')
+    })
+
+    it('on success', async () => {
+      const barcode = 'aBarcode'
+      response = {
+        data: {
+          data: {
+            plate_barcode: 'barcode',
+            centre: 'centre_prefix',
+            number_of_positives: 'len(samples)'
+          }
+        }
+      }
+      mock.mockResolvedValue(response)
+
+      const responseData = response.data.data
+      const result = await lighthouse.createDestinationPlate(
+        'username',
+        barcode,
+        'x',
+        'aType'
+      )
+      const expected = {
+        success: true,
+        response: `Successfully created destination plate, with barcode: ${responseData.plate_barcode}, and ${responseData.number_of_positives} positive sample(s)`
+      }
+
+      expect(result).toEqual(expected)
+    })
+
+    it('on failure', async () => {
+      const response = {
+        response: { data: { errors: ['There was an error'] } }
+      }
+      mock.mockRejectedValue(response)
+
+      const result = await lighthouse.createDestinationPlate(
+        'username',
+        'aBarcode',
+        'x',
+        'aType'
+      )
+
+      const expected = { success: false, errors: ['There was an error'] }
+      expect(result).toEqual(expected)
+    })
+  })
+
+  describe('#failDestinationPlate', () => {
+    let form, barcode
+
+    beforeEach(() => {
+      mock = jest.spyOn(axios, 'get')
+      barcode = 'aBarcode'
+      form = {
+        username: 'username',
+        barcode,
+        robotSerialNumber: 'x',
+        failureType: 'aType'
+      }
+    })
+
+    it('on success', async () => {
+      response = { data: { errors: [] } }
+      mock.mockResolvedValue(response)
+
+      const result = await lighthouse.failDestinationPlate(form)
+      const expected = {
+        success: true,
+        response: `Successfully failed destination plate with barcode: ${barcode}`
+      }
+
+      expect(result).toEqual(expected)
+    })
+
+    it('on partial success', async () => {
+      response = { data: { errors: ['some partial error message'] } }
+      mock.mockResolvedValue(response)
+
+      const result = await lighthouse.failDestinationPlate(form)
+      const expected = { success: true, errors: ['some partial error message'] }
+
+      expect(result).toEqual(expected)
+    })
+
+    it('on failure', async () => {
+      const response = {
+        response: { data: { errors: ['There was an error'] } }
+      }
+      mock.mockRejectedValue(response)
+
+      const result = await lighthouse.failDestinationPlate(form)
+
+      const expected = { success: false, errors: ['There was an error'] }
+      expect(result).toEqual(expected)
     })
   })
 })
