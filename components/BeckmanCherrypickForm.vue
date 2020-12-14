@@ -8,9 +8,9 @@
       <b-form-input id="input-2" v-model="form.username"></b-form-input>
     </b-form-group>
 
-    <b-form-group id="input-group-2" label="Robots:" label-for="input-2">
+    <b-form-group id="input-group-3" label="Robots:" label-for="input-3">
       <b-form-select
-        id="input-robot-select"
+        id="input-3"
         v-model="form.robotSerialNumber"
         :options="robots"
         value-field="serial_number"
