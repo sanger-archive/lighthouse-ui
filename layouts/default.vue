@@ -20,6 +20,7 @@
             <b-nav-item href="print_destination_plate_labels"
               >Print Labels</b-nav-item
             >
+            <!-- Below is commented as required Lighthouse endpoints are on hold until Beckman robot is live-->
             <!-- <b-nav-item to="beckman_cherrypick">Beckman Cherrypick</b-nav-item> -->
           </b-navbar-nav>
         </b-collapse>
