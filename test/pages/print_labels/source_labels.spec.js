@@ -53,6 +53,28 @@ describe('print destination plate labels', () => {
     expect(vm.alertMessage).toEqual('Barcodes successfully printed')
   })
 
+  // TODO: the following 3 tests are arbitrary just to get it to pass.
+  it('browse files', () => {
+    vm = wrapper.vm
+    vm.browseFiles = jest.fn()
+    vm.browseFiles()
+    expect(vm.browseFiles).toHaveBeenCalled()
+  })
+
+  it('get files', () => {
+    vm = wrapper.vm
+    vm.getFiles = jest.fn()
+    vm.getFiles()
+    expect(vm.getFiles).toHaveBeenCalled()
+  })
+
+  it('add filenames', () => {
+    vm = wrapper.vm
+    vm.addFilenames = jest.fn()
+    vm.addFilenames()
+    expect(vm.addFilenames).toHaveBeenCalled()
+  })
+
   // TODO: These tests are duplicated so will be removed once refactored. Need to get it to pass code coverage.
   describe('setting the status', () => {
     let vm
@@ -106,27 +128,7 @@ describe('print destination plate labels', () => {
       expect(vm.isBusy).toBeTruthy()
       expect(wrapper.find('.alert').text()).toMatch('I am busy')
     })
-    // TODO: the following 3 tests are arbitrary just to get it to pass.
-    it('browse files', () => {
-      vm = wrapper.vm
-      vm.browseFiles = jest.fn()
-      vm.browseFiles()
-      expect(vm.browseFiles).toHaveBeenCalled()
-    })
 
-    it('get files', () => {
-      vm = wrapper.vm
-      vm.getFiles = jest.fn()
-      vm.getFiles()
-      expect(vm.getFiles).toHaveBeenCalled()
-    })
-
-    it('add filenames', () => {
-      vm = wrapper.vm
-      vm.addFilenames = jest.fn()
-      vm.addFilenames()
-      expect(vm.addFilenames).toHaveBeenCalled()
-    })
   })
 
   describe('printing labels', () => {
