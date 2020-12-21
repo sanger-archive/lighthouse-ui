@@ -2,7 +2,7 @@
   <b-container>
     <b-row>
       <b-col>
-        <h1>Print destination plate labels</h1>
+        <h1>Print Control plate labels</h1>
         <p class="lead"></p>
 
         <!-- TODO: better in a component of its own? -->
@@ -39,13 +39,23 @@
             min="1"
           ></b-form-input>
         </p>
+        <p>
+          <label for="barcode">
+            Please scan the control plate barcode?
+          </label>
+          <b-form-input
+            id="barcode"
+            v-model="barcode"
+            type="text"
+          ></b-form-input>
+        </p>
         <p class="text-right">
           <b-button
             id="printLabels"
             block
             size="lg"
             variant="success"
-            :disabled="isBusy"
+            :disabled="isBusy || barcode.length == 0"
             @click="printLabels"
           >
             Print labels
@@ -59,7 +69,7 @@
 
 <script>
 import statuses from '@/modules/statuses'
-import sprint from '@/modules/sprint'
+import Sprint from '@/modules/sprint'
 import config from '@/nuxt.config'
 
 export default {
@@ -76,7 +86,8 @@ export default {
       status: statuses.Idle,
       alertMessage: '',
       printer: 'heron-bc1',
-      numberOfBarcodes: 1
+      numberOfBarcodes: 1,
+      barcode: ''
     }
   },
   computed: {
@@ -99,10 +110,17 @@ export default {
       this.status = statuses[status]
       this.alertMessage = message
     },
+    multiplyBarcodes() {
+      return Array.from({ length: this.numberOfBarcodes }, () => this.barcode)
+    },
     async printLabels() {
-      this.setStatus('Busy', 'Printing labels ...')
-      const response = await sprint.printDestinationPlateLabels({
-        numberOfBarcodes: this.numberOfBarcodes,
+      const barcodes = this.multiplyBarcodes()
+      const labelFields = Sprint.createLabelFields({
+        barcodes,
+        text: 'Control'
+      })
+      const response = await Sprint.printLabels({
+        labelFields,
         printer: this.printer
       })
 

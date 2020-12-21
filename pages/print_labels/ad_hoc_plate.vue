@@ -2,7 +2,7 @@
   <b-container>
     <b-row>
       <b-col>
-        <h1>Print destination plate labels</h1>
+        <h1>Print Control plate labels</h1>
         <p class="lead"></p>
 
         <!-- TODO: better in a component of its own? -->
@@ -28,16 +28,20 @@
           ></b-form-select>
         </p>
         <p>
-          <label for="numberOfBarcodes">
-            How may labels would you like to print?
+          <label for="barcode">
+            Please scan the barcode
           </label>
           <b-form-input
-            id="numberOfBarcodes"
-            v-model="numberOfBarcodes"
-            type="number"
-            value="1"
-            min="1"
+            id="barcode"
+            v-model="barcode"
+            type="text"
           ></b-form-input>
+        </p>
+        <p>
+          <label for="text">
+            Please provide some text to go on the label
+          </label>
+          <b-form-input id="text" v-model="text" type="text"></b-form-input>
         </p>
         <p class="text-right">
           <b-button
@@ -45,7 +49,7 @@
             block
             size="lg"
             variant="success"
-            :disabled="isBusy"
+            :disabled="isBusy || !isValid"
             @click="printLabels"
           >
             Print labels
@@ -59,7 +63,7 @@
 
 <script>
 import statuses from '@/modules/statuses'
-import sprint from '@/modules/sprint'
+import Sprint from '@/modules/sprint'
 import config from '@/nuxt.config'
 
 export default {
@@ -76,7 +80,8 @@ export default {
       status: statuses.Idle,
       alertMessage: '',
       printer: 'heron-bc1',
-      numberOfBarcodes: 1
+      barcode: '',
+      text: ''
     }
   },
   computed: {
@@ -92,6 +97,9 @@ export default {
     },
     isBusy() {
       return this.status === statuses.Busy
+    },
+    isValid() {
+      return this.barcode.length > 0 && this.text.length > 0
     }
   },
   methods: {
@@ -100,9 +108,8 @@ export default {
       this.alertMessage = message
     },
     async printLabels() {
-      this.setStatus('Busy', 'Printing labels ...')
-      const response = await sprint.printDestinationPlateLabels({
-        numberOfBarcodes: this.numberOfBarcodes,
+      const response = await Sprint.printLabels({
+        labelFields: [{ barcode: this.barcode, text: this.text }],
         printer: this.printer
       })
 

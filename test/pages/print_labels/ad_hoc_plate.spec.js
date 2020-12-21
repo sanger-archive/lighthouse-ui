@@ -1,6 +1,6 @@
 import BootstrapVue from 'bootstrap-vue'
 import { mount, createLocalVue } from '@vue/test-utils'
-import PrintDestinationPlateLabels from '@/pages/print_destination_plate_labels'
+import AdHocPlate from '@/pages/print_labels/ad_hoc_plate'
 import statuses from '@/modules/statuses'
 import Sprint from '@/modules/sprint'
 import config from '@/nuxt.config'
@@ -10,12 +10,12 @@ jest.mock('@/modules/sprint')
 const localVue = createLocalVue()
 localVue.use(BootstrapVue)
 
-describe('print destination plate labels', () => {
+describe('print control plate labels', () => {
   let wrapper, vm, printers
 
   beforeEach(() => {
     printers = config.publicRuntimeConfig.printers.split(',')
-    wrapper = mount(PrintDestinationPlateLabels, {
+    wrapper = mount(AdHocPlate, {
       localVue,
       data() {
         return {}
@@ -29,9 +29,7 @@ describe('print destination plate labels', () => {
   })
 
   it('is a Vue instance', () => {
-    expect(
-      wrapper.findComponent(PrintDestinationPlateLabels).exists()
-    ).toBeTruthy()
+    expect(wrapper.findComponent(AdHocPlate).exists()).toBeTruthy()
   })
 
   it('should have some printers', () => {
@@ -45,10 +43,16 @@ describe('print destination plate labels', () => {
     )
   })
 
-  it('should be able to select a number of labels', () => {
-    const input = wrapper.find('#numberOfBarcodes')
-    input.setValue(10)
-    expect(vm.numberOfBarcodes).toEqual('10')
+  it('should be able to add a barcode', () => {
+    const input = wrapper.find('#barcode')
+    input.setValue('DN111111')
+    expect(vm.barcode).toEqual('DN111111')
+  })
+
+  it('should be able to add some text', () => {
+    const input = wrapper.find('#text')
+    input.setValue('some text')
+    expect(vm.text).toEqual('some text')
   })
 
   it('#setMessage', () => {
@@ -62,12 +66,12 @@ describe('print destination plate labels', () => {
     let vm
 
     it('default should be idle', () => {
-      vm = mount(PrintDestinationPlateLabels, { localVue }).vm
+      vm = mount(AdHocPlate, { localVue }).vm
       expect(vm.isIdle).toBeTruthy()
     })
 
     it('when success', () => {
-      wrapper = mount(PrintDestinationPlateLabels, {
+      wrapper = mount(AdHocPlate, {
         localVue,
         data() {
           return {
@@ -82,7 +86,7 @@ describe('print destination plate labels', () => {
     })
 
     it('when error', () => {
-      wrapper = mount(PrintDestinationPlateLabels, {
+      wrapper = mount(AdHocPlate, {
         localVue,
         data() {
           return {
@@ -97,7 +101,7 @@ describe('print destination plate labels', () => {
     })
 
     it('when busy', () => {
-      wrapper = mount(PrintDestinationPlateLabels, {
+      wrapper = mount(AdHocPlate, {
         localVue,
         data() {
           return {
@@ -113,13 +117,18 @@ describe('print destination plate labels', () => {
   })
 
   describe('printing labels', () => {
+    afterEach(() => {
+      jest.resetAllMocks()
+    })
+
     beforeEach(() => {
-      wrapper = mount(PrintDestinationPlateLabels, {
+      wrapper = mount(AdHocPlate, {
         localVue,
         data() {
           return {
             printer: 'heron-bc1',
-            numberOfBarcodes: 10
+            barcode: 'DN111111',
+            text: 'some text'
           }
         }
       })
@@ -127,18 +136,19 @@ describe('print destination plate labels', () => {
     })
 
     it('successfully', async () => {
-      Sprint.printDestinationPlateLabels.mockReturnValue({
+      Sprint.printLabels.mockReturnValue({
         success: true,
         message: 'Labels successfully printed'
       })
       await vm.printLabels()
+      expect(Sprint.printLabels).toHaveBeenCalled()
       expect(wrapper.find('.alert').text()).toMatch(
         'Labels successfully printed'
       )
     })
 
     it('unsuccessfully', async () => {
-      Sprint.printDestinationPlateLabels.mockReturnValue({
+      Sprint.printLabels.mockReturnValue({
         success: false,
         error: 'There was an error'
       })

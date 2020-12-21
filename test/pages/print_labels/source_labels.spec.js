@@ -1,11 +1,15 @@
+import fs from 'fs'
 import BootstrapVue from 'bootstrap-vue'
 import { mount, createLocalVue } from '@vue/test-utils'
-import PrintDestinationPlateLabels from '@/pages/print_destination_plate_labels'
+import SourcePlates from '@/pages/print_labels/source_plates'
 import statuses from '@/modules/statuses'
 import Sprint from '@/modules/sprint'
+import CSV from '@/modules/csv'
 import config from '@/nuxt.config'
+import barcodes from '@/test/data/barcodes'
 
 jest.mock('@/modules/sprint')
+jest.mock('@/modules/csv')
 
 const localVue = createLocalVue()
 localVue.use(BootstrapVue)
@@ -15,7 +19,7 @@ describe('print destination plate labels', () => {
 
   beforeEach(() => {
     printers = config.publicRuntimeConfig.printers.split(',')
-    wrapper = mount(PrintDestinationPlateLabels, {
+    wrapper = mount(SourcePlates, {
       localVue,
       data() {
         return {}
@@ -29,9 +33,7 @@ describe('print destination plate labels', () => {
   })
 
   it('is a Vue instance', () => {
-    expect(
-      wrapper.findComponent(PrintDestinationPlateLabels).exists()
-    ).toBeTruthy()
+    expect(wrapper.findComponent(SourcePlates).exists()).toBeTruthy()
   })
 
   it('should have some printers', () => {
@@ -45,12 +47,6 @@ describe('print destination plate labels', () => {
     )
   })
 
-  it('should be able to select a number of labels', () => {
-    const input = wrapper.find('#numberOfBarcodes')
-    input.setValue(10)
-    expect(vm.numberOfBarcodes).toEqual('10')
-  })
-
   it('#setMessage', () => {
     vm.setStatus('Success', 'Barcodes successfully printed')
     expect(vm.status).toEqual(statuses.Success)
@@ -62,12 +58,12 @@ describe('print destination plate labels', () => {
     let vm
 
     it('default should be idle', () => {
-      vm = mount(PrintDestinationPlateLabels, { localVue }).vm
+      vm = mount(SourcePlates, { localVue }).vm
       expect(vm.isIdle).toBeTruthy()
     })
 
     it('when success', () => {
-      wrapper = mount(PrintDestinationPlateLabels, {
+      wrapper = mount(SourcePlates, {
         localVue,
         data() {
           return {
@@ -82,7 +78,7 @@ describe('print destination plate labels', () => {
     })
 
     it('when error', () => {
-      wrapper = mount(PrintDestinationPlateLabels, {
+      wrapper = mount(SourcePlates, {
         localVue,
         data() {
           return {
@@ -97,7 +93,7 @@ describe('print destination plate labels', () => {
     })
 
     it('when busy', () => {
-      wrapper = mount(PrintDestinationPlateLabels, {
+      wrapper = mount(SourcePlates, {
         localVue,
         data() {
           return {
@@ -113,37 +109,75 @@ describe('print destination plate labels', () => {
   })
 
   describe('printing labels', () => {
-    beforeEach(() => {
-      wrapper = mount(PrintDestinationPlateLabels, {
-        localVue,
-        data() {
-          return {
-            printer: 'heron-bc1',
-            numberOfBarcodes: 10
+    let mock
+
+    describe('when the filename has not been entered', () => {
+      beforeEach(() => {
+        wrapper = mount(SourcePlates, {
+          localVue,
+          data() {
+            return {
+              printer: 'heron-bc1',
+              numberOfBarcodes: 10,
+              filename: null
+            }
           }
-        }
+        })
+        vm = wrapper.vm
       })
-      vm = wrapper.vm
+
+      it('should show an error message', async () => {
+        await vm.printLabels()
+        expect(wrapper.find('.alert').text()).toMatch('Please upload a file')
+      })
     })
 
-    it('successfully', async () => {
-      Sprint.printDestinationPlateLabels.mockReturnValue({
-        success: true,
-        message: 'Labels successfully printed'
-      })
-      await vm.printLabels()
-      expect(wrapper.find('.alert').text()).toMatch(
-        'Labels successfully printed'
-      )
-    })
+    describe('when the filename has been entered', () => {
+      let readFile, file
 
-    it('unsuccessfully', async () => {
-      Sprint.printDestinationPlateLabels.mockReturnValue({
-        success: false,
-        error: 'There was an error'
+      afterEach(() => {
+        jest.resetAllMocks()
       })
-      await vm.printLabels()
-      expect(wrapper.find('.alert').text()).toMatch('There was an error')
+
+      beforeEach(() => {
+        wrapper = mount(SourcePlates, {
+          localVue,
+          data() {
+            return {
+              printer: 'heron-bc1',
+              numberOfBarcodes: 10,
+              filename: 'barcodes.csv'
+            }
+          }
+        })
+        vm = wrapper.vm
+        mock = jest.spyOn(Sprint, 'printLabels')
+        vm.getFile = jest.fn()
+        readFile = fs.readFileSync('./test/data/barcodes.csv', 'ascii')
+        file = new File([readFile], 'barcodes.csv', { type: 'text/csv' })
+        CSV.parse.mockResolvedValue(barcodes)
+        vm.getFile.mockReturnValue(file)
+      })
+
+      it('successfully', async () => {
+        mock.mockResolvedValue({
+          success: true,
+          message: 'successfully printed 5 labels to heron-bc3'
+        })
+        await vm.printLabels()
+        expect(wrapper.find('.alert').text()).toMatch(
+          'successfully printed 5 labels to heron-bc3'
+        )
+      })
+
+      it('unsuccessfully', async () => {
+        mock.mockReturnValue({
+          success: false,
+          error: 'There was an error'
+        })
+        await vm.printLabels()
+        expect(wrapper.find('.alert').text()).toMatch('There was an error')
+      })
     })
   })
 })
