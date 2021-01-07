@@ -17,12 +17,7 @@
 </template>
 
 <script>
-export default {
-  props: {},
-  data() {
-    return {}
-  }
-}
+export default {}
 </script>
 
 <style></style>
