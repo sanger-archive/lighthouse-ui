@@ -65,7 +65,6 @@ describe('print destination plate labels', () => {
     } catch {
       console.log('error')
     }
-    
     expect(true).toBeTruthy()
   })
 
@@ -127,7 +126,6 @@ describe('print destination plate labels', () => {
       expect(vm.isBusy).toBeTruthy()
       expect(wrapper.find('.alert').text()).toMatch('I am busy')
     })
-
   })
 
   describe('printing labels', () => {

@@ -20,7 +20,7 @@ const headers = {
 const createLayout = ({ barcode, text }) => ({
   barcodeFields: [
     {
-      x: 16,
+      x: 20,
       y: 1,
       cellWidth: 0.2,
       barcodeType: 'code39',
@@ -37,7 +37,7 @@ const createLayout = ({ barcode, text }) => ({
       fontSize: 1.7
     },
     {
-      x: 57,
+      x: 70,
       y: 3,
       value: text,
       font: 'proportional',

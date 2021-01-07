@@ -155,7 +155,6 @@ export default {
       return document.getElementById('file-input').files[0]
     },
     addFilenames() {
-      /* eslint no-console: */
       this.filename = this.$refs.fileInput.value
       this.$refs.browseFiles.value = this.filename
     }
