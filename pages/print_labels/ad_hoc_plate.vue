@@ -2,7 +2,8 @@
   <b-container>
     <b-row>
       <b-col>
-        <h1>Print Control plate labels</h1>
+        <PrintLabelsRouter />
+        <h1>Print Ad hoc plate labels</h1>
         <p class="lead"></p>
 
         <!-- TODO: better in a component of its own? -->
@@ -65,8 +66,12 @@
 import statuses from '@/modules/statuses'
 import Sprint from '@/modules/sprint'
 import config from '@/nuxt.config'
+import PrintLabelsRouter from '@/components/PrintLabelsRouter'
 
 export default {
+  components: {
+    PrintLabelsRouter
+  },
   props: {
     printers: {
       type: Array,

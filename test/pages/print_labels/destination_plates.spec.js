@@ -1,6 +1,6 @@
 import BootstrapVue from 'bootstrap-vue'
 import { mount, createLocalVue } from '@vue/test-utils'
-import PrintDestinationPlateLabels from '@/pages/print_destination_plate_labels'
+import PrintDestinationPlateLabels from '@/pages/print_labels/destination_plates'
 import statuses from '@/modules/statuses'
 import Sprint from '@/modules/sprint'
 import config from '@/nuxt.config'

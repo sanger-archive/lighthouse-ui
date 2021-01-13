@@ -11,15 +11,12 @@ describe('index', () => {
 
   beforeEach(() => {
     wrapper = mount(Index, {
-      localVue
+      localVue,
+      stubs: ['nuxt-link']
     })
   })
 
   it('is a Vue instance', () => {
     expect(wrapper.findComponent(Index).exists()).toBeTruthy()
-  })
-
-  it('has some text', () => {
-    expect(wrapper.find('h1').text()).toEqual('Print Labels')
   })
 })
