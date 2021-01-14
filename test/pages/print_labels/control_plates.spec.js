@@ -1,6 +1,6 @@
 import BootstrapVue from 'bootstrap-vue'
 import { mount, createLocalVue } from '@vue/test-utils'
-import PrintDestinationPlateLabels from '@/pages/print_destination_plate_labels'
+import ControlPlates from '@/pages/print_labels/control_plates'
 import statuses from '@/modules/statuses'
 import Sprint from '@/modules/sprint'
 import config from '@/nuxt.config'
@@ -10,12 +10,12 @@ jest.mock('@/modules/sprint')
 const localVue = createLocalVue()
 localVue.use(BootstrapVue)
 
-describe('print destination plate labels', () => {
+describe('print control plate labels', () => {
   let wrapper, vm, printers
 
   beforeEach(() => {
     printers = config.publicRuntimeConfig.printers.split(',')
-    wrapper = mount(PrintDestinationPlateLabels, {
+    wrapper = mount(ControlPlates, {
       localVue,
       data() {
         return {}
@@ -29,9 +29,7 @@ describe('print destination plate labels', () => {
   })
 
   it('is a Vue instance', () => {
-    expect(
-      wrapper.findComponent(PrintDestinationPlateLabels).exists()
-    ).toBeTruthy()
+    expect(wrapper.findComponent(ControlPlates).exists()).toBeTruthy()
   })
 
   it('should have some printers', () => {
@@ -43,6 +41,12 @@ describe('print destination plate labels', () => {
     expect(wrapper.find('#selectPrinter').findAll('option').length).toEqual(
       printers.length
     )
+  })
+
+  it('should be able to add a barcode', () => {
+    const input = wrapper.find('#barcode')
+    input.setValue('DN111111')
+    expect(vm.barcode).toEqual('DN111111')
   })
 
   it('should be able to select a number of labels', () => {
@@ -57,17 +61,38 @@ describe('print destination plate labels', () => {
     expect(vm.alertMessage).toEqual('Barcodes successfully printed')
   })
 
+  it('#multiplyBarcodes', () => {
+    wrapper = mount(ControlPlates, {
+      localVue,
+      data() {
+        return {
+          printer: 'heron-bc1',
+          numberOfBarcodes: 5,
+          barcode: 'DN111111'
+        }
+      }
+    })
+    vm = wrapper.vm
+    expect(vm.multiplyBarcodes()).toEqual([
+      'DN111111',
+      'DN111111',
+      'DN111111',
+      'DN111111',
+      'DN111111'
+    ])
+  })
+
   // TODO: These tests are duplicated so will be removed once refactored. Need to get it to pass code coverage.
   describe('setting the status', () => {
     let vm
 
     it('default should be idle', () => {
-      vm = mount(PrintDestinationPlateLabels, { localVue }).vm
+      vm = mount(ControlPlates, { localVue }).vm
       expect(vm.isIdle).toBeTruthy()
     })
 
     it('when success', () => {
-      wrapper = mount(PrintDestinationPlateLabels, {
+      wrapper = mount(ControlPlates, {
         localVue,
         data() {
           return {
@@ -82,7 +107,7 @@ describe('print destination plate labels', () => {
     })
 
     it('when error', () => {
-      wrapper = mount(PrintDestinationPlateLabels, {
+      wrapper = mount(ControlPlates, {
         localVue,
         data() {
           return {
@@ -97,7 +122,7 @@ describe('print destination plate labels', () => {
     })
 
     it('when busy', () => {
-      wrapper = mount(PrintDestinationPlateLabels, {
+      wrapper = mount(ControlPlates, {
         localVue,
         data() {
           return {
@@ -113,13 +138,18 @@ describe('print destination plate labels', () => {
   })
 
   describe('printing labels', () => {
+    afterEach(() => {
+      jest.resetAllMocks()
+    })
+
     beforeEach(() => {
-      wrapper = mount(PrintDestinationPlateLabels, {
+      wrapper = mount(ControlPlates, {
         localVue,
         data() {
           return {
             printer: 'heron-bc1',
-            numberOfBarcodes: 10
+            numberOfBarcodes: 10,
+            barcode: 'DN111111'
           }
         }
       })
@@ -132,6 +162,10 @@ describe('print destination plate labels', () => {
         message: 'Labels successfully printed'
       })
       await vm.printLabels()
+      expect(Sprint.createLabelFields).toHaveBeenCalledWith({
+        barcodes: vm.multiplyBarcodes(),
+        text: 'Control'
+      })
       expect(wrapper.find('.alert').text()).toMatch(
         'Labels successfully printed'
       )

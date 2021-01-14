@@ -17,10 +17,10 @@ const headers = {
 // Will create a new layout object for a print job
 // Requires barcode which will be used for barcode and text field
 // TODO: how do we turn this into external json
-const createLayout = (barcode) => ({
+const createLayout = ({ barcode, text }) => ({
   barcodeFields: [
     {
-      x: 16,
+      x: 20,
       y: 1,
       cellWidth: 0.2,
       barcodeType: 'code39',
@@ -37,9 +37,9 @@ const createLayout = (barcode) => ({
       fontSize: 1.7
     },
     {
-      x: 57,
+      x: 70,
       y: 3,
-      value: 'LHTR',
+      value: text,
       font: 'proportional',
       fontSize: 1.7
     }
@@ -49,39 +49,41 @@ const createLayout = (barcode) => ({
 /* 
   Creates the print request body
   A query can have multiple layouts
-  the number of layouts is dependent on the numberOfBarcodes
+  the number of layouts is dependent on the number of LabelFields
   the printer must be specified
 */
-const createPrintRequestBody = ({ barcodes, printer }) => ({
+const createPrintRequestBody = ({ labelFields, printer }) => ({
   query,
   variables: {
     printer,
     printRequest: {
-      // creates n barcodes and then turns each barcode into a layout
-      layouts: barcodes.map((barcode) => createLayout(barcode))
+      // turns each labelField into a layout
+      layouts: labelFields.map((labelField) => createLayout(labelField))
     }
   }
 })
 
 /*
-  accepts count and printer
-  count is the number of barcodes which is what baracoda needs
-  creates the barcodes via a call to plate barcpde
+  adds the text for each barcode to generate an
+  array of objects which will have a barcode and text
+  the text will be the same for all barcodes
+  e.g. createLabelFields(barcodes: ['DN111111', 'DN222222'], text: 'LHTR')
+  will return [ { barcode: 'DN111111', text: 'LHTR' }, { barcode: 'DN222222', text: 'LHTR' } ]
+*/
+const createLabelFields = ({ barcodes, text }) => {
+  return barcodes.map((barcode) => ({ barcode, text }))
+}
+
+/*
+  accepts labelFields and printer
   will create the print request body
   and send a request to sprint to print labels
 */
-const printLabels = async ({ numberOfBarcodes, printer }) => {
+const printLabels = async ({ labelFields, printer }) => {
   try {
-    let response = await Baracoda.createBarcodes({ count: numberOfBarcodes })
+    const payload = createPrintRequestBody({ labelFields, printer })
 
-    // we don't want to proceed unless the barcodes have been created
-    if (!response.success) throw response.error
-
-    // we know that if it is successfull it will contain the barcodes so we
-    // can throw the whole response at it.
-    const payload = createPrintRequestBody({ ...response, printer })
-
-    response = await axios.post(
+    const response = await axios.post(
       config.privateRuntimeConfig.sprintBaseURL,
       payload,
       headers
@@ -96,8 +98,42 @@ const printLabels = async ({ numberOfBarcodes, printer }) => {
 
     return {
       success: true,
-      message: `successfully printed ${numberOfBarcodes} labels to ${printer}`
+      message: `successfully printed ${labelFields.length} labels to ${printer}`
     }
+  } catch (error) {
+    return {
+      success: false,
+      error
+    }
+  }
+}
+
+/*
+  accepts count and printer
+  count is the number of barcodes which is what baracoda needs
+  creates the barcodes via a call to baracoda
+  will create the print request body
+  and send a request to sprint to print labels
+*/
+const printDestinationPlateLabels = async ({ numberOfBarcodes, printer }) => {
+  try {
+    let response = await Baracoda.createBarcodes({ count: numberOfBarcodes })
+
+    // we don't want to proceed unless the barcodes have been created
+    if (!response.success) throw response.error
+
+    // we need to turn the barcodes into a bunch of label fields
+    const labelFields = createLabelFields({ ...response, text: 'LHTR' })
+
+    // print the labels
+    // TODO: similar implementation to printLabels. Can we pass a function?
+    response = await Sprint.printLabels({ labelFields, printer })
+
+    if (response.success) {
+      return response
+    }
+
+    throw response.error
   } catch (error) {
     return {
       success: false,
@@ -110,7 +146,9 @@ const Sprint = {
   createLayout,
   createPrintRequestBody,
   printLabels,
-  headers
+  printDestinationPlateLabels,
+  headers,
+  createLabelFields
 }
 
 export default Sprint

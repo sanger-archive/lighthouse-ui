@@ -2,6 +2,7 @@
   <b-container>
     <b-row>
       <b-col>
+        <PrintLabelsRouter />
         <h1>Print destination plate labels</h1>
         <p class="lead"></p>
 
@@ -61,8 +62,12 @@
 import statuses from '@/modules/statuses'
 import sprint from '@/modules/sprint'
 import config from '@/nuxt.config'
+import PrintLabelsRouter from '@/components/PrintLabelsRouter'
 
 export default {
+  components: {
+    PrintLabelsRouter
+  },
   props: {
     printers: {
       type: Array,
@@ -101,7 +106,7 @@ export default {
     },
     async printLabels() {
       this.setStatus('Busy', 'Printing labels ...')
-      const response = await sprint.printLabels({
+      const response = await sprint.printDestinationPlateLabels({
         numberOfBarcodes: this.numberOfBarcodes,
         printer: this.printer
       })
