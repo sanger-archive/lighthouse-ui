@@ -29,7 +29,6 @@
       :tbody-tr-class="rowClass"
       show-empty
       :empty-text="lighthouseFeedback"
-      sort-by="number_of_positives"
       :sort-desc="true"
       :fields="fields"
       caption-top
@@ -40,6 +39,15 @@
         <span>{{ total_with_maps }} plates with plates maps,</span>
         <span>{{ total_without_maps }} without.</span>
         <span>Total {{ total_positives }} positives.</span>
+        <br />
+        <span>Box further contains:</span>
+        <span style="color:green">
+          {{ total_must_sequence }} plates with samples that must be sequenced;
+        </span>
+        <span style="color:DarkOrange">
+          {{ total_preferentially_sequence }} plates of samples that we should
+          preferentially sequence.
+        </span>
       </template>
     </b-table>
   </b-container>
@@ -49,13 +57,18 @@
 import lighthouse from '../modules/lighthouse_service'
 import { getPlatesFromBoxBarcodes } from '@/modules/labwhere'
 
+const countByMustSequence = (accumulator, plate) =>
+  accumulator + (plate.must_sequence ? 1 : 0)
+const countByPreferentiallySequence = (accumulator, plate) =>
+  accumulator + (plate.preferentially_sequence ? 1 : 0)
 const countWithMap = (accumulator, plate) =>
   accumulator + (plate.plate_map ? 1 : 0)
 const countWithoutMap = (accumulator, plate) =>
   accumulator + (plate.plate_map ? 0 : 1)
 const sumPositives = (accumulator, plate) =>
-  accumulator + plate.number_of_positives
-const mapFormatter = (value) => (value ? 'Yes' : 'No')
+  accumulator +
+  (plate.number_of_positives == null ? 0 : plate.number_of_positives)
+const booleanFormatter = (value) => (value ? 'Yes' : 'No')
 const countFormatter = (value, _key, item) => (item.plate_map ? value : 'N/A')
 const extractError = (response) => {
   if (response.error) {
@@ -86,13 +99,25 @@ export default {
           key: 'plate_map',
           sortable: true,
           sortDirection: 'desc',
-          formatter: mapFormatter
+          formatter: booleanFormatter
         },
         {
           key: 'number_of_positives',
           sortable: true,
           sortDirection: 'desc',
           formatter: countFormatter
+        },
+        {
+          key: 'must_sequence',
+          sortable: true,
+          sortDirection: 'desc',
+          formatter: booleanFormatter
+        },
+        {
+          key: 'preferentially_sequence',
+          sortable: true,
+          sortDirection: 'desc',
+          formatter: booleanFormatter
         }
       ]
     }
@@ -109,6 +134,12 @@ export default {
     },
     total_without_maps() {
       return this.plates.reduce(countWithoutMap, 0)
+    },
+    total_must_sequence() {
+      return this.plates.reduce(countByMustSequence, 0)
+    },
+    total_preferentially_sequence() {
+      return this.plates.reduce(countByPreferentiallySequence, 0)
     },
     labwhereState() {
       return this.labwhereResponse.success
