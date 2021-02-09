@@ -29,7 +29,6 @@
       :tbody-tr-class="rowClass"
       show-empty
       :empty-text="lighthouseFeedback"
-      :sort-desc="true"
       :fields="fields"
       caption-top
     >
@@ -48,6 +47,13 @@
           {{ total_preferentially_sequence }} plates of samples that we should
           preferentially sequence.
         </span>
+        <br />
+        <small>
+          <span>
+            Sorted by: 1. Must Sequence 2. Preferentially Sequence 3. Number of
+            Positives
+          </span>
+        </small>
       </template>
     </b-table>
   </b-container>
@@ -94,29 +100,24 @@ export default {
       labwhereResponse: defaultResponse,
       lighthouseResponse: defaultResponse,
       fields: [
-        { key: 'plate_barcode', sortable: true },
+        {
+          key: 'plate_barcode',
+          sortable: true
+        },
         {
           key: 'plate_map',
-          sortable: true,
-          sortDirection: 'desc',
           formatter: booleanFormatter
         },
         {
           key: 'number_of_positives',
-          sortable: true,
-          sortDirection: 'desc',
           formatter: countFormatter
         },
         {
           key: 'must_sequence',
-          sortable: true,
-          sortDirection: 'desc',
           formatter: booleanFormatter
         },
         {
           key: 'preferentially_sequence',
-          sortable: true,
-          sortDirection: 'desc',
           formatter: booleanFormatter
         }
       ]
@@ -194,8 +195,28 @@ export default {
       const response = await lighthouse.findPlatesFromBarcodes(labwhereResponse)
       this.lighthouseResponse = response
       if (response.success) {
-        this.plates = response.plates || []
+        this.plates = this.sortedPlates(response.plates || [])
       }
+    },
+    sortedPlates(plates) {
+      if (plates.length === 0) {
+        return []
+      }
+      // Sorting plates by must_sequence, then preferentially_sequence, then number_of_positives
+      const sortedPlates = plates.sort((aPlate, bPlate) => {
+        const compareMustSequence = bPlate.must_sequence - aPlate.must_sequence
+        const comparePreferentiallySequence =
+          bPlate.preferentially_sequence - aPlate.preferentially_sequence
+        const compareNumberOfPositives =
+          bPlate.number_of_positives > aPlate.number_of_positives ? 1 : -1
+
+        return (
+          compareMustSequence ||
+          comparePreferentiallySequence ||
+          compareNumberOfPositives
+        )
+      })
+      return sortedPlates
     }
   }
 }

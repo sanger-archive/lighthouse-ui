@@ -45,7 +45,7 @@ const plateD = {
   plate_map: true,
   number_of_positives: 5,
   must_sequence: true,
-  preferentially_sequence: false
+  preferentially_sequence: true
 }
 const plateE = {
   plate_barcode: 'AP-rna-5-0-posi',
@@ -54,13 +54,20 @@ const plateE = {
   must_sequence: false,
   preferentially_sequence: true
 }
-const examplePlates = [plateA, plateB, plateC, plateD, plateE]
-const expectedPlateTotal = 5
-const expectedMapTotal = 4
+const plateF = {
+  plate_barcode: 'AP-rna-6-2-posi',
+  plate_map: true,
+  number_of_positives: 10,
+  must_sequence: true,
+  preferentially_sequence: false
+}
+const examplePlates = [plateA, plateB, plateC, plateD, plateE, plateF]
+const expectedPlateTotal = 6
+const expectedMapTotal = 5
 const expectedMaplessTotal = 1
-const expectedPositiveTotal = 15
-const expectedMustSequence = 1
-const expectedPreferentiallySequence = 2
+const expectedPositiveTotal = 25
+const expectedMustSequence = 2
+const expectedPreferentiallySequence = 3
 
 localVue.use(BootstrapVue)
 
@@ -85,6 +92,7 @@ describe('BoxBuster', () => {
     expect(tableText).toContain('AP-rna-4-5-posi')
     expect(tableText).toContain('AP-rna-2-2-posi')
     expect(tableText).toContain('AP-rna-3-0-nmap')
+    expect(tableText).toContain('AP-rna-6-2-posi')
   })
 
   it('shows a table with the expected headers', async () => {
@@ -104,16 +112,18 @@ describe('BoxBuster', () => {
     expect(wrapper.find('table').exists()).toBe(false)
   })
 
-  it.skip('sorts list of plates by must_sequence', async () => {
-    const data = { plates: examplePlates }
+  it('sorts list of plates by must_sequence', async () => {
     wrapper = mount(BoxBuster, { localVue })
+    const sortedExamplePlates = wrapper.vm.sortedPlates(examplePlates)
+    const data = { plates: sortedExamplePlates }
     await wrapper.setData(data)
     const rows = wrapper.find('table').findAll('tr')
-    expect(rows.at(1).text()).toContain('AP-rna-1-8-posi')
-    expect(rows.at(2).text()).toContain('AP-rna-4-5-posi')
-    expect(rows.at(3).text()).toContain('AP-rna-2-2-posi')
-    expect(rows.at(4).text()).toContain('AP-rna-5-0-posi')
-    expect(rows.at(5).text()).toContain('AP-rna-3-0-nmap')
+    expect(rows.at(1).text()).toMatch(/AP-rna-4-5-posi/)
+    expect(rows.at(2).text()).toMatch(/AP-rna-6-2-posi/)
+    expect(rows.at(3).text()).toMatch(/AP-rna-2-2-posi/)
+    expect(rows.at(4).text()).toMatch(/AP-rna-5-0-posi/)
+    expect(rows.at(5).text()).toMatch(/AP-rna-1-8-posi/)
+    expect(rows.at(6).text()).toMatch(/AP-rna-3-0-nmap/)
   })
 
   it('renders a summary of plates', async () => {
@@ -123,7 +133,8 @@ describe('BoxBuster', () => {
     ${expectedMaplessTotal} without.
     Total ${expectedPositiveTotal} positives.
     Box further contains: ${expectedMustSequence} plates with samples that must be sequenced;
-    ${expectedPreferentiallySequence} plates of samples that we should preferentially sequence.`)
+    ${expectedPreferentiallySequence} plates of samples that we should preferentially sequence.
+    Sorted by: 1. Must Sequence 2. Preferentially Sequence 3. Number of Positives`)
     wrapper = mount(BoxBuster, { localVue })
     await wrapper.setData(data)
     const summary = squish(wrapper.find('caption').text())
@@ -204,7 +215,8 @@ describe('BoxBuster', () => {
         'AP-rna-2-2-posi',
         'AP-rna-3-0-nmap',
         'AP-rna-4-5-posi',
-        'AP-rna-5-0-posi'
+        'AP-rna-5-0-posi',
+        'AP-rna-6-2-posi'
       ]
       getPlatesFromBoxBarcodes.mockResolvedValue({ success: true, barcodes })
       lighthouse.findPlatesFromBarcodes.mockResolvedValue({
@@ -226,7 +238,8 @@ describe('BoxBuster', () => {
         'AP-rna-2-2-posi',
         'AP-rna-3-0-nmap',
         'AP-rna-4-5-posi',
-        'AP-rna-5-0-posi'
+        'AP-rna-5-0-posi',
+        'AP-rna-6-2-posi'
       ]
       getPlatesFromBoxBarcodes.mockResolvedValue({ success: true, barcodes })
       lighthouse.findPlatesFromBarcodes.mockResolvedValue({
@@ -271,20 +284,25 @@ describe('BoxBuster', () => {
         'AP-rna-2-2-posi',
         'AP-rna-3-0-nmap',
         'AP-rna-4-5-posi',
-        'AP-rna-5-0-posi'
+        'AP-rna-5-0-posi',
+        'AP-rna-6-2-posi'
       ]
       lighthouse.findPlatesFromBarcodes.mockResolvedValue({
         success: true,
         plates: examplePlates
       })
       wrapper = mount(BoxBuster, { localVue })
+      const expectedSortedPlates = wrapper.vm.sortedPlates(examplePlates)
+      wrapper.vm.sortedPlates = jest.fn()
+      wrapper.vm.sortedPlates.mockReturnValue(expectedSortedPlates)
       wrapper.vm.findPlates({ success: true, barcodes })
       await flushPromises()
       expect(lighthouse.findPlatesFromBarcodes).toHaveBeenCalledWith({
         success: true,
         barcodes
       })
-      expect(wrapper.vm.plates).toEqual(examplePlates)
+      expect(wrapper.vm.sortedPlates).toHaveBeenCalledWith(examplePlates)
+      expect(wrapper.vm.plates).toEqual(expectedSortedPlates)
     })
 
     it('displays lighthouse errors', async () => {
@@ -293,18 +311,44 @@ describe('BoxBuster', () => {
         'AP-rna-2-2-posi',
         'AP-rna-3-0-nmap',
         'AP-rna-4-5-posi',
-        'AP-rna-5-0-posi'
+        'AP-rna-5-0-posi',
+        'AP-rna-6-2-posi'
       ]
       lighthouse.findPlatesFromBarcodes.mockResolvedValue({
         success: false,
         error: new Error('Lighthouse error')
       })
       wrapper = mount(BoxBuster, { localVue })
+      wrapper.vm.sortedPlates = jest.fn()
       await wrapper.setData({ labwhereResponse: { success: true } })
       await wrapper.vm.findPlates({ success: true, barcodes })
       await flushPromises()
+      expect(lighthouse.findPlatesFromBarcodes).toHaveBeenCalledWith({
+        success: true,
+        barcodes
+      })
+      expect(wrapper.vm.sortedPlates).not.toHaveBeenCalled()
       expect(wrapper.vm.plates).toEqual([])
       expect(wrapper.text()).toContain('Lighthouse error')
+    })
+  })
+
+  describe('#sortedPlates', () => {
+    it('returns an empty list if no plates', () => {
+      wrapper = mount(BoxBuster, { localVue })
+      const plates = []
+      expect(wrapper.vm.sortedPlates(plates)).toEqual([])
+    })
+
+    it('sorts by must_sequence, then preferentially_sequence, then number_of_positives', () => {
+      wrapper = mount(BoxBuster, { localVue })
+      const result = wrapper.vm.sortedPlates(examplePlates)
+      expect(result[0].plate_barcode).toEqual('AP-rna-4-5-posi')
+      expect(result[1].plate_barcode).toEqual('AP-rna-6-2-posi')
+      expect(result[2].plate_barcode).toEqual('AP-rna-2-2-posi')
+      expect(result[3].plate_barcode).toEqual('AP-rna-5-0-posi')
+      expect(result[4].plate_barcode).toEqual('AP-rna-1-8-posi')
+      expect(result[5].plate_barcode).toEqual('AP-rna-3-0-nmap')
     })
   })
 })
