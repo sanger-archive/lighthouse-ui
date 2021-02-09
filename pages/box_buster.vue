@@ -115,8 +115,8 @@ export default {
       lighthouseResponse: defaultResponse,
       fields: [
         {
-          key: 'plate_barcode',
-          sortable: true
+          key: 'plate_barcode'
+          // sortable: true // check if required
         },
         {
           key: 'plate_map',
