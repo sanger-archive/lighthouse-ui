@@ -305,6 +305,22 @@ describe('BoxBuster', () => {
       expect(wrapper.vm.plates).toEqual(expectedSortedPlates)
     })
 
+    it('findPlatesFromBarcodes can be sucessful and return no plates', async () => {
+      const barcodes = ['AP-rna-1-8-posi']
+      lighthouse.findPlatesFromBarcodes.mockResolvedValue({
+        success: true,
+        plates: []
+      })
+      wrapper = mount(BoxBuster, { localVue })
+      wrapper.vm.findPlates({ success: true, barcodes })
+      await flushPromises()
+      expect(lighthouse.findPlatesFromBarcodes).toHaveBeenCalledWith({
+        success: true,
+        barcodes
+      })
+      expect(wrapper.vm.plates).toEqual([])
+    })
+
     it('displays lighthouse errors', async () => {
       const barcodes = [
         'AP-rna-1-8-posi',

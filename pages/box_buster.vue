@@ -86,6 +86,20 @@ const extractError = (response) => {
     return defaultResponse.error
   }
 }
+// Sorting plates by must_sequence, then preferentially_sequence, then number_of_positives
+const sortCompare = (aPlate, bPlate) => {
+  const compareMustSequence = bPlate.must_sequence - aPlate.must_sequence
+  const comparePreferentiallySequence =
+    bPlate.preferentially_sequence - aPlate.preferentially_sequence
+  const compareNumberOfPositives =
+    bPlate.number_of_positives > aPlate.number_of_positives ? 1 : -1
+
+  return (
+    compareMustSequence ||
+    comparePreferentiallySequence ||
+    compareNumberOfPositives
+  )
+}
 
 const defaultResponse = {
   success: null,
@@ -195,28 +209,14 @@ export default {
       const response = await lighthouse.findPlatesFromBarcodes(labwhereResponse)
       this.lighthouseResponse = response
       if (response.success) {
-        this.plates = this.sortedPlates(response.plates || [])
+        this.plates = this.sortedPlates(response.plates)
       }
     },
     sortedPlates(plates) {
       if (plates.length === 0) {
         return []
       }
-      // Sorting plates by must_sequence, then preferentially_sequence, then number_of_positives
-      const sortedPlates = plates.sort((aPlate, bPlate) => {
-        const compareMustSequence = bPlate.must_sequence - aPlate.must_sequence
-        const comparePreferentiallySequence =
-          bPlate.preferentially_sequence - aPlate.preferentially_sequence
-        const compareNumberOfPositives =
-          bPlate.number_of_positives > aPlate.number_of_positives ? 1 : -1
-
-        return (
-          compareMustSequence ||
-          comparePreferentiallySequence ||
-          compareNumberOfPositives
-        )
-      })
-      return sortedPlates
+      return plates.sort(sortCompare)
     }
   }
 }
