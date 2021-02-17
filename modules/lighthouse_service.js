@@ -1,7 +1,7 @@
 // Lighthouse Service Module
 
-import axios from 'axios'
 import config from '@/nuxt.config'
+import axios from 'axios'
 
 const handlePromise = async (promise) => {
   let rawResponse
@@ -35,7 +35,7 @@ const findPlatesFromBarcodes = async ({ barcodes }) => {
   const url = `${config.privateRuntimeConfig.lighthouseBaseURL}/plates`
   try {
     const response = await axios.get(url, {
-      params: { barcodes }
+      params: { barcodes },
     })
     return { success: true, ...response.data }
   } catch (error) {
@@ -50,12 +50,12 @@ const getImports = async () => {
     )
     return {
       success: true,
-      data: response.data
+      data: response.data,
     }
   } catch (error) {
     return {
       success: false,
-      error
+      error,
     }
   }
 }
@@ -67,17 +67,17 @@ const deleteReports = async (filenames) => {
       `${config.privateRuntimeConfig.lighthouseBaseURL}/delete_reports`,
       {
         data: {
-          filenames
-        }
+          filenames,
+        },
       }
     )
     return {
-      success: true
+      success: true,
     }
   } catch (error) {
     return {
       success: false,
-      error
+      error,
     }
   }
 }
@@ -90,12 +90,12 @@ const getReports = async () => {
     )
     return {
       success: true,
-      reports: response.data.reports
+      reports: response.data.reports,
     }
   } catch (error) {
     return {
       success: false,
-      error
+      error,
     }
   }
 }
@@ -108,12 +108,12 @@ const createReport = async () => {
     )
     return {
       success: true,
-      reports: response.data.reports
+      reports: response.data.reports,
     }
   } catch (error) {
     return {
       success: false,
-      error
+      error,
     }
   }
 }
@@ -126,7 +126,7 @@ const getRobots = async () => {
     )
     return {
       success: true,
-      robots: response.data.robots
+      robots: response.data.robots,
     }
   } catch (resp) {
     const errors = resp.response
@@ -134,7 +134,7 @@ const getRobots = async () => {
       : [resp.message + ': Failed to get Robots from Lighthouse Service']
     return {
       success: false,
-      errors
+      errors,
     }
   }
 }
@@ -147,7 +147,7 @@ const getFailureTypes = async () => {
     )
     return {
       success: true,
-      failureTypes: response.data.failure_types
+      failureTypes: response.data.failure_types,
     }
   } catch (resp) {
     const errors = resp.response
@@ -155,7 +155,7 @@ const getFailureTypes = async () => {
       : [resp.message + ': Failed to get Failure Types from Lighthouse Service']
     return {
       success: false,
-      errors
+      errors,
     }
   }
 }
@@ -174,14 +174,14 @@ const createDestinationPlate = async (form) => {
     // success
     return {
       success: true,
-      response: `Successfully created destination plate, with barcode: ${responseData.plate_barcode}, and ${responseData.number_of_positives} positive sample(s)`
+      response: `Successfully created destination plate, with barcode: ${responseData.plate_barcode}, and ${responseData.number_of_positives} positive sample(s)`,
     }
   } catch (resp) {
     const errors = resp.response.data
     // failure
     return {
       success: false,
-      ...errors
+      ...errors,
     }
   }
 }
@@ -202,20 +202,20 @@ const failDestinationPlate = async (form) => {
     if (response.data.errors.length > 0) {
       return {
         success: true,
-        errors: response.data.errors
+        errors: response.data.errors,
       }
     }
     // success
     return {
       success: true,
-      response: `Successfully failed destination plate with barcode: ${form.barcode}`
+      response: `Successfully failed destination plate with barcode: ${form.barcode}`,
     }
   } catch (resp) {
     const errors = resp.response.data
     // faliure
     return {
       success: false,
-      ...errors
+      ...errors,
     }
   }
 }
@@ -230,7 +230,7 @@ const lighthouse = {
   getRobots,
   getFailureTypes,
   createDestinationPlate,
-  failDestinationPlate
+  failDestinationPlate,
 }
 
 export default lighthouse

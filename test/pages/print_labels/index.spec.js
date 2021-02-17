@@ -1,4 +1,4 @@
-import BootstrapVue from 'bootstrap-vue'
+import { BootstrapVue } from 'bootstrap-vue'
 import { mount, createLocalVue } from '@vue/test-utils'
 import Index from '@/pages/print_labels/index'
 
@@ -12,7 +12,7 @@ describe('index', () => {
   beforeEach(() => {
     wrapper = mount(Index, {
       localVue,
-      stubs: ['nuxt-link']
+      stubs: ['nuxt-link'],
     })
   })
 

@@ -1,5 +1,5 @@
-import axios from 'axios'
 import config from '@/nuxt.config'
+import axios from 'axios'
 
 const getPlatesFromBoxBarcodes = async (...boxBarcodes) => {
   try {
@@ -18,4 +18,6 @@ const getPlatesFromBoxBarcodes = async (...boxBarcodes) => {
   }
 }
 
-export { getPlatesFromBoxBarcodes }
+const labwhere = { getPlatesFromBoxBarcodes }
+
+export default labwhere

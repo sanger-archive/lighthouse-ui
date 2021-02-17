@@ -1,8 +1,8 @@
-import BootstrapVue from 'bootstrap-vue'
+import { BootstrapVue } from 'bootstrap-vue'
 import { mount, createLocalVue } from '@vue/test-utils'
 import SentinelCherrypick from '@/pages/sentinel_cherrypick'
-import * as labwhereModule from '@/modules/labwhere'
-import * as sequencescapeModule from '@/modules/sequencescape'
+import labwhere from '@/modules/labwhere'
+import sequencescape from '@/modules/sequencescape'
 
 const localVue = createLocalVue()
 localVue.use(BootstrapVue)
@@ -16,9 +16,9 @@ describe('sentinel cherrypick', () => {
       data() {
         return {
           boxBarcodes: 'lw-ogilvie-4\nlw-ogilvie-5\nlw-ogilvie-6',
-          items: []
+          items: [],
         }
-      }
+      },
     })
   })
 
@@ -48,7 +48,7 @@ describe('sentinel cherrypick', () => {
       wrapper.vm.getPlates = jest.fn()
       button = wrapper.find('#handlePlatesRetrieval')
       button.trigger('click')
-      expect(wrapper.vm.getPlates).toBeCalled()
+      expect(wrapper.vm.getPlates).toHaveBeenCalled()
     })
   })
 
@@ -64,12 +64,12 @@ describe('sentinel cherrypick', () => {
       wrapper.vm.cancelSearch = jest.fn()
       button = wrapper.find('#cancelSearch')
       button.trigger('click')
-      expect(wrapper.vm.cancelSearch).toBeCalled()
+      expect(wrapper.vm.cancelSearch).toHaveBeenCalled()
     })
   })
 
   describe('#cancelSearch', () => {
-    it('it clears boxBarcode', () => {
+    it('clears boxBarcode', () => {
       wrapper.vm.cancelSearch()
       expect(wrapper.vm.boxBarcodes).toEqual('')
     })
@@ -100,10 +100,10 @@ describe('sentinel cherrypick', () => {
 
   describe('#getPlates', () => {
     it('calls getPlatesFromBoxBarcodes', async () => {
-      labwhereModule.getPlatesFromBoxBarcodes = jest.fn()
+      labwhere.getPlatesFromBoxBarcodes = jest.fn()
       wrapper.vm.handleGetPlatesResponse = jest.fn()
       await wrapper.vm.getPlates()
-      expect(labwhereModule.getPlatesFromBoxBarcodes).toBeCalled()
+      expect(labwhere.getPlatesFromBoxBarcodes).toHaveBeenCalled()
     })
   })
 
@@ -117,12 +117,12 @@ describe('sentinel cherrypick', () => {
       const expected = [
         {
           plate_barcode: response.barcodes[0],
-          selected: true
+          selected: true,
         },
         {
           plate_barcode: response.barcodes[1],
-          selected: true
-        }
+          selected: true,
+        },
       ]
 
       expect(wrapper.vm.items).toEqual(expected)
@@ -158,14 +158,14 @@ describe('sentinel cherrypick', () => {
       wrapper.vm.createBatch = jest.fn()
       button = wrapper.find('#handleSentinelBatchCreationTop')
       button.trigger('click')
-      expect(wrapper.vm.createBatch).not.toBeCalled()
+      expect(wrapper.vm.createBatch).not.toHaveBeenCalled()
     })
 
     it('create batch button (bottom) is disabled', () => {
       wrapper.vm.createBatch = jest.fn()
       button = wrapper.find('#handleSentinelBatchCreationBottom')
       button.trigger('click')
-      expect(wrapper.vm.createBatch).not.toBeCalled()
+      expect(wrapper.vm.createBatch).not.toHaveBeenCalled()
     })
   })
 
@@ -174,12 +174,12 @@ describe('sentinel cherrypick', () => {
       wrapper.vm.items = [
         {
           plate_barcode: 'aBarcode1',
-          selected: true
+          selected: true,
         },
         {
           plate_barcode: 'aBarcode2',
-          selected: true
-        }
+          selected: true,
+        },
       ]
     })
 
@@ -190,23 +190,23 @@ describe('sentinel cherrypick', () => {
         wrapper.vm.createBatch = jest.fn()
         button = wrapper.find('#handleSentinelBatchCreationTop')
         button.trigger('click')
-        expect(wrapper.vm.createBatch).toBeCalled()
+        expect(wrapper.vm.createBatch).toHaveBeenCalled()
       })
 
       it('on create batch button (bottom) click it calls createBatch', () => {
         wrapper.vm.createBatch = jest.fn()
         button = wrapper.find('#handleSentinelBatchCreationBottom')
         button.trigger('click')
-        expect(wrapper.vm.createBatch).toBeCalled()
+        expect(wrapper.vm.createBatch).toHaveBeenCalled()
       })
     })
 
     describe('#createBatch', () => {
       it('calls createCherrypickBatch', async () => {
-        sequencescapeModule.createCherrypickBatch = jest.fn()
+        sequencescape.createCherrypickBatch = jest.fn()
         wrapper.vm.handleCreateBatchResponse = jest.fn()
         await wrapper.vm.createBatch()
-        expect(sequencescapeModule.createCherrypickBatch).toBeCalled()
+        expect(sequencescape.createCherrypickBatch).toHaveBeenCalled()
       })
     })
 
@@ -220,7 +220,7 @@ describe('sentinel cherrypick', () => {
             id: '4',
             type: 'pick_lists',
             links: {
-              self: 'http://localhost:3010/api/v2/pick_lists/4'
+              self: 'http://localhost:3010/api/v2/pick_lists/4',
             },
             attributes: {
               created_at: '2020-07-28T11:54:45+01:00',
@@ -229,19 +229,19 @@ describe('sentinel cherrypick', () => {
               links: [
                 {
                   name: 'Pick-list 4',
-                  url: 'http://localhost:3000/pick_lists/4'
-                }
+                  url: 'http://localhost:3000/pick_lists/4',
+                },
               ],
               pick_attributes: [
                 {
                   source_receptacle_id: 101,
                   study_id: 1,
-                  project_id: 1
-                }
+                  project_id: 1,
+                },
               ],
-              asynchronous: true
-            }
-          }
+              asynchronous: true,
+            },
+          },
         }
 
         wrapper.vm.handleCreateBatchResponse(response)
@@ -255,7 +255,7 @@ describe('sentinel cherrypick', () => {
       it('on failure it shows an error message', () => {
         response = {
           success: false,
-          error: 'Test error'
+          error: 'Test error',
         }
 
         wrapper.vm.handleCreateBatchResponse(response)
@@ -273,22 +273,22 @@ describe('sentinel cherrypick', () => {
       wrapper.vm.items = [
         {
           plate_barcode: 'aBarcode1',
-          selected: false
+          selected: false,
         },
         {
           plate_barcode: 'aBarcode2',
-          selected: true
-        }
+          selected: true,
+        },
       ]
     })
 
     describe('#createBatch', () => {
       it('calls createCherrypickBatch with only selected items', async () => {
-        sequencescapeModule.createCherrypickBatch = jest.fn()
+        sequencescape.createCherrypickBatch = jest.fn()
         wrapper.vm.handleCreateBatchResponse = jest.fn()
         await wrapper.vm.createBatch()
-        expect(sequencescapeModule.createCherrypickBatch).toBeCalledWith([
-          'aBarcode2'
+        expect(sequencescape.createCherrypickBatch).toHaveBeenCalledWith([
+          'aBarcode2',
         ])
       })
     })
@@ -299,21 +299,21 @@ describe('sentinel cherrypick', () => {
       wrapper.vm.items = [
         {
           plate_barcode: 'aBarcode1',
-          selected: false
+          selected: false,
         },
         {
           plate_barcode: 'aBarcode2',
-          selected: false
-        }
+          selected: false,
+        },
       ]
     })
 
     describe('#createBatch', () => {
       it("doesn't call createCherrypickBatch", async () => {
-        sequencescapeModule.createCherrypickBatch = jest.fn()
+        sequencescape.createCherrypickBatch = jest.fn()
         wrapper.vm.handleCreateBatchResponse = jest.fn()
         await wrapper.vm.createBatch()
-        expect(sequencescapeModule.createCherrypickBatch).not.toBeCalled()
+        expect(sequencescape.createCherrypickBatch).not.toHaveBeenCalled()
       })
     })
   })

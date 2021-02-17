@@ -19,7 +19,7 @@ export default {
     return {
       message: '',
       type: '',
-      showDismissibleAlert: false
+      showDismissibleAlert: false,
     }
   },
   methods: {
@@ -32,7 +32,7 @@ export default {
       this.message = message
       this.type = type
       this.showDismissibleAlert = true
-    }
-  }
+    },
+  },
 }
 </script>

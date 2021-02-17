@@ -1,5 +1,5 @@
-import axios from 'axios'
 import Baracoda from '@/modules/baracoda'
+import axios from 'axios'
 
 const errorResponse = new Error('There was an error')
 const rejectPromise = () => Promise.reject(errorResponse)
@@ -22,9 +22,9 @@ describe('PlateBarcode', () => {
         data: {
           barcodes_group: {
             barcodes,
-            id: 3
-          }
-        }
+            id: 3,
+          },
+        },
       })
       const response = await Baracoda.createBarcodes(5)
       expect(response.success).toBeTruthy()

@@ -28,9 +28,7 @@ describe('Lighthouse Sentinel Batch test', () => {
   })
 
   it('Allows selection of positives only or positives and negatives', () => {
-    cy.get('[type="radio"]')
-      .first()
-      .check()
+    cy.get('[type="radio"]').first().check()
     // cy.get('[type="radio"]').last().check()
   })
 

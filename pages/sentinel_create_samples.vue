@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import { createSamples } from '../modules/api'
+import api from '@/modules/api'
 
 export default {
   data() {
@@ -72,25 +72,25 @@ export default {
         {
           key: 'number_of_positives',
           label: 'Created +ves count',
-          sortable: true
-        }
+          sortable: true,
+        },
       ],
       sortBy: 'plate_barcode',
       sortDesc: true,
       boxBarcode: '',
       showDismissibleAlert: false,
       alertMessage: '',
-      items: []
+      items: [],
     }
   },
   computed: {
     isDisabled() {
       return this.boxBarcode.length === 0
-    }
+    },
   },
   methods: {
     async handleSentinelSampleCreation() {
-      const resp = await createSamples(this.boxBarcode)
+      const resp = await api.createSamples(this.boxBarcode)
       this.handleSentinelSampleCreationResponse(resp)
     },
     // TODO: make this more javascripty? destructuring?
@@ -111,8 +111,8 @@ export default {
     },
     cancelSearch() {
       this.boxBarcode = ''
-    }
-  }
+    },
+  },
 }
 </script>
 

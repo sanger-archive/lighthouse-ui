@@ -1,4 +1,4 @@
-import BootstrapVue from 'bootstrap-vue'
+import { BootstrapVue } from 'bootstrap-vue'
 import { mount, createLocalVue } from '@vue/test-utils'
 import ControlPlates from '@/pages/print_labels/control_plates'
 import statuses from '@/modules/statuses'
@@ -19,7 +19,7 @@ describe('print control plate labels', () => {
       localVue,
       data() {
         return {}
-      }
+      },
     })
     vm = wrapper.vm
   })
@@ -38,7 +38,7 @@ describe('print control plate labels', () => {
   })
 
   it('should be able to select a printer', () => {
-    expect(wrapper.find('#selectPrinter').findAll('option').length).toEqual(
+    expect(wrapper.find('#selectPrinter').findAll('option')).toHaveLength(
       printers.length
     )
   })
@@ -68,9 +68,9 @@ describe('print control plate labels', () => {
         return {
           printer: 'heron-bc1',
           numberOfBarcodes: 5,
-          barcode: 'DN111111'
+          barcode: 'DN111111',
         }
-      }
+      },
     })
     vm = wrapper.vm
     expect(vm.multiplyBarcodes()).toEqual([
@@ -78,7 +78,7 @@ describe('print control plate labels', () => {
       'DN111111',
       'DN111111',
       'DN111111',
-      'DN111111'
+      'DN111111',
     ])
   })
 
@@ -97,9 +97,9 @@ describe('print control plate labels', () => {
         data() {
           return {
             status: statuses.Success,
-            alertMessage: 'I am a success'
+            alertMessage: 'I am a success',
           }
-        }
+        },
       })
       vm = wrapper.vm
       expect(vm.isSuccess).toBeTruthy()
@@ -112,9 +112,9 @@ describe('print control plate labels', () => {
         data() {
           return {
             status: statuses.Error,
-            alertMessage: 'I am a failure'
+            alertMessage: 'I am a failure',
           }
-        }
+        },
       })
       vm = wrapper.vm
       expect(vm.isError).toBeTruthy()
@@ -127,9 +127,9 @@ describe('print control plate labels', () => {
         data() {
           return {
             status: statuses.Busy,
-            alertMessage: 'I am busy'
+            alertMessage: 'I am busy',
           }
-        }
+        },
       })
       vm = wrapper.vm
       expect(vm.isBusy).toBeTruthy()
@@ -149,9 +149,9 @@ describe('print control plate labels', () => {
           return {
             printer: 'heron-bc1',
             numberOfBarcodes: 10,
-            barcode: 'DN111111'
+            barcode: 'DN111111',
           }
-        }
+        },
       })
       vm = wrapper.vm
     })
@@ -159,12 +159,12 @@ describe('print control plate labels', () => {
     it('successfully', async () => {
       Sprint.printLabels.mockReturnValue({
         success: true,
-        message: 'Labels successfully printed'
+        message: 'Labels successfully printed',
       })
       await vm.printLabels()
       expect(Sprint.createLabelFields).toHaveBeenCalledWith({
         barcodes: vm.multiplyBarcodes(),
-        text: 'Control'
+        text: 'Control',
       })
       expect(wrapper.find('.alert').text()).toMatch(
         'Labels successfully printed'
@@ -174,7 +174,7 @@ describe('print control plate labels', () => {
     it('unsuccessfully', async () => {
       Sprint.printLabels.mockReturnValue({
         success: false,
-        error: 'There was an error'
+        error: 'There was an error',
       })
       await vm.printLabels()
       expect(wrapper.find('.alert').text()).toMatch('There was an error')

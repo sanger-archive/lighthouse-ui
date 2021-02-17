@@ -69,7 +69,7 @@
       :per-page="perPage"
       :current-page="currentPage"
     >
-      <template v-slot:cell(selected)="row">
+      <template #cell(selected)="row">
         <b-form-group>
           <input v-model="row.item.selected" type="checkbox" />
         </b-form-group>
@@ -92,15 +92,15 @@
 </template>
 
 <script>
-import { getPlatesFromBoxBarcodes } from '../modules/labwhere'
-import { createCherrypickBatch } from '../modules/sequencescape'
+import labwhere from '../modules/labwhere'
+import sequencescape from '../modules/sequencescape'
 
 export default {
   data() {
     return {
       fields: [
         { key: 'plate_barcode', label: 'Plate barcode', sortable: true },
-        { key: 'selected', label: 'Include in batch?', sortable: true }
+        { key: 'selected', label: 'Include in batch?', sortable: true },
       ],
       sortBy: 'plate_barcode',
       sortDesc: true,
@@ -110,7 +110,7 @@ export default {
       items: [],
       pickListResponse: { variant: 'danger' },
       perPage: 10,
-      currentPage: 1
+      currentPage: 1,
     }
   },
   computed: {
@@ -122,25 +122,25 @@ export default {
     },
     rows() {
       return this.items.length
-    }
+    },
   },
   methods: {
     async getPlates() {
       const boxBarcodesList = this.parseBoxBarcodes(this.boxBarcodes)
-      const resp = await getPlatesFromBoxBarcodes(boxBarcodesList)
+      const resp = await labwhere.getPlatesFromBoxBarcodes(boxBarcodesList)
       this.handleGetPlatesResponse(resp)
     },
     handleGetPlatesResponse(resp) {
       if (!resp.success) {
         this.pickListResponse = {
           alertMessage: 'Could not retrieve plates from LabWhere',
-          variant: 'danger'
+          variant: 'danger',
         }
         this.showDismissibleAlert = true
       } else {
         this.items = resp.barcodes.map((barcode) => ({
           plate_barcode: barcode,
-          selected: true
+          selected: true,
         }))
       }
     },
@@ -150,12 +150,12 @@ export default {
         .map((item) => item.plate_barcode)
 
       if (barcodes.length > 0) {
-        const resp = await createCherrypickBatch(barcodes)
+        const resp = await sequencescape.createCherrypickBatch(barcodes)
         this.handleCreateBatchResponse(resp)
       } else {
         this.pickListResponse = {
           alertMessage: 'Please select one or more plates',
-          variant: 'warning'
+          variant: 'warning',
         }
       }
     },
@@ -165,12 +165,12 @@ export default {
           alertMessage:
             'Cherrypicking batch successfully created. Go to this link to view it: ',
           variant: 'success',
-          link: resp.data.attributes.links[0].url
+          link: resp.data.attributes.links[0].url,
         }
       } else {
         this.pickListResponse = {
           alertMessage: resp.error,
-          variant: 'danger'
+          variant: 'danger',
         }
       }
       this.showDismissibleAlert = true
@@ -182,8 +182,8 @@ export default {
       const listNoBlanks = boxBarcodes.split(/\s+/).filter((b) => b !== '')
       const listUnique = [...new Set(listNoBlanks)]
       return listUnique
-    }
-  }
+    },
+  },
 }
 </script>
 

@@ -35,9 +35,7 @@
                 :options="printers"
               ></b-form-select>
             </div>
-            <label for="file-input">
-              Select a file to upload
-            </label>
+            <label for="file-input">Select a file to upload</label>
             <input
               id="file-input"
               ref="fileInput"
@@ -93,15 +91,15 @@ import PrintLabelsRouter from '@/components/PrintLabelsRouter'
 
 export default {
   components: {
-    PrintLabelsRouter
+    PrintLabelsRouter,
   },
   props: {
     printers: {
       type: Array,
       default() {
         return config.publicRuntimeConfig.printers.split(',')
-      }
-    }
+      },
+    },
   },
   data() {
     return {
@@ -109,7 +107,7 @@ export default {
       alertMessage: '',
       printer: 'heron-bc1',
       numberOfBarcodes: 1,
-      filename: null
+      filename: null,
     }
   },
   computed: {
@@ -125,7 +123,7 @@ export default {
     },
     isBusy() {
       return this.status === statuses.Busy
-    }
+    },
   },
   methods: {
     setStatus(status, message) {
@@ -144,7 +142,7 @@ export default {
       const labelFields = csv.parse(read)
       const response = await Sprint.printLabels({
         labelFields,
-        printer: this.printer
+        printer: this.printer,
       })
 
       if (response.success) {
@@ -162,8 +160,8 @@ export default {
     addFilenames() {
       this.filename = this.$refs.fileInput.value
       this.$refs.browseFiles.value = this.filename
-    }
-  }
+    },
+  },
 }
 </script>
 

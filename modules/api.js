@@ -1,4 +1,4 @@
-import { getPlatesFromBoxBarcodes } from './labwhere'
+import labwhere from './labwhere'
 import lighthouse from './lighthouse_service'
 
 // Main API handling of requests:
@@ -21,13 +21,15 @@ import lighthouse from './lighthouse_service'
 // ]
 
 const createSamples = async (boxBarcode) => {
-  const platesForBoxBarcode = await getPlatesFromBoxBarcodes(boxBarcode)
+  const platesForBoxBarcode = await labwhere.getPlatesFromBoxBarcodes(
+    boxBarcode
+  )
 
   if (!platesForBoxBarcode.success) {
     return [
       {
-        errors: [`Failed to get plate barcodes for box barcode: ${boxBarcode}`]
-      }
+        errors: [`Failed to get plate barcodes for box barcode: ${boxBarcode}`],
+      },
     ]
   }
 
@@ -38,4 +40,6 @@ const createSamples = async (boxBarcode) => {
   return response
 }
 
-export { createSamples }
+const api = { createSamples }
+
+export default api

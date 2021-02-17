@@ -1,7 +1,7 @@
-import BootstrapVue from 'bootstrap-vue'
-import { mount, createLocalVue } from '@vue/test-utils'
+import api from '@/modules/api'
 import SentinelCreateSamples from '@/pages/sentinel_create_samples'
-import * as apiModule from '@/modules/api'
+import { createLocalVue, mount } from '@vue/test-utils'
+import { BootstrapVue } from 'bootstrap-vue'
 
 const localVue = createLocalVue()
 localVue.use(BootstrapVue)
@@ -15,9 +15,9 @@ describe('lighthouse sentinel cherrypick', () => {
       data() {
         return {
           boxBarcode: 'lw-ogilvie-4',
-          items: []
+          items: [],
         }
-      }
+      },
     })
   })
 
@@ -46,7 +46,7 @@ describe('lighthouse sentinel cherrypick', () => {
       wrapper.vm.handleSentinelSampleCreation = jest.fn()
       button = wrapper.find('#handleSentinelSampleCreation')
       button.trigger('click')
-      expect(wrapper.vm.handleSentinelSampleCreation).toBeCalled()
+      expect(wrapper.vm.handleSentinelSampleCreation).toHaveBeenCalled()
     })
   })
 
@@ -62,12 +62,12 @@ describe('lighthouse sentinel cherrypick', () => {
       wrapper.vm.cancelSearch = jest.fn()
       button = wrapper.find('#cancelSearch')
       button.trigger('click')
-      expect(wrapper.vm.cancelSearch).toBeCalled()
+      expect(wrapper.vm.cancelSearch).toHaveBeenCalled()
     })
   })
 
   describe('#cancelSearch', () => {
-    it('it clears boxBarcode', () => {
+    it('clears boxBarcode', () => {
       wrapper.vm.cancelSearch()
       expect(wrapper.vm.boxBarcode).toEqual('')
     })
@@ -75,20 +75,20 @@ describe('lighthouse sentinel cherrypick', () => {
 
   describe('#handleSentinelSampleCreation', () => {
     it('calls createSamples', async () => {
-      apiModule.createSamples = jest.fn()
+      api.createSamples = jest.fn()
       wrapper.vm.handleSentinelSampleCreationResponse = jest.fn()
       await wrapper.vm.handleSentinelSampleCreation()
-      expect(apiModule.createSamples).toBeCalled()
+      expect(api.createSamples).toHaveBeenCalled()
     })
 
-    it('calls createSamples', async () => {
+    it('calls createSamples with mocked return', async () => {
       const expected = [{ it: 'worked' }]
-      apiModule.createSamples = jest.fn().mockReturnValue(expected)
+      api.createSamples = jest.fn().mockReturnValue(expected)
       wrapper.vm.handleSentinelSampleCreationResponse = jest.fn()
       await wrapper.vm.handleSentinelSampleCreation()
-      expect(wrapper.vm.handleSentinelSampleCreationResponse).toBeCalledWith(
-        expected
-      )
+      expect(
+        wrapper.vm.handleSentinelSampleCreationResponse
+      ).toHaveBeenCalledWith(expected)
     })
   })
 
@@ -102,19 +102,19 @@ describe('lighthouse sentinel cherrypick', () => {
             data: {
               plate_barcode: 'aBarcode1',
               centre: 'tst1',
-              number_of_positives: 3
-            }
-          }
+              number_of_positives: 3,
+            },
+          },
         },
         {
           data: {
             data: {
               plate_barcode: 'aBarcode2',
               centre: 'tst1',
-              number_of_positives: 1
-            }
-          }
-        }
+              number_of_positives: 1,
+            },
+          },
+        },
       ]
       wrapper.vm.handleSentinelSampleCreationResponse(response)
       expect(wrapper.vm.items).toEqual(
@@ -125,11 +125,11 @@ describe('lighthouse sentinel cherrypick', () => {
     it('on failure it shows an error message', () => {
       response = [
         {
-          errors: ['an error 1']
+          errors: ['an error 1'],
         },
         {
-          errors: ['an error 2', 'an error 3']
-        }
+          errors: ['an error 2', 'an error 3'],
+        },
       ]
 
       wrapper.vm.handleSentinelSampleCreationResponse(response)
@@ -144,29 +144,29 @@ describe('lighthouse sentinel cherrypick', () => {
     it('on partial success/failure, last request successful', () => {
       response = [
         {
-          errors: ['an error 1']
+          errors: ['an error 1'],
         },
         {
-          errors: ['an error 2']
+          errors: ['an error 2'],
         },
         {
           data: {
             data: {
               plate_barcode: 'aBarcode1',
               centre: 'tst1',
-              number_of_positives: 1
-            }
-          }
+              number_of_positives: 1,
+            },
+          },
         },
         {
           data: {
             data: {
               plate_barcode: 'aBarcode2',
               centre: 'tst1',
-              number_of_positives: 1
-            }
-          }
-        }
+              number_of_positives: 1,
+            },
+          },
+        },
       ]
 
       wrapper.vm.handleSentinelSampleCreationResponse(response)
@@ -186,29 +186,29 @@ describe('lighthouse sentinel cherrypick', () => {
     it('on partial success/failure, last request failed', () => {
       response = [
         {
-          errors: ['an error 2']
+          errors: ['an error 2'],
         },
         {
           data: {
             data: {
               plate_barcode: 'aBarcode1',
               centre: 'tst1',
-              number_of_positives: 1
-            }
-          }
+              number_of_positives: 1,
+            },
+          },
         },
         {
           data: {
             data: {
               plate_barcode: 'aBarcode2',
               centre: 'tst1',
-              number_of_positives: 1
-            }
-          }
+              number_of_positives: 1,
+            },
+          },
         },
         {
-          errors: ['an error 1']
-        }
+          errors: ['an error 1'],
+        },
       ]
 
       wrapper.vm.handleSentinelSampleCreationResponse(response)

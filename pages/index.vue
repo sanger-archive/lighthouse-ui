@@ -50,14 +50,14 @@
           no-provider-sorting
         >
           <!-- A virtual column -->
-          <template v-slot:cell(index)="data">{{ data.index + 1 }}</template>
-          <template v-slot:cell(selected)="row">
+          <template #cell(index)="data">{{ data.index + 1 }}</template>
+          <template #cell(selected)="row">
             <b-form-group class="selected">
               <input v-model="row.item.selected" type="checkbox" />
             </b-form-group>
           </template>
 
-          <template v-slot:cell(download_link)="data">
+          <template #cell(download_link)="data">
             <b-button variant="primary" :href="data.item.download_url" download>
               Download
             </b-button>
@@ -83,11 +83,11 @@ export default {
         { key: 'filename', sortable: true },
         'size',
         { key: 'download_link', label: '' },
-        { key: 'selected', label: 'Delete' }
+        { key: 'selected', label: 'Delete' },
       ],
       status: statuses.Idle,
       alertMessage: '',
-      items: []
+      items: [],
     }
   },
   computed: {
@@ -108,7 +108,7 @@ export default {
     },
     isBusy() {
       return this.status === statuses.Busy
-    }
+    },
   },
   created() {
     this.provider()
@@ -119,7 +119,7 @@ export default {
       if (response.success) {
         const reports = response.reports.map((report) => ({
           ...report,
-          selected: false
+          selected: false,
         }))
         return reports
       } else {
@@ -161,8 +161,8 @@ export default {
     setStatus(status, message) {
       this.status = statuses[status]
       this.alertMessage = message
-    }
-  }
+    },
+  },
 }
 </script>
 

@@ -2,23 +2,26 @@ module.exports = {
   root: true,
   env: {
     browser: true,
-    node: true
   },
   parserOptions: {
-    parser: 'babel-eslint'
+    parser: 'babel-eslint',
   },
   extends: [
     '@nuxtjs',
     'prettier',
     'prettier/vue',
     'plugin:prettier/recommended',
-    'plugin:nuxt/recommended'
+    'plugin:nuxt/recommended',
+    'plugin:jest/recommended',
+    'plugin:jest/style',
+    'plugin:cypress/recommended',
   ],
-  plugins: [
-    'prettier'
-  ],
+  plugins: ['prettier', 'jest'],
   // add your custom rules here
   rules: {
-    "import/no-named-as-default": 0
-  }
+    'jest/no-standalone-expect': [
+      'error',
+      { additionalTestBlockFunctions: ['each.test'] },
+    ],
+  },
 }

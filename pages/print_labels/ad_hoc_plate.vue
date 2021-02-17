@@ -29,9 +29,7 @@
           ></b-form-select>
         </p>
         <p>
-          <label for="barcode">
-            Please scan the barcode
-          </label>
+          <label for="barcode"> Please scan the barcode </label>
           <b-form-input
             id="barcode"
             v-model="barcode"
@@ -70,15 +68,15 @@ import PrintLabelsRouter from '@/components/PrintLabelsRouter'
 
 export default {
   components: {
-    PrintLabelsRouter
+    PrintLabelsRouter,
   },
   props: {
     printers: {
       type: Array,
       default() {
         return config.publicRuntimeConfig.printers.split(',')
-      }
-    }
+      },
+    },
   },
   data() {
     return {
@@ -86,7 +84,7 @@ export default {
       alertMessage: '',
       printer: 'heron-bc1',
       barcode: '',
-      text: ''
+      text: '',
     }
   },
   computed: {
@@ -105,7 +103,7 @@ export default {
     },
     isValid() {
       return this.barcode.length > 0 && this.text.length > 0
-    }
+    },
   },
   methods: {
     setStatus(status, message) {
@@ -115,7 +113,7 @@ export default {
     async printLabels() {
       const response = await Sprint.printLabels({
         labelFields: [{ barcode: this.barcode, text: this.text }],
-        printer: this.printer
+        printer: this.printer,
       })
 
       if (response.success) {
@@ -123,8 +121,8 @@ export default {
       } else {
         this.setStatus('Error', response.error)
       }
-    }
-  }
+    },
+  },
 }
 </script>
 

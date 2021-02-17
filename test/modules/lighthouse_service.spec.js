@@ -1,9 +1,9 @@
 import axios from 'axios'
+import lighthouse from '@/modules/lighthouse_service'
+import config from '@/nuxt.config'
 import ReportsJson from '../data/reports'
 import RobotsJson from '../data/robots'
 import FailureTypesJson from '../data/failures_types.json'
-import lighthouse from '@/modules/lighthouse_service'
-import config from '@/nuxt.config'
 
 describe('lighthouse_service api', () => {
   let mock, response
@@ -12,7 +12,7 @@ describe('lighthouse_service api', () => {
     jest.resetAllMocks()
   })
 
-  describe('#createPlatesFromBarcodes ', () => {
+  describe('#createPlatesFromBarcodes', () => {
     let barcodes
 
     beforeEach(() => {
@@ -23,13 +23,13 @@ describe('lighthouse_service api', () => {
       barcodes = ['aBarcode1']
 
       response = {
-        errors: ['foreign barcode is already in use.']
+        errors: ['foreign barcode is already in use.'],
       }
 
       mock.mockResolvedValue(response)
 
       const result = await lighthouse.createPlatesFromBarcodes({
-        barcodes
+        barcodes,
       })
 
       expect(result).toEqual([response])
@@ -48,14 +48,14 @@ describe('lighthouse_service api', () => {
         data: {
           plate_barcode: 'aBarcode1',
           centre: 'tst1',
-          number_of_positives: 3
-        }
+          number_of_positives: 3,
+        },
       }
 
       mock.mockResolvedValue(response)
 
       const result = await lighthouse.createPlatesFromBarcodes({
-        barcodes
+        barcodes,
       })
 
       expect(result).toEqual([response])
@@ -71,18 +71,18 @@ describe('lighthouse_service api', () => {
       barcodes = ['aBarcode1', 'aBarcode2']
 
       const response1 = {
-        errors: ['foreign barcode is already in use.']
+        errors: ['foreign barcode is already in use.'],
       }
 
       const response2 = {
-        errors: ['No samples for this barcode']
+        errors: ['No samples for this barcode'],
       }
 
       mock.mockImplementationOnce(() => response1)
       mock.mockImplementationOnce(() => response2)
 
       const result = await lighthouse.createPlatesFromBarcodes({
-        barcodes
+        barcodes,
       })
 
       expect(result).toEqual([response1, response2])
@@ -106,23 +106,23 @@ describe('lighthouse_service api', () => {
         data: {
           plate_barcode: 'aBarcode1',
           centre: 'tst1',
-          number_of_positives: 3
-        }
+          number_of_positives: 3,
+        },
       }
 
       const response2 = {
         data: {
           plate_barcode: 'aBarcode2',
           centre: 'tst1',
-          number_of_positives: 2
-        }
+          number_of_positives: 2,
+        },
       }
 
       mock.mockImplementationOnce(() => response1)
       mock.mockImplementationOnce(() => response2)
 
       const result = await lighthouse.createPlatesFromBarcodes({
-        barcodes
+        barcodes,
       })
 
       expect(result).toEqual([response1, response2])
@@ -143,22 +143,22 @@ describe('lighthouse_service api', () => {
       barcodes = ['aBarcode1', 'aBarcode2']
 
       const response1 = {
-        errors: ['No samples for this barcode']
+        errors: ['No samples for this barcode'],
       }
 
       const response2 = {
         data: {
           plate_barcode: 'aBarcode2',
           centre: 'tst1',
-          number_of_positives: 2
-        }
+          number_of_positives: 2,
+        },
       }
 
       mock.mockImplementationOnce(() => response1)
       mock.mockImplementationOnce(() => response2)
 
       const result = await lighthouse.createPlatesFromBarcodes({
-        barcodes
+        barcodes,
       })
 
       expect(result).toEqual([response1, response2])
@@ -176,7 +176,7 @@ describe('lighthouse_service api', () => {
     })
   })
 
-  describe('#findPlatesFromBarcodes ', () => {
+  describe('#findPlatesFromBarcodes', () => {
     beforeEach(() => {
       mock = jest.spyOn(axios, 'get')
     })
@@ -187,8 +187,8 @@ describe('lighthouse_service api', () => {
         {
           plate_barcode: 'aBarcode1',
           centre: 'tst1',
-          number_of_positives: 3
-        }
+          number_of_positives: 3,
+        },
       ]
 
       response = { data: { plates } }
@@ -196,7 +196,7 @@ describe('lighthouse_service api', () => {
       mock.mockResolvedValue(response)
 
       const result = await lighthouse.findPlatesFromBarcodes({
-        barcodes
+        barcodes,
       })
       const expected = { success: true, plates }
 
@@ -215,20 +215,20 @@ describe('lighthouse_service api', () => {
         {
           plate_barcode: 'aBarcode1',
           centre: 'tst1',
-          number_of_positives: 3
+          number_of_positives: 3,
         },
         {
           plate_barcode: 'aBarcode2',
           centre: 'tst1',
-          number_of_positives: 2
-        }
+          number_of_positives: 2,
+        },
       ]
       const response = { data: { plates } }
 
       mock.mockImplementationOnce(() => response)
 
       const result = await lighthouse.findPlatesFromBarcodes({
-        barcodes
+        barcodes,
       })
       const expected = { success: true, plates }
 
@@ -274,7 +274,7 @@ describe('lighthouse_service api', () => {
         '200716_1618_positives_with_locations.xlsx',
         '200716_1640_positives_with_locations.xlsx',
         '200716_1641_positives_with_locations.xlsx',
-        '200716_1642_positives_with_locations.xlsx'
+        '200716_1642_positives_with_locations.xlsx',
       ]
       mock = jest.spyOn(axios, 'post')
     })
@@ -327,7 +327,7 @@ describe('lighthouse_service api', () => {
 
     it('when the request is successful', async () => {
       axios.post.mockResolvedValue({
-        data: { reports: [ReportsJson.reports[0]] }
+        data: { reports: [ReportsJson.reports[0]] },
       })
       response = await lighthouse.createReport()
 
@@ -364,14 +364,14 @@ describe('lighthouse_service api', () => {
 
     it('on failure', async () => {
       response = {
-        response: { data: { errors: ['There was an error'], robots: [] } }
+        response: { data: { errors: ['There was an error'], robots: [] } },
       }
       mock.mockRejectedValue(response)
 
       const result = await lighthouse.getRobots()
       const expected = {
         success: false,
-        errors: ['There was an error']
+        errors: ['There was an error'],
       }
 
       expect(result).toEqual(expected)
@@ -384,7 +384,7 @@ describe('lighthouse_service api', () => {
       const result = await lighthouse.getRobots()
       const expected = {
         success: false,
-        errors: ['Network Error: Failed to get Robots from Lighthouse Service']
+        errors: ['Network Error: Failed to get Robots from Lighthouse Service'],
       }
 
       expect(result).toEqual(expected)
@@ -398,14 +398,14 @@ describe('lighthouse_service api', () => {
 
     it('when the request is successful', async () => {
       response = {
-        data: { failure_types: FailureTypesJson.failure_types, errors: [] }
+        data: { failure_types: FailureTypesJson.failure_types, errors: [] },
       }
       mock.mockResolvedValue(response)
 
       const result = await lighthouse.getFailureTypes()
       const expected = {
         success: true,
-        failureTypes: FailureTypesJson.failure_types
+        failureTypes: FailureTypesJson.failure_types,
       }
 
       expect(result).toEqual(expected)
@@ -414,15 +414,15 @@ describe('lighthouse_service api', () => {
     it('on failure', async () => {
       response = {
         response: {
-          data: { errors: ['There was an error'], failure_types: [] }
-        }
+          data: { errors: ['There was an error'], failure_types: [] },
+        },
       }
       mock.mockRejectedValue(response)
 
       const result = await lighthouse.getFailureTypes()
       const expected = {
         success: false,
-        errors: ['There was an error']
+        errors: ['There was an error'],
       }
 
       expect(result).toEqual(expected)
@@ -436,8 +436,8 @@ describe('lighthouse_service api', () => {
       const expected = {
         success: false,
         errors: [
-          'Network Error: Failed to get Failure Types from Lighthouse Service'
-        ]
+          'Network Error: Failed to get Failure Types from Lighthouse Service',
+        ],
       }
 
       expect(result).toEqual(expected)
@@ -456,9 +456,9 @@ describe('lighthouse_service api', () => {
           data: {
             plate_barcode: 'barcode',
             centre: 'centre_prefix',
-            number_of_positives: 'len(samples)'
-          }
-        }
+            number_of_positives: 'len(samples)',
+          },
+        },
       }
       mock.mockResolvedValue(response)
 
@@ -471,7 +471,7 @@ describe('lighthouse_service api', () => {
       )
       const expected = {
         success: true,
-        response: `Successfully created destination plate, with barcode: ${responseData.plate_barcode}, and ${responseData.number_of_positives} positive sample(s)`
+        response: `Successfully created destination plate, with barcode: ${responseData.plate_barcode}, and ${responseData.number_of_positives} positive sample(s)`,
       }
 
       expect(result).toEqual(expected)
@@ -479,7 +479,7 @@ describe('lighthouse_service api', () => {
 
     it('on failure', async () => {
       const response = {
-        response: { data: { errors: ['There was an error'] } }
+        response: { data: { errors: ['There was an error'] } },
       }
       mock.mockRejectedValue(response)
 
@@ -505,7 +505,7 @@ describe('lighthouse_service api', () => {
         username: 'username',
         barcode,
         robotSerialNumber: 'x',
-        failureType: 'aType'
+        failureType: 'aType',
       }
     })
 
@@ -516,7 +516,7 @@ describe('lighthouse_service api', () => {
       const result = await lighthouse.failDestinationPlate(form)
       const expected = {
         success: true,
-        response: `Successfully failed destination plate with barcode: ${barcode}`
+        response: `Successfully failed destination plate with barcode: ${barcode}`,
       }
 
       expect(result).toEqual(expected)
@@ -534,7 +534,7 @@ describe('lighthouse_service api', () => {
 
     it('on failure', async () => {
       const response = {
-        response: { data: { errors: ['There was an error'] } }
+        response: { data: { errors: ['There was an error'] } },
       }
       mock.mockRejectedValue(response)
 

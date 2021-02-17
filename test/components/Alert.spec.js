@@ -1,6 +1,6 @@
-import { mount, createLocalVue } from '@vue/test-utils'
-import BootstrapVue from 'bootstrap-vue'
 import Alert from '@/components/Alert'
+import { createLocalVue, mount } from '@vue/test-utils'
+import { BootstrapVue } from 'bootstrap-vue'
 
 const localVue = createLocalVue()
 localVue.use(BootstrapVue)
@@ -13,7 +13,7 @@ describe('Alert.vue', () => {
       localVue,
       data() {
         return { message: 'bar' }
-      }
+      },
     })
     expect(wrapper.vm.message).toBe('bar')
   })
@@ -23,7 +23,7 @@ describe('Alert.vue', () => {
       localVue,
       data() {
         return { type: 'primary' }
-      }
+      },
     })
     expect(wrapper.vm.type).toBe('primary')
   })
@@ -33,7 +33,7 @@ describe('Alert.vue', () => {
       localVue,
       data() {
         return { showDismissibleAlert: true }
-      }
+      },
     })
     expect(wrapper.vm.showDismissibleAlert).toBe(true)
   })
@@ -49,7 +49,7 @@ describe('Alert.vue', () => {
       localVue,
       data() {
         return { message: 'bar', showDismissibleAlert: true }
-      }
+      },
     })
     expect(wrapper.html()).toContain('bar')
   })
@@ -59,7 +59,7 @@ describe('Alert.vue', () => {
       localVue,
       data() {
         return { type: 'success', showDismissibleAlert: true }
-      }
+      },
     })
     expect(wrapper.find('.alert-success').element).toBeTruthy()
   })

@@ -45,7 +45,7 @@
       :per-page="perPage"
       :current-page="currentPage"
     >
-      <template v-slot:cell(errors)="row">
+      <template #cell(errors)="row">
         <ul>
           <li v-for="error in row.item.errors" :key="error">
             {{ error }}
@@ -77,12 +77,12 @@ export default {
             const d = new Date(value)
             return d.toLocaleString()
           },
-          filterByFormatted: true
+          filterByFormatted: true,
         },
         { key: 'centre_name', label: 'Centre', sortable: true },
         { key: 'csv_file_used', label: 'File', sortable: true },
         { key: 'number_of_records', label: 'Num of records', sortable: true },
-        { key: 'errors', label: 'Errors', sortable: true }
+        { key: 'errors', label: 'Errors', sortable: true },
       ],
       sortBy: 'date',
       sortDesc: true,
@@ -91,13 +91,13 @@ export default {
       showDismissibleAlert: false,
       alertData: { variant: '', message: '' },
       items: [],
-      filter: null
+      filter: null,
     }
   },
   computed: {
     rows() {
       return this.items.length
-    }
+    },
   },
   created() {
     this.provider()
@@ -119,8 +119,8 @@ export default {
     },
     async provider() {
       this.items = await this.getItemsProvider()
-    }
-  }
+    },
+  },
 }
 </script>
 

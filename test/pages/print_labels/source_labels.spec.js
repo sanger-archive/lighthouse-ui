@@ -1,5 +1,5 @@
 import fs from 'fs'
-import BootstrapVue from 'bootstrap-vue'
+import { BootstrapVue } from 'bootstrap-vue'
 import { mount, createLocalVue } from '@vue/test-utils'
 import SourcePlates from '@/pages/print_labels/source_plates'
 import statuses from '@/modules/statuses'
@@ -23,7 +23,7 @@ describe('print destination plate labels', () => {
       localVue,
       data() {
         return {}
-      }
+      },
     })
     vm = wrapper.vm
   })
@@ -42,7 +42,7 @@ describe('print destination plate labels', () => {
   })
 
   it('should be able to select a printer', () => {
-    expect(wrapper.find('#selectPrinter').findAll('option').length).toEqual(
+    expect(wrapper.find('#selectPrinter').findAll('option')).toHaveLength(
       printers.length
     )
   })
@@ -88,9 +88,9 @@ describe('print destination plate labels', () => {
         data() {
           return {
             status: statuses.Success,
-            alertMessage: 'I am a success'
+            alertMessage: 'I am a success',
           }
-        }
+        },
       })
       vm = wrapper.vm
       expect(vm.isSuccess).toBeTruthy()
@@ -103,9 +103,9 @@ describe('print destination plate labels', () => {
         data() {
           return {
             status: statuses.Error,
-            alertMessage: 'I am a failure'
+            alertMessage: 'I am a failure',
           }
-        }
+        },
       })
       vm = wrapper.vm
       expect(vm.isError).toBeTruthy()
@@ -118,9 +118,9 @@ describe('print destination plate labels', () => {
         data() {
           return {
             status: statuses.Busy,
-            alertMessage: 'I am busy'
+            alertMessage: 'I am busy',
           }
-        }
+        },
       })
       vm = wrapper.vm
       expect(vm.isBusy).toBeTruthy()
@@ -139,9 +139,9 @@ describe('print destination plate labels', () => {
             return {
               printer: 'heron-bc1',
               numberOfBarcodes: 10,
-              filename: null
+              filename: null,
             }
-          }
+          },
         })
         vm = wrapper.vm
       })
@@ -166,9 +166,9 @@ describe('print destination plate labels', () => {
             return {
               printer: 'heron-bc1',
               numberOfBarcodes: 10,
-              filename: 'barcodes.csv'
+              filename: 'barcodes.csv',
             }
-          }
+          },
         })
         vm = wrapper.vm
         mock = jest.spyOn(Sprint, 'printLabels')
@@ -182,7 +182,7 @@ describe('print destination plate labels', () => {
       it('successfully', async () => {
         mock.mockResolvedValue({
           success: true,
-          message: 'successfully printed 5 labels to heron-bc3'
+          message: 'successfully printed 5 labels to heron-bc3',
         })
         await vm.printLabels()
         expect(wrapper.find('.alert').text()).toMatch(
@@ -193,7 +193,7 @@ describe('print destination plate labels', () => {
       it('unsuccessfully', async () => {
         mock.mockReturnValue({
           success: false,
-          error: 'There was an error'
+          error: 'There was an error',
         })
         await vm.printLabels()
         expect(wrapper.find('.alert').text()).toMatch('There was an error')

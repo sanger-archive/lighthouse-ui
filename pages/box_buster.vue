@@ -40,10 +40,10 @@
         <span>Total {{ total_positives }} positives.</span>
         <br />
         <span>Box further contains:</span>
-        <span style="color:green">
+        <span style="color: green">
           {{ total_must_sequence }} plates with samples that must be sequenced;
         </span>
-        <span style="color:DarkOrange">
+        <span style="color: DarkOrange">
           {{ total_preferentially_sequence }} plates of samples that we should
           preferentially sequence.
         </span>
@@ -60,8 +60,8 @@
 </template>
 
 <script>
-import lighthouse from '../modules/lighthouse_service'
-import { getPlatesFromBoxBarcodes } from '@/modules/labwhere'
+import labwhere from '@/modules/labwhere'
+import lighthouse from '@/modules/lighthouse_service'
 
 const countByMustSequence = (accumulator, plate) =>
   accumulator + (plate.must_sequence ? 1 : 0)
@@ -103,7 +103,7 @@ const sortCompare = (aPlate, bPlate) => {
 
 const defaultResponse = {
   success: null,
-  error: 'No error: This should not be visible'
+  error: 'No error: This should not be visible',
 }
 
 export default {
@@ -115,26 +115,26 @@ export default {
       lighthouseResponse: defaultResponse,
       fields: [
         {
-          key: 'plate_barcode'
+          key: 'plate_barcode',
           // sortable: true // check if required
         },
         {
           key: 'plate_map',
-          formatter: booleanFormatter
+          formatter: booleanFormatter,
         },
         {
           key: 'number_of_positives',
-          formatter: countFormatter
+          formatter: countFormatter,
         },
         {
           key: 'must_sequence',
-          formatter: booleanFormatter
+          formatter: booleanFormatter,
         },
         {
           key: 'preferentially_sequence',
-          formatter: booleanFormatter
-        }
-      ]
+          formatter: booleanFormatter,
+        },
+      ],
     }
   },
   computed: {
@@ -174,7 +174,7 @@ export default {
       } else {
         return extractError(this.lighthouseResponse)
       }
-    }
+    },
   },
   created() {},
   methods: {
@@ -190,7 +190,7 @@ export default {
       this.reset()
       if (this.barcode === '') return
 
-      const response = await getPlatesFromBoxBarcodes(this.barcode)
+      const response = await labwhere.getPlatesFromBoxBarcodes(this.barcode)
       this.labwhereResponse = response
       if (response.success) {
         this.findPlates(response)
@@ -217,7 +217,7 @@ export default {
         return []
       }
       return plates.sort(sortCompare)
-    }
-  }
+    },
+  },
 }
 </script>

@@ -59,12 +59,12 @@ import Alert from '@/components/Alert'
 export default {
   components: {
     BeckmanCherrypickForm,
-    Alert
+    Alert,
   },
   data() {
     return {
       robots: [],
-      failureTypes: []
+      failureTypes: [],
     }
   },
   async mounted() {
@@ -116,8 +116,8 @@ export default {
     },
     showAlert(message, type) {
       return this.$refs.alert.show(message, type)
-    }
-  }
+    },
+  },
 }
 </script>
 

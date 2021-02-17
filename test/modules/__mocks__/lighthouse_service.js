@@ -6,7 +6,7 @@ const lighthouse = {
   getRobots: jest.fn(),
   getFailureTypes: jest.fn(),
   createDestinationPlate: jest.fn(),
-  failDestinationPlate: jest.fn()
+  failDestinationPlate: jest.fn(),
 }
 
 export default lighthouse

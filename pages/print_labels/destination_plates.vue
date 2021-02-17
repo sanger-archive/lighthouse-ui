@@ -66,22 +66,22 @@ import PrintLabelsRouter from '@/components/PrintLabelsRouter'
 
 export default {
   components: {
-    PrintLabelsRouter
+    PrintLabelsRouter,
   },
   props: {
     printers: {
       type: Array,
       default() {
         return config.publicRuntimeConfig.printers.split(',')
-      }
-    }
+      },
+    },
   },
   data() {
     return {
       status: statuses.Idle,
       alertMessage: '',
       printer: 'heron-bc1',
-      numberOfBarcodes: 1
+      numberOfBarcodes: 1,
     }
   },
   computed: {
@@ -97,7 +97,7 @@ export default {
     },
     isBusy() {
       return this.status === statuses.Busy
-    }
+    },
   },
   methods: {
     setStatus(status, message) {
@@ -108,7 +108,7 @@ export default {
       this.setStatus('Busy', 'Printing labels ...')
       const response = await sprint.printDestinationPlateLabels({
         numberOfBarcodes: this.numberOfBarcodes,
-        printer: this.printer
+        printer: this.printer,
       })
 
       if (response.success) {
@@ -116,8 +116,8 @@ export default {
       } else {
         this.setStatus('Error', response.error)
       }
-    }
-  }
+    },
+  },
 }
 </script>
 

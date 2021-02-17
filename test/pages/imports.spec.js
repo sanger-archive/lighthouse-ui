@@ -1,4 +1,4 @@
-import BootstrapVue from 'bootstrap-vue'
+import { BootstrapVue } from 'bootstrap-vue'
 import { mount, createLocalVue } from '@vue/test-utils'
 import Imports from '@/pages/imports'
 import lighthouse from '@/modules/lighthouse_service'
@@ -14,9 +14,9 @@ describe('Imports', () => {
       localVue,
       data() {
         return {
-          items: []
+          items: [],
         }
-      }
+      },
     })
     wrapper.vm.provider = jest.fn()
   })
@@ -37,8 +37,10 @@ describe('Imports', () => {
 
       await wrapper.vm.getItemsProvider()
 
-      expect(lighthouse.getImports).toBeCalled()
-      expect(wrapper.vm.handleItemsResponse).toBeCalledWith(expectedResponse)
+      expect(lighthouse.getImports).toHaveBeenCalled()
+      expect(wrapper.vm.handleItemsResponse).toHaveBeenCalledWith(
+        expectedResponse
+      )
     })
   })
 
@@ -60,7 +62,7 @@ describe('Imports', () => {
 
       expect(wrapper.vm.alertData).toEqual({
         variant: 'danger',
-        message: errorMsg
+        message: errorMsg,
       })
       expect(wrapper.vm.showDismissibleAlert).toEqual(true)
       expect(resp).toEqual([])
@@ -86,15 +88,15 @@ describe('Imports', () => {
           centre_name: 'I should be hidden',
           csv_file_used: 'test_file',
           number_of_records: '2',
-          errors: ['nothing']
+          errors: ['nothing'],
         },
         {
           date: 'something 2',
           centre_name: 'pick me!',
           csv_file_used: 'test_file_2',
           number_of_records: '2',
-          errors: ['nothing']
-        }
+          errors: ['nothing'],
+        },
       ]
       wrapper.vm.filter = 'me!'
 
