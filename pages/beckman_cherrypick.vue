@@ -14,10 +14,7 @@
               :action="'create'"
               :robots="robots"
             >
-              <b-button
-                variant="success"
-                :disabled="formInvalid"
-                @click="create(form)"
+              <b-button variant="success" :disabled="formInvalid" @click="create(form)"
                 >Create Destination Plate</b-button
               >
             </BeckmanCherrypickForm>
@@ -25,20 +22,14 @@
         </b-tab>
 
         <b-tab title="Fail">
-          <b-card
-            title="Fail Destination Plate"
-            sub-title="Fail destination plate with a reason."
-          >
+          <b-card title="Fail Destination Plate" sub-title="Fail destination plate with a reason.">
             <BeckmanCherrypickForm
               v-slot="{ form, formInvalid }"
               :action="'fail'"
               :robots="robots"
               :failure-types="failureTypes"
             >
-              <b-button
-                variant="danger"
-                :disabled="formInvalid"
-                @click="fail(form)"
+              <b-button variant="danger" :disabled="formInvalid" @click="fail(form)"
                 >Fail Destination Plate</b-button
               >
             </BeckmanCherrypickForm>

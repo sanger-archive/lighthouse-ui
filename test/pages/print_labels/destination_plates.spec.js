@@ -29,9 +29,7 @@ describe('print destination plate labels', () => {
   })
 
   it('is a Vue instance', () => {
-    expect(
-      wrapper.findComponent(PrintDestinationPlateLabels).exists()
-    ).toBeTruthy()
+    expect(wrapper.findComponent(PrintDestinationPlateLabels).exists()).toBeTruthy()
   })
 
   it('should have some printers', () => {
@@ -40,9 +38,7 @@ describe('print destination plate labels', () => {
   })
 
   it('should be able to select a printer', () => {
-    expect(wrapper.find('#selectPrinter').findAll('option')).toHaveLength(
-      printers.length
-    )
+    expect(wrapper.find('#selectPrinter').findAll('option')).toHaveLength(printers.length)
   })
 
   it('should be able to select a number of labels', () => {
@@ -132,9 +128,7 @@ describe('print destination plate labels', () => {
         message: 'Labels successfully printed',
       })
       await vm.printLabels()
-      expect(wrapper.find('.alert').text()).toMatch(
-        'Labels successfully printed'
-      )
+      expect(wrapper.find('.alert').text()).toMatch('Labels successfully printed')
     })
 
     it('unsuccessfully', async () => {

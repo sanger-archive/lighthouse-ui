@@ -20,10 +20,7 @@ describe('Sequencescape', () => {
     let payload, payloadAttributes
 
     beforeEach(() => {
-      payload = sequencescape.createPayloadForCherrypickBatch(
-        barcodes,
-        config.publicRuntimeConfig
-      )
+      payload = sequencescape.createPayloadForCherrypickBatch(barcodes, config.publicRuntimeConfig)
       payloadAttributes = payload.data.attributes
     })
 
@@ -62,9 +59,7 @@ describe('Sequencescape', () => {
     })
 
     it('when there is an error', async () => {
-      mock.mockImplementationOnce(() =>
-        Promise.reject(new Error('There was an error'))
-      )
+      mock.mockImplementationOnce(() => Promise.reject(new Error('There was an error')))
       response = await sequencescape.createCherrypickBatch(barcodes)
       expect(response.error).toEqual(new Error('There was an error'))
     })

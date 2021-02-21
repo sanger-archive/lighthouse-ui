@@ -83,18 +83,12 @@ const printLabels = async ({ labelFields, printer }) => {
   try {
     const payload = createPrintRequestBody({ labelFields, printer })
 
-    const response = await axios.post(
-      config.privateRuntimeConfig.sprintBaseURL,
-      payload,
-      headers
-    )
+    const response = await axios.post(config.privateRuntimeConfig.sprintBaseURL, payload, headers)
 
     // because this is GraphQL it will always be a success unless it is a 500
     // so we need to extract the error messages and turn it into an error object
     if (response.data.errors)
-      throw new Error(
-        response.data.errors.map(({ message }) => message).join(',')
-      )
+      throw new Error(response.data.errors.map(({ message }) => message).join(','))
 
     return {
       success: true,

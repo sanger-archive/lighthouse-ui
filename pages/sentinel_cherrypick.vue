@@ -1,11 +1,7 @@
 <template>
   <b-container>
     <h1>Lighthouse Sentinel cherrypick batch creation</h1>
-    <b-alert
-      ref="alert"
-      :show="showDismissibleAlert"
-      :variant="pickListResponse.variant"
-    >
+    <b-alert ref="alert" :show="showDismissibleAlert" :variant="pickListResponse.variant">
       {{ pickListResponse.alertMessage
       }}<a :href="pickListResponse.link">{{ pickListResponse.link }}</a>
     </b-alert>
@@ -15,8 +11,8 @@
         <label for="box-barcode" class="col-sm-4 col-form-label">
           Please scan Lighthouse box barcode(s)
           <p class="labwhere-warning">
-            Box and its contents need to be in LabWhere and samples created in
-            Sequencescape, to generate batch
+            Box and its contents need to be in LabWhere and samples created in Sequencescape, to
+            generate batch
           </p>
         </label>
         <div class="col-sm-8">
@@ -38,11 +34,7 @@
             @click="getPlates()"
             >Get plates
           </b-button>
-          <b-button
-            id="cancelSearch"
-            variant="primary"
-            class="float-right"
-            @click="cancelSearch()"
+          <b-button id="cancelSearch" variant="primary" class="float-right" @click="cancelSearch()"
             >Cancel
           </b-button>
         </div>
@@ -162,8 +154,7 @@ export default {
     handleCreateBatchResponse(resp) {
       if (resp.success) {
         this.pickListResponse = {
-          alertMessage:
-            'Cherrypicking batch successfully created. Go to this link to view it: ',
+          alertMessage: 'Cherrypicking batch successfully created. Go to this link to view it: ',
           variant: 'success',
           link: resp.data.attributes.links[0].url,
         }

@@ -1,10 +1,7 @@
 import config from '@/nuxt.config'
 import axios from 'axios'
 
-const createPayloadForCherrypickBatch = (
-  barcodes,
-  runtimeOptions = config.publicRuntimeConfig
-) => {
+const createPayloadForCherrypickBatch = (barcodes, runtimeOptions = config.publicRuntimeConfig) => {
   const { asynchronous, studyId, projectId } = runtimeOptions
   return {
     data: {

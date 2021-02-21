@@ -15,9 +15,7 @@ describe('api', () => {
     let boxBarcode, labwhereResponse
 
     it('both getPlatesFromBoxBarcodes and createPlatesFromBarcodes are successful', async () => {
-      labwhere.getPlatesFromBoxBarcodes = jest
-        .fn()
-        .mockReturnValue(labwhereResponse)
+      labwhere.getPlatesFromBoxBarcodes = jest.fn().mockReturnValue(labwhereResponse)
 
       const expected = [
         {
@@ -42,15 +40,11 @@ describe('api', () => {
 
       expect(result).toEqual(expected)
       expect(labwhere.getPlatesFromBoxBarcodes).toHaveBeenCalledWith(boxBarcode)
-      expect(lighthouse.createPlatesFromBarcodes).toHaveBeenCalledWith(
-        labwhereResponse
-      )
+      expect(lighthouse.createPlatesFromBarcodes).toHaveBeenCalledWith(labwhereResponse)
     })
 
     it('getPlatesFromBoxBarcodes is successful, createPlatesFromBarcodes all fail', async () => {
-      labwhere.getPlatesFromBoxBarcodes = jest
-        .fn()
-        .mockReturnValue(labwhereResponse)
+      labwhere.getPlatesFromBoxBarcodes = jest.fn().mockReturnValue(labwhereResponse)
 
       const expected = [
         {
@@ -67,15 +61,11 @@ describe('api', () => {
 
       expect(result).toEqual(expected)
       expect(labwhere.getPlatesFromBoxBarcodes).toHaveBeenCalledWith(boxBarcode)
-      expect(lighthouse.createPlatesFromBarcodes).toHaveBeenCalledWith(
-        labwhereResponse
-      )
+      expect(lighthouse.createPlatesFromBarcodes).toHaveBeenCalledWith(labwhereResponse)
     })
 
     it('getPlatesFromBoxBarcodes is successful, createPlatesFromBarcodes partially fail', async () => {
-      labwhere.getPlatesFromBoxBarcodes = jest
-        .fn()
-        .mockReturnValue(labwhereResponse)
+      labwhere.getPlatesFromBoxBarcodes = jest.fn().mockReturnValue(labwhereResponse)
 
       const expected = [
         {
@@ -96,9 +86,7 @@ describe('api', () => {
 
       expect(result).toEqual(expected)
       expect(labwhere.getPlatesFromBoxBarcodes).toHaveBeenCalledWith(boxBarcode)
-      expect(lighthouse.createPlatesFromBarcodes).toHaveBeenCalledWith(
-        labwhereResponse
-      )
+      expect(lighthouse.createPlatesFromBarcodes).toHaveBeenCalledWith(labwhereResponse)
     })
 
     it('getPlatesFromBoxBarcodes fails', async () => {
@@ -107,9 +95,7 @@ describe('api', () => {
 
       const expected = [
         {
-          errors: [
-            `Failed to get plate barcodes for box barcode: ${boxBarcode}`,
-          ],
+          errors: [`Failed to get plate barcodes for box barcode: ${boxBarcode}`],
         },
       ]
       const result = await api.createSamples(boxBarcode)

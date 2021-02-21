@@ -18,17 +18,10 @@
             {{ alertMessage }}
           </b-alert>
         </p>
-        <form
-          enctype="multipart/form-data"
-          method="post"
-          action="#"
-          @submit.prevent="upload"
-        >
+        <form enctype="multipart/form-data" method="post" action="#" @submit.prevent="upload">
           <div class="form-group">
             <div class="form-group">
-              <label for="selectPrinter">
-                Which printer would you like to use?
-              </label>
+              <label for="selectPrinter">Which printer would you like to use?</label>
               <b-form-select
                 id="selectPrinter"
                 v-model="printer"
@@ -53,11 +46,7 @@
                 placeholder="Upload File..."
               />
               <span class="input-group-btn">
-                <button
-                  class="btn btn-success spacer"
-                  type="button"
-                  @click.prevent="browseFiles"
-                >
+                <button class="btn btn-success spacer" type="button" @click.prevent="browseFiles">
                   Browse
                 </button>
               </span>

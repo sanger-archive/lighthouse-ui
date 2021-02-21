@@ -122,10 +122,7 @@ describe('Beckman Cherrypick', () => {
       })
 
       await page.create(form)
-      expect(page.showAlert).toHaveBeenCalledWith(
-        'A successful response message',
-        'success'
-      )
+      expect(page.showAlert).toHaveBeenCalledWith('A successful response message', 'success')
     })
 
     it('on failure calls showAlert', async () => {
@@ -160,10 +157,7 @@ describe('Beckman Cherrypick', () => {
       })
 
       await page.fail(form)
-      expect(page.showAlert).toHaveBeenCalledWith(
-        'A successful response message',
-        'success'
-      )
+      expect(page.showAlert).toHaveBeenCalledWith('A successful response message', 'success')
     })
 
     it('on partial success it shows an alert', async () => {

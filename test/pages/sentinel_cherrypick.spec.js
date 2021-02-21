@@ -27,9 +27,7 @@ describe('sentinel cherrypick', () => {
   })
 
   it('has barcodes', () => {
-    expect(wrapper.vm.boxBarcodes).toEqual(
-      'lw-ogilvie-4\nlw-ogilvie-5\nlw-ogilvie-6'
-    )
+    expect(wrapper.vm.boxBarcodes).toEqual('lw-ogilvie-4\nlw-ogilvie-5\nlw-ogilvie-6')
   })
 
   it('has items', () => {
@@ -77,23 +75,17 @@ describe('sentinel cherrypick', () => {
 
   describe('#parseBoxBarcodes', () => {
     it('splits on whitespace', () => {
-      const output = wrapper.vm.parseBoxBarcodes(
-        'lw-ogilvie-4\nlw-ogilvie-5\nlw-ogilvie-6'
-      )
+      const output = wrapper.vm.parseBoxBarcodes('lw-ogilvie-4\nlw-ogilvie-5\nlw-ogilvie-6')
       expect(output).toEqual(['lw-ogilvie-4', 'lw-ogilvie-5', 'lw-ogilvie-6'])
     })
 
     it('removes duplicates', () => {
-      const output = wrapper.vm.parseBoxBarcodes(
-        'lw-ogilvie-4\nlw-ogilvie-4\nlw-ogilvie-6'
-      )
+      const output = wrapper.vm.parseBoxBarcodes('lw-ogilvie-4\nlw-ogilvie-4\nlw-ogilvie-6')
       expect(output).toEqual(['lw-ogilvie-4', 'lw-ogilvie-6'])
     })
 
     it('trims whitespace', () => {
-      const output = wrapper.vm.parseBoxBarcodes(
-        ' lw-ogilvie-4 \nlw-ogilvie-5  \n lw-ogilvie-6  '
-      )
+      const output = wrapper.vm.parseBoxBarcodes(' lw-ogilvie-4 \nlw-ogilvie-5  \n lw-ogilvie-6  ')
       expect(output).toEqual(['lw-ogilvie-4', 'lw-ogilvie-5', 'lw-ogilvie-6'])
     })
   })
@@ -260,9 +252,7 @@ describe('sentinel cherrypick', () => {
 
         wrapper.vm.handleCreateBatchResponse(response)
         wrapper.vm.$nextTick(() => {
-          expect(wrapper.findComponent({ ref: 'alert' }).text()).toEqual(
-            'Test error'
-          )
+          expect(wrapper.findComponent({ ref: 'alert' }).text()).toEqual('Test error')
         })
       })
     })
@@ -287,9 +277,7 @@ describe('sentinel cherrypick', () => {
         sequencescape.createCherrypickBatch = jest.fn()
         wrapper.vm.handleCreateBatchResponse = jest.fn()
         await wrapper.vm.createBatch()
-        expect(sequencescape.createCherrypickBatch).toHaveBeenCalledWith([
-          'aBarcode2',
-        ])
+        expect(sequencescape.createCherrypickBatch).toHaveBeenCalledWith(['aBarcode2'])
       })
     })
   })

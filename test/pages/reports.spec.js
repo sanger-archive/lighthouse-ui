@@ -95,9 +95,7 @@ describe('Index', () => {
       })
       wrapper = mount(Index, { localVue })
       await flushPromises()
-      expect(wrapper.find('tbody').findAll('tr')).toHaveLength(
-        ReportsJson.reports.length
-      )
+      expect(wrapper.find('tbody').findAll('tr')).toHaveLength(ReportsJson.reports.length)
     })
 
     it('when the request fails', async () => {
@@ -125,12 +123,8 @@ describe('Index', () => {
       const button = wrapper.find('#createReport')
       await button.trigger('click')
       await flushPromises()
-      expect(wrapper.find('tbody').findAll('tr')).toHaveLength(
-        ReportsJson.reports.length
-      )
-      expect(wrapper.find('.alert').text()).toMatch(
-        'Report successfully created'
-      )
+      expect(wrapper.find('tbody').findAll('tr')).toHaveLength(ReportsJson.reports.length)
+      expect(wrapper.find('.alert').text()).toMatch('Report successfully created')
     })
 
     it('when the request fails', async () => {
@@ -142,9 +136,7 @@ describe('Index', () => {
       const button = wrapper.find('#createReport')
       await button.trigger('click')
       await flushPromises()
-      expect(wrapper.find('.alert').text()).toMatch(
-        'There was an error creating the report'
-      )
+      expect(wrapper.find('.alert').text()).toMatch('There was an error creating the report')
     })
   })
 
@@ -154,9 +146,7 @@ describe('Index', () => {
     let rows, reportFilenames, lessReportsJson
 
     beforeEach(() => {
-      reportFilenames = ReportsJson.reports
-        .map((report) => report.filename)
-        .slice(0, 3)
+      reportFilenames = ReportsJson.reports.map((report) => report.filename).slice(0, 3)
       lessReportsJson = { reports: ReportsJson.reports.slice(3, 5) }
       lighthouse.getReports.mockResolvedValue({
         success: true,

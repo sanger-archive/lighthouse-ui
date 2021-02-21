@@ -1,13 +1,8 @@
 <template>
-  <b-container>
+  <b-container fluid>
     <h1>Imports</h1>
 
-    <b-alert
-      ref="alert"
-      dismissible
-      :show="showDismissibleAlert"
-      :variant="alertData.variant"
-    >
+    <b-alert ref="alert" dismissible :show="showDismissibleAlert" :variant="alertData.variant">
       {{ alertData.message }}
     </b-alert>
     <br />
@@ -19,12 +14,7 @@
       class="mb-0"
     >
       <b-input-group>
-        <b-form-input
-          id="filterInput"
-          v-model="filter"
-          type="search"
-          placeholder="Type to Search"
-        >
+        <b-form-input id="filterInput" v-model="filter" type="search" placeholder="Type to Search">
         </b-form-input>
         <b-input-group-append>
           <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>

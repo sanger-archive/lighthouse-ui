@@ -19,27 +19,15 @@
           </b-alert>
         </p>
         <p>
-          <label for="selectPrinter">
-            Which printer would you like to use?
-          </label>
-          <b-form-select
-            id="selectPrinter"
-            v-model="printer"
-            :options="printers"
-          ></b-form-select>
+          <label for="selectPrinter"> Which printer would you like to use? </label>
+          <b-form-select id="selectPrinter" v-model="printer" :options="printers"></b-form-select>
         </p>
         <p>
           <label for="barcode"> Please scan the barcode </label>
-          <b-form-input
-            id="barcode"
-            v-model="barcode"
-            type="text"
-          ></b-form-input>
+          <b-form-input id="barcode" v-model="barcode" type="text"></b-form-input>
         </p>
         <p>
-          <label for="text">
-            Please provide some text to go on the label
-          </label>
+          <label for="text"> Please provide some text to go on the label </label>
           <b-form-input id="text" v-model="text" type="text"></b-form-input>
         </p>
         <p class="text-right">

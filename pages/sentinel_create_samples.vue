@@ -10,8 +10,7 @@
         <label for="box-barcode" class="col-sm-4 col-form-label">
           Please scan Lighthouse box barcode
           <p class="labwhere-warning">
-            Box and its contents need to be in LabWhere to autogenerate samples
-            in Sequencescape
+            Box and its contents need to be in LabWhere to autogenerate samples in Sequencescape
           </p>
         </label>
         <div class="col-sm-8">
@@ -34,11 +33,7 @@
             @click="handleSentinelSampleCreation()"
             >Submit
           </b-button>
-          <b-button
-            id="cancelSearch"
-            variant="primary"
-            class="float-right"
-            @click="cancelSearch()"
+          <b-button id="cancelSearch" variant="primary" class="float-right" @click="cancelSearch()"
             >Cancel
           </b-button>
         </div>

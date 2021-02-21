@@ -1,12 +1,9 @@
-const { CI_PAGES_URL } = process.env
-const base = CI_PAGES_URL && new URL(CI_PAGES_URL).pathname
-
 export default {
   /*
    ** Headers of the page
    */
   head: {
-    title: 'Lighthouse reports',
+    title: 'Lighthouse',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -24,6 +21,9 @@ export default {
    */
   loading: { color: '#fff' },
 
+  // https://nuxtjs.org/docs/2.x/features/deployment-targets#target-static
+  target: 'static',
+
   /*
    ** Customize the generated output folder
    */
@@ -35,7 +35,7 @@ export default {
    ** Customize the base url
    */
   router: {
-    base,
+    base: process.env.base,
   },
 
   /*
@@ -83,8 +83,7 @@ export default {
   privateRuntimeConfig: {
     lighthouseBaseURL: process.env.LIGHTHOUSE_BASE_URL || 'http://lighthouse',
     labwhereBaseURL: process.env.LABWHERE_BASE_URL || 'http://labwhere',
-    sequencescapeBaseURL:
-      process.env.SEQUENCESCAPE_BASE_URL || 'http://sequencescape',
+    sequencescapeBaseURL: process.env.SEQUENCESCAPE_BASE_URL || 'http://sequencescape',
     sprintBaseURL: process.env.SPRINT_BASE_URL || 'http://sprint',
     baracodaBaseURL: process.env.BARACODA_BASE_URL || 'http://baracoda',
   },

@@ -1,29 +1,31 @@
-name: CI nuxtjs
+name: Test using Jest
 
 on:
   push:
     paths-ignore:
-      - "README.md"
+      - 'README.md'
   pull_request:
     paths-ignore:
-      - "README.md"
+      - 'README.md'
 
 jobs:
-  build_and_test_job:
+  jest:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
+      - name: Setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
       - uses: actions/cache@v1
         with:
           path: ~/.cache/yarn
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
-      - name: Install yarn dependencies
-        run: |
-          yarn install
-      - name: Run tests
-        run: |
-          yarn test
+      - name: Install packages using yarn
+        run: yarn install
+      - name: Run tests using jest
+        run: yarn test
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1

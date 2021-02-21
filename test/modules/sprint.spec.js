@@ -75,9 +75,7 @@ describe('Sprint', () => {
   })
 
   it('#createLabelFields', () => {
-    expect(Sprint.createLabelFields({ barcodes, text: 'LHTR' })).toEqual(
-      labelFields
-    )
+    expect(Sprint.createLabelFields({ barcodes, text: 'LHTR' })).toEqual(labelFields)
   })
 
   describe('#printLabels', () => {
@@ -107,9 +105,7 @@ describe('Sprint', () => {
         Sprint.headers
       )
       expect(response.success).toBeTruthy()
-      expect(response.message).toEqual(
-        'successfully printed 3 labels to heron-bc3'
-      )
+      expect(response.message).toEqual('successfully printed 3 labels to heron-bc3')
     })
 
     it('when sprint fails', async () => {
@@ -156,13 +152,7 @@ describe('Sprint', () => {
 
       beforeEach(() => {
         args = { numberOfBarcodes: 5, printer: 'heron-bc3' }
-        barcodes = [
-          'HT-111116',
-          'HT-111117',
-          'HT-111118',
-          'HT-111119',
-          'HT-111120',
-        ]
+        barcodes = ['HT-111116', 'HT-111117', 'HT-111118', 'HT-111119', 'HT-111120']
       })
 
       it('successfully', async () => {
@@ -178,9 +168,7 @@ describe('Sprint', () => {
           labelFields: Sprint.createLabelFields({ barcodes, text: 'LHTR' }),
         })
         expect(response.success).toBeTruthy()
-        expect(response.message).toEqual(
-          'successfully printed 5 labels to heron-bc3'
-        )
+        expect(response.message).toEqual('successfully printed 5 labels to heron-bc3')
       })
 
       it('when baracoda fails', async () => {

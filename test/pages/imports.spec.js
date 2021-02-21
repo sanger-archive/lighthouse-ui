@@ -38,9 +38,7 @@ describe('Imports', () => {
       await wrapper.vm.getItemsProvider()
 
       expect(lighthouse.getImports).toHaveBeenCalled()
-      expect(wrapper.vm.handleItemsResponse).toHaveBeenCalledWith(
-        expectedResponse
-      )
+      expect(wrapper.vm.handleItemsResponse).toHaveBeenCalledWith(expectedResponse)
     })
   })
 
@@ -73,9 +71,7 @@ describe('Imports', () => {
       wrapper.vm.handleItemsResponse(response)
 
       wrapper.vm.$nextTick(() => {
-        expect(wrapper.findComponent({ ref: 'alert' }).text()).toMatch(
-          /an error message/
-        )
+        expect(wrapper.findComponent({ ref: 'alert' }).text()).toMatch(/an error message/)
       })
     })
   })
@@ -102,9 +98,7 @@ describe('Imports', () => {
 
       wrapper.vm.$nextTick(() => {
         expect(wrapper.find('#imports-table').html()).toMatch(/pick me!/)
-        expect(wrapper.find('#imports-table').html()).not.toMatch(
-          /I should be hidden/
-        )
+        expect(wrapper.find('#imports-table').html()).not.toMatch(/I should be hidden/)
       })
     })
   })

@@ -38,9 +38,7 @@ describe('print control plate labels', () => {
   })
 
   it('should be able to select a printer', () => {
-    expect(wrapper.find('#selectPrinter').findAll('option')).toHaveLength(
-      printers.length
-    )
+    expect(wrapper.find('#selectPrinter').findAll('option')).toHaveLength(printers.length)
   })
 
   it('should be able to add a barcode', () => {
@@ -166,9 +164,7 @@ describe('print control plate labels', () => {
         barcodes: vm.multiplyBarcodes(),
         text: 'Control',
       })
-      expect(wrapper.find('.alert').text()).toMatch(
-        'Labels successfully printed'
-      )
+      expect(wrapper.find('.alert').text()).toMatch('Labels successfully printed')
     })
 
     it('unsuccessfully', async () => {

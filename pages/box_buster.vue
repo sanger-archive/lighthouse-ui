@@ -1,9 +1,7 @@
 <template>
   <b-container>
     <h1>Box Buster</h1>
-    <p class="lead">
-      Quickly overview box contents to assist with cherrypicking
-    </p>
+    <p class="lead">Quickly overview box contents to assist with cherrypicking</p>
     <b-form-group
       id="box-barcode"
       description="Scan in a lighthouse box barcode to show information about all plates contained in the box."
@@ -44,14 +42,13 @@
           {{ total_must_sequence }} plates with samples that must be sequenced;
         </span>
         <span style="color: DarkOrange">
-          {{ total_preferentially_sequence }} plates of samples that we should
-          preferentially sequence.
+          {{ total_preferentially_sequence }} plates of samples that we should preferentially
+          sequence.
         </span>
         <br />
         <small>
           <span>
-            Sorted by: 1. Must Sequence 2. Preferentially Sequence 3. Number of
-            Positives
+            Sorted by: 1. Must Sequence 2. Preferentially Sequence 3. Number of Positives
           </span>
         </small>
       </template>
@@ -63,17 +60,13 @@
 import labwhere from '@/modules/labwhere'
 import lighthouse from '@/modules/lighthouse_service'
 
-const countByMustSequence = (accumulator, plate) =>
-  accumulator + (plate.must_sequence ? 1 : 0)
+const countByMustSequence = (accumulator, plate) => accumulator + (plate.must_sequence ? 1 : 0)
 const countByPreferentiallySequence = (accumulator, plate) =>
   accumulator + (plate.preferentially_sequence ? 1 : 0)
-const countWithMap = (accumulator, plate) =>
-  accumulator + (plate.plate_map ? 1 : 0)
-const countWithoutMap = (accumulator, plate) =>
-  accumulator + (plate.plate_map ? 0 : 1)
+const countWithMap = (accumulator, plate) => accumulator + (plate.plate_map ? 1 : 0)
+const countWithoutMap = (accumulator, plate) => accumulator + (plate.plate_map ? 0 : 1)
 const sumPositives = (accumulator, plate) =>
-  accumulator +
-  (plate.number_of_positives == null ? 0 : plate.number_of_positives)
+  accumulator + (plate.number_of_positives == null ? 0 : plate.number_of_positives)
 const booleanFormatter = (value) => (value ? 'Yes' : 'No')
 const countFormatter = (value, _key, item) => (item.plate_map ? value : 'N/A')
 const extractError = (response) => {
@@ -91,14 +84,9 @@ const sortCompare = (aPlate, bPlate) => {
   const compareMustSequence = bPlate.must_sequence - aPlate.must_sequence
   const comparePreferentiallySequence =
     bPlate.preferentially_sequence - aPlate.preferentially_sequence
-  const compareNumberOfPositives =
-    bPlate.number_of_positives > aPlate.number_of_positives ? 1 : -1
+  const compareNumberOfPositives = bPlate.number_of_positives > aPlate.number_of_positives ? 1 : -1
 
-  return (
-    compareMustSequence ||
-    comparePreferentiallySequence ||
-    compareNumberOfPositives
-  )
+  return compareMustSequence || comparePreferentiallySequence || compareNumberOfPositives
 }
 
 const defaultResponse = {

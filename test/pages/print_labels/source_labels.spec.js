@@ -42,9 +42,7 @@ describe('print destination plate labels', () => {
   })
 
   it('should be able to select a printer', () => {
-    expect(wrapper.find('#selectPrinter').findAll('option')).toHaveLength(
-      printers.length
-    )
+    expect(wrapper.find('#selectPrinter').findAll('option')).toHaveLength(printers.length)
   })
 
   it('#setMessage', () => {
@@ -185,9 +183,7 @@ describe('print destination plate labels', () => {
           message: 'successfully printed 5 labels to heron-bc3',
         })
         await vm.printLabels()
-        expect(wrapper.find('.alert').text()).toMatch(
-          'successfully printed 5 labels to heron-bc3'
-        )
+        expect(wrapper.find('.alert').text()).toMatch('successfully printed 5 labels to heron-bc3')
       })
 
       it('unsuccessfully', async () => {

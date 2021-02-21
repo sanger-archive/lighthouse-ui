@@ -23,9 +23,7 @@ const createPlatesFromBarcodes = async ({ barcodes }) => {
     return axios.post(url, { barcode })
   })
 
-  const responses = await Promise.all(
-    promises.map((promise) => handlePromise(promise))
-  )
+  const responses = await Promise.all(promises.map((promise) => handlePromise(promise)))
   return responses
 }
 
@@ -63,14 +61,11 @@ const getImports = async () => {
 // Delete list of reports using full filenames
 const deleteReports = async (filenames) => {
   try {
-    await axios.post(
-      `${config.privateRuntimeConfig.lighthouseBaseURL}/delete_reports`,
-      {
-        data: {
-          filenames,
-        },
-      }
-    )
+    await axios.post(`${config.privateRuntimeConfig.lighthouseBaseURL}/delete_reports`, {
+      data: {
+        filenames,
+      },
+    })
     return {
       success: true,
     }
@@ -85,9 +80,7 @@ const deleteReports = async (filenames) => {
 // Get all of the reports
 const getReports = async () => {
   try {
-    const response = await axios.get(
-      `${config.privateRuntimeConfig.lighthouseBaseURL}/reports`
-    )
+    const response = await axios.get(`${config.privateRuntimeConfig.lighthouseBaseURL}/reports`)
     return {
       success: true,
       reports: response.data.reports,
@@ -168,7 +161,8 @@ const getFailureTypes = async () => {
 const createDestinationPlate = async (form) => {
   try {
     const response = await axios.get(
-      `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypicked-plates/create?barcode=${form.barcode}&robot=${form.robotSerialNumber}&user_id=${form.username}`
+      `${config.privateRuntimeConfig.lighthouseBaseURL}
+      /cherrypicked-plates/create?barcode=${form.barcode}&robot=${form.robotSerialNumber}&user_id=${form.username}`
     )
     const responseData = response.data.data
     // success
@@ -196,7 +190,12 @@ const createDestinationPlate = async (form) => {
 const failDestinationPlate = async (form) => {
   try {
     const response = await axios.get(
-      `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypicked-plates/fail?barcode=${form.barcode}&robot=${form.robotSerialNumber}&user_id=${form.username}&failure_type=${form.failureType}`
+      `${config.privateRuntimeConfig.lighthouseBaseURL}
+      /cherrypicked-plates/fail
+      ?barcode=${form.barcode}
+      &robot=${form.robotSerialNumber}
+      &user_id=${form.username}
+      &failure_type=${form.failureType}`
     )
     // partial success
     if (response.data.errors.length > 0) {

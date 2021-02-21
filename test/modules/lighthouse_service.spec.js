@@ -37,7 +37,9 @@ describe('lighthouse_service api', () => {
       expect(mock).toHaveBeenNthCalledWith(
         1,
         `${config.privateRuntimeConfig.lighthouseBaseURL}/plates/new`,
-        { barcode: barcodes[0] }
+        {
+          barcode: barcodes[0],
+        }
       )
     })
 
@@ -63,7 +65,9 @@ describe('lighthouse_service api', () => {
       expect(mock).toHaveBeenNthCalledWith(
         1,
         `${config.privateRuntimeConfig.lighthouseBaseURL}/plates/new`,
-        { barcode: barcodes[0] }
+        {
+          barcode: barcodes[0],
+        }
       )
     })
 
@@ -90,12 +94,16 @@ describe('lighthouse_service api', () => {
       expect(mock).toHaveBeenNthCalledWith(
         1,
         `${config.privateRuntimeConfig.lighthouseBaseURL}/plates/new`,
-        { barcode: barcodes[0] }
+        {
+          barcode: barcodes[0],
+        }
       )
       expect(mock).toHaveBeenNthCalledWith(
         2,
         `${config.privateRuntimeConfig.lighthouseBaseURL}/plates/new`,
-        { barcode: barcodes[1] }
+        {
+          barcode: barcodes[1],
+        }
       )
     })
 
@@ -130,12 +138,16 @@ describe('lighthouse_service api', () => {
       expect(mock).toHaveBeenNthCalledWith(
         1,
         `${config.privateRuntimeConfig.lighthouseBaseURL}/plates/new`,
-        { barcode: barcodes[0] }
+        {
+          barcode: barcodes[0],
+        }
       )
       expect(mock).toHaveBeenNthCalledWith(
         2,
         `${config.privateRuntimeConfig.lighthouseBaseURL}/plates/new`,
-        { barcode: barcodes[1] }
+        {
+          barcode: barcodes[1],
+        }
       )
     })
 
@@ -166,12 +178,16 @@ describe('lighthouse_service api', () => {
       expect(mock).toHaveBeenNthCalledWith(
         1,
         `${config.privateRuntimeConfig.lighthouseBaseURL}/plates/new`,
-        { barcode: barcodes[0] }
+        {
+          barcode: barcodes[0],
+        }
       )
       expect(mock).toHaveBeenNthCalledWith(
         2,
         `${config.privateRuntimeConfig.lighthouseBaseURL}/plates/new`,
-        { barcode: barcodes[1] }
+        {
+          barcode: barcodes[1],
+        }
       )
     })
   })
@@ -205,7 +221,9 @@ describe('lighthouse_service api', () => {
       expect(mock).toHaveBeenNthCalledWith(
         1,
         `${config.privateRuntimeConfig.lighthouseBaseURL}/plates`,
-        { params: { barcodes } }
+        {
+          params: { barcodes },
+        }
       )
     })
 
@@ -236,7 +254,9 @@ describe('lighthouse_service api', () => {
       expect(mock).toHaveBeenNthCalledWith(
         1,
         `${config.privateRuntimeConfig.lighthouseBaseURL}/plates`,
-        { params: { barcodes } }
+        {
+          params: { barcodes },
+        }
       )
       expect(result).toEqual(expected)
     })
@@ -257,9 +277,7 @@ describe('lighthouse_service api', () => {
     })
 
     it('when there is an error', async () => {
-      mock.mockImplementationOnce(() =>
-        Promise.reject(new Error('There was an error'))
-      )
+      mock.mockImplementationOnce(() => Promise.reject(new Error('There was an error')))
       response = await lighthouse.getImports()
       expect(response.error).toEqual(new Error('There was an error'))
     })
@@ -287,9 +305,7 @@ describe('lighthouse_service api', () => {
     })
 
     it('when there is an error', async () => {
-      mock.mockImplementationOnce(() =>
-        Promise.reject(new Error('There was an error'))
-      )
+      mock.mockImplementationOnce(() => Promise.reject(new Error('There was an error')))
       response = await lighthouse.deleteReports()
       expect(response.success).toBeFalsy()
       expect(response.error).toEqual(new Error('There was an error'))
@@ -310,9 +326,7 @@ describe('lighthouse_service api', () => {
     })
 
     it('when the request fails', async () => {
-      axios.get.mockImplementationOnce(() =>
-        Promise.reject(new Error('There was an error'))
-      )
+      axios.get.mockImplementationOnce(() => Promise.reject(new Error('There was an error')))
 
       response = await lighthouse.getReports()
       expect(response.success).toBeFalsy()
@@ -336,9 +350,7 @@ describe('lighthouse_service api', () => {
     })
 
     it('when the request fails', async () => {
-      axios.post.mockImplementationOnce(() =>
-        Promise.reject(new Error('There was an error'))
-      )
+      axios.post.mockImplementationOnce(() => Promise.reject(new Error('There was an error')))
 
       response = await lighthouse.createReport()
 
@@ -435,9 +447,7 @@ describe('lighthouse_service api', () => {
       const result = await lighthouse.getFailureTypes()
       const expected = {
         success: false,
-        errors: [
-          'Network Error: Failed to get Failure Types from Lighthouse Service',
-        ],
+        errors: ['Network Error: Failed to get Failure Types from Lighthouse Service'],
       }
 
       expect(result).toEqual(expected)
@@ -463,12 +473,7 @@ describe('lighthouse_service api', () => {
       mock.mockResolvedValue(response)
 
       const responseData = response.data.data
-      const result = await lighthouse.createDestinationPlate(
-        'username',
-        barcode,
-        'x',
-        'aType'
-      )
+      const result = await lighthouse.createDestinationPlate('username', barcode, 'x', 'aType')
       const expected = {
         success: true,
         response: `Successfully created destination plate, with barcode: ${responseData.plate_barcode}, and ${responseData.number_of_positives} positive sample(s)`,
@@ -483,12 +488,7 @@ describe('lighthouse_service api', () => {
       }
       mock.mockRejectedValue(response)
 
-      const result = await lighthouse.createDestinationPlate(
-        'username',
-        'aBarcode',
-        'x',
-        'aType'
-      )
+      const result = await lighthouse.createDestinationPlate('username', 'aBarcode', 'x', 'aType')
 
       const expected = { success: false, errors: ['There was an error'] }
       expect(result).toEqual(expected)

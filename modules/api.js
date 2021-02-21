@@ -21,9 +21,7 @@ import lighthouse from './lighthouse_service'
 // ]
 
 const createSamples = async (boxBarcode) => {
-  const platesForBoxBarcode = await labwhere.getPlatesFromBoxBarcodes(
-    boxBarcode
-  )
+  const platesForBoxBarcode = await labwhere.getPlatesFromBoxBarcodes(boxBarcode)
 
   if (!platesForBoxBarcode.success) {
     return [
@@ -33,9 +31,7 @@ const createSamples = async (boxBarcode) => {
     ]
   }
 
-  const response = await lighthouse.createPlatesFromBarcodes(
-    platesForBoxBarcode
-  )
+  const response = await lighthouse.createPlatesFromBarcodes(platesForBoxBarcode)
 
   return response
 }

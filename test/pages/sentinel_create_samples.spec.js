@@ -86,9 +86,7 @@ describe('lighthouse sentinel cherrypick', () => {
       api.createSamples = jest.fn().mockReturnValue(expected)
       wrapper.vm.handleSentinelSampleCreationResponse = jest.fn()
       await wrapper.vm.handleSentinelSampleCreation()
-      expect(
-        wrapper.vm.handleSentinelSampleCreationResponse
-      ).toHaveBeenCalledWith(expected)
+      expect(wrapper.vm.handleSentinelSampleCreationResponse).toHaveBeenCalledWith(expected)
     })
   })
 
@@ -117,9 +115,7 @@ describe('lighthouse sentinel cherrypick', () => {
         },
       ]
       wrapper.vm.handleSentinelSampleCreationResponse(response)
-      expect(wrapper.vm.items).toEqual(
-        response.map((r) => r.data).map((r) => r.data)
-      )
+      expect(wrapper.vm.items).toEqual(response.map((r) => r.data).map((r) => r.data))
     })
 
     it('on failure it shows an error message', () => {
@@ -171,9 +167,7 @@ describe('lighthouse sentinel cherrypick', () => {
 
       wrapper.vm.handleSentinelSampleCreationResponse(response)
       wrapper.vm.$nextTick(() => {
-        expect(wrapper.findComponent({ ref: 'alert' }).text()).toMatch(
-          /an error 1, an error 2/
-        )
+        expect(wrapper.findComponent({ ref: 'alert' }).text()).toMatch(/an error 1, an error 2/)
       })
       expect(wrapper.vm.items).toEqual(
         response
@@ -213,9 +207,7 @@ describe('lighthouse sentinel cherrypick', () => {
 
       wrapper.vm.handleSentinelSampleCreationResponse(response)
       wrapper.vm.$nextTick(() => {
-        expect(wrapper.findComponent({ ref: 'alert' }).text()).toMatch(
-          /an error 2, an error 1/
-        )
+        expect(wrapper.findComponent({ ref: 'alert' }).text()).toMatch(/an error 2, an error 1/)
       })
       expect(wrapper.vm.items).toEqual(
         response

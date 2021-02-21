@@ -8,16 +8,12 @@
 
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav class="ml-auto">
-            <b-nav-item to="/">Reports</b-nav-item>
+            <b-nav-item to="reports">Reports</b-nav-item>
             <b-nav-item to="box_buster">Box Buster</b-nav-item>
-            <b-nav-item to="sentinel_create_samples"
-              >Sentinel Sample Creation</b-nav-item
-            >
-            <b-nav-item to="sentinel_cherrypick"
-              >Sentinel Cherrypick</b-nav-item
-            >
+            <b-nav-item to="sentinel_create_samples">Sentinel Sample Creation</b-nav-item>
+            <b-nav-item to="sentinel_cherrypick">Sentinel Cherrypick</b-nav-item>
             <b-nav-item to="imports">Imports</b-nav-item>
-            <b-nav-item href="/print_labels">Print Labels</b-nav-item>
+            <b-nav-item to="print_labels">Print Labels</b-nav-item>
             <b-nav-item to="beckman_cherrypick">Beckman Cherrypick</b-nav-item>
           </b-navbar-nav>
         </b-collapse>
@@ -29,8 +25,8 @@
 
 <style>
 html {
-  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
   font-size: 16px;
   word-spacing: 1px;
   -ms-text-size-adjust: 100%;

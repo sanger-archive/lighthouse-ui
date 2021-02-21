@@ -25,9 +25,7 @@ describe('Labwhere', () => {
     })
 
     it('when there is an error', async () => {
-      mockGet.mockImplementationOnce(() =>
-        Promise.reject(new Error('There was an error'))
-      )
+      mockGet.mockImplementationOnce(() => Promise.reject(new Error('There was an error')))
       response = await labwhere.getPlatesFromBoxBarcodes(boxBarcodes)
       expect(response.success).toBeFalsy()
       expect(response.barcodes).not.toBeDefined()
@@ -35,9 +33,7 @@ describe('Labwhere', () => {
 
     // This is the same as the above but worth adding for consistency
     it('when the box does not exist', async () => {
-      mockGet.mockImplementationOnce(() =>
-        Promise.reject(new Error('There was an error'))
-      )
+      mockGet.mockImplementationOnce(() => Promise.reject(new Error('There was an error')))
       response = await labwhere.getPlatesFromBoxBarcodes(['dodgybarcode'])
       expect(response.success).toBeFalsy()
       expect(response.barcodes).not.toBeDefined()

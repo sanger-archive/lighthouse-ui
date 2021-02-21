@@ -1,4 +1,4 @@
-name: Lint using ESLint
+name: Format using prettier
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
       - 'README.md'
 
 jobs:
-  eslint:
+  prettier:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
@@ -25,5 +25,5 @@ jobs:
             ${{ runner.os }}-yarn-
       - name: Install packages using yarn
         run: yarn install
-      - name: Run ESlint using .eslintrc.js
-        run: yarn lint
+      - name: Run prettier using .prettierrc & .prettierignore
+        run: yarn prettier --check . # https://prettier.io/docs/en/cli.html#--check
