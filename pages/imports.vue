@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import lighthouse from '../modules/lighthouse_service'
+import lighthouse from '@/modules/lighthouse_service'
 
 export default {
   data() {

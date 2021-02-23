@@ -84,8 +84,8 @@
 </template>
 
 <script>
-import labwhere from '../modules/labwhere'
-import sequencescape from '../modules/sequencescape'
+import labwhere from '@/modules/labwhere'
+import sequencescape from '@/modules/sequencescape'
 
 export default {
   data() {
