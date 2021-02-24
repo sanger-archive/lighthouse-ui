@@ -2,8 +2,10 @@
   <b-container>
     <b-row>
       <b-col>
-        <h1>Lighthouse positive samples reports</h1>
-        <p class="lead">Reports generated for Lighthouse samples which are on site</p>
+        <h1 class="mt-3">Fit to pick samples reports</h1>
+        <p class="lead">
+          Reports generated for Lighthouse samples which meet the fit to pick rules and are on site
+        </p>
         <p>
           <b-button id="createReport" variant="success" :disabled="isBusy" @click="createReport">
             Create report

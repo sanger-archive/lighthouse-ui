@@ -50,7 +50,7 @@ describe('lighthouse_service api', () => {
         data: {
           plate_barcode: 'aBarcode1',
           centre: 'tst1',
-          number_of_positives: 3,
+          number_of_fit_to_pick: 3,
         },
       }
 
@@ -114,7 +114,7 @@ describe('lighthouse_service api', () => {
         data: {
           plate_barcode: 'aBarcode1',
           centre: 'tst1',
-          number_of_positives: 3,
+          number_of_fit_to_pick: 3,
         },
       }
 
@@ -122,7 +122,7 @@ describe('lighthouse_service api', () => {
         data: {
           plate_barcode: 'aBarcode2',
           centre: 'tst1',
-          number_of_positives: 2,
+          number_of_fit_to_pick: 2,
         },
       }
 
@@ -162,7 +162,7 @@ describe('lighthouse_service api', () => {
         data: {
           plate_barcode: 'aBarcode2',
           centre: 'tst1',
-          number_of_positives: 2,
+          number_of_fit_to_pick: 2,
         },
       }
 
@@ -203,7 +203,7 @@ describe('lighthouse_service api', () => {
         {
           plate_barcode: 'aBarcode1',
           centre: 'tst1',
-          number_of_positives: 3,
+          number_of_fit_to_pick: 3,
         },
       ]
 
@@ -233,12 +233,12 @@ describe('lighthouse_service api', () => {
         {
           plate_barcode: 'aBarcode1',
           centre: 'tst1',
-          number_of_positives: 3,
+          number_of_fit_to_pick: 3,
         },
         {
           plate_barcode: 'aBarcode2',
           centre: 'tst1',
-          number_of_positives: 2,
+          number_of_fit_to_pick: 2,
         },
       ]
       const response = { data: { plates } }
@@ -466,7 +466,7 @@ describe('lighthouse_service api', () => {
           data: {
             plate_barcode: 'barcode',
             centre: 'centre_prefix',
-            number_of_positives: 'len(samples)',
+            number_of_fit_to_pick: 'len(samples)',
           },
         },
       }
@@ -476,7 +476,7 @@ describe('lighthouse_service api', () => {
       const result = await lighthouse.createDestinationPlate('username', barcode, 'x', 'aType')
       const expected = {
         success: true,
-        response: `Successfully created destination plate, with barcode: ${responseData.plate_barcode}, and ${responseData.number_of_positives} positive sample(s)`,
+        response: `Successfully created destination plate, with barcode: ${responseData.plate_barcode}, and ${responseData.number_of_fit_to_pick} fit to pick sample(s)`,
       }
 
       expect(result).toEqual(expected)

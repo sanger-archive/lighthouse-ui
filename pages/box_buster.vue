@@ -1,6 +1,6 @@
 <template>
   <b-container>
-    <h1>Box Buster</h1>
+    <h1 class="mt-3">Box Buster</h1>
     <p class="lead">Quickly overview box contents to assist with cherrypicking</p>
     <b-form-group
       id="box-barcode"
@@ -21,6 +21,7 @@
       >
       </b-form-input>
     </b-form-group>
+    <hr />
     <b-table
       v-if="showTable"
       :items="plates"
@@ -35,7 +36,7 @@
         <span>Total of {{ total }} plates in box;</span>
         <span>{{ total_with_maps }} plates with plates maps,</span>
         <span>{{ total_without_maps }} without.</span>
-        <span>Total {{ total_positives }} positives.</span>
+        <span>Total {{ total_positives }} fit to pick samples.</span>
         <br />
         <span>Box further contains:</span>
         <span style="color: green">
@@ -63,12 +64,15 @@ import lighthouse from '@/modules/lighthouse_service'
 const countByMustSequence = (accumulator, plate) => accumulator + (plate.must_sequence ? 1 : 0)
 const countByPreferentiallySequence = (accumulator, plate) =>
   accumulator + (plate.preferentially_sequence ? 1 : 0)
-const countWithMap = (accumulator, plate) => accumulator + (plate.plate_map ? 1 : 0)
-const countWithoutMap = (accumulator, plate) => accumulator + (plate.plate_map ? 0 : 1)
+const countWithMap = (accumulator, plate) => accumulator + (plate.has_plate_map ? 1 : 0)
+const countWithoutMap = (accumulator, plate) => accumulator + (plate.has_plate_map ? 0 : 1)
 const sumPositives = (accumulator, plate) =>
-  accumulator + (plate.number_of_positives == null ? 0 : plate.number_of_positives)
+  accumulator + (plate.count_fit_to_pick_samples == null ? 0 : plate.count_fit_to_pick_samples)
 const booleanFormatter = (value) => (value ? 'Yes' : 'No')
-const countFormatter = (value, _key, item) => (item.plate_map ? value : 'N/A')
+const countFormatter = (value, _key, item) => (item.has_plate_map ? value : 'N/A')
+
+const booleanWithCountFormatter = (value) => (value == null ? 'No' : `Yes (${value})`)
+
 const extractError = (response) => {
   if (response.error) {
     return response.error.message || response.error || 'Unidentified Error'
@@ -79,12 +83,14 @@ const extractError = (response) => {
     return defaultResponse.error
   }
 }
-// Sorting plates by must_sequence, then preferentially_sequence, then number_of_positives
+
+// Sorting plates by must_sequence, then preferentially_sequence, then count_fit_to_pick_samples
 const sortCompare = (aPlate, bPlate) => {
   const compareMustSequence = bPlate.must_sequence - aPlate.must_sequence
   const comparePreferentiallySequence =
     bPlate.preferentially_sequence - aPlate.preferentially_sequence
-  const compareNumberOfPositives = bPlate.number_of_positives > aPlate.number_of_positives ? 1 : -1
+  const compareNumberOfPositives =
+    bPlate.count_fit_to_pick_samples > aPlate.count_fit_to_pick_samples ? 1 : -1
 
   return compareMustSequence || comparePreferentiallySequence || compareNumberOfPositives
 }
@@ -107,20 +113,28 @@ export default {
           // sortable: true // check if required
         },
         {
-          key: 'plate_map',
+          key: 'has_plate_map',
           formatter: booleanFormatter,
         },
         {
-          key: 'number_of_positives',
+          key: 'count_fit_to_pick_samples',
+          label: 'Fit To Pick Samples',
           formatter: countFormatter,
         },
         {
-          key: 'must_sequence',
-          formatter: booleanFormatter,
+          key: 'count_must_sequence',
+          label: 'Must Sequence',
+          formatter: booleanWithCountFormatter,
         },
         {
-          key: 'preferentially_sequence',
-          formatter: booleanFormatter,
+          key: 'count_preferentially_sequence',
+          label: 'Preferentially Sequence',
+          formatter: booleanWithCountFormatter,
+        },
+        {
+          key: 'count_filtered_positive',
+          label: 'Filtered Positive',
+          formatter: countFormatter,
         },
       ],
     }
@@ -152,13 +166,12 @@ export default {
       return `${error}. Looking up barcode as plate.`
     },
     showTable() {
-      // We show the table if we've made a labwhere request, or have
-      // populates the plates via some other means.
+      // We show the table if we've made a labwhere request, or have populates the plates via some other means.
       return this.labwhereState !== null || this.plates.length !== 0
     },
     lighthouseFeedback() {
       if (this.lighthouseResponse.success === null) {
-        return 'Waiting for response from lighthouse...'
+        return 'Waiting for response from the lighthouse service...'
       } else {
         return extractError(this.lighthouseResponse)
       }
@@ -168,7 +181,7 @@ export default {
   methods: {
     rowClass(item, type) {
       if (item && type === 'row') {
-        return item.plate_map ? 'table-success' : 'table-danger'
+        return item.has_plate_map ? 'table-success' : 'table-danger'
       } else {
         // Hit with, for example, row empty
         return 'table-warning'

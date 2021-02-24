@@ -1,6 +1,6 @@
 <template>
-  <b-container fluid>
-    <h1>Imports</h1>
+  <b-container>
+    <h1 class="mt-3">Imports</h1>
 
     <b-alert ref="alert" dismissible :show="showDismissibleAlert" :variant="alertData.variant">
       {{ alertData.message }}
@@ -22,6 +22,13 @@
       </b-input-group>
     </b-form-group>
     <br />
+    <b-pagination
+      v-model="currentPage"
+      :total-rows="rows"
+      :per-page="perPage"
+      align="center"
+      aria-table="imports-table"
+    ></b-pagination>
     <b-table
       id="imports-table"
       show-empty
@@ -34,6 +41,7 @@
       hover
       :per-page="perPage"
       :current-page="currentPage"
+      head-variant="light"
     >
       <template #cell(errors)="row">
         <ul>
@@ -47,13 +55,14 @@
       v-model="currentPage"
       :total-rows="rows"
       :per-page="perPage"
+      align="center"
       aria-table="imports-table"
     ></b-pagination>
   </b-container>
 </template>
 
 <script>
-import lighthouse from '../modules/lighthouse_service'
+import lighthouse from '@/modules/lighthouse_service'
 
 export default {
   data() {

@@ -100,7 +100,7 @@ describe('lighthouse sentinel cherrypick', () => {
             data: {
               plate_barcode: 'aBarcode1',
               centre: 'tst1',
-              number_of_positives: 3,
+              number_of_fit_to_pick: 3,
             },
           },
         },
@@ -109,7 +109,7 @@ describe('lighthouse sentinel cherrypick', () => {
             data: {
               plate_barcode: 'aBarcode2',
               centre: 'tst1',
-              number_of_positives: 1,
+              number_of_fit_to_pick: 1,
             },
           },
         },
@@ -150,7 +150,7 @@ describe('lighthouse sentinel cherrypick', () => {
             data: {
               plate_barcode: 'aBarcode1',
               centre: 'tst1',
-              number_of_positives: 1,
+              number_of_fit_to_pick: 1,
             },
           },
         },
@@ -159,7 +159,7 @@ describe('lighthouse sentinel cherrypick', () => {
             data: {
               plate_barcode: 'aBarcode2',
               centre: 'tst1',
-              number_of_positives: 1,
+              number_of_fit_to_pick: 1,
             },
           },
         },
@@ -187,7 +187,7 @@ describe('lighthouse sentinel cherrypick', () => {
             data: {
               plate_barcode: 'aBarcode1',
               centre: 'tst1',
-              number_of_positives: 1,
+              number_of_fit_to_pick: 1,
             },
           },
         },
@@ -196,7 +196,7 @@ describe('lighthouse sentinel cherrypick', () => {
             data: {
               plate_barcode: 'aBarcode2',
               centre: 'tst1',
-              number_of_positives: 1,
+              number_of_fit_to_pick: 1,
             },
           },
         },

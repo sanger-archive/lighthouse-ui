@@ -14,8 +14,7 @@ const handlePromise = async (promise) => {
 }
 
 // Accepts a list of barcodes in the moduleOptions
-// Send a POST request to the Lighthouse service API
-// To create each plate
+// Send a POST request to the Lighthouse service API to create each plate
 // Return list of responses
 const createPlatesFromBarcodes = async ({ barcodes }) => {
   const promises = barcodes.map((barcode) => {
@@ -168,7 +167,7 @@ const createDestinationPlate = async (form) => {
     // success
     return {
       success: true,
-      response: `Successfully created destination plate, with barcode: ${responseData.plate_barcode}, and ${responseData.number_of_positives} positive sample(s)`,
+      response: `Successfully created destination plate, with barcode: ${responseData.plate_barcode}, and ${responseData.number_of_fit_to_pick} fit to pick sample(s)`,
     }
   } catch (resp) {
     const errors = resp.response.data

@@ -1,6 +1,6 @@
 <template>
   <b-container>
-    <h1>Beckman Cherrypick</h1>
+    <h1 class="mt-3">Beckman Cherrypick</h1>
     <Alert ref="alert"></Alert>
     <b-card no-body>
       <b-tabs card>

@@ -1,6 +1,6 @@
 <template>
   <b-container>
-    <h1>Lighthouse Sentinel cherrypick batch creation</h1>
+    <h1 class="mt-3">Sentinel cherrypick batch creation</h1>
     <b-alert ref="alert" :show="showDismissibleAlert" :variant="pickListResponse.variant">
       {{ pickListResponse.alertMessage
       }}<a :href="pickListResponse.link">{{ pickListResponse.link }}</a>
@@ -40,6 +40,7 @@
         </div>
       </div>
     </form>
+    <br />
     <h3>Plates to include in batch</h3>
     <b-button
       id="handleSentinelBatchCreationTop"

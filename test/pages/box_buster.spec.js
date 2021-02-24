@@ -22,42 +22,42 @@ const localVue = createLocalVue()
 const plateA = {
   plate_barcode: 'AP-rna-1-8-posi',
   plate_map: true,
-  number_of_positives: 8,
+  number_of_fit_to_pick: 8,
   must_sequence: false,
   preferentially_sequence: false,
 }
 const plateB = {
   plate_barcode: 'AP-rna-2-2-posi',
   plate_map: true,
-  number_of_positives: 2,
+  number_of_fit_to_pick: 2,
   must_sequence: false,
   preferentially_sequence: true,
 }
 const plateC = {
   plate_barcode: 'AP-rna-3-0-nmap',
   plate_map: false,
-  number_of_positives: null,
+  number_of_fit_to_pick: null,
   must_sequence: false,
   preferentially_sequence: false,
 }
 const plateD = {
   plate_barcode: 'AP-rna-4-5-posi',
   plate_map: true,
-  number_of_positives: 5,
+  number_of_fit_to_pick: 5,
   must_sequence: true,
   preferentially_sequence: true,
 }
 const plateE = {
   plate_barcode: 'AP-rna-5-0-posi',
   plate_map: true,
-  number_of_positives: 0,
+  number_of_fit_to_pick: 0,
   must_sequence: false,
   preferentially_sequence: true,
 }
 const plateF = {
   plate_barcode: 'AP-rna-6-2-posi',
   plate_map: true,
-  number_of_positives: 10,
+  number_of_fit_to_pick: 10,
   must_sequence: true,
   preferentially_sequence: false,
 }
@@ -356,7 +356,7 @@ describe('BoxBuster', () => {
       expect(wrapper.vm.sortedPlates(plates)).toEqual([])
     })
 
-    it('sorts by must_sequence, then preferentially_sequence, then number_of_positives', () => {
+    it('sorts by must_sequence, then preferentially_sequence, then number_of_fit_to_pick', () => {
       wrapper = mount(BoxBuster, { localVue })
       const result = wrapper.vm.sortedPlates(examplePlates)
       expect(result[0].plate_barcode).toEqual('AP-rna-4-5-posi')

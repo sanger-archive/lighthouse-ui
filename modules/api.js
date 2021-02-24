@@ -15,7 +15,7 @@ import lighthouse from './lighthouse_service'
 //     data: {
 //       plate_barcode: 'aBarcode2',
 //       centre: 'tst1',
-//       number_of_positives: 1
+//       number_of_fit_to_pick: 1
 //     }
 //   }
 // ]
