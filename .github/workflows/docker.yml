@@ -31,6 +31,7 @@ jobs:
           yarn test
 
   build_and_publish:
+    needs: build_and_test
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
