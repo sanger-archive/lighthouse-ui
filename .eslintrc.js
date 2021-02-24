@@ -16,7 +16,6 @@ module.exports = {
     'plugin:jest/style',
     'plugin:cypress/recommended',
     'prettier', // Need to be near last. https://github.com/prettier/eslint-config-prettier#installation
-    'prettier/vue', // https://eslint.vuejs.org/user-guide/#conflict-with-prettier
   ],
   plugins: ['jest'],
   // add your custom rules here
