@@ -37,6 +37,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/compat-data@npm:^7.13.5":
+  version: 7.13.6
+  resolution: "@babel/compat-data@npm:7.13.6"
+  checksum: 0bed7ac3e2c4597140e56db034e2b7a664516c7f094ee521a15efee814a208e3937fd9a5ac12e8d3d6ccfcbbfd35ceced75163fc7b2d9ca71b48d8fcfbc6f990
+  languageName: node
+  linkType: hard
+
 "@babel/core@npm:7.13.1, @babel/core@npm:^7.13.1":
   version: 7.13.1
   resolution: "@babel/core@npm:7.13.1"
@@ -524,16 +531,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-proposal-async-generator-functions@npm:^7.13.0":
-  version: 7.13.0
-  resolution: "@babel/plugin-proposal-async-generator-functions@npm:7.13.0"
+"@babel/plugin-proposal-async-generator-functions@npm:^7.13.5":
+  version: 7.13.5
+  resolution: "@babel/plugin-proposal-async-generator-functions@npm:7.13.5"
   dependencies:
     "@babel/helper-plugin-utils": ^7.13.0
     "@babel/helper-remap-async-to-generator": ^7.13.0
     "@babel/plugin-syntax-async-generators": ^7.8.0
   peerDependencies:
     "@babel/core": ^7.0.0-0
-  checksum: 46114774de8e62253d3e371f5c82cadcd36af63b5d7ad75a75e5ec23c3df70d1bf7e757b15186e7775efbbd13bacebd1c9547350ce084a667d59158ee8577757
+  checksum: 7bb82a5ada4e0ebeb86b04a7f5dacf98f778f8fcb9a49b766f3b6cef411505bf2c16f5918a1b051bc31a1b0cf30cfad4a930273492696bd02180a7ac840195b0
   languageName: node
   linkType: hard
 
@@ -1473,15 +1480,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/preset-env@npm:^7.13.0":
-  version: 7.13.0
-  resolution: "@babel/preset-env@npm:7.13.0"
+"@babel/preset-env@npm:^7.13.5":
+  version: 7.13.5
+  resolution: "@babel/preset-env@npm:7.13.5"
   dependencies:
-    "@babel/compat-data": ^7.13.0
+    "@babel/compat-data": ^7.13.5
     "@babel/helper-compilation-targets": ^7.13.0
     "@babel/helper-plugin-utils": ^7.13.0
     "@babel/helper-validator-option": ^7.12.17
-    "@babel/plugin-proposal-async-generator-functions": ^7.13.0
+    "@babel/plugin-proposal-async-generator-functions": ^7.13.5
     "@babel/plugin-proposal-class-properties": ^7.13.0
     "@babel/plugin-proposal-dynamic-import": ^7.12.17
     "@babel/plugin-proposal-export-namespace-from": ^7.12.13
@@ -1540,14 +1547,14 @@ __metadata:
     "@babel/plugin-transform-unicode-regex": ^7.12.13
     "@babel/preset-modules": ^0.1.3
     "@babel/types": ^7.13.0
-    babel-plugin-polyfill-corejs2: ^0.1.2
-    babel-plugin-polyfill-corejs3: ^0.1.2
-    babel-plugin-polyfill-regenerator: ^0.1.1
+    babel-plugin-polyfill-corejs2: ^0.1.4
+    babel-plugin-polyfill-corejs3: ^0.1.3
+    babel-plugin-polyfill-regenerator: ^0.1.2
     core-js-compat: ^3.9.0
     semver: 7.0.0
   peerDependencies:
     "@babel/core": ^7.0.0-0
-  checksum: 99e84c6107782a719075ce454f546c8b7e3f17865eb37d9aac9f46479d846827168c0b0f8fdfe44d0ac9e9e52686d8622fb449deeb765f8ed3957de48100dad6
+  checksum: 274a5211b1f030d146062434ccb32a178b57fc73d4f71753be3d222aea4170b292a8c5c9dd5b168ba8a3b4b416d8442f1688e244fc879343d6748fa7d76640a0
   languageName: node
   linkType: hard
 
@@ -3895,7 +3902,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-plugin-polyfill-corejs2@npm:^0.1.2":
+"babel-plugin-polyfill-corejs2@npm:^0.1.2, babel-plugin-polyfill-corejs2@npm:^0.1.4":
   version: 0.1.5
   resolution: "babel-plugin-polyfill-corejs2@npm:0.1.5"
   dependencies:
@@ -3908,7 +3915,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-plugin-polyfill-corejs3@npm:^0.1.2":
+"babel-plugin-polyfill-corejs3@npm:^0.1.2, babel-plugin-polyfill-corejs3@npm:^0.1.3":
   version: 0.1.4
   resolution: "babel-plugin-polyfill-corejs3@npm:0.1.4"
   dependencies:
@@ -3920,7 +3927,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-plugin-polyfill-regenerator@npm:^0.1.1":
+"babel-plugin-polyfill-regenerator@npm:^0.1.1, babel-plugin-polyfill-regenerator@npm:^0.1.2":
   version: 0.1.3
   resolution: "babel-plugin-polyfill-regenerator@npm:0.1.3"
   dependencies:
@@ -9662,7 +9669,7 @@ fsevents@^1.2.7:
   resolution: "lighthouse@workspace:."
   dependencies:
     "@babel/core": ^7.13.1
-    "@babel/preset-env": ^7.13.0
+    "@babel/preset-env": ^7.13.5
     "@nuxtjs/axios": ^5.13.1
     "@nuxtjs/dotenv": ^1.4.1
     "@nuxtjs/eslint-config": ^5.0.0
