@@ -5,7 +5,7 @@
 pre-push:
   commands:
     packages-audit:
-      tags: frontend security
+      tags: security
       run: yarn audit
 
 pre-commit:
