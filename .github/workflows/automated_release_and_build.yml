@@ -1,4 +1,5 @@
-name: CI docker
+name: Automated release and build
+
 on:
   push:
     branches:
@@ -6,9 +7,7 @@ on:
       - master
     paths-ignore:
       - "README.md"
-    tags:
-      - uat-*
-      - release-*
+
 env:
   IMAGE_NAME: ${{ github.repository }}/${{ github.event.repository.name }}
 
@@ -17,6 +16,18 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
+      - name: Set release tag 
+        run: echo "RELEASE_TAG=$([ ${GITHUB_REF##*/} = "develop" ] && echo "${GITHUB_REF##*/}/$(date +'%Y-%m-%d/%H%M%S')" || printf '%s\n' $(cat .release-version))" >> $GITHUB_ENV
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ env.RELEASE_TAG }}
+          release_name: Release ${{ env.RELEASE_TAG }}
+          draft: false
+          prerelease: ${{ !(github.ref == 'refs/heads/master') }}
       - name: Build the Docker image
         run: >-
           docker build .
