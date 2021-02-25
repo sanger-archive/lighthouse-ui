@@ -1,6 +1,6 @@
 <template>
   <b-container>
-    <h1 class="mt-3">Sentinel cherrypick batch creation</h1>
+    <h1 class="mt-3">Sentinel Cherrypick Batch Creation</h1>
     <b-alert ref="alert" :show="showDismissibleAlert" :variant="pickListResponse.variant">
       {{ pickListResponse.alertMessage
       }}<a :href="pickListResponse.link">{{ pickListResponse.link }}</a>

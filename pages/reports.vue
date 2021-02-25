@@ -2,7 +2,7 @@
   <b-container>
     <b-row>
       <b-col>
-        <h1 class="mt-3">Fit to pick samples reports</h1>
+        <h1 class="mt-3">Fit to Pick Samples Reports</h1>
         <p class="lead">
           Reports generated for Lighthouse samples which meet the fit to pick rules and are on site
         </p>

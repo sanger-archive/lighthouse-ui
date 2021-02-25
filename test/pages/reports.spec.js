@@ -1,7 +1,7 @@
 import { BootstrapVue } from 'bootstrap-vue'
 import { mount, createLocalVue } from '@vue/test-utils'
 import flushPromises from 'flush-promises'
-import Index from '@/pages/index.vue'
+import Reports from '@/pages/reports.vue'
 import statuses from '@/modules/statuses'
 import lighthouse from '@/modules/lighthouse_service'
 import ReportsJson from '../data/reports'
@@ -25,8 +25,8 @@ describe('Index', () => {
       success: true,
       reports: ReportsJson.reports,
     })
-    wrapper = mount(Index, { localVue })
-    expect(wrapper.findComponent(Index).exists()).toBeTruthy()
+    wrapper = mount(Reports, { localVue })
+    expect(wrapper.findComponent(Reports).exists()).toBeTruthy()
   })
 
   describe('setting the status', () => {
@@ -37,12 +37,12 @@ describe('Index', () => {
         success: true,
         reports: ReportsJson.reports,
       })
-      index = mount(Index, { localVue }).vm
+      index = mount(Reports, { localVue }).vm
       expect(index.isIdle).toBeTruthy()
     })
 
     it('when success', () => {
-      wrapper = mount(Index, {
+      wrapper = mount(Reports, {
         localVue,
         data() {
           return {
@@ -57,7 +57,7 @@ describe('Index', () => {
     })
 
     it('when error', () => {
-      wrapper = mount(Index, {
+      wrapper = mount(Reports, {
         localVue,
         data() {
           return {
@@ -72,7 +72,7 @@ describe('Index', () => {
     })
 
     it('when busy', () => {
-      wrapper = mount(Index, {
+      wrapper = mount(Reports, {
         localVue,
         data() {
           return {
@@ -93,7 +93,7 @@ describe('Index', () => {
         success: true,
         reports: ReportsJson.reports,
       })
-      wrapper = mount(Index, { localVue })
+      wrapper = mount(Reports, { localVue })
       await flushPromises()
       expect(wrapper.find('tbody').findAll('tr')).toHaveLength(ReportsJson.reports.length)
     })
@@ -103,7 +103,7 @@ describe('Index', () => {
         success: false,
         error: 'There was an error',
       })
-      wrapper = mount(Index, { localVue })
+      wrapper = mount(Reports, { localVue })
       await flushPromises()
       expect(wrapper.find('tbody').findAll('tr')).toHaveLength(0)
     })
@@ -119,7 +119,7 @@ describe('Index', () => {
         success: true,
         reports: ReportsJson.reports,
       })
-      const wrapper = mount(Index, { localVue })
+      const wrapper = mount(Reports, { localVue })
       const button = wrapper.find('#createReport')
       await button.trigger('click')
       await flushPromises()
@@ -132,7 +132,7 @@ describe('Index', () => {
         success: false,
         error: 'There was an error',
       })
-      const wrapper = mount(Index, { localVue })
+      const wrapper = mount(Reports, { localVue })
       const button = wrapper.find('#createReport')
       await button.trigger('click')
       await flushPromises()
@@ -156,7 +156,7 @@ describe('Index', () => {
 
     it('when the request is successful', async () => {
       lighthouse.deleteReports.mockResolvedValue({ success: true })
-      const wrapper = mount(Index, { localVue })
+      const wrapper = mount(Reports, { localVue })
       await flushPromises()
       rows = wrapper.find('tbody').findAll('tr')
       const arr = [0, 1, 2]
@@ -180,7 +180,7 @@ describe('Index', () => {
         success: false,
         error: 'There was an error',
       })
-      const wrapper = mount(Index, { localVue })
+      const wrapper = mount(Reports, { localVue })
       await flushPromises()
       rows = wrapper.find('tbody').findAll('tr')
       rows.at(0).find('.selected input[type="checkbox"]').setChecked(true)

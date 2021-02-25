@@ -1,7 +1,7 @@
 <template>
   <b-container>
     <h1 class="mt-3">Imports</h1>
-
+    <p class="lead">Import status of CSV files processed by the crawler.</p>
     <b-alert ref="alert" dismissible :show="showDismissibleAlert" :variant="alertData.variant">
       {{ alertData.message }}
     </b-alert>
