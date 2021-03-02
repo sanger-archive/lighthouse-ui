@@ -40,6 +40,8 @@
         <span>{{ total_with_maps }} plates with plates maps,</span>
         <span>{{ total_without_maps }} without.</span>
         <span>Total {{ total_positives }} positives.</span>
+        <br />
+        <span>Box barcodes scanned: {{ barcodes_scanned.join(', ') }}</span>
       </template>
     </b-table>
   </b-container>
@@ -78,6 +80,7 @@ export default {
     return {
       barcode: '',
       plates: [],
+      barcodes_scanned: [],
       labwhereResponse: defaultResponse,
       lighthouseResponse: defaultResponse,
       fields: [
@@ -153,6 +156,8 @@ export default {
         // Requirements were that we should allow plate lookups
         this.findPlates({ barcodes: [this.barcode] })
       }
+      this.barcodes_scanned.push(this.barcode)
+      this.barcode = ''
     },
     reset() {
       this.labwhereResponse = defaultResponse

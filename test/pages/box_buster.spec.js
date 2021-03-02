@@ -107,7 +107,8 @@ describe('BoxBuster', () => {
     const expected = squish(`Box Summary: Total of ${expectedPlateTotal} plates in box;
     ${expectedMapTotal} plates with plates maps,
     ${expectedMaplessTotal} without.
-    Total ${expectedPositiveTotal} positives.`)
+    Total ${expectedPositiveTotal} positives.
+    Box barcodes scanned:`)
     wrapper = mount(BoxBuster, { localVue })
     await wrapper.setData(data)
     const summary = squish(wrapper.find('caption').text())
