@@ -156,8 +156,6 @@ export default {
         // Requirements were that we should allow plate lookups
         this.findPlates({ barcodes: [this.barcode] })
       }
-      this.barcodes_scanned.push(this.barcode)
-      this.barcode = ''
     },
     reset() {
       this.labwhereResponse = defaultResponse
@@ -169,6 +167,8 @@ export default {
       this.lighthouseResponse = response
       if (response.success) {
         this.plates = response.plates || []
+        this.barcodes_scanned.push(this.barcode)
+        this.barcode = ''
       }
     }
   }

@@ -290,11 +290,16 @@ describe('BoxBuster', () => {
   })
 
   it('looks up plates in lighthouse', async () => {
+    lighthouse.findPlatesFromBarcodes.mockResolvedValue({
+      success: true,
+      plates: examplePlates
+    })
     wrapper = mount(BoxBuster, { localVue })
     const barcodeField = wrapper.find('#box-barcode-field')
     barcodeField.setValue('12345')
     await barcodeField.trigger('change')
     await flushPromises()
+
     expect(wrapper.vm.barcodes_scanned).toEqual(['12345'])
     expect(wrapper.vm.barcode).toEqual('')
     expect(barcodeField.element.value).toEqual('')
