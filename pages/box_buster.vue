@@ -1,11 +1,11 @@
-<template>
+ <template>
   <b-container>
     <h1 class="mt-3">Box Buster</h1>
     <p class="lead">Quickly overview box contents to assist with cherrypicking</p>
     <b-form-group
       id="box-barcode"
       description="Scan in a lighthouse box barcode to show information about all plates contained in the box."
-      label="Please scan lighthouse box barcode"
+      label="Box barcode:"
       label-for="box-barcode-field"
       :invalid-feedback="labwhereFeedback"
       valid-feedback="Box found"
@@ -17,41 +17,68 @@
         type="search"
         trim
         :state="labwhereState"
-        @change="findBox"
+        @change="refreshResults"
       >
       </b-form-input>
     </b-form-group>
-    <hr />
+    <p>
+      <b-button id="refreshResults" variant="info" :disabled="isBusy" @click="refreshResults"
+        >Refresh</b-button
+      >
+    </p>
+    <p>
+      <b-alert id="alert" :show="isError" dismissible variant="danger">
+        {{ `Error in lighthouse service: ${lighthouseFeedback}` }}
+      </b-alert>
+    </p>
     <b-table
-      v-if="showTable"
+      ref="plates_table"
       :items="plates"
       :tbody-tr-class="rowClass"
-      show-empty
-      :empty-text="lighthouseFeedback"
       :fields="fields"
       caption-top
+      :busy.sync="isBusy"
+      show-empty
     >
       <template #table-caption>
-        <span>Box Summary:</span>
-        <span>Total of {{ total }} plates in box;</span>
-        <span>{{ total_with_maps }} plates with plates maps,</span>
-        <span>{{ total_without_maps }} without.</span>
-        <span>Total {{ total_positives }} fit to pick samples.</span>
-        <br />
-        <span>Box further contains:</span>
-        <span style="color: green">
-          {{ total_must_sequence }} plates with samples that must be sequenced;
-        </span>
-        <span style="color: DarkOrange">
-          {{ total_preferentially_sequence }} plates of samples that we should preferentially
-          sequence.
-        </span>
-        <br />
+        <strong>Box Summary:</strong>
+        <b-row>
+          <b-col>
+            <ul>
+              <li>Total of {{ total }} {{ plural_ize('plate', total) }} in box</li>
+              <li>
+                {{ total_with_maps }} {{ plural_ize('plate', total_with_maps) }} with plate maps
+              </li>
+              <li>{{ total_without_maps }} without plate map files</li>
+            </ul>
+          </b-col>
+          <b-col>
+            <ul>
+              <li>
+                Total of {{ total_fit_to_pick }} fit to pick
+                {{ plural_ize('sample', total_fit_to_pick) }}
+              </li>
+              <li style="color: green">
+                {{ total_must_sequence }} {{ plural_ize('plate', total_must_sequence) }} with
+                samples that must be sequenced
+              </li>
+              <li style="color: DarkOrange">
+                {{ total_preferentially_sequence }}
+                {{ plural_ize('plate', total_preferentially_sequence) }} with samples that should
+                preferentially be sequenced
+              </li>
+            </ul>
+          </b-col>
+        </b-row>
         <small>
-          <span>
-            Sorted by: 1. Must Sequence 2. Preferentially Sequence 3. Number of Positives
-          </span>
+          <span>Sorted by: 1. Must Sequence 2. Preferentially Sequence 3. Fit to Pick Samples</span>
         </small>
+      </template>
+      <template #table-busy>
+        <div class="text-center text-danger my-2">
+          <b-spinner class="align-middle"></b-spinner>
+          <strong>{{ currentState }}</strong>
+        </div>
       </template>
     </b-table>
   </b-container>
@@ -60,15 +87,24 @@
 <script>
 import labwhere from '@/modules/labwhere'
 import lighthouse from '@/modules/lighthouse_service'
+import pluralize from 'pluralize'
+import statuses from '@/modules/statuses'
 
-const countByMustSequence = (accumulator, plate) => accumulator + (plate.must_sequence ? 1 : 0)
+const countByMustSequence = (accumulator, plate) =>
+  accumulator + (plate.count_must_sequence > 0 ? 1 : 0)
+
 const countByPreferentiallySequence = (accumulator, plate) =>
-  accumulator + (plate.preferentially_sequence ? 1 : 0)
+  accumulator + (plate.count_preferentially_sequence > 0 ? 1 : 0)
+
 const countWithMap = (accumulator, plate) => accumulator + (plate.has_plate_map ? 1 : 0)
+
 const countWithoutMap = (accumulator, plate) => accumulator + (plate.has_plate_map ? 0 : 1)
+
 const sumPositives = (accumulator, plate) =>
   accumulator + (plate.count_fit_to_pick_samples == null ? 0 : plate.count_fit_to_pick_samples)
+
 const booleanFormatter = (value) => (value ? 'Yes' : 'No')
+
 const countFormatter = (value, _key, item) => (item.has_plate_map ? value : 'N/A')
 
 const booleanWithCountFormatter = (value) => (value == null ? 'No' : `Yes (${value})`)
@@ -77,22 +113,26 @@ const extractError = (response) => {
   if (response.error) {
     return response.error.message || response.error || 'Unidentified Error'
   } else {
-    // In practice the user should never see this. However, if they do, it
-    // probably means something unexpected happened, so we'll make sure
-    // we don't just fail silently.
+    // In practice the user should never see this. However, if they do, it probably means something
+    // unexpected happened, so we'll make sure we don't just fail silently.
     return defaultResponse.error
   }
 }
 
-// Sorting plates by must_sequence, then preferentially_sequence, then count_fit_to_pick_samples
+/**
+ * Sorting plates by must_sequence, then preferentially_sequence, then count_fit_to_pick_samples
+ */
 const sortCompare = (aPlate, bPlate) => {
-  const compareMustSequence = bPlate.must_sequence - aPlate.must_sequence
-  const comparePreferentiallySequence =
-    bPlate.preferentially_sequence - aPlate.preferentially_sequence
-  const compareNumberOfPositives =
-    bPlate.count_fit_to_pick_samples > aPlate.count_fit_to_pick_samples ? 1 : -1
+  if (bPlate.count_must_sequence > aPlate.count_must_sequence) return 1
+  if (bPlate.count_must_sequence < aPlate.count_must_sequence) return -1
 
-  return compareMustSequence || comparePreferentiallySequence || compareNumberOfPositives
+  if (bPlate.count_preferentially_sequence > aPlate.count_preferentially_sequence) return 1
+  if (bPlate.count_preferentially_sequence < aPlate.count_preferentially_sequence) return -1
+
+  if (bPlate.count_filtered_positive > aPlate.count_filtered_positive) return 1
+  if (bPlate.count_filtered_positive < aPlate.count_filtered_positive) return -1
+
+  return 0
 }
 
 const defaultResponse = {
@@ -104,13 +144,15 @@ export default {
   data() {
     return {
       barcode: '',
+      currentState: '',
       plates: [],
       labwhereResponse: defaultResponse,
       lighthouseResponse: defaultResponse,
+      isBusy: false,
+      status: '',
       fields: [
         {
           key: 'plate_barcode',
-          // sortable: true // check if required
         },
         {
           key: 'has_plate_map',
@@ -143,7 +185,7 @@ export default {
     total() {
       return this.plates.length
     },
-    total_positives() {
+    total_fit_to_pick() {
       return this.plates.reduce(sumPositives, 0)
     },
     total_with_maps() {
@@ -166,7 +208,7 @@ export default {
       return `${error}. Looking up barcode as plate.`
     },
     showTable() {
-      // We show the table if we've made a labwhere request, or have populates the plates via some other means.
+      // We show the table if we've made a labwhere request, or have populated the plates via some other means.
       return this.labwhereState !== null || this.plates.length !== 0
     },
     lighthouseFeedback() {
@@ -176,48 +218,88 @@ export default {
         return extractError(this.lighthouseResponse)
       }
     },
+    isError() {
+      return this.status === statuses.Error
+    },
   },
   created() {},
   methods: {
     rowClass(item, type) {
       if (item && type === 'row') {
         return item.has_plate_map ? 'table-success' : 'table-danger'
-      } else {
-        // Hit with, for example, row empty
-        return 'table-warning'
       }
     },
-    async findBox() {
-      this.reset()
-      if (this.barcode === '') return
+    async platesProvider(ctx) {
+      this.currentState = 'Checking barcode in Labwhere...'
+      this.isBusy = true
+      try {
+        this.reset()
+        if (this.barcode === '') {
+          this.isBusy = false
+          return []
+        }
 
-      const response = await labwhere.getPlatesFromBoxBarcodes(this.barcode)
-      this.labwhereResponse = response
-      if (response.success) {
-        this.findPlates(response)
-      } else {
-        // If it isn't a box, perhaps its a plate.
-        // Requirements were that we should allow plate lookups
-        this.findPlates({ barcodes: [this.barcode] })
+        const plates = await this.findPlatesOuter()
+
+        this.isBusy = false
+        return this.sortedPlates(plates)
+      } catch (error) {
+        this.isBusy = false
+        this.status = statuses.Error
+
+        return []
       }
     },
     reset() {
       this.labwhereResponse = defaultResponse
       this.lighthouseResponse = defaultResponse
-      this.plates = []
     },
     async findPlates(labwhereResponse) {
+      this.currentState = `Checking ${pluralize(
+        'plate',
+        labwhereResponse.length
+      )} in the Lighthouse service`
+
       const response = await lighthouse.findPlatesFromBarcodes(labwhereResponse)
+
       this.lighthouseResponse = response
+
       if (response.success) {
-        this.plates = this.sortedPlates(response.plates)
+        return this.sortedPlates(response.plates)
+      } else {
+        throw response.errors
       }
+    },
+    async findPlatesOuter() {
+      const response = await labwhere.getPlatesFromBoxBarcodes(this.barcode)
+      this.labwhereResponse = response
+      let plates = []
+      if (response.success) {
+        plates = this.findPlates(response)
+      } else {
+        // If it isn't a box, perhaps its a plate.
+        // Requirements were that we should allow plate lookups
+        plates = this.findPlates({ barcodes: [this.barcode] })
+      }
+      return plates
     },
     sortedPlates(plates) {
       if (plates.length === 0) {
         return []
       }
       return plates.sort(sortCompare)
+    },
+    refreshResults() {
+      this.provider()
+      if (this.$refs.plates_table) {
+        this.$refs.plates_table.refresh()
+      }
+    },
+    async provider() {
+      this.plates = await this.platesProvider()
+    },
+    plural_ize(word, count) {
+      return pluralize(word, count)
     },
   },
 }

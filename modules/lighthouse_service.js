@@ -219,16 +219,16 @@ const failDestinationPlate = async (form) => {
 }
 
 const lighthouse = {
-  createPlatesFromBarcodes,
-  findPlatesFromBarcodes,
-  getImports,
-  deleteReports,
-  getReports,
-  createReport,
-  getRobots,
-  getFailureTypes,
   createDestinationPlate,
+  createPlatesFromBarcodes,
+  createReport,
+  deleteReports,
   failDestinationPlate,
+  findPlatesFromBarcodes,
+  getFailureTypes,
+  getImports,
+  getReports,
+  getRobots,
 }
 
 export default lighthouse

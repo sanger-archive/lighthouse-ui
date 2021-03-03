@@ -149,7 +149,7 @@ describe('Beckman Cherrypick', () => {
       }
     })
 
-    it('on success it shows an alertx', async () => {
+    it('on success it shows an alert', async () => {
       page.showAlert = jest.fn()
       lighthouse.failDestinationPlate.mockReturnValue({
         success: true,

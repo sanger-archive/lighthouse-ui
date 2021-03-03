@@ -11,7 +11,7 @@
             Create report
             <b-spinner v-show="isBusy" small></b-spinner>
           </b-button>
-          <b-button variant="info" :disabled="isBusy" @click="refreshTable"> Refresh </b-button>
+          <b-button variant="info" :disabled="isBusy" @click="refreshTable">Refresh</b-button>
           <b-button id="deleteReports" variant="danger" :disabled="isBusy" @click="deleteReports">
             Delete Reports
           </b-button>

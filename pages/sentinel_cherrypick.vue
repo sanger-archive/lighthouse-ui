@@ -1,6 +1,7 @@
 <template>
   <b-container>
     <h1 class="mt-3">Sentinel Cherrypick Batch Creation</h1>
+    <p class="lead">Create a cherrypick submission in Sequencescsape</p>
     <b-alert ref="alert" :show="showDismissibleAlert" :variant="pickListResponse.variant">
       {{ pickListResponse.alertMessage
       }}<a :href="pickListResponse.link">{{ pickListResponse.link }}</a>
@@ -41,7 +42,7 @@
       </div>
     </form>
     <br />
-    <h3>Plates to include in batch</h3>
+    <h3>Plates to Include in Batch</h3>
     <b-button
       id="handleSentinelBatchCreationTop"
       variant="success"
@@ -93,7 +94,7 @@ export default {
     return {
       fields: [
         { key: 'plate_barcode', label: 'Plate barcode', sortable: true },
-        { key: 'selected', label: 'Include in batch?', sortable: true },
+        { key: 'selected', label: 'Include in batch', sortable: true },
       ],
       sortBy: 'plate_barcode',
       sortDesc: true,

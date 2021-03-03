@@ -1,6 +1,7 @@
 <template>
   <b-container>
     <h1 class="mt-3">Sentinel Sample Creation</h1>
+    <p class="lead">Creates samples in Sequencescape from the fit to pick samples</p>
     <b-alert ref="alert" :show="showDismissibleAlert" variant="danger">
       {{ alertMessage }}
     </b-alert>
