@@ -4,7 +4,6 @@ import flushPromises from 'flush-promises'
 import BoxBuster from '@/pages/box_buster.vue'
 import { getPlatesFromBoxBarcodes } from '@/modules/labwhere'
 import lighthouse from '@/modules/lighthouse_service'
-import { equal } from 'assert'
 
 // Mock the whole module. Returning jest.fn() allows you to mock methods here
 // jest.mock('@/modules/labwhere', () => jest.fn())
@@ -300,5 +299,4 @@ describe('BoxBuster', () => {
     expect(wrapper.vm.barcode).toEqual('')
     expect(barcodeField.element.value).toEqual('')
   })
-
 })
