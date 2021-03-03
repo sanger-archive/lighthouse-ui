@@ -298,5 +298,6 @@ describe('BoxBuster', () => {
     expect(wrapper.vm.barcodes_scanned).toEqual(['12345'])
     expect(wrapper.vm.barcode).toEqual('')
     expect(barcodeField.element.value).toEqual('')
+    expect(wrapper.find('caption').text()).toContain('Box barcodes scanned: 12345')
   })
 })
