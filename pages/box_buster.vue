@@ -46,10 +46,9 @@
           v-for="scanned_barcode in barcodes_scanned"
           :key="scanned_barcode"
         >
-          <span v-if="isBarcodeDuplicate(scanned_barcode)" class="red">
+          <span :class="isBarcodeDuplicate(scanned_barcode)">
             {{ scanned_barcode }},
           </span>
-          <span v-else>{{ scanned_barcode }}, </span>
         </span>
       </template>
     </b-table>
@@ -149,9 +148,9 @@ export default {
         this.barcodes_scanned.indexOf(barcode) !==
         this.barcodes_scanned.lastIndexOf(barcode)
       ) {
-        return true
+        return { red: true }
       }
-      return false
+      return { red: false }
     },
     rowClass(item, type) {
       if (item && type === 'row') {

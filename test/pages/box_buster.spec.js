@@ -303,14 +303,13 @@ describe('BoxBuster', () => {
     expect(wrapper.vm.barcodes_scanned).toEqual(['12345'])
     expect(wrapper.vm.barcode).toEqual('')
     expect(barcodeField.element.value).toEqual('')
-    expect(wrapper.find('caption').text()).toContain('Box barcodes scanned: 12345')
+    expect(wrapper.find('caption').text()).toContain('12345')
   })
 
-  it('checks if the scanned barcodes are duplicates', async () => {
+  it('checks if the scanned barcodes are duplicates', () => {
     wrapper = mount(BoxBuster, { localVue })
     wrapper.vm.barcodes_scanned = ['12345', '12345', 'barcode']
-    expect(wrapper.vm.isBarcodeDuplicate('12345')).toBe(true)
-    expect(wrapper.vm.isBarcodeDuplicate('barcode')).toBe(false)
+    expect(wrapper.vm.isBarcodeDuplicate('12345')).toEqual({ red: true })
+    expect(wrapper.vm.isBarcodeDuplicate('barcode')).toEqual({ red: false })
   })
-
 })
