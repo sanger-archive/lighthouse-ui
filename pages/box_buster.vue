@@ -45,26 +45,30 @@
         <b-row>
           <b-col>
             <ul>
-              <li>Total of {{ total }} {{ plural_ize('plate', total) }} in box</li>
+              <li>Total of {{ total }} {{ 'plate' | pluralize(total) }} in the box</li>
               <li>
-                {{ total_with_maps }} {{ plural_ize('plate', total_with_maps) }} with plate maps
+                {{ total_with_maps }} {{ 'plate' | pluralize(total_with_maps) }} with plate
+                {{ 'map' | pluralize(total_with_maps) }}
               </li>
-              <li>{{ total_without_maps }} without plate map files</li>
+              <li>
+                {{ total_without_maps }} {{ 'plate' | pluralize(total_without_maps) }} without plate
+                {{ 'map' | pluralize(total_without_maps) }}
+              </li>
             </ul>
           </b-col>
           <b-col>
             <ul>
               <li>
                 Total of {{ total_fit_to_pick }} fit to pick
-                {{ plural_ize('sample', total_fit_to_pick) }}
+                {{ 'sample' | pluralize(total_fit_to_pick) }}
               </li>
               <li style="color: green">
-                {{ total_must_sequence }} {{ plural_ize('plate', total_must_sequence) }} with
+                {{ total_must_sequence }} {{ 'plate' | pluralize(total_must_sequence) }} with
                 samples that must be sequenced
               </li>
               <li style="color: DarkOrange">
                 {{ total_preferentially_sequence }}
-                {{ plural_ize('plate', total_preferentially_sequence) }} with samples that should
+                {{ 'plate' | pluralize(total_preferentially_sequence) }} with samples that should
                 preferentially be sequenced
               </li>
             </ul>
@@ -87,7 +91,6 @@
 <script>
 import labwhere from '@/modules/labwhere'
 import lighthouse from '@/modules/lighthouse_service'
-import pluralize from 'pluralize'
 import statuses from '@/modules/statuses'
 
 const countByMustSequence = (accumulator, plate) =>
@@ -153,29 +156,31 @@ export default {
       fields: [
         {
           key: 'plate_barcode',
+          label: 'Plate barcode',
         },
         {
           key: 'has_plate_map',
+          label: 'Plate map',
           formatter: booleanFormatter,
         },
         {
           key: 'count_fit_to_pick_samples',
-          label: 'Fit To Pick Samples',
+          label: 'Fit to pick samples',
           formatter: countFormatter,
         },
         {
           key: 'count_must_sequence',
-          label: 'Must Sequence',
+          label: 'Must sequence',
           formatter: booleanWithCountFormatter,
         },
         {
           key: 'count_preferentially_sequence',
-          label: 'Preferentially Sequence',
+          label: 'Preferentially sequence',
           formatter: booleanWithCountFormatter,
         },
         {
           key: 'count_filtered_positive',
-          label: 'Filtered Positive',
+          label: 'Filtered positive',
           formatter: countFormatter,
         },
       ],
@@ -207,10 +212,6 @@ export default {
       const error = extractError(this.labwhereResponse)
       return `${error}. Looking up barcode as plate.`
     },
-    showTable() {
-      // We show the table if we've made a labwhere request, or have populated the plates via some other means.
-      return this.labwhereState !== null || this.plates.length !== 0
-    },
     lighthouseFeedback() {
       if (this.lighthouseResponse.success === null) {
         return 'Waiting for response from the lighthouse service...'
@@ -239,7 +240,7 @@ export default {
           return []
         }
 
-        const plates = await this.findPlatesOuter()
+        const plates = await this.findPlates()
 
         this.isBusy = false
         return this.sortedPlates(plates)
@@ -254,8 +255,8 @@ export default {
       this.labwhereResponse = defaultResponse
       this.lighthouseResponse = defaultResponse
     },
-    async findPlates(labwhereResponse) {
-      this.currentState = `Checking ${pluralize(
+    async findPlatesInLighthouse(labwhereResponse) {
+      this.currentState = `Checking ${this.$pluralize(
         'plate',
         labwhereResponse.length
       )} in the Lighthouse service`
@@ -270,16 +271,16 @@ export default {
         throw response.errors
       }
     },
-    async findPlatesOuter() {
+    async findPlates() {
       const response = await labwhere.getPlatesFromBoxBarcodes(this.barcode)
       this.labwhereResponse = response
       let plates = []
       if (response.success) {
-        plates = this.findPlates(response)
+        plates = this.findPlatesInLighthouse(response)
       } else {
         // If it isn't a box, perhaps its a plate.
         // Requirements were that we should allow plate lookups
-        plates = this.findPlates({ barcodes: [this.barcode] })
+        plates = this.findPlatesInLighthouse({ barcodes: [this.barcode] })
       }
       return plates
     },
@@ -297,9 +298,6 @@ export default {
     },
     async provider() {
       this.plates = await this.platesProvider()
-    },
-    plural_ize(word, count) {
-      return pluralize(word, count)
     },
   },
 }

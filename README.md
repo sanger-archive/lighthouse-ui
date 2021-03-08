@@ -12,8 +12,12 @@ of the features include:
   + the number of fit to pick samples
   + the number of 'must_sequence' samples
   + the number of 'preferentially_sequence' samples
-- Create samples in Sequencescape when scanning in a box? (Sentinel)
-- Create a cherrypick batch from Sentinel?
+- Create samples in Sequencescape when scanning in a box - it retrieves the plates from LabWhere, then inserts the fit
+to pick samples into Sequencescape
+
+- Create a cherrypick batch from Sentinel - on scaning a box barcode, it retrieves the plates from LabWhere, then
+creates a cherrypick submission in Sequencescsape. It assumes that the samples are already in Sequencescape and also
+gives you an opportunity to deselect samples that you do not want to include
 - View the status of the CSV imports from the lighthouse service
 - Print labels
 - Create and fail plates in the Beckman pipeline
@@ -82,8 +86,7 @@ There are also some cypress tests which can be run as follows:
 This project uses a Docker image as the unit of deployment. To create a release for deployment, create a release
 in GitHub and wait for the GitHub action to create the Docker image.
 
-The release version should align with the [standards](./standards.md).
-
+The release version should align with the [standards](https://github.com/sanger/.github/blob/master/standards.md).
 
 ## Miscellaneous
 

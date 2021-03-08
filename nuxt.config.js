@@ -46,7 +46,7 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [],
+  plugins: [{ src: '~/plugins/vue-pluralize.js' }],
   /*
    ** Nuxt.js dev-modules
    */

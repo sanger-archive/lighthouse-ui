@@ -1,10 +1,11 @@
-import { BootstrapVue } from 'bootstrap-vue'
-import { mount, createLocalVue } from '@vue/test-utils'
-import flushPromises from 'flush-promises'
-import BoxBuster from '@/pages/box_buster.vue'
 import labwhere from '@/modules/labwhere'
 import lighthouse from '@/modules/lighthouse_service'
+import BoxBuster from '@/pages/box_buster.vue'
+import '@/plugins/vue-pluralize'
 import { plateA, plateB, plateC, plateD, plateE, plateF } from '@/test/data/lighthouse_plates'
+import { createLocalVue, mount } from '@vue/test-utils'
+import { BootstrapVue } from 'bootstrap-vue'
+import flushPromises from 'flush-promises'
 
 // Mock the whole module. Returning jest.fn() allows you to mock methods here
 // jest.mock('@/modules/labwhere', () => jest.fn())
@@ -45,12 +46,12 @@ describe('BoxBuster', () => {
 
   it('shows a table with the expected headers', () => {
     const header = wrapper.find('table').findAll('th')
-    expect(header.at(0).text()).toContain('Plate Barcode')
-    expect(header.at(1).text()).toContain('Has Plate Map')
-    expect(header.at(2).text()).toContain('Fit To Pick Samples')
-    expect(header.at(3).text()).toContain('Must Sequence')
-    expect(header.at(4).text()).toContain('Preferentially Sequence')
-    expect(header.at(5).text()).toContain('Filtered Positive')
+    expect(header.at(0).text()).toContain('Plate barcode')
+    expect(header.at(1).text()).toContain('Plate map')
+    expect(header.at(2).text()).toContain('Fit to pick samples')
+    expect(header.at(3).text()).toContain('Must sequence')
+    expect(header.at(4).text()).toContain('Preferentially sequence')
+    expect(header.at(5).text()).toContain('Filtered positive')
   })
 
   it('is empty on start', () => {
@@ -76,9 +77,9 @@ describe('BoxBuster', () => {
 
     const caption = squish(wrapper.find('caption').text())
 
-    expect(caption).toContain('Total of 6 plates in box')
+    expect(caption).toContain('Total of 6 plates in the box')
     expect(caption).toContain('5 plates with plate maps')
-    expect(caption).toContain('1 without plate map files')
+    expect(caption).toContain('1 plate without plate map')
     expect(caption).toContain('Total of 25 fit to pick samples')
     expect(caption).toContain('2 plates with samples that must be sequenced')
     expect(caption).toContain('4 plates with samples that should preferentially be sequenced')
@@ -88,6 +89,7 @@ describe('BoxBuster', () => {
     await wrapper.setData({ plates: [plateA] })
     const row = wrapper.find('table').findAll('tr').at(1)
     expect(row.text()).toContain(plateA.plate_barcode)
+    expect(row.text()).toContain('Yes')
     expect(row.classes()).toContain('table-success')
   })
 
@@ -96,6 +98,7 @@ describe('BoxBuster', () => {
     await wrapper.setData(data)
     const row = wrapper.find('table').findAll('tr').at(1)
     expect(row.text()).toContain(plateC.plate_barcode)
+    expect(row.text()).toContain('Yes')
     expect(row.classes()).toContain('table-danger')
   })
 
@@ -216,7 +219,7 @@ describe('BoxBuster', () => {
         success: true,
         plates: [],
       })
-      wrapper.vm.findPlates({ success: true, barcodes })
+      wrapper.vm.findPlatesInLighthouse({ success: true, barcodes })
       await flushPromises()
       expect(lighthouse.findPlatesFromBarcodes).toHaveBeenCalledWith({
         success: true,

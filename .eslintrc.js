@@ -21,5 +21,11 @@ module.exports = {
   // add your custom rules here
   rules: {
     'jest/no-standalone-expect': ['error', { additionalTestBlockFunctions: ['each.test'] }],
+    'jest/expect-expect': [
+      'warn',
+      {
+        assertFunctionNames: ['expect', 'cy.contains'],
+      },
+    ],
   },
 }
