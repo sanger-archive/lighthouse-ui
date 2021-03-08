@@ -128,7 +128,7 @@ describe('BoxBuster', () => {
     expect(wrapper.find('#box-barcode').text()).toContain(ERROR_LABWHERE)
   })
 
-  describe('#findBox', () => {
+  describe('#platesProvider', () => {
     it('will not look up empty barcodes', async () => {
       const barcodeField = wrapper.find('#box-barcode-field')
       barcodeField.setValue('')
