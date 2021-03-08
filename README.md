@@ -51,7 +51,7 @@ The following tools are required for development:
 The following services are not required but can be beneficial during development:
 
 - [lighthouse service](https://github.com/sanger/lighthouse)
-- [seqeuncescape](https://github.com/sanger/sequencescape)
+- [Sequencescape](https://github.com/sanger/sequencescape)
 
 ### Configuring environment
 
