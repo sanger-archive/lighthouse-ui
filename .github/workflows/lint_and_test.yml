@@ -1,4 +1,4 @@
-name: Lint and test using ESLint and Jest
+name: Lint and test
 
 on:
   push:
