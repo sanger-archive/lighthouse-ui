@@ -289,7 +289,7 @@ describe('BoxBuster', () => {
     expect(getPlatesFromBoxBarcodes).not.toHaveBeenCalled()
   })
 
-  it('looks up plates in lighthouse', async () => {
+  it('will clear the barcode field after a barcode is entered', async () => {
     lighthouse.findPlatesFromBarcodes.mockResolvedValue({
       success: true,
       plates: examplePlates
@@ -305,4 +305,12 @@ describe('BoxBuster', () => {
     expect(barcodeField.element.value).toEqual('')
     expect(wrapper.find('caption').text()).toContain('Box barcodes scanned: 12345')
   })
+
+  it('checks if the scanned barcodes are duplicates', async () => {
+    wrapper = mount(BoxBuster, { localVue })
+    wrapper.vm.barcodes_scanned = ['12345', '12345', 'barcode']
+    expect(wrapper.vm.isBarcodeDuplicate('12345')).toBe(true)
+    expect(wrapper.vm.isBarcodeDuplicate('barcode')).toBe(false)
+  })
+
 })

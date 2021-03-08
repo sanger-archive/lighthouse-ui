@@ -41,7 +41,16 @@
         <span>{{ total_without_maps }} without.</span>
         <span>Total {{ total_positives }} positives.</span>
         <br />
-        <span>Box barcodes scanned: {{ barcodes_scanned.join(', ') }}</span>
+        <span>Box barcodes scanned:</span>
+        <span
+          v-for="scanned_barcode in barcodes_scanned"
+          :key="scanned_barcode"
+        >
+          <span v-if="isBarcodeDuplicate(scanned_barcode)" class="red">
+            {{ scanned_barcode }},
+          </span>
+          <span v-else>{{ scanned_barcode }}, </span>
+        </span>
       </template>
     </b-table>
   </b-container>
@@ -135,6 +144,15 @@ export default {
   },
   created() {},
   methods: {
+    isBarcodeDuplicate(barcode) {
+      if (
+        this.barcodes_scanned.indexOf(barcode) !==
+        this.barcodes_scanned.lastIndexOf(barcode)
+      ) {
+        return true
+      }
+      return false
+    },
     rowClass(item, type) {
       if (item && type === 'row') {
         return item.plate_map ? 'table-success' : 'table-danger'
@@ -174,3 +192,8 @@ export default {
   }
 }
 </script>
+<style>
+.red {
+  color: red;
+}
+</style>
