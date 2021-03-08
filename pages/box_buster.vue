@@ -148,9 +148,9 @@ export default {
         this.barcodes_scanned.indexOf(barcode) !==
         this.barcodes_scanned.lastIndexOf(barcode)
       ) {
-        return { red: true }
+        return { 'text-danger': true }
       }
-      return { red: false }
+      return { 'text-danger': false }
     },
     rowClass(item, type) {
       if (item && type === 'row') {
@@ -191,8 +191,3 @@ export default {
   }
 }
 </script>
-<style>
-.red {
-  color: red;
-}
-</style>

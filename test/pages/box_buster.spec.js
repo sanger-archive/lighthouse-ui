@@ -309,7 +309,7 @@ describe('BoxBuster', () => {
   it('checks if the scanned barcodes are duplicates', () => {
     wrapper = mount(BoxBuster, { localVue })
     wrapper.vm.barcodes_scanned = ['12345', '12345', 'barcode']
-    expect(wrapper.vm.isBarcodeDuplicate('12345')).toEqual({ red: true })
-    expect(wrapper.vm.isBarcodeDuplicate('barcode')).toEqual({ red: false })
+    expect(wrapper.vm.isBarcodeDuplicate('12345')).toEqual({ 'text-danger': true })
+    expect(wrapper.vm.isBarcodeDuplicate('barcode')).toEqual({ 'text-danger': false })
   })
 })
