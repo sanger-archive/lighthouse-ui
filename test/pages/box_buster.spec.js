@@ -107,7 +107,8 @@ describe('BoxBuster', () => {
     const expected = squish(`Box Summary: Total of ${expectedPlateTotal} plates in box;
     ${expectedMapTotal} plates with plates maps,
     ${expectedMaplessTotal} without.
-    Total ${expectedPositiveTotal} positives.`)
+    Total ${expectedPositiveTotal} positives.
+    Box barcodes scanned:`)
     wrapper = mount(BoxBuster, { localVue })
     await wrapper.setData(data)
     const summary = squish(wrapper.find('caption').text())
@@ -286,5 +287,29 @@ describe('BoxBuster', () => {
     await barcodeField.trigger('change')
     await flushPromises()
     expect(getPlatesFromBoxBarcodes).not.toHaveBeenCalled()
+  })
+
+  it('will clear the barcode field after a barcode is entered', async () => {
+    lighthouse.findPlatesFromBarcodes.mockResolvedValue({
+      success: true,
+      plates: examplePlates
+    })
+    wrapper = mount(BoxBuster, { localVue })
+    const barcodeField = wrapper.find('#box-barcode-field')
+    barcodeField.setValue('12345')
+    await barcodeField.trigger('change')
+    await flushPromises()
+
+    expect(wrapper.vm.barcodes_scanned).toEqual(['12345'])
+    expect(wrapper.vm.barcode).toEqual('')
+    expect(barcodeField.element.value).toEqual('')
+    expect(wrapper.find('caption').text()).toContain('12345')
+  })
+
+  it('checks if the scanned barcodes are duplicates', () => {
+    wrapper = mount(BoxBuster, { localVue })
+    wrapper.vm.barcodes_scanned = ['12345', '12345', 'barcode']
+    expect(wrapper.vm.isBarcodeDuplicate('12345')).toEqual({ 'text-danger': true })
+    expect(wrapper.vm.isBarcodeDuplicate('barcode')).toEqual({ 'text-danger': false })
   })
 })
