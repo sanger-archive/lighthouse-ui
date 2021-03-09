@@ -40,6 +40,16 @@
         <span>{{ total_with_maps }} plates with plates maps,</span>
         <span>{{ total_without_maps }} without.</span>
         <span>Total {{ total_positives }} positives.</span>
+        <br />
+        <span>Box barcodes scanned:</span>
+        <span
+          v-for="scanned_barcode in barcodes_scanned"
+          :key="scanned_barcode"
+        >
+          <span :class="isBarcodeDuplicate(scanned_barcode)">
+            {{ scanned_barcode }},
+          </span>
+        </span>
       </template>
     </b-table>
   </b-container>
@@ -78,6 +88,7 @@ export default {
     return {
       barcode: '',
       plates: [],
+      barcodes_scanned: [],
       labwhereResponse: defaultResponse,
       lighthouseResponse: defaultResponse,
       fields: [
@@ -132,6 +143,15 @@ export default {
   },
   created() {},
   methods: {
+    isBarcodeDuplicate(barcode) {
+      if (
+        this.barcodes_scanned.indexOf(barcode) !==
+        this.barcodes_scanned.lastIndexOf(barcode)
+      ) {
+        return { 'text-danger': true }
+      }
+      return { 'text-danger': false }
+    },
     rowClass(item, type) {
       if (item && type === 'row') {
         return item.plate_map ? 'table-success' : 'table-danger'
@@ -164,6 +184,8 @@ export default {
       this.lighthouseResponse = response
       if (response.success) {
         this.plates = response.plates || []
+        this.barcodes_scanned.push(this.barcode)
+        this.barcode = ''
       }
     }
   }
