@@ -17,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Set release tag 
-        run: echo "RELEASE_TAG=$([ ${GITHUB_REF##*/} = "develop" ] && echo "${GITHUB_REF##*/}-$(date +'%Y-%m-%d-%H%M%S')" || printf '%s\n' $(cat .release-version))" >> $GITHUB_ENV
+        run: echo "RELEASE_TAG=$([ ${GITHUB_REF##*/} = "develop" ] && printf '%s\n' $(cat .release-version)_develop || printf '%s\n' $(cat .release-version))" >> $GITHUB_ENV
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -45,7 +45,7 @@ jobs:
           -u ${{ github.actor }}
           -p ${{ secrets.GITHUB_TOKEN }}
           docker.pkg.github.com
-      - name: Publish image with image tag being either develop/master/<tag_name>
+      - name: Publish image with image tag being either release-x.y.z_develop or release-x.y.z
         run: >-
           docker push
           docker.pkg.github.com/${IMAGE_NAME}:${{ env.RELEASE_TAG }}

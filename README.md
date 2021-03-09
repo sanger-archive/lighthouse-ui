@@ -20,3 +20,7 @@ $ yarn generate
 ```
 
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+
+## Releases
+
+Update `.release-version` with major/minor/patch. On merging a pull request into develop or master, a release will be created with the release version as the tag/name
