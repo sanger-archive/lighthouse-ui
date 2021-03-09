@@ -8,11 +8,12 @@
       label="Box barcode:"
       label-for="box-barcode-field"
       :invalid-feedback="labwhereFeedback"
-      valid-feedback="Box found"
+      :valid-feedback="validFeedback"
       :state="labwhereState"
     >
       <b-form-input
         id="box-barcode-field"
+        ref="box-barcode-field"
         v-model="barcode"
         type="search"
         trim
@@ -23,7 +24,7 @@
     </b-form-group>
     <p>
       <b-button id="refreshResults" variant="info" :disabled="isBusy" @click="refreshResults"
-        >Refresh</b-button
+        >Search</b-button
       >
     </p>
     <p>
@@ -41,9 +42,9 @@
       show-empty
     >
       <template #table-caption>
-        <strong>Box Summary:</strong>
         <b-row>
           <b-col>
+            <strong>Box summary:</strong>
             <ul>
               <li>Total of {{ total }} {{ 'plate' | pluralize(total) }} in the box</li>
               <li>
@@ -54,13 +55,10 @@
                 {{ total_without_maps }} {{ 'plate' | pluralize(total_without_maps) }} without plate
                 {{ 'map' | pluralize(total_without_maps) }}
               </li>
-              <span>Box barcodes scanned:</span>
-              <span v-for="scanned_barcode in barcodes_scanned" :key="scanned_barcode">
-                <span :class="isBarcodeDuplicate(scanned_barcode)"> {{ scanned_barcode }}, </span>
-              </span>
             </ul>
           </b-col>
           <b-col>
+            <strong>Sample summary:</strong>
             <ul>
               <li>
                 Total of {{ total_fit_to_pick }} fit to pick
@@ -77,7 +75,22 @@
               </li>
             </ul>
           </b-col>
+          <b-col>
+            <strong>Box barcodes scanned:</strong>
+            <ol>
+              <li
+                v-for="(scanned_barcode, i) in scanned_barcodes"
+                :key="`${i}-${scanned_barcode}`"
+                :class="isBarcodeDuplicate(scanned_barcode)"
+              >
+                {{ scanned_barcode }}
+              </li>
+            </ol>
+            <span v-if="scanned_barcodes.length == 0">None</span>
+          </b-col>
         </b-row>
+        <strong>Box barcode: {{ prev_barcode }}</strong
+        ><br />
         <small>
           <span>Sorted by: 1. Must Sequence 2. Preferentially Sequence 3. Fit to Pick Samples</span>
         </small>
@@ -153,11 +166,12 @@ export default {
       barcode: '',
       currentState: '',
       plates: [],
-      barcodes_scanned: [],
+      scanned_barcodes: [],
       labwhereResponse: defaultResponse,
       lighthouseResponse: defaultResponse,
       isBusy: false,
       status: '',
+      prev_barcode: '',
       fields: [
         {
           key: 'plate_barcode',
@@ -215,7 +229,7 @@ export default {
     },
     labwhereFeedback() {
       const error = extractError(this.labwhereResponse)
-      return `${error}. Looking up barcode as plate.`
+      return `${error}. Looking up barcode as plate: ${this.prev_barcode}`
     },
     lighthouseFeedback() {
       if (this.lighthouseResponse.success === null) {
@@ -224,6 +238,9 @@ export default {
         return extractError(this.lighthouseResponse)
       }
     },
+    validFeedback() {
+      return `Box found: ${this.prev_barcode}`
+    },
     isError() {
       return this.status === statuses.Error
     },
@@ -231,7 +248,7 @@ export default {
   created() {},
   methods: {
     isBarcodeDuplicate(barcode) {
-      if (this.barcodes_scanned.indexOf(barcode) !== this.barcodes_scanned.lastIndexOf(barcode)) {
+      if (this.scanned_barcodes.indexOf(barcode) !== this.scanned_barcodes.lastIndexOf(barcode)) {
         return { 'text-danger': true }
       }
       return { 'text-danger': false }
@@ -242,6 +259,9 @@ export default {
       }
     },
     async platesProvider(ctx) {
+      this.prev_barcode = this.barcode
+      this.scanned_barcodes.push(this.barcode)
+
       this.currentState = 'Checking barcode in Labwhere...'
       this.isBusy = true
       try {
@@ -253,6 +273,7 @@ export default {
 
         const plates = await this.findPlates()
 
+        this.barcode = ''
         this.isBusy = false
         return this.sortedPlates(plates)
       } catch (error) {
@@ -293,8 +314,6 @@ export default {
         // Requirements were that we should allow plate lookups
         plates = this.findPlatesInLighthouse({ barcodes: [this.barcode] })
       }
-      this.barcodes_scanned.push(this.barcode)
-      this.barcode = ''
       return plates
     },
     sortedPlates(plates) {

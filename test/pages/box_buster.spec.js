@@ -31,8 +31,12 @@ describe('BoxBuster', () => {
   beforeEach(() => {
     wrapper = mount(BoxBuster, {
       localVue,
+      data() {
+        return {
+          barcode: BARCODE_BOX,
+        }
+      },
     })
-    wrapper.setData({ barcode: BARCODE_BOX })
   })
 
   afterEach(() => {
@@ -77,12 +81,40 @@ describe('BoxBuster', () => {
 
     const caption = squish(wrapper.find('caption').text())
 
+    expect(caption).toContain('Box summary:')
     expect(caption).toContain('Total of 6 plates in the box')
     expect(caption).toContain('5 plates with plate maps')
     expect(caption).toContain('1 plate without plate map')
+  })
+
+  it('renders a summary of samples', async () => {
+    await wrapper.setData({ plates: examplePlates })
+
+    const caption = squish(wrapper.find('caption').text())
+
+    expect(caption).toContain('Sample summary:')
     expect(caption).toContain('Total of 25 fit to pick samples')
     expect(caption).toContain('2 plates with samples that must be sequenced')
     expect(caption).toContain('4 plates with samples that should preferentially be sequenced')
+  })
+
+  it('renders the box barcodes scanned', async () => {
+    await wrapper.setData({ barcode: '' })
+    labwhere.getPlatesFromBoxBarcodes.mockResolvedValue({
+      success: false,
+      error: 'The box has no plates',
+    })
+    lighthouse.findPlatesFromBarcodes.mockResolvedValue({
+      success: true,
+      plates: [],
+    })
+    const barcodeField = wrapper.find('#box-barcode-field')
+    barcodeField.setValue(BARCODE_BOX)
+    await barcodeField.trigger('change')
+    await flushPromises()
+
+    const caption = squish(wrapper.find('caption').text())
+
     expect(caption).toContain('Box barcodes scanned:')
     expect(caption).toContain(BARCODE_BOX)
   })
@@ -326,21 +358,19 @@ describe('BoxBuster', () => {
       success: true,
       plates: examplePlates,
     })
-    wrapper = mount(BoxBuster, { localVue })
     const barcodeField = wrapper.find('#box-barcode-field')
     barcodeField.setValue('12345')
     await barcodeField.trigger('change')
     await flushPromises()
 
-    expect(wrapper.vm.barcodes_scanned).toEqual(['12345'])
+    expect(wrapper.vm.scanned_barcodes).toEqual(['12345'])
     expect(wrapper.vm.barcode).toEqual('')
     expect(barcodeField.element.value).toEqual('')
     expect(wrapper.find('caption').text()).toContain('12345')
   })
 
   it('checks if the scanned barcodes are duplicates', () => {
-    wrapper = mount(BoxBuster, { localVue })
-    wrapper.vm.barcodes_scanned = ['12345', '12345', 'barcode']
+    wrapper.vm.scanned_barcodes = ['12345', '12345', 'barcode']
     expect(wrapper.vm.isBarcodeDuplicate('12345')).toEqual({ 'text-danger': true })
     expect(wrapper.vm.isBarcodeDuplicate('barcode')).toEqual({ 'text-danger': false })
   })
