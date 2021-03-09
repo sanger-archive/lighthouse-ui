@@ -1,5 +1,5 @@
-import axios from 'axios'
 import config from '@/nuxt.config'
+import axios from 'axios'
 
 // return a bunch of barcodes from baracoda
 const createBarcodes = async ({ count }) => {
@@ -10,18 +10,18 @@ const createBarcodes = async ({ count }) => {
     )
     return {
       success: true,
-      ...response.data.barcodes_group
+      ...response.data.barcodes_group,
     }
   } catch (error) {
     return {
       success: false,
-      error
+      error,
     }
   }
 }
 
 const Baracoda = {
-  createBarcodes
+  createBarcodes,
 }
 
 export default Baracoda

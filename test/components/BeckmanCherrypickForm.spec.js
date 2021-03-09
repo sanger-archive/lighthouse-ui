@@ -1,6 +1,6 @@
-import { mount, createLocalVue } from '@vue/test-utils'
-import BootstrapVue from 'bootstrap-vue'
 import BeckmanCherrypickForm from '@/components/BeckmanCherrypickForm'
+import { createLocalVue, mount } from '@vue/test-utils'
+import { BootstrapVue } from 'bootstrap-vue'
 
 const localVue = createLocalVue()
 localVue.use(BootstrapVue)
@@ -13,7 +13,7 @@ describe('BeckmanCherrypickForm.vue', () => {
 
     wrapper = mount(BeckmanCherrypickForm, {
       propsData: props,
-      localVue
+      localVue,
     })
     form = wrapper.vm
   })
@@ -33,7 +33,7 @@ describe('BeckmanCherrypickForm.vue', () => {
       let wrapperNoProps
       beforeEach(() => {
         wrapperNoProps = mount(BeckmanCherrypickForm, {
-          localVue
+          localVue,
         })
       })
       it('has a action property', () => {
@@ -52,7 +52,7 @@ describe('BeckmanCherrypickForm.vue', () => {
     describe('when the action is create', () => {
       it('returns true when the data is invalid #1', () => {
         wrapper.setData({
-          form: { username: '', barcode: '', robotSerialNumber: '' }
+          form: { username: '', barcode: '', robotSerialNumber: '' },
         })
         expect(form.formInvalid).toEqual(true)
       })
@@ -61,8 +61,8 @@ describe('BeckmanCherrypickForm.vue', () => {
           form: {
             username: '    ',
             barcode: 'aBarcode',
-            robotSerialNumber: 'aRobotNum'
-          }
+            robotSerialNumber: 'aRobotNum',
+          },
         })
         expect(form.formInvalid).toEqual(true)
       })
@@ -71,8 +71,8 @@ describe('BeckmanCherrypickForm.vue', () => {
           form: {
             username: 'aUsername',
             barcode: 'aBarcode',
-            robotSerialNumber: 'aRobotNum'
-          }
+            robotSerialNumber: 'aRobotNum',
+          },
         })
         expect(form.formInvalid).toEqual(false)
       })
@@ -84,7 +84,7 @@ describe('BeckmanCherrypickForm.vue', () => {
         props = { action: 'fail' }
         wrapperWithFailAction = mount(BeckmanCherrypickForm, {
           propsData: props,
-          localVue
+          localVue,
         })
       })
 
@@ -94,8 +94,8 @@ describe('BeckmanCherrypickForm.vue', () => {
             username: '',
             barcode: '',
             robotSerialNumber: '',
-            failureType: ''
-          }
+            failureType: '',
+          },
         })
         expect(wrapperWithFailAction.vm.formInvalid).toEqual(true)
       })
@@ -105,8 +105,8 @@ describe('BeckmanCherrypickForm.vue', () => {
             username: 'aUsername',
             barcode: 'aBarcode',
             robotSerialNumber: 'aRobotNum',
-            failureType: ''
-          }
+            failureType: '',
+          },
         })
         expect(wrapperWithFailAction.vm.formInvalid).toEqual(true)
       })
@@ -116,8 +116,8 @@ describe('BeckmanCherrypickForm.vue', () => {
             username: 'aUsername',
             barcode: 'aBarcode',
             robotSerialNumber: 'aRobotNum',
-            failureType: 'aFailureType'
-          }
+            failureType: 'aFailureType',
+          },
         })
         expect(wrapperWithFailAction.vm.formInvalid).toEqual(false)
       })

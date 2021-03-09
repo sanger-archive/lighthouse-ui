@@ -1,6 +1,6 @@
 <template>
   <b-container>
-    <h1>Beckman Cherrypick</h1>
+    <h1 class="mt-3">Beckman Cherrypick</h1>
     <Alert ref="alert"></Alert>
     <b-card no-body>
       <b-tabs card>
@@ -14,10 +14,7 @@
               :action="'create'"
               :robots="robots"
             >
-              <b-button
-                variant="success"
-                :disabled="formInvalid"
-                @click="create(form)"
+              <b-button variant="success" :disabled="formInvalid" @click="create(form)"
                 >Create Destination Plate</b-button
               >
             </BeckmanCherrypickForm>
@@ -25,20 +22,14 @@
         </b-tab>
 
         <b-tab title="Fail">
-          <b-card
-            title="Fail Destination Plate"
-            sub-title="Fail destination plate with a reason."
-          >
+          <b-card title="Fail Destination Plate" sub-title="Fail destination plate with a reason.">
             <BeckmanCherrypickForm
               v-slot="{ form, formInvalid }"
               :action="'fail'"
               :robots="robots"
               :failure-types="failureTypes"
             >
-              <b-button
-                variant="danger"
-                :disabled="formInvalid"
-                @click="fail(form)"
+              <b-button variant="danger" :disabled="formInvalid" @click="fail(form)"
                 >Fail Destination Plate</b-button
               >
             </BeckmanCherrypickForm>
@@ -59,12 +50,12 @@ import Alert from '@/components/Alert'
 export default {
   components: {
     BeckmanCherrypickForm,
-    Alert
+    Alert,
   },
   data() {
     return {
       robots: [],
-      failureTypes: []
+      failureTypes: [],
     }
   },
   async mounted() {
@@ -116,8 +107,8 @@ export default {
     },
     showAlert(message, type) {
       return this.$refs.alert.show(message, type)
-    }
-  }
+    },
+  },
 }
 </script>
 

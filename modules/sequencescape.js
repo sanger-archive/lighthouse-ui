@@ -1,10 +1,7 @@
-import axios from 'axios'
 import config from '@/nuxt.config'
+import axios from 'axios'
 
-const createPayloadForCherrypickBatch = (
-  barcodes,
-  runtimeOptions = config.publicRuntimeConfig
-) => {
+const createPayloadForCherrypickBatch = (barcodes, runtimeOptions = config.publicRuntimeConfig) => {
   const { asynchronous, studyId, projectId } = runtimeOptions
   return {
     data: {
@@ -14,10 +11,10 @@ const createPayloadForCherrypickBatch = (
         labware_pick_attributes: barcodes.map((plateBarcode) => ({
           source_labware_barcode: plateBarcode,
           study_id: parseInt(studyId),
-          project_id: parseInt(projectId)
-        }))
-      }
-    }
+          project_id: parseInt(projectId),
+        })),
+      },
+    },
   }
 }
 
@@ -30,22 +27,22 @@ const createCherrypickBatch = async (barcodes) => {
       payload,
       {
         headers: {
-          'Content-Type': 'application/vnd.api+json'
-        }
+          'Content-Type': 'application/vnd.api+json',
+        },
       }
     )
     return {
       success: true,
-      data: response.data.data
+      data: response.data.data,
     }
   } catch (error) {
     return {
       success: false,
-      error
+      error,
     }
   }
 }
 
-export { createCherrypickBatch, createPayloadForCherrypickBatch }
+const sequencescape = { createCherrypickBatch, createPayloadForCherrypickBatch }
 
-export default createCherrypickBatch
+export default sequencescape

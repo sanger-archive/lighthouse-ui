@@ -1,6 +1,7 @@
 <template>
   <b-container>
-    <h1>Lighthouse Sentinel sample creation</h1>
+    <h1 class="mt-3">Sentinel Sample Creation</h1>
+    <p class="lead">Creates samples in Sequencescape from the fit to pick samples</p>
     <b-alert ref="alert" :show="showDismissibleAlert" variant="danger">
       {{ alertMessage }}
     </b-alert>
@@ -10,8 +11,7 @@
         <label for="box-barcode" class="col-sm-4 col-form-label">
           Please scan Lighthouse box barcode
           <p class="labwhere-warning">
-            Box and its contents need to be in LabWhere to autogenerate samples
-            in Sequencescape
+            Box and its contents need to be in LabWhere to autogenerate samples in Sequencescape
           </p>
         </label>
         <div class="col-sm-8">
@@ -34,17 +34,14 @@
             @click="handleSentinelSampleCreation()"
             >Submit
           </b-button>
-          <b-button
-            id="cancelSearch"
-            variant="primary"
-            class="float-right"
-            @click="cancelSearch()"
+          <b-button id="cancelSearch" variant="primary" class="float-right" @click="cancelSearch()"
             >Cancel
           </b-button>
         </div>
       </div>
     </form>
-    <h3>Lighthouse Samples created</h3>
+    <br />
+    <h3>Samples created</h3>
 
     <b-table
       id="samples-table"
@@ -61,7 +58,7 @@
 </template>
 
 <script>
-import { createSamples } from '../modules/api'
+import api from '@/modules/api'
 
 export default {
   data() {
@@ -70,27 +67,27 @@ export default {
         { key: 'plate_barcode', label: 'Plate barcode', sortable: true },
         { key: 'centre', label: 'Lighthouse', sortable: true },
         {
-          key: 'number_of_positives',
-          label: 'Created +ves count',
-          sortable: true
-        }
+          key: 'number_of_fit_to_pick',
+          label: 'Created fit to pick count',
+          sortable: true,
+        },
       ],
       sortBy: 'plate_barcode',
       sortDesc: true,
       boxBarcode: '',
       showDismissibleAlert: false,
       alertMessage: '',
-      items: []
+      items: [],
     }
   },
   computed: {
     isDisabled() {
       return this.boxBarcode.length === 0
-    }
+    },
   },
   methods: {
     async handleSentinelSampleCreation() {
-      const resp = await createSamples(this.boxBarcode)
+      const resp = await api.createSamples(this.boxBarcode)
       this.handleSentinelSampleCreationResponse(resp)
     },
     // TODO: make this more javascripty? destructuring?
@@ -111,8 +108,8 @@ export default {
     },
     cancelSearch() {
       this.boxBarcode = ''
-    }
-  }
+    },
+  },
 }
 </script>
 

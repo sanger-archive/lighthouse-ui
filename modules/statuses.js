@@ -5,5 +5,5 @@ export default {
   Idle: 1,
   Success: 2,
   Error: 3,
-  Busy: 4
+  Busy: 4,
 }
