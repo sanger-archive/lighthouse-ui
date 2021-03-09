@@ -83,6 +83,8 @@ describe('BoxBuster', () => {
     expect(caption).toContain('Total of 25 fit to pick samples')
     expect(caption).toContain('2 plates with samples that must be sequenced')
     expect(caption).toContain('4 plates with samples that should preferentially be sequenced')
+    expect(caption).toContain('Box barcodes scanned:')
+    expect(caption).toContain(BARCODE_BOX)
   })
 
   it('makes it easy to see when plates have a plate map', async () => {
@@ -317,5 +319,29 @@ describe('BoxBuster', () => {
     await flushPromises()
     expect(wrapper.find('tbody').findAll('tr')).toHaveLength(1)
     expect(wrapper.find('tbody').text()).toContain(MSG_NO_RECORDS)
+  })
+
+  it('will clear the barcode field after a barcode is entered', async () => {
+    lighthouse.findPlatesFromBarcodes.mockResolvedValue({
+      success: true,
+      plates: examplePlates,
+    })
+    wrapper = mount(BoxBuster, { localVue })
+    const barcodeField = wrapper.find('#box-barcode-field')
+    barcodeField.setValue('12345')
+    await barcodeField.trigger('change')
+    await flushPromises()
+
+    expect(wrapper.vm.barcodes_scanned).toEqual(['12345'])
+    expect(wrapper.vm.barcode).toEqual('')
+    expect(barcodeField.element.value).toEqual('')
+    expect(wrapper.find('caption').text()).toContain('12345')
+  })
+
+  it('checks if the scanned barcodes are duplicates', () => {
+    wrapper = mount(BoxBuster, { localVue })
+    wrapper.vm.barcodes_scanned = ['12345', '12345', 'barcode']
+    expect(wrapper.vm.isBarcodeDuplicate('12345')).toEqual({ 'text-danger': true })
+    expect(wrapper.vm.isBarcodeDuplicate('barcode')).toEqual({ 'text-danger': false })
   })
 })

@@ -54,6 +54,10 @@
                 {{ total_without_maps }} {{ 'plate' | pluralize(total_without_maps) }} without plate
                 {{ 'map' | pluralize(total_without_maps) }}
               </li>
+              <span>Box barcodes scanned:</span>
+              <span v-for="scanned_barcode in barcodes_scanned" :key="scanned_barcode">
+                <span :class="isBarcodeDuplicate(scanned_barcode)"> {{ scanned_barcode }}, </span>
+              </span>
             </ul>
           </b-col>
           <b-col>
@@ -149,6 +153,7 @@ export default {
       barcode: '',
       currentState: '',
       plates: [],
+      barcodes_scanned: [],
       labwhereResponse: defaultResponse,
       lighthouseResponse: defaultResponse,
       isBusy: false,
@@ -225,6 +230,12 @@ export default {
   },
   created() {},
   methods: {
+    isBarcodeDuplicate(barcode) {
+      if (this.barcodes_scanned.indexOf(barcode) !== this.barcodes_scanned.lastIndexOf(barcode)) {
+        return { 'text-danger': true }
+      }
+      return { 'text-danger': false }
+    },
     rowClass(item, type) {
       if (item && type === 'row') {
         return item.has_plate_map ? 'table-success' : 'table-danger'
@@ -282,6 +293,8 @@ export default {
         // Requirements were that we should allow plate lookups
         plates = this.findPlatesInLighthouse({ barcodes: [this.barcode] })
       }
+      this.barcodes_scanned.push(this.barcode)
+      this.barcode = ''
       return plates
     },
     sortedPlates(plates) {
