@@ -1,49 +1,43 @@
-name: Lint and test
+name: JavaScript - Lint and test
 
 on:
   push:
-    paths-ignore:
-      - 'README.md'
+    branches:
+      - develop
+      - master
+    tags:
+      - uat-*
   pull_request:
-    paths-ignore:
-      - 'README.md'
+    branches:
+      - develop
+      - master
 
 jobs:
-  eslint:
+  lint_and_test:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
+
       - name: Setup node
         uses: actions/setup-node@v2
         with:
           node-version: '14'
+
       - uses: actions/cache@v1
         with:
           path: ~/.cache/yarn
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
+
       - name: Install packages using yarn
         run: yarn install
+
       - name: Lint using ESLint
         run: yarn lint .
-  jest:
-    runs-on: ubuntu-18.04
-    steps:
-      - uses: actions/checkout@v2
-      - name: Setup node
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-      - uses: actions/cache@v1
-        with:
-          path: ~/.cache/yarn
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-      - name: Install packages using yarn
-        run: yarn install
+
       - name: Run tests using Jest
         run: yarn test
+
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1

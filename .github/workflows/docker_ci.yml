@@ -1,15 +1,10 @@
-name: Docker build, test and publish
+name: Docker - build, test and publish
 
 on:
   push:
-    branches:
-      - develop
-      - master
-    paths-ignore:
-      - 'README.md'
     tags:
       - uat-*
-      - release-*
+
 env:
   IMAGE_NAME: ${{ github.repository }}/${{ github.event.repository.name }}
 
@@ -18,11 +13,13 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
+
       - name: Build the Docker image
         run: >-
           docker build .
           --file Dockerfile
           --tag docker.pkg.github.com/${IMAGE_NAME}:${GITHUB_REF##*/}
+
       - name: Run tests against the image
         run: >-
           docker run
@@ -30,22 +27,19 @@ jobs:
           docker.pkg.github.com/${IMAGE_NAME}:${GITHUB_REF##*/}
           yarn test
 
-  build_and_publish:
-    needs: build_and_test
-    runs-on: ubuntu-18.04
-    steps:
-      - uses: actions/checkout@v2
       - name: Build the Docker image
         run: >-
           docker build .
           --file Dockerfile
           --tag docker.pkg.github.com/${IMAGE_NAME}:${GITHUB_REF##*/}
+
       - name: Login to registry
         run: >-
           docker login
           -u ${{ github.actor }}
           -p ${{ secrets.GITHUB_TOKEN }}
           docker.pkg.github.com
+
       - name: Publish image with image tag being either develop/master/<tag_name>
         run: >-
           docker push
