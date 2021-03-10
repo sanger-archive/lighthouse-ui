@@ -17,8 +17,8 @@ const layout = {
       cellWidth: 0.2,
       barcodeType: 'code39',
       value: 'DN111111',
-      height: 5
-    }
+      height: 5,
+    },
   ],
   textFields: [
     {
@@ -26,16 +26,16 @@ const layout = {
       y: 3,
       value: 'DN111111',
       font: 'proportional',
-      fontSize: 1.7
+      fontSize: 1.7,
     },
     {
       x: 70,
       y: 3,
       value: 'LHTR',
       font: 'proportional',
-      fontSize: 1.7
-    }
-  ]
+      fontSize: 1.7,
+    },
+  ],
 }
 
 const barcodes = ['DN111111', 'DN222222', 'DN333333']
@@ -43,7 +43,7 @@ const barcodes = ['DN111111', 'DN222222', 'DN333333']
 const labelFields = [
   { barcode: 'DN111111', text: 'LHTR' },
   { barcode: 'DN222222', text: 'LHTR' },
-  { barcode: 'DN333333', text: 'LHTR' }
+  { barcode: 'DN333333', text: 'LHTR' },
 ]
 
 describe('Sprint', () => {
@@ -55,7 +55,7 @@ describe('Sprint', () => {
     it('should produce the correct json if there is a single barcode', () => {
       const body = Sprint.createPrintRequestBody({
         labelFields: [labelFields[0]],
-        printer: 'heron-bc3'
+        printer: 'heron-bc3',
       })
       expect(body.query).toBeDefined()
       const variables = body.variables
@@ -68,16 +68,14 @@ describe('Sprint', () => {
     it('should produce the correct json if there are multiple barcodes', () => {
       expect(
         Sprint.createPrintRequestBody({
-          labelFields
-        }).variables.printRequest.layouts.length
-      ).toEqual(3)
+          labelFields,
+        }).variables.printRequest.layouts
+      ).toHaveLength(3)
     })
   })
 
   it('#createLabelFields', () => {
-    expect(Sprint.createLabelFields({ barcodes, text: 'LHTR' })).toEqual(
-      labelFields
-    )
+    expect(Sprint.createLabelFields({ barcodes, text: 'LHTR' })).toEqual(labelFields)
   })
 
   describe('#printLabels', () => {
@@ -96,9 +94,9 @@ describe('Sprint', () => {
       mock.mockResolvedValue({
         data: {
           print: {
-            jobId: 'heron-bc1:eb5a7d75-2510-4355-a3c1-33c1ce8742ba'
-          }
-        }
+            jobId: 'heron-bc1:eb5a7d75-2510-4355-a3c1-33c1ce8742ba',
+          },
+        },
       })
       const response = await Sprint.printLabels(args)
       expect(mock).toHaveBeenCalledWith(
@@ -107,9 +105,7 @@ describe('Sprint', () => {
         Sprint.headers
       )
       expect(response.success).toBeTruthy()
-      expect(response.message).toEqual(
-        'successfully printed 3 labels to heron-bc3'
-      )
+      expect(response.message).toEqual('successfully printed 3 labels to heron-bc3')
     })
 
     it('when sprint fails', async () => {
@@ -125,10 +121,10 @@ describe('Sprint', () => {
           errors: [
             {
               message:
-                'Exception while fetching data (/print) : Unknown printer without explicit printer type: bug'
-            }
-          ]
-        }
+                'Exception while fetching data (/print) : Unknown printer without explicit printer type: bug',
+            },
+          ],
+        },
       })
       const response = await Sprint.printLabels(args)
       expect(response.success).toBeFalsy()
@@ -156,37 +152,29 @@ describe('Sprint', () => {
 
       beforeEach(() => {
         args = { numberOfBarcodes: 5, printer: 'heron-bc3' }
-        barcodes = [
-          'HT-111116',
-          'HT-111117',
-          'HT-111118',
-          'HT-111119',
-          'HT-111120'
-        ]
+        barcodes = ['HT-111116', 'HT-111117', 'HT-111118', 'HT-111119', 'HT-111120']
       })
 
       it('successfully', async () => {
         Baracoda.createBarcodes.mockResolvedValue({ success: true, barcodes })
         mock.mockResolvedValue({
           success: true,
-          message: 'successfully printed 5 labels to heron-bc3'
+          message: 'successfully printed 5 labels to heron-bc3',
         })
 
         const response = await Sprint.printDestinationPlateLabels(args)
         expect(mock).toHaveBeenCalledWith({
           printer: 'heron-bc3',
-          labelFields: Sprint.createLabelFields({ barcodes, text: 'LHTR' })
+          labelFields: Sprint.createLabelFields({ barcodes, text: 'LHTR' }),
         })
         expect(response.success).toBeTruthy()
-        expect(response.message).toEqual(
-          'successfully printed 5 labels to heron-bc3'
-        )
+        expect(response.message).toEqual('successfully printed 5 labels to heron-bc3')
       })
 
       it('when baracoda fails', async () => {
         Baracoda.createBarcodes.mockResolvedValue({
           success: false,
-          error: errorResponse
+          error: errorResponse,
         })
         const response = await Sprint.printDestinationPlateLabels(args)
         expect(response.success).toBeFalsy()

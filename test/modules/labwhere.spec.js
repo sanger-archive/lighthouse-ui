@@ -1,6 +1,6 @@
 import axios from 'axios'
+import labwhere from '@/modules/labwhere'
 import PlatesJson from '../data/labwhere_plates'
-import { getPlatesFromBoxBarcodes } from '@/modules/labwhere'
 
 describe('Labwhere', () => {
   describe('#getPlatesFromBoxBarcodes', () => {
@@ -19,26 +19,22 @@ describe('Labwhere', () => {
       mockResponse = { data: PlatesJson }
       mockGet.mockResolvedValue(mockResponse)
 
-      response = await getPlatesFromBoxBarcodes(boxBarcodes)
+      response = await labwhere.getPlatesFromBoxBarcodes(boxBarcodes)
       expect(response.success).toBeTruthy()
       expect(response.barcodes).toEqual(['AB123', 'CD456'])
     })
 
     it('when there is an error', async () => {
-      mockGet.mockImplementationOnce(() =>
-        Promise.reject(new Error('There was an error'))
-      )
-      response = await getPlatesFromBoxBarcodes(boxBarcodes)
+      mockGet.mockImplementationOnce(() => Promise.reject(new Error('There was an error')))
+      response = await labwhere.getPlatesFromBoxBarcodes(boxBarcodes)
       expect(response.success).toBeFalsy()
       expect(response.barcodes).not.toBeDefined()
     })
 
     // This is the same as the above but worth adding for consistency
     it('when the box does not exist', async () => {
-      mockGet.mockImplementationOnce(() =>
-        Promise.reject(new Error('There was an error'))
-      )
-      response = await getPlatesFromBoxBarcodes(['dodgybarcode'])
+      mockGet.mockImplementationOnce(() => Promise.reject(new Error('There was an error')))
+      response = await labwhere.getPlatesFromBoxBarcodes(['dodgybarcode'])
       expect(response.success).toBeFalsy()
       expect(response.barcodes).not.toBeDefined()
       expect(response.error).toEqual(new Error('There was an error'))
@@ -46,7 +42,7 @@ describe('Labwhere', () => {
 
     it('when the box has no plates', async () => {
       mockGet.mockResolvedValue({ data: [] })
-      response = await getPlatesFromBoxBarcodes(boxBarcodes)
+      response = await labwhere.getPlatesFromBoxBarcodes(boxBarcodes)
       expect(response.success).toBeFalsy()
       expect(response.error).toEqual('The box has no plates')
     })

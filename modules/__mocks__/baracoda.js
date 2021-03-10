@@ -1,5 +1,5 @@
 const Baracoda = {
-  createBarcodes: jest.fn()
+  createBarcodes: jest.fn(),
 }
 
 export default Baracoda

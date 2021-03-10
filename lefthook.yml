@@ -1,0 +1,16 @@
+# EXAMPLE USAGE
+# Refer for explanation to following link:
+# https://github.com/Arkweid/lefthook/blob/master/docs/full_guide.md
+#
+pre-push:
+  commands:
+    packages-audit:
+      tags: security
+      run: yarn audit
+
+pre-commit:
+  parallel: true
+  commands:
+    eslint:
+      glob: '*.{js,ts,vue}'
+      run: yarn lint {staged_files}

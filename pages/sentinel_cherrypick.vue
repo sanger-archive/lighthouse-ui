@@ -1,11 +1,8 @@
 <template>
   <b-container>
-    <h1>Lighthouse Sentinel cherrypick batch creation</h1>
-    <b-alert
-      ref="alert"
-      :show="showDismissibleAlert"
-      :variant="pickListResponse.variant"
-    >
+    <h1 class="mt-3">Sentinel Cherrypick Batch Creation</h1>
+    <p class="lead">Create a cherrypick submission in Sequencescsape</p>
+    <b-alert ref="alert" :show="showDismissibleAlert" :variant="pickListResponse.variant">
       {{ pickListResponse.alertMessage
       }}<a :href="pickListResponse.link">{{ pickListResponse.link }}</a>
     </b-alert>
@@ -15,8 +12,8 @@
         <label for="box-barcode" class="col-sm-4 col-form-label">
           Please scan Lighthouse box barcode(s)
           <p class="labwhere-warning">
-            Box and its contents need to be in LabWhere and samples created in
-            Sequencescape, to generate batch
+            Box and its contents need to be in LabWhere and samples created in Sequencescape, to
+            generate batch
           </p>
         </label>
         <div class="col-sm-8">
@@ -38,17 +35,14 @@
             @click="getPlates()"
             >Get plates
           </b-button>
-          <b-button
-            id="cancelSearch"
-            variant="primary"
-            class="float-right"
-            @click="cancelSearch()"
+          <b-button id="cancelSearch" variant="primary" class="float-right" @click="cancelSearch()"
             >Cancel
           </b-button>
         </div>
       </div>
     </form>
-    <h3>Plates to include in batch</h3>
+    <br />
+    <h3>Plates to Include in Batch</h3>
     <b-button
       id="handleSentinelBatchCreationTop"
       variant="success"
@@ -69,7 +63,7 @@
       :per-page="perPage"
       :current-page="currentPage"
     >
-      <template v-slot:cell(selected)="row">
+      <template #cell(selected)="row">
         <b-form-group>
           <input v-model="row.item.selected" type="checkbox" />
         </b-form-group>
@@ -92,15 +86,15 @@
 </template>
 
 <script>
-import { getPlatesFromBoxBarcodes } from '../modules/labwhere'
-import { createCherrypickBatch } from '../modules/sequencescape'
+import labwhere from '@/modules/labwhere'
+import sequencescape from '@/modules/sequencescape'
 
 export default {
   data() {
     return {
       fields: [
         { key: 'plate_barcode', label: 'Plate barcode', sortable: true },
-        { key: 'selected', label: 'Include in batch?', sortable: true }
+        { key: 'selected', label: 'Include in batch', sortable: true },
       ],
       sortBy: 'plate_barcode',
       sortDesc: true,
@@ -110,7 +104,7 @@ export default {
       items: [],
       pickListResponse: { variant: 'danger' },
       perPage: 10,
-      currentPage: 1
+      currentPage: 1,
     }
   },
   computed: {
@@ -122,25 +116,25 @@ export default {
     },
     rows() {
       return this.items.length
-    }
+    },
   },
   methods: {
     async getPlates() {
       const boxBarcodesList = this.parseBoxBarcodes(this.boxBarcodes)
-      const resp = await getPlatesFromBoxBarcodes(boxBarcodesList)
+      const resp = await labwhere.getPlatesFromBoxBarcodes(boxBarcodesList)
       this.handleGetPlatesResponse(resp)
     },
     handleGetPlatesResponse(resp) {
       if (!resp.success) {
         this.pickListResponse = {
           alertMessage: 'Could not retrieve plates from LabWhere',
-          variant: 'danger'
+          variant: 'danger',
         }
         this.showDismissibleAlert = true
       } else {
         this.items = resp.barcodes.map((barcode) => ({
           plate_barcode: barcode,
-          selected: true
+          selected: true,
         }))
       }
     },
@@ -150,27 +144,26 @@ export default {
         .map((item) => item.plate_barcode)
 
       if (barcodes.length > 0) {
-        const resp = await createCherrypickBatch(barcodes)
+        const resp = await sequencescape.createCherrypickBatch(barcodes)
         this.handleCreateBatchResponse(resp)
       } else {
         this.pickListResponse = {
           alertMessage: 'Please select one or more plates',
-          variant: 'warning'
+          variant: 'warning',
         }
       }
     },
     handleCreateBatchResponse(resp) {
       if (resp.success) {
         this.pickListResponse = {
-          alertMessage:
-            'Cherrypicking batch successfully created. Go to this link to view it: ',
+          alertMessage: 'Cherrypicking batch successfully created. Go to this link to view it: ',
           variant: 'success',
-          link: resp.data.attributes.links[0].url
+          link: resp.data.attributes.links[0].url,
         }
       } else {
         this.pickListResponse = {
           alertMessage: resp.error,
-          variant: 'danger'
+          variant: 'danger',
         }
       }
       this.showDismissibleAlert = true
@@ -182,8 +175,8 @@ export default {
       const listNoBlanks = boxBarcodes.split(/\s+/).filter((b) => b !== '')
       const listUnique = [...new Set(listNoBlanks)]
       return listUnique
-    }
-  }
+    },
+  },
 }
 </script>
 

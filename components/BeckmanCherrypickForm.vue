@@ -46,20 +46,20 @@ export default {
   props: {
     action: {
       type: String,
-      default: ''
+      default: '',
     },
     robots: {
       type: Array,
       default() {
         return []
-      }
+      },
     },
     failureTypes: {
       type: Array,
       default() {
         return []
-      }
-    }
+      },
+    },
   },
   data() {
     return {
@@ -67,8 +67,8 @@ export default {
         username: '',
         barcode: '',
         robotSerialNumber: '',
-        failureType: ''
-      }
+        failureType: '',
+      },
     }
   },
   computed: {
@@ -81,8 +81,8 @@ export default {
         return commonValidation || this.form.failureType === ''
       }
       return commonValidation
-    }
-  }
+    },
+  },
 }
 </script>
 

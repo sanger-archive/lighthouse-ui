@@ -18,26 +18,17 @@
             {{ alertMessage }}
           </b-alert>
         </p>
-        <form
-          enctype="multipart/form-data"
-          method="post"
-          action="#"
-          @submit.prevent="upload"
-        >
+        <form enctype="multipart/form-data" method="post" action="#" @submit.prevent="upload">
           <div class="form-group">
             <div class="form-group">
-              <label for="selectPrinter">
-                Which printer would you like to use?
-              </label>
+              <label for="selectPrinter">Which printer would you like to use?</label>
               <b-form-select
                 id="selectPrinter"
                 v-model="printer"
                 :options="printers"
               ></b-form-select>
             </div>
-            <label for="file-input">
-              Select a file to upload
-            </label>
+            <label for="file-input">Select a file to upload</label>
             <input
               id="file-input"
               ref="fileInput"
@@ -55,11 +46,7 @@
                 placeholder="Upload File..."
               />
               <span class="input-group-btn">
-                <button
-                  class="btn btn-success spacer"
-                  type="button"
-                  @click.prevent="browseFiles"
-                >
+                <button class="btn btn-success spacer" type="button" @click.prevent="browseFiles">
                   Browse
                 </button>
               </span>
@@ -93,15 +80,15 @@ import PrintLabelsRouter from '@/components/PrintLabelsRouter'
 
 export default {
   components: {
-    PrintLabelsRouter
+    PrintLabelsRouter,
   },
   props: {
     printers: {
       type: Array,
       default() {
         return config.publicRuntimeConfig.printers.split(',')
-      }
-    }
+      },
+    },
   },
   data() {
     return {
@@ -109,7 +96,7 @@ export default {
       alertMessage: '',
       printer: 'heron-bc1',
       numberOfBarcodes: 1,
-      filename: null
+      filename: null,
     }
   },
   computed: {
@@ -125,7 +112,7 @@ export default {
     },
     isBusy() {
       return this.status === statuses.Busy
-    }
+    },
   },
   methods: {
     setStatus(status, message) {
@@ -144,7 +131,7 @@ export default {
       const labelFields = csv.parse(read)
       const response = await Sprint.printLabels({
         labelFields,
-        printer: this.printer
+        printer: this.printer,
       })
 
       if (response.success) {
@@ -162,8 +149,8 @@ export default {
     addFilenames() {
       this.filename = this.$refs.fileInput.value
       this.$refs.browseFiles.value = this.filename
-    }
-  }
+    },
+  },
 }
 </script>
 

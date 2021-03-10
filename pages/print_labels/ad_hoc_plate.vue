@@ -19,29 +19,15 @@
           </b-alert>
         </p>
         <p>
-          <label for="selectPrinter">
-            Which printer would you like to use?
-          </label>
-          <b-form-select
-            id="selectPrinter"
-            v-model="printer"
-            :options="printers"
-          ></b-form-select>
+          <label for="selectPrinter"> Which printer would you like to use? </label>
+          <b-form-select id="selectPrinter" v-model="printer" :options="printers"></b-form-select>
         </p>
         <p>
-          <label for="barcode">
-            Please scan the barcode
-          </label>
-          <b-form-input
-            id="barcode"
-            v-model="barcode"
-            type="text"
-          ></b-form-input>
+          <label for="barcode"> Please scan the barcode </label>
+          <b-form-input id="barcode" v-model="barcode" type="text"></b-form-input>
         </p>
         <p>
-          <label for="text">
-            Please provide some text to go on the label
-          </label>
+          <label for="text"> Please provide some text to go on the label </label>
           <b-form-input id="text" v-model="text" type="text"></b-form-input>
         </p>
         <p class="text-right">
@@ -70,15 +56,15 @@ import PrintLabelsRouter from '@/components/PrintLabelsRouter'
 
 export default {
   components: {
-    PrintLabelsRouter
+    PrintLabelsRouter,
   },
   props: {
     printers: {
       type: Array,
       default() {
         return config.publicRuntimeConfig.printers.split(',')
-      }
-    }
+      },
+    },
   },
   data() {
     return {
@@ -86,7 +72,7 @@ export default {
       alertMessage: '',
       printer: 'heron-bc1',
       barcode: '',
-      text: ''
+      text: '',
     }
   },
   computed: {
@@ -105,7 +91,7 @@ export default {
     },
     isValid() {
       return this.barcode.length > 0 && this.text.length > 0
-    }
+    },
   },
   methods: {
     setStatus(status, message) {
@@ -115,7 +101,7 @@ export default {
     async printLabels() {
       const response = await Sprint.printLabels({
         labelFields: [{ barcode: this.barcode, text: this.text }],
-        printer: this.printer
+        printer: this.printer,
       })
 
       if (response.success) {
@@ -123,8 +109,8 @@ export default {
       } else {
         this.setStatus('Error', response.error)
       }
-    }
-  }
+    },
+  },
 }
 </script>
 
