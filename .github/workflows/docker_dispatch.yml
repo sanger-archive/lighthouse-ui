@@ -6,7 +6,7 @@ on:
       image_tag:
         description: 'Image Tag'
         required: true
-        default: 'uat-...'
+        default: 'x.y.z-uat.1'
 
 env:
   IMAGE_NAME: ${{ github.repository }}/${{ github.event.repository.name }}
