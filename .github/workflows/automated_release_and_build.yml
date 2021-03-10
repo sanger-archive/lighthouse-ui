@@ -1,0 +1,51 @@
+name: Automated release and build
+
+on:
+  push:
+    branches:
+      - develop
+      - master
+    paths-ignore:
+      - "README.md"
+
+env:
+  IMAGE_NAME: ${{ github.repository }}/${{ github.event.repository.name }}
+
+jobs:
+  build_and_test_job:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set release tag 
+        run: echo "RELEASE_TAG=$([ ${GITHUB_REF##*/} = "develop" ] && printf '%s\n' $(cat .release-version)_develop || printf '%s\n' $(cat .release-version))" >> $GITHUB_ENV
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ env.RELEASE_TAG }}
+          release_name: ${{ env.RELEASE_TAG }}
+          draft: false
+          prerelease: ${{ !(github.ref == 'refs/heads/master') }}
+      - name: Build the Docker image
+        run: >-
+          docker build .
+          --file Dockerfile
+          --tag docker.pkg.github.com/${IMAGE_NAME}:${{ env.RELEASE_TAG }}
+      - name: Run tests against the image
+        run: >-
+          docker run
+          --network host
+          docker.pkg.github.com/${IMAGE_NAME}:${{ env.RELEASE_TAG }}
+          yarn test
+      - name: Login to registry
+        run: >-
+          docker login
+          -u ${{ github.actor }}
+          -p ${{ secrets.GITHUB_TOKEN }}
+          docker.pkg.github.com
+      - name: Publish image with image tag being either release-x.y.z_develop or release-x.y.z
+        run: >-
+          docker push
+          docker.pkg.github.com/${IMAGE_NAME}:${{ env.RELEASE_TAG }}
