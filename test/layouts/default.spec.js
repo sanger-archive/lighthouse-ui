@@ -1,6 +1,6 @@
-import BootstrapVue from 'bootstrap-vue'
-import { mount, createLocalVue } from '@vue/test-utils'
 import Default from '@/layouts/default.vue'
+import { createLocalVue, mount } from '@vue/test-utils'
+import { BootstrapVue } from 'bootstrap-vue'
 
 const localVue = createLocalVue()
 localVue.use(BootstrapVue)
@@ -12,8 +12,8 @@ describe('Index', () => {
     wrapper = mount(Default, {
       localVue,
       stubs: {
-        nuxt: true
-      }
+        nuxt: true,
+      },
     })
   })
 

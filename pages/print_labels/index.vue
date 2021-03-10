@@ -13,8 +13,8 @@ import DestinationPlates from '@/pages/print_labels/destination_plates'
 
 export default {
   components: {
-    DestinationPlates
-  }
+    DestinationPlates,
+  },
 }
 </script>
 

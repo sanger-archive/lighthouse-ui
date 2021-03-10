@@ -1,6 +1,6 @@
-import axios from 'axios'
 import Baracoda from '@/modules/baracoda'
 import config from '@/nuxt.config'
+import axios from 'axios'
 
 const query = `mutation printRequest($printRequest: PrintRequest!, $printer: String!) {
   print(printRequest: $printRequest, printer: $printer) {
@@ -10,8 +10,8 @@ const query = `mutation printRequest($printRequest: PrintRequest!, $printer: Str
 
 const headers = {
   headers: {
-    'Content-Type': 'application/json'
-  }
+    'Content-Type': 'application/json',
+  },
 }
 
 // Will create a new layout object for a print job
@@ -25,8 +25,8 @@ const createLayout = ({ barcode, text }) => ({
       cellWidth: 0.2,
       barcodeType: 'code39',
       value: barcode,
-      height: 5
-    }
+      height: 5,
+    },
   ],
   textFields: [
     {
@@ -34,19 +34,19 @@ const createLayout = ({ barcode, text }) => ({
       y: 3,
       value: barcode,
       font: 'proportional',
-      fontSize: 1.7
+      fontSize: 1.7,
     },
     {
       x: 70,
       y: 3,
       value: text,
       font: 'proportional',
-      fontSize: 1.7
-    }
-  ]
+      fontSize: 1.7,
+    },
+  ],
 })
 
-/* 
+/*
   Creates the print request body
   A query can have multiple layouts
   the number of layouts is dependent on the number of LabelFields
@@ -58,9 +58,9 @@ const createPrintRequestBody = ({ labelFields, printer }) => ({
     printer,
     printRequest: {
       // turns each labelField into a layout
-      layouts: labelFields.map((labelField) => createLayout(labelField))
-    }
-  }
+      layouts: labelFields.map((labelField) => createLayout(labelField)),
+    },
+  },
 })
 
 /*
@@ -83,27 +83,21 @@ const printLabels = async ({ labelFields, printer }) => {
   try {
     const payload = createPrintRequestBody({ labelFields, printer })
 
-    const response = await axios.post(
-      config.privateRuntimeConfig.sprintBaseURL,
-      payload,
-      headers
-    )
+    const response = await axios.post(config.privateRuntimeConfig.sprintBaseURL, payload, headers)
 
     // because this is GraphQL it will always be a success unless it is a 500
     // so we need to extract the error messages and turn it into an error object
     if (response.data.errors)
-      throw new Error(
-        response.data.errors.map(({ message }) => message).join(',')
-      )
+      throw new Error(response.data.errors.map(({ message }) => message).join(','))
 
     return {
       success: true,
-      message: `successfully printed ${labelFields.length} labels to ${printer}`
+      message: `successfully printed ${labelFields.length} labels to ${printer}`,
     }
   } catch (error) {
     return {
       success: false,
-      error
+      error,
     }
   }
 }
@@ -137,7 +131,7 @@ const printDestinationPlateLabels = async ({ numberOfBarcodes, printer }) => {
   } catch (error) {
     return {
       success: false,
-      error
+      error,
     }
   }
 }
@@ -148,7 +142,7 @@ const Sprint = {
   printLabels,
   printDestinationPlateLabels,
   headers,
-  createLabelFields
+  createLabelFields,
 }
 
 export default Sprint

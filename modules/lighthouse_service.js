@@ -1,7 +1,7 @@
 // Lighthouse Service Module
 
-import axios from 'axios'
 import config from '@/nuxt.config'
+import axios from 'axios'
 
 const handlePromise = async (promise) => {
   let rawResponse
@@ -14,8 +14,7 @@ const handlePromise = async (promise) => {
 }
 
 // Accepts a list of barcodes in the moduleOptions
-// Send a POST request to the Lighthouse service API
-// To create each plate
+// Send a POST request to the Lighthouse service API to create each plate
 // Return list of responses
 const createPlatesFromBarcodes = async ({ barcodes }) => {
   const promises = barcodes.map((barcode) => {
@@ -23,9 +22,7 @@ const createPlatesFromBarcodes = async ({ barcodes }) => {
     return axios.post(url, { barcode })
   })
 
-  const responses = await Promise.all(
-    promises.map((promise) => handlePromise(promise))
-  )
+  const responses = await Promise.all(promises.map((promise) => handlePromise(promise)))
   return responses
 }
 
@@ -35,7 +32,7 @@ const findPlatesFromBarcodes = async ({ barcodes }) => {
   const url = `${config.privateRuntimeConfig.lighthouseBaseURL}/plates`
   try {
     const response = await axios.get(url, {
-      params: { barcodes }
+      params: { barcodes },
     })
     return { success: true, ...response.data }
   } catch (error) {
@@ -50,12 +47,12 @@ const getImports = async () => {
     )
     return {
       success: true,
-      data: response.data
+      data: response.data,
     }
   } catch (error) {
     return {
       success: false,
-      error
+      error,
     }
   }
 }
@@ -63,21 +60,18 @@ const getImports = async () => {
 // Delete list of reports using full filenames
 const deleteReports = async (filenames) => {
   try {
-    await axios.post(
-      `${config.privateRuntimeConfig.lighthouseBaseURL}/delete_reports`,
-      {
-        data: {
-          filenames
-        }
-      }
-    )
+    await axios.post(`${config.privateRuntimeConfig.lighthouseBaseURL}/delete_reports`, {
+      data: {
+        filenames,
+      },
+    })
     return {
-      success: true
+      success: true,
     }
   } catch (error) {
     return {
       success: false,
-      error
+      error,
     }
   }
 }
@@ -85,17 +79,15 @@ const deleteReports = async (filenames) => {
 // Get all of the reports
 const getReports = async () => {
   try {
-    const response = await axios.get(
-      `${config.privateRuntimeConfig.lighthouseBaseURL}/reports`
-    )
+    const response = await axios.get(`${config.privateRuntimeConfig.lighthouseBaseURL}/reports`)
     return {
       success: true,
-      reports: response.data.reports
+      reports: response.data.reports,
     }
   } catch (error) {
     return {
       success: false,
-      error
+      error,
     }
   }
 }
@@ -108,12 +100,12 @@ const createReport = async () => {
     )
     return {
       success: true,
-      reports: response.data.reports
+      reports: response.data.reports,
     }
   } catch (error) {
     return {
       success: false,
-      error
+      error,
     }
   }
 }
@@ -126,7 +118,7 @@ const getRobots = async () => {
     )
     return {
       success: true,
-      robots: response.data.robots
+      robots: response.data.robots,
     }
   } catch (resp) {
     const errors = resp.response
@@ -134,7 +126,7 @@ const getRobots = async () => {
       : [resp.message + ': Failed to get Robots from Lighthouse Service']
     return {
       success: false,
-      errors
+      errors,
     }
   }
 }
@@ -147,7 +139,7 @@ const getFailureTypes = async () => {
     )
     return {
       success: true,
-      failureTypes: response.data.failure_types
+      failureTypes: response.data.failure_types,
     }
   } catch (resp) {
     const errors = resp.response
@@ -155,7 +147,7 @@ const getFailureTypes = async () => {
       : [resp.message + ': Failed to get Failure Types from Lighthouse Service']
     return {
       success: false,
-      errors
+      errors,
     }
   }
 }
@@ -168,20 +160,21 @@ const getFailureTypes = async () => {
 const createDestinationPlate = async (form) => {
   try {
     const response = await axios.get(
-      `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypicked-plates/create?barcode=${form.barcode}&robot=${form.robotSerialNumber}&user_id=${form.username}`
+      `${config.privateRuntimeConfig.lighthouseBaseURL}
+      /cherrypicked-plates/create?barcode=${form.barcode}&robot=${form.robotSerialNumber}&user_id=${form.username}`
     )
     const responseData = response.data.data
     // success
     return {
       success: true,
-      response: `Successfully created destination plate, with barcode: ${responseData.plate_barcode}, and ${responseData.number_of_positives} positive sample(s)`
+      response: `Successfully created destination plate, with barcode: ${responseData.plate_barcode}, and ${responseData.number_of_fit_to_pick} fit to pick sample(s)`,
     }
   } catch (resp) {
     const errors = resp.response.data
     // failure
     return {
       success: false,
-      ...errors
+      ...errors,
     }
   }
 }
@@ -196,41 +189,46 @@ const createDestinationPlate = async (form) => {
 const failDestinationPlate = async (form) => {
   try {
     const response = await axios.get(
-      `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypicked-plates/fail?barcode=${form.barcode}&robot=${form.robotSerialNumber}&user_id=${form.username}&failure_type=${form.failureType}`
+      `${config.privateRuntimeConfig.lighthouseBaseURL}
+      /cherrypicked-plates/fail
+      ?barcode=${form.barcode}
+      &robot=${form.robotSerialNumber}
+      &user_id=${form.username}
+      &failure_type=${form.failureType}`
     )
     // partial success
     if (response.data.errors.length > 0) {
       return {
         success: true,
-        errors: response.data.errors
+        errors: response.data.errors,
       }
     }
     // success
     return {
       success: true,
-      response: `Successfully failed destination plate with barcode: ${form.barcode}`
+      response: `Successfully failed destination plate with barcode: ${form.barcode}`,
     }
   } catch (resp) {
     const errors = resp.response.data
     // faliure
     return {
       success: false,
-      ...errors
+      ...errors,
     }
   }
 }
 
 const lighthouse = {
-  createPlatesFromBarcodes,
-  findPlatesFromBarcodes,
-  getImports,
-  deleteReports,
-  getReports,
-  createReport,
-  getRobots,
-  getFailureTypes,
   createDestinationPlate,
-  failDestinationPlate
+  createPlatesFromBarcodes,
+  createReport,
+  deleteReports,
+  failDestinationPlate,
+  findPlatesFromBarcodes,
+  getFailureTypes,
+  getImports,
+  getReports,
+  getRobots,
 }
 
 export default lighthouse

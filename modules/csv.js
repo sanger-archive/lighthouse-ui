@@ -37,7 +37,7 @@ const parse = (data) => {
 
 const CSV = {
   read,
-  parse
+  parse,
 }
 
 export default CSV

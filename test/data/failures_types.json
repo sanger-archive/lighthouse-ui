@@ -1,6 +1,6 @@
 {
   "failure_types": [
-    {"type": "Type 1", "description": "Description of error 1"},
-    {"type": "Type 2", "description": "Description of error 2"}
+    { "type": "Type 1", "description": "Description of error 1" },
+    { "type": "Type 2", "description": "Description of error 2" }
   ]
 }

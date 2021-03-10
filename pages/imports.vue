@@ -1,13 +1,8 @@
 <template>
   <b-container>
-    <h1>Imports</h1>
-
-    <b-alert
-      ref="alert"
-      dismissible
-      :show="showDismissibleAlert"
-      :variant="alertData.variant"
-    >
+    <h1 class="mt-3">Imports</h1>
+    <p class="lead">Import status of CSV files processed by the crawler.</p>
+    <b-alert ref="alert" dismissible :show="showDismissibleAlert" :variant="alertData.variant">
       {{ alertData.message }}
     </b-alert>
     <br />
@@ -19,12 +14,7 @@
       class="mb-0"
     >
       <b-input-group>
-        <b-form-input
-          id="filterInput"
-          v-model="filter"
-          type="search"
-          placeholder="Type to Search"
-        >
+        <b-form-input id="filterInput" v-model="filter" type="search" placeholder="Type to Search">
         </b-form-input>
         <b-input-group-append>
           <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
@@ -32,6 +22,13 @@
       </b-input-group>
     </b-form-group>
     <br />
+    <b-pagination
+      v-model="currentPage"
+      :total-rows="rows"
+      :per-page="perPage"
+      align="center"
+      aria-table="imports-table"
+    ></b-pagination>
     <b-table
       id="imports-table"
       show-empty
@@ -44,8 +41,9 @@
       hover
       :per-page="perPage"
       :current-page="currentPage"
+      head-variant="light"
     >
-      <template v-slot:cell(errors)="row">
+      <template #cell(errors)="row">
         <ul>
           <li v-for="error in row.item.errors" :key="error">
             {{ error }}
@@ -57,13 +55,14 @@
       v-model="currentPage"
       :total-rows="rows"
       :per-page="perPage"
+      align="center"
       aria-table="imports-table"
     ></b-pagination>
   </b-container>
 </template>
 
 <script>
-import lighthouse from '../modules/lighthouse_service'
+import lighthouse from '@/modules/lighthouse_service'
 
 export default {
   data() {
@@ -77,12 +76,12 @@ export default {
             const d = new Date(value)
             return d.toLocaleString()
           },
-          filterByFormatted: true
+          filterByFormatted: true,
         },
         { key: 'centre_name', label: 'Centre', sortable: true },
         { key: 'csv_file_used', label: 'File', sortable: true },
         { key: 'number_of_records', label: 'Num of records', sortable: true },
-        { key: 'errors', label: 'Errors', sortable: true }
+        { key: 'errors', label: 'Errors', sortable: true },
       ],
       sortBy: 'date',
       sortDesc: true,
@@ -91,13 +90,13 @@ export default {
       showDismissibleAlert: false,
       alertData: { variant: '', message: '' },
       items: [],
-      filter: null
+      filter: null,
     }
   },
   computed: {
     rows() {
       return this.items.length
-    }
+    },
   },
   created() {
     this.provider()
@@ -119,8 +118,8 @@ export default {
     },
     async provider() {
       this.items = await this.getItemsProvider()
-    }
-  }
+    },
+  },
 }
 </script>
 

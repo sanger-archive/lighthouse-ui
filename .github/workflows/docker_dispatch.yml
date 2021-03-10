@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       image_tag:
-        description: "Image Tag"
+        description: 'Image Tag'
         required: true
-        default: "uat-..."
+        default: 'uat-...'
 
 env:
   IMAGE_NAME: ${{ github.repository }}/${{ github.event.repository.name }}
