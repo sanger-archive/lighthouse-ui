@@ -526,7 +526,7 @@ describe('lighthouse_service api', () => {
       }
     })
 
-    it.only('on success', async () => {
+    it('on success', async () => {
       response = { data: { errors: [] } }
       mock.mockResolvedValue(response)
 
