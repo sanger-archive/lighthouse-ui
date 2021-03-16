@@ -152,16 +152,22 @@ const getFailureTypes = async () => {
   }
 }
 
-// Create Destination Plate
-// Returned on success:
-//  { success: true, response: "A successful message" }
-// Returned on failure:
-//  { success: false, errors: ["A failure message"] }
+/**
+ * - Returned on success: `{ success: true, response: "A successful message" }`
+ * - Returned on failure: `{ success: false, errors: ["A failure message"] }`
+ *
+ * @param {*} form
+ * @returns
+ */
 const createDestinationPlate = async (form) => {
   try {
     const response = await axios.get(
-      `${config.privateRuntimeConfig.lighthouseBaseURL}
-      /cherrypicked-plates/create?barcode=${form.barcode}&robot=${form.robotSerialNumber}&user_id=${form.username}`
+      `${config.privateRuntimeConfig.lighthouseBaseURL}` +
+        '/cherrypicked-plates' +
+        '/create?' +
+        `barcode=${form.barcode}&` +
+        `robot=${form.robotSerialNumber}&` +
+        `user_id=${form.username}`
     )
     const responseData = response.data.data
     // success
@@ -179,22 +185,24 @@ const createDestinationPlate = async (form) => {
   }
 }
 
-// Fail Destination Plate
-// Returned on success:
-//  { success: true, errors: [] }
-// Returned on partial success:
-//  { success: true, errors: ["A successful error message"] }
-// Returned on failure:
-//  { success: false, errors: ["A failure message"] }
+/**
+ * - Returned on success: `{ success: true, errors: [] }`
+ * - Returned on partial success: `{ success: true, errors: ["A successful error message"] }`
+ * - Returned on failure: `{ success: false, errors: ["A failure message"] }`
+ *
+ * @param {*} form
+ * @returns
+ */
 const failDestinationPlate = async (form) => {
   try {
     const response = await axios.get(
-      `${config.privateRuntimeConfig.lighthouseBaseURL}
-      /cherrypicked-plates/fail
-      ?barcode=${form.barcode}
-      &robot=${form.robotSerialNumber}
-      &user_id=${form.username}
-      &failure_type=${form.failureType}`
+      `${config.privateRuntimeConfig.lighthouseBaseURL}` +
+        '/cherrypicked-plates' +
+        '/fail?' +
+        `barcode=${form.barcode}&` +
+        `robot=${form.robotSerialNumber}&` +
+        `user_id=${form.username}&` +
+        `failure_type=${form.failureType}`
     )
     // partial success
     if (response.data.errors.length > 0) {
