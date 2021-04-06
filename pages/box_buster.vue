@@ -64,11 +64,11 @@
                 Total of {{ total_fit_to_pick }} fit to pick
                 {{ 'sample' | pluralize(total_fit_to_pick) }}
               </li>
-              <li v-show="false" style="color: green">
+              <li style="color: green">
                 {{ total_must_sequence }} {{ 'plate' | pluralize(total_must_sequence) }} with
                 samples that must be sequenced
               </li>
-              <li v-show="false" style="color: DarkOrange">
+              <li style="color: DarkOrange">
                 {{ total_preferentially_sequence }}
                 {{ 'plate' | pluralize(total_preferentially_sequence) }} with samples that should
                 preferentially be sequenced
@@ -188,22 +188,16 @@ export default {
           formatter: countFormatter,
         },
         {
-          thClass: 'd-none',
-          tdClass: 'd-none',
           key: 'count_must_sequence',
           label: 'Must sequence',
           formatter: booleanWithCountFormatter,
         },
         {
-          thClass: 'd-none',
-          tdClass: 'd-none',
           key: 'count_preferentially_sequence',
           label: 'Preferentially sequence',
           formatter: booleanWithCountFormatter,
         },
         {
-          thClass: 'd-none',
-          tdClass: 'd-none',
           key: 'count_filtered_positive',
           label: 'Filtered positive',
           formatter: countFormatter,
