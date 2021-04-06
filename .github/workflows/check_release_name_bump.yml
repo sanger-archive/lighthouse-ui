@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Get latest release
+      - name: Get latest release (gets the tag name associated to the latest release)
         id: last_release
         uses: InsonusK/get-latest-release@v1.0.1
         with:
@@ -24,5 +24,6 @@ jobs:
         run: >-
           if [ "${{ steps.last_release.outputs.tag_name }}" = "$(printf 'v%s-develop\n' $(cat .release-version))" ] ||
           [ "${{ steps.last_release.outputs.tag_name }}" = "$(printf 'v%s\n' $(cat .release-version))" ]; then
-            exit 1;
+            echo "The release version needs to be updated"
+            exit 1
           fi
