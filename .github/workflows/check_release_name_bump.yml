@@ -1,4 +1,4 @@
-# Checks that the .release_version file has been updated
+# Checks that the .release-version file has been updated
 name: Check release bump
 
 on:
