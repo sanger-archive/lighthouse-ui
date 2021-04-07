@@ -127,7 +127,8 @@ const booleanFormatter = (value) => (value ? 'Yes' : 'No')
 
 const countFormatter = (value, _key, item) => (item.has_plate_map ? value : 'N/A')
 
-const booleanWithCountFormatter = (value) => (value == null ? 'No' : `Yes (${value})`)
+const booleanWithCountFormatter = (value) =>
+  value == null || value === 0 ? 'No' : `Yes (${value})`
 
 const extractError = (response) => {
   if (response.error) {
@@ -151,6 +152,9 @@ const sortCompare = (aPlate, bPlate) => {
 
   if (bPlate.count_filtered_positive > aPlate.count_filtered_positive) return 1
   if (bPlate.count_filtered_positive < aPlate.count_filtered_positive) return -1
+
+  if (bPlate.has_plate_map && !aPlate.has_plate_map) return 1
+  if (!bPlate.has_plate_map && aPlate.has_plate_map) return -1
 
   return 0
 }
@@ -253,9 +257,17 @@ export default {
       }
       return { 'text-danger': false }
     },
+    /**
+     * Set the styling of the table row based on whether the plate has plate map data and any fit to
+     * pick samples.
+     */
     rowClass(item, type) {
       if (item && type === 'row') {
-        return item.has_plate_map ? 'table-success' : 'table-danger'
+        if (!item.has_plate_map) return 'table-danger'
+
+        if (item.count_fit_to_pick_samples === 0) return 'table-warning'
+
+        return 'table-success'
       }
     },
     async platesProvider(ctx) {

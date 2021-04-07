@@ -69,10 +69,10 @@ describe('BoxBuster', () => {
     await wrapper.setData(data)
     const rows = wrapper.find('table').findAll('tr')
     expect(rows.at(1).text()).toMatch(/AP-rna-2-0-10-8/)
-    expect(rows.at(2).text()).toMatch(/AP-rna-1-1-5-0/)
+    expect(rows.at(2).text()).toMatch(/AP-rna-1-1-5-5/)
     expect(rows.at(3).text()).toMatch(/AP-rna-0-2-8-6/)
     expect(rows.at(4).text()).toMatch(/AP-rna-0-1-2-1/)
-    expect(rows.at(5).text()).toMatch(/AP-rna-0-1-0-1/)
+    expect(rows.at(5).text()).toMatch(/AP-rna-0-0-0-0/)
     expect(rows.at(6).text()).toMatch(/AP-rna-no_map/)
   })
 
@@ -95,7 +95,7 @@ describe('BoxBuster', () => {
     expect(caption).toContain('Sample summary:')
     expect(caption).toContain('Total of 25 fit to pick samples')
     expect(caption).toContain('2 plates with samples that must be sequenced')
-    expect(caption).toContain('4 plates with samples that should preferentially be sequenced')
+    expect(caption).toContain('3 plates with samples that should preferentially be sequenced')
   })
 
   it('renders the box barcodes scanned', async () => {
@@ -127,12 +127,27 @@ describe('BoxBuster', () => {
     expect(row.classes()).toContain('table-success')
   })
 
-  it('makes it easy to see when plates do not have a plate map', async () => {
+  it('makes it easy to see when plates have plate map data but no fit to pick samples', async () => {
+    const data = { plates: [plateE] }
+    await wrapper.setData(data)
+    const row = wrapper.find('table').findAll('tr').at(1)
+    expect(row.text()).toContain(plateE.plate_barcode)
+    expect(row.findAll('td').at(1).text()).toContain('Yes')
+    expect(row.findAll('td').at(2).text()).toContain(0)
+    expect(row.findAll('td').at(3).text()).toContain('No')
+    expect(row.findAll('td').at(4).text()).toContain('No')
+    expect(row.classes()).toContain('table-warning')
+  })
+
+  it('makes it easy to see when plates do not have a plate map nor fit to pick samples', async () => {
     const data = { plates: [plateC] }
     await wrapper.setData(data)
     const row = wrapper.find('table').findAll('tr').at(1)
     expect(row.text()).toContain(plateC.plate_barcode)
-    expect(row.text()).toContain('Yes')
+    expect(row.findAll('td').at(1).text()).toContain('No')
+    expect(row.findAll('td').at(2).text()).toContain('N/A')
+    expect(row.findAll('td').at(3).text()).toContain('No')
+    expect(row.findAll('td').at(4).text()).toContain('No')
     expect(row.classes()).toContain('table-danger')
   })
 
@@ -292,13 +307,13 @@ describe('BoxBuster', () => {
       expect(wrapper.vm.sortedPlates(plates)).toEqual([])
     })
 
-    it('sorts by count_must_sequence, then count_preferentially_sequence, then count_fit_to_pick_samples', () => {
+    it('sorts by count_must_sequence, then count_preferentially_sequence, then count_fit_to_pick_samples, then has_plate_map', () => {
       const result = wrapper.vm.sortedPlates(examplePlates)
       expect(result[0].plate_barcode).toEqual('AP-rna-2-0-10-8')
-      expect(result[1].plate_barcode).toEqual('AP-rna-1-1-5-0')
+      expect(result[1].plate_barcode).toEqual('AP-rna-1-1-5-5')
       expect(result[2].plate_barcode).toEqual('AP-rna-0-2-8-6')
       expect(result[3].plate_barcode).toEqual('AP-rna-0-1-2-1')
-      expect(result[4].plate_barcode).toEqual('AP-rna-0-1-0-1')
+      expect(result[4].plate_barcode).toEqual('AP-rna-0-0-0-0')
       expect(result[5].plate_barcode).toEqual('AP-rna-no_map')
     })
   })
@@ -320,10 +335,10 @@ describe('BoxBuster', () => {
     expect(wrapper.find('tbody').findAll('tr')).toHaveLength(6)
     const tableBodyText = wrapper.find('tbody').text()
     expect(tableBodyText).toContain('AP-rna-2-0-10-8')
-    expect(tableBodyText).toContain('AP-rna-1-1-5-0')
+    expect(tableBodyText).toContain('AP-rna-1-1-5-5')
     expect(tableBodyText).toContain('AP-rna-0-2-8-6')
     expect(tableBodyText).toContain('AP-rna-0-1-2-1')
-    expect(tableBodyText).toContain('AP-rna-0-1-0-1')
+    expect(tableBodyText).toContain('AP-rna-0-0-0-0')
     expect(tableBodyText).toContain('AP-rna-no_map')
   })
 
