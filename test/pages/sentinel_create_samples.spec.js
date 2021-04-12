@@ -100,7 +100,7 @@ describe('lighthouse sentinel cherrypick', () => {
             data: {
               plate_barcode: 'aBarcode1',
               centre: 'tst1',
-              number_of_fit_to_pick: 3,
+              count_fit_to_pick_samples: 3,
             },
           },
         },
@@ -109,12 +109,17 @@ describe('lighthouse sentinel cherrypick', () => {
             data: {
               plate_barcode: 'aBarcode2',
               centre: 'tst1',
-              number_of_fit_to_pick: 1,
+              count_fit_to_pick_samples: 1,
             },
           },
         },
       ]
       wrapper.vm.handleSentinelSampleCreationResponse(response)
+      wrapper.vm.$nextTick(() => {
+        expect(wrapper.findComponent({ ref: 'alert' }).text()).toMatch(
+          /Sentinel samples successfully created in sequencescape/
+        )
+      })
       expect(wrapper.vm.items).toEqual(response.map((r) => r.data).map((r) => r.data))
     })
 
@@ -150,7 +155,7 @@ describe('lighthouse sentinel cherrypick', () => {
             data: {
               plate_barcode: 'aBarcode1',
               centre: 'tst1',
-              number_of_fit_to_pick: 1,
+              count_fit_to_pick_samples: 1,
             },
           },
         },
@@ -159,7 +164,7 @@ describe('lighthouse sentinel cherrypick', () => {
             data: {
               plate_barcode: 'aBarcode2',
               centre: 'tst1',
-              number_of_fit_to_pick: 1,
+              count_fit_to_pick_samples: 1,
             },
           },
         },
@@ -187,7 +192,7 @@ describe('lighthouse sentinel cherrypick', () => {
             data: {
               plate_barcode: 'aBarcode1',
               centre: 'tst1',
-              number_of_fit_to_pick: 1,
+              count_fit_to_pick_samples: 1,
             },
           },
         },
@@ -196,7 +201,7 @@ describe('lighthouse sentinel cherrypick', () => {
             data: {
               plate_barcode: 'aBarcode2',
               centre: 'tst1',
-              number_of_fit_to_pick: 1,
+              count_fit_to_pick_samples: 1,
             },
           },
         },

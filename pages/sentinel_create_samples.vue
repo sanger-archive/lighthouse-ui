@@ -2,15 +2,13 @@
   <b-container>
     <h1 class="mt-3">Sentinel Sample Creation</h1>
     <p class="lead">Creates samples in Sequencescape from the fit to pick samples</p>
-    <b-alert ref="alert" :show="showDismissibleAlert" variant="danger">
-      {{ alertMessage }}
-    </b-alert>
+    <Alert ref="alert"></Alert>
 
     <form class="border">
       <div class="form-group row">
         <label for="box-barcode" class="col-sm-4 col-form-label">
           Please scan Lighthouse box barcode
-          <p class="labwhere-warning">
+          <p class="text-danger">
             Box and its contents need to be in LabWhere to autogenerate samples in Sequencescape
           </p>
         </label>
@@ -59,15 +57,19 @@
 
 <script>
 import api from '@/modules/api'
+import Alert from '@/components/Alert'
 
 export default {
+  components: {
+    Alert,
+  },
   data() {
     return {
       fields: [
         { key: 'plate_barcode', label: 'Plate barcode', sortable: true },
         { key: 'centre', label: 'Lighthouse', sortable: true },
         {
-          key: 'number_of_fit_to_pick',
+          key: 'count_fit_to_pick_samples',
           label: 'Created fit to pick count',
           sortable: true,
         },
@@ -75,8 +77,6 @@ export default {
       sortBy: 'plate_barcode',
       sortDesc: true,
       boxBarcode: '',
-      showDismissibleAlert: false,
-      alertMessage: '',
       items: [],
     }
   },
@@ -95,16 +95,19 @@ export default {
       const errored = resp.filter((obj) => Object.keys(obj).includes('errors'))
       if (errored.length > 0) {
         const msg = errored.map((e) => e.errors.join(', ')).join(', ')
-        this.alertMessage = msg
-        this.showDismissibleAlert = true
+        this.showAlert(msg, 'danger')
       }
 
       const successful = resp.filter((obj) => Object.keys(obj).includes('data'))
       if (successful.length > 0) {
         this.items = successful.map((obj) => obj.data).map((obj) => obj.data)
+        !errored.length ? this.showAlert('Sentinel samples successfully created in sequencescape', 'success') : ""
       } else {
         this.items = []
       }
+    },
+    showAlert(message, type) {
+      return this.$refs.alert.show(message, type)
     },
     cancelSearch() {
       this.boxBarcode = ''
@@ -117,9 +120,6 @@ export default {
 form {
   padding: 10px;
   min-height: 160px;
-}
-.labwhere-warning {
-  color: red;
 }
 button {
   margin-right: 5px;
