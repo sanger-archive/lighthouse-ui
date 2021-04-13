@@ -93,17 +93,22 @@ export default {
     // TODO: make this more javascripty? destructuring?
     handleSentinelSampleCreationResponse(resp) {
       const errored = resp.filter((obj) => Object.keys(obj).includes('errors'))
-      if (errored.length > 0) {
-        const msg = errored.map((e) => e.errors.join(', ')).join(', ')
-        this.showAlert(msg, 'danger')
-      }
-
       const successful = resp.filter((obj) => Object.keys(obj).includes('data'))
       if (successful.length > 0) {
         this.items = successful.map((obj) => obj.data).map((obj) => obj.data)
-        if (!errored.length) { this.showAlert('Sentinel samples successfully created in sequencescape', 'success') }
       } else {
         this.items = []
+      }
+      this.sampleCreationAlert(errored, successful)
+    },
+    sampleCreationAlert(errored, successful) {
+      const msg = errored.map((e) => e.errors.join(', ')).join(', ')
+      if (errored.length && successful.length) {
+        this.showAlert(`Some samples were successfully created however: ${msg}`, 'warning')
+      } else if (errored.length) {
+        this.showAlert(msg, 'danger')
+      } else if (!errored.length && successful.length ) {
+        this.showAlert('Sentinel samples successfully created in sequencescape', 'success')
       }
     },
     showAlert(message, type) {

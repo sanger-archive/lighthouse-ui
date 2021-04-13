@@ -212,7 +212,9 @@ describe('lighthouse sentinel cherrypick', () => {
 
       wrapper.vm.handleSentinelSampleCreationResponse(response)
       wrapper.vm.$nextTick(() => {
-        expect(wrapper.findComponent({ ref: 'alert' }).text()).toMatch(/an error 2, an error 1/)
+        expect(wrapper.findComponent({ ref: 'alert' }).text()).toMatch(
+          /Some samples were successfully created however: an error 2, an error 1/
+        )
       })
       expect(wrapper.vm.items).toEqual(
         response
