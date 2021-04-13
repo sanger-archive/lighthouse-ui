@@ -99,15 +99,15 @@ export default {
       } else {
         this.items = []
       }
-      this.sampleCreationAlert(errored, successful)
+      this.sentinelSampleCreationAlert(errored, successful)
     },
-    sampleCreationAlert(errored, successful) {
+    sentinelSampleCreationAlert(errored, successful) {
       const msg = errored.map((e) => e.errors.join(', ')).join(', ')
-      if (errored.length && successful.length) {
+      if (errored.length > 0 && successful.length > 0) {
         this.showAlert(`Some samples were successfully created however: ${msg}`, 'warning')
-      } else if (errored.length) {
+      } else if (errored.length > 0) {
         this.showAlert(msg, 'danger')
-      } else if (!errored.length && successful.length ) {
+      } else if (errored.length === 0 && successful.length > 0) {
         this.showAlert('Sentinel samples successfully created in sequencescape', 'success')
       }
     },
