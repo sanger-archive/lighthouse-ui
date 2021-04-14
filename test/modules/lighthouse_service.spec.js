@@ -50,7 +50,7 @@ describe('lighthouse_service api', () => {
         data: {
           plate_barcode: 'aBarcode1',
           centre: 'tst1',
-          number_of_fit_to_pick: 3,
+          count_fit_to_pick_samples: 3,
         },
       }
 
@@ -114,7 +114,7 @@ describe('lighthouse_service api', () => {
         data: {
           plate_barcode: 'aBarcode1',
           centre: 'tst1',
-          number_of_fit_to_pick: 3,
+          count_fit_to_pick_samples: 3,
         },
       }
 
@@ -122,7 +122,7 @@ describe('lighthouse_service api', () => {
         data: {
           plate_barcode: 'aBarcode2',
           centre: 'tst1',
-          number_of_fit_to_pick: 2,
+          count_fit_to_pick_samples: 2,
         },
       }
 
@@ -162,7 +162,7 @@ describe('lighthouse_service api', () => {
         data: {
           plate_barcode: 'aBarcode2',
           centre: 'tst1',
-          number_of_fit_to_pick: 2,
+          count_fit_to_pick_samples: 2,
         },
       }
 
@@ -203,7 +203,7 @@ describe('lighthouse_service api', () => {
         {
           plate_barcode: 'aBarcode1',
           centre: 'tst1',
-          number_of_fit_to_pick: 3,
+          count_fit_to_pick_samples: 3,
         },
       ]
 
@@ -233,12 +233,12 @@ describe('lighthouse_service api', () => {
         {
           plate_barcode: 'aBarcode1',
           centre: 'tst1',
-          number_of_fit_to_pick: 3,
+          count_fit_to_pick_samples: 3,
         },
         {
           plate_barcode: 'aBarcode2',
           centre: 'tst1',
-          number_of_fit_to_pick: 2,
+          count_fit_to_pick_samples: 2,
         },
       ]
       const response = { data: { plates } }
@@ -475,7 +475,7 @@ describe('lighthouse_service api', () => {
           data: {
             plate_barcode: 'barcode',
             centre: 'centre_prefix',
-            number_of_fit_to_pick: 'len(samples)',
+            count_fit_to_pick_samples: 'len(samples)',
           },
         },
       }
@@ -485,7 +485,7 @@ describe('lighthouse_service api', () => {
       const result = await lighthouse.createDestinationPlate(form)
       const expected = {
         success: true,
-        response: `Successfully created destination plate, with barcode: ${responseData.plate_barcode}, and ${responseData.number_of_fit_to_pick} fit to pick sample(s)`,
+        response: `Successfully created destination plate, with barcode: ${responseData.plate_barcode}, and ${responseData.count_fit_to_pick_samples} fit to pick sample(s)`,
       }
       expect(mock).toHaveBeenCalledTimes(1)
       expect(result).toEqual(expected)
