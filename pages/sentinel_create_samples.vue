@@ -105,7 +105,7 @@ export default {
       const msg = errored.map((e) => e.errors.join(', ')).join(', ')
       if (errored.length > 0 && successful.length > 0) {
         this.showAlert(`Some samples were successfully created however: ${msg}`, 'warning')
-      } else if (errored.length > 0) {
+      } else if (errored.length > 0 && successful.length === 0) {
         this.showAlert(msg, 'danger')
       } else if (errored.length === 0 && successful.length > 0) {
         this.showAlert('Sentinel samples successfully created in sequencescape', 'success')
