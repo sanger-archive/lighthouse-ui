@@ -22,14 +22,14 @@ describe('api', () => {
           data: {
             plate_barcode: 'aBarcode1',
             centre: 'tst1',
-            number_of_fit_to_pick: 3,
+            count_fit_to_pick_samples: 3,
           },
         },
         {
           data: {
             plate_barcode: 'aBarcode2',
             centre: 'tst1',
-            number_of_fit_to_pick: 1,
+            count_fit_to_pick_samples: 1,
           },
         },
       ]
@@ -75,7 +75,7 @@ describe('api', () => {
           data: {
             plate_barcode: 'aBarcode2',
             centre: 'tst1',
-            number_of_fit_to_pick: 1,
+            count_fit_to_pick_samples: 1,
           },
         },
       ]

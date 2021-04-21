@@ -173,7 +173,7 @@ const createDestinationPlate = async (form) => {
     // success
     return {
       success: true,
-      response: `Successfully created destination plate, with barcode: ${responseData.plate_barcode}, and ${responseData.number_of_fit_to_pick} fit to pick sample(s)`,
+      response: `Successfully created destination plate, with barcode: ${responseData.plate_barcode}, and ${responseData.count_fit_to_pick_samples} fit to pick sample(s)`,
     }
   } catch (resp) {
     const errors = resp.response.data
