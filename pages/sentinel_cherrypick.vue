@@ -105,6 +105,7 @@ export default {
       pickListResponse: { variant: 'danger' },
       perPage: 10,
       currentPage: 1,
+      submit_disabled: false
     }
   },
   computed: {
@@ -112,7 +113,7 @@ export default {
       return this.boxBarcodes.length === 0
     },
     batchCreationDisabled() {
-      return this.items.length === 0
+      return this.submit_disabled || this.items.length === 0
     },
     rows() {
       return this.items.length
@@ -139,6 +140,7 @@ export default {
       }
     },
     async createBatch() {
+      this.submit_disabled = true
       const barcodes = this.items
         .filter((item) => item.selected === true)
         .map((item) => item.plate_barcode)
@@ -152,6 +154,7 @@ export default {
           variant: 'warning',
         }
       }
+      this.submit_disabled = false
     },
     handleCreateBatchResponse(resp) {
       if (resp.success) {

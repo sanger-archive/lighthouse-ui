@@ -78,17 +78,20 @@ export default {
       sortDesc: true,
       boxBarcode: '',
       items: [],
+      submit_disabled: false
     }
   },
   computed: {
     isDisabled() {
-      return this.boxBarcode.length === 0
+      return this.submit_disabled || this.boxBarcode.length === 0
     },
   },
   methods: {
     async handleSentinelSampleCreation() {
+      this.submit_disabled = true
       const resp = await api.createSamples(this.boxBarcode)
       this.handleSentinelSampleCreationResponse(resp)
+      this.submit_disabled = false
     },
     // TODO: make this more javascripty? destructuring?
     handleSentinelSampleCreationResponse(resp) {
