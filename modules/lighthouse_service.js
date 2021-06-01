@@ -32,7 +32,9 @@ const findPlatesFromBarcodes = async ({ barcodes }) => {
   const url = `${config.privateRuntimeConfig.lighthouseBaseURL}/plates`
   try {
     const response = await axios.get(url, {
-      params: { barcodes },
+      params: {
+        barcodes: barcodes.join(',')
+      },
     })
     return { success: true, ...response.data }
   } catch (error) {
@@ -163,11 +165,11 @@ const createDestinationPlate = async (form) => {
   try {
     const response = await axios.get(
       `${config.privateRuntimeConfig.lighthouseBaseURL}` +
-        '/cherrypicked-plates' +
-        '/create?' +
-        `barcode=${form.barcode}&` +
-        `robot=${form.robotSerialNumber}&` +
-        `user_id=${form.username}`
+      '/cherrypicked-plates' +
+      '/create?' +
+      `barcode=${form.barcode}&` +
+      `robot=${form.robotSerialNumber}&` +
+      `user_id=${form.username}`
     )
     const responseData = response.data.data
     // success
@@ -197,12 +199,12 @@ const failDestinationPlate = async (form) => {
   try {
     const response = await axios.get(
       `${config.privateRuntimeConfig.lighthouseBaseURL}` +
-        '/cherrypicked-plates' +
-        '/fail?' +
-        `barcode=${form.barcode}&` +
-        `robot=${form.robotSerialNumber}&` +
-        `user_id=${form.username}&` +
-        `failure_type=${form.failureType}`
+      '/cherrypicked-plates' +
+      '/fail?' +
+      `barcode=${form.barcode}&` +
+      `robot=${form.robotSerialNumber}&` +
+      `user_id=${form.username}&` +
+      `failure_type=${form.failureType}`
     )
     // partial success
     if (response.data.errors.length > 0) {
