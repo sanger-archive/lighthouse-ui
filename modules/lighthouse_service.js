@@ -34,7 +34,7 @@ const findPlatesFromBarcodes = async ({ barcodes }) => {
     const response = await axios.get(url, {
       params: {
         barcodes: barcodes.join(','),
-        '_exclude': 'picked_samples'
+        '_exclude': 'pickable_samples'
       },
     })
     return { success: true, ...response.data }
