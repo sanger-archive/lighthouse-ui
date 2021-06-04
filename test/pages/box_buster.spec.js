@@ -262,7 +262,7 @@ describe('BoxBuster', () => {
       expect(wrapper.vm.plates).toEqual(expectedSortedPlates)
     })
 
-    it('findPlatesFromBarcodes can be sucessful and return no plates', async () => {
+    it('findPlatesFromBarcodes can be successful and return no plates', async () => {
       const barcodes = [plateA.plate_barcode]
       lighthouse.findPlatesFromBarcodes.mockResolvedValue({
         success: true,
