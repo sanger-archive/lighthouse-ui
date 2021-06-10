@@ -222,7 +222,7 @@ describe('lighthouse_service api', () => {
         1,
         `${config.privateRuntimeConfig.lighthouseBaseURL}/plates`,
         {
-          params: { barcodes },
+          params: { barcodes: barcodes[0], '_exclude': 'pickable_samples' },
         }
       )
     })
@@ -255,7 +255,7 @@ describe('lighthouse_service api', () => {
         1,
         `${config.privateRuntimeConfig.lighthouseBaseURL}/plates`,
         {
-          params: { barcodes },
+          params: { barcodes: barcodes.join(','), '_exclude': 'pickable_samples' },
         }
       )
       expect(result).toEqual(expected)

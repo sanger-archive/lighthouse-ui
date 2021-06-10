@@ -1,7 +1,8 @@
 # Lighthouse UI
 
-[![JS - Lint and test](https://github.com/sanger/lighthouse-ui/actions/workflows/js_ci.yml/badge.svg)](https://github.com/sanger/lighthouse-ui/actions/workflows/js_ci.yml)
+[![CI](https://github.com/sanger/lighthouse-ui/actions/workflows/ci.yml/badge.svg)](https://github.com/sanger/lighthouse-ui/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/sanger/lighthouse-ui/branch/develop/graph/badge.svg)](https://codecov.io/gh/sanger/lighthouse-ui)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
 A [Nuxt JS](https://nuxtjs.org) application that provides SSRs the ability to interact with the [lighthouse service](https://github.com/sanger/lighthouse) and other LIMS. Some
 of the features include:
