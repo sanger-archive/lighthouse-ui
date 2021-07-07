@@ -454,7 +454,7 @@ describe('lighthouse_service api', () => {
     })
   })
 
-  describe('#createDestinationPlate', () => {
+  describe('#createDestinationPlateBeckman', () => {
     let username, barcode, robotSerialNumber, form
 
     beforeEach(() => {
@@ -482,7 +482,7 @@ describe('lighthouse_service api', () => {
       mock.mockResolvedValue(response)
 
       const responseData = response.data.data
-      const result = await lighthouse.createDestinationPlate(form)
+      const result = await lighthouse.createDestinationPlateBeckman(form)
       const expected = {
         success: true,
         response: `Successfully created destination plate, with barcode: ${responseData.plate_barcode}, and ${responseData.count_fit_to_pick_samples} fit to pick sample(s)`,
@@ -500,7 +500,7 @@ describe('lighthouse_service api', () => {
       }
       mock.mockRejectedValue(response)
 
-      const result = await lighthouse.createDestinationPlate(form)
+      const result = await lighthouse.createDestinationPlateBeckman(form)
 
       const expected = { success: false, errors: ['There was an error'] }
 
@@ -509,7 +509,7 @@ describe('lighthouse_service api', () => {
     })
   })
 
-  describe('#failDestinationPlate', () => {
+  describe('#failDestinationPlateBeckman', () => {
     let username, barcode, robotSerialNumber, form, failureType
 
     beforeEach(() => {
@@ -530,7 +530,7 @@ describe('lighthouse_service api', () => {
       response = { data: { errors: [] } }
       mock.mockResolvedValue(response)
 
-      const result = await lighthouse.failDestinationPlate(form)
+      const result = await lighthouse.failDestinationPlateBeckman(form)
       const expected = {
         success: true,
         response: `Successfully failed destination plate with barcode: ${barcode}`,
@@ -547,7 +547,7 @@ describe('lighthouse_service api', () => {
       response = { data: { errors: ['some partial error message'] } }
       mock.mockResolvedValue(response)
 
-      const result = await lighthouse.failDestinationPlate(form)
+      const result = await lighthouse.failDestinationPlateBeckman(form)
       const expected = { success: true, errors: ['some partial error message'] }
 
       expect(mock).toHaveBeenCalledTimes(1)
@@ -560,9 +560,146 @@ describe('lighthouse_service api', () => {
       }
       mock.mockRejectedValue(response)
 
-      const result = await lighthouse.failDestinationPlate(form)
+      const result = await lighthouse.failDestinationPlateBeckman(form)
 
       const expected = { success: false, errors: ['There was an error'] }
+
+      expect(mock).toHaveBeenCalledTimes(1)
+      expect(result).toEqual(expected)
+    })
+  })
+
+  describe('#createDestinationPlateBiosero', () => {
+    let username, barcode, form
+
+    beforeEach(() => {
+      mock = jest.spyOn(axios, 'post')
+      username = 'username'
+      barcode = 'aBarcode'
+      form = {
+        username,
+        barcode,
+      }
+    })
+
+    it('on success', async () => {
+      response = {
+        status_code: 201,
+        data: {
+          _status: 'OK',
+        },
+      }
+      mock.mockResolvedValue(response)
+
+      const result = await lighthouse.createDestinationPlateBiosero(form)
+      const expected = {
+        success: true,
+        response: `Successfully created destination plate with barcode: ${barcode}`,
+      }
+      expect(mock).toHaveBeenCalledTimes(1)
+      expect(result).toEqual(expected)
+      expect(mock).toHaveBeenCalledWith(
+        `${config.privateRuntimeConfig.lighthouseBaseURL}/events`,
+        {
+          barcode,
+          'user_id': username,
+          'event_type': 'lh_biosero_cp_destination_plate_partial_completed'
+        }
+      )
+    })
+
+    it('on failure with unexpected status code', async () => {
+      const response = {
+        status_code: 422,
+        data: {
+          _status: 'ERR',
+          _error: {
+            'code': 422,
+            'message': 'There was an error'
+          }
+        },
+      }
+      mock.mockResolvedValue(response)
+
+      const result = await lighthouse.createDestinationPlateBiosero(form)
+
+      const expected = {
+        success: false,
+        errors: {
+          code: 422,
+          message: 'There was an error'
+        }
+      }
+
+      expect(mock).toHaveBeenCalledTimes(1)
+      expect(result).toEqual(expected)
+    })
+  })
+
+  describe('#failDestinationPlateBiosero', () => {
+    let username, barcode, form, failureType
+
+    beforeEach(() => {
+      mock = jest.spyOn(axios, 'post')
+      username = 'username'
+      barcode = 'aBarcode'
+      failureType = 'aType'
+      form = {
+        username,
+        barcode,
+        failureType,
+      }
+    })
+
+    it('on success', async () => {
+      response = {
+        status_code: 201,
+        data: {
+          _status: 'OK',
+        },
+      }
+      mock.mockResolvedValue(response)
+
+      const result = await lighthouse.failDestinationPlateBiosero(form)
+      const expected = {
+        success: true,
+        response: `Successfully failed destination plate with barcode: ${barcode}`,
+      }
+
+      expect(mock).toHaveBeenCalledTimes(1)
+      expect(result).toEqual(expected)
+      expect(mock).toHaveBeenCalledWith(
+        `${config.privateRuntimeConfig.lighthouseBaseURL}/events`,
+        {
+          barcode,
+          'user_id': username,
+          'event_type': 'lh_biosero_cp_destination_failed',
+          'failure_type': failureType
+        }
+      )
+    })
+
+    it('on failure with unexpected status code', async () => {
+      response = {
+        status_code: 422,
+        data: {
+          _status: 'ERR',
+          _error: {
+            'code': 422,
+            'message': 'some error message'
+          }
+        }
+      }
+      mock.mockResolvedValue(response)
+
+      const result = await lighthouse.failDestinationPlateBiosero(form)
+      const expected = {
+        success: false,
+        errors: {
+          code: 422,
+          message: 'some error message'
+        }
+      }
 
       expect(mock).toHaveBeenCalledTimes(1)
       expect(result).toEqual(expected)

@@ -1,6 +1,6 @@
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 import { BootstrapVue } from 'bootstrap-vue'
-import BeckmanCherrypick from '@/pages/beckman_cherrypick.vue'
+import BioseroCherrypick from '@/pages/biosero_cherrypick.vue'
 import lighthouse from '@/modules/lighthouse_service'
 import Alert from '@/components/Alert'
 jest.mock('@/modules/lighthouse_service')
@@ -8,76 +8,39 @@ jest.mock('@/modules/lighthouse_service')
 const localVue = createLocalVue()
 localVue.use(BootstrapVue)
 
-describe('Beckman Cherrypick', () => {
-  let wrapper, page, robots, failureTypes
+describe('Biosero Cherrypick', () => {
+  let wrapper, page, failureTypes
 
   beforeEach(() => {
-    robots = [
-      { name: 'robot 1', serial_number: 'B00000001' },
-      { name: 'robot 2', serial_number: 'B00000002' },
-    ]
-
     failureTypes = [
       { type: 'Type 1', description: 'Description of error 1' },
       { type: 'Type 2', description: 'Description of error 2' },
     ]
-
-    lighthouse.getRobots.mockReturnValue({
-      success: true,
-      robots,
-    })
 
     lighthouse.getFailureTypes.mockReturnValue({
       success: true,
       failureTypes,
     })
 
-    wrapper = shallowMount(BeckmanCherrypick, {
+    wrapper = shallowMount(BioseroCherrypick, {
       localVue,
     })
     page = wrapper.vm
   })
 
   it('is a Vue instance', () => {
-    expect(wrapper.findComponent(BeckmanCherrypick).exists()).toBeTruthy()
+    expect(wrapper.findComponent(BioseroCherrypick).exists()).toBeTruthy()
   })
 
   describe('mounted', () => {
     it('calls lighthouse initialiser methods', () => {
-      expect(lighthouse.getRobots).toHaveBeenCalled()
       expect(lighthouse.getFailureTypes).toHaveBeenCalled()
     })
   })
 
   describe('data', () => {
-    it('has robots data', () => {
-      expect(page.robots).toEqual(robots)
-    })
-
     it('has failure types data', () => {
       expect(page.failureTypes).toEqual(failureTypes)
-    })
-  })
-
-  describe('#getRobots', () => {
-    it('on success it sets the robots data', async () => {
-      await page.getRobots()
-      expect(page.robots).toHaveLength(2)
-    })
-
-    it('on failure calls showAlert', async () => {
-      page.showAlert = jest.fn()
-      lighthouse.getRobots.mockReturnValue({
-        errors: ['No information exists for any Beckman robots'],
-        robots: [],
-      })
-
-      await page.getRobots()
-      expect(page.robots).toHaveLength(0)
-      expect(page.showAlert).toHaveBeenCalledWith(
-        'No information exists for any Beckman robots',
-        'danger'
-      )
     })
   })
 
@@ -90,14 +53,14 @@ describe('Beckman Cherrypick', () => {
     it('on failure calls showAlert', async () => {
       page.showAlert = jest.fn()
       lighthouse.getFailureTypes.mockReturnValue({
-        errors: ['No information exists for any Beckman failure types'],
+        errors: ['No information exists for any Biosero failure types'],
         failureTypes: [],
       })
 
       await page.getFailureTypes()
       expect(page.failureTypes).toHaveLength(0)
       expect(page.showAlert).toHaveBeenCalledWith(
-        'No information exists for any Beckman failure types',
+        'No information exists for any Biosero failure types',
         'danger'
       )
     })
@@ -110,13 +73,12 @@ describe('Beckman Cherrypick', () => {
       form = {
         username: 'username',
         barcode: 'barcode',
-        robotSerialNumber: 'robotSerialNumber',
       }
     })
 
     it('on success it shows an alert', async () => {
       page.showAlert = jest.fn()
-      lighthouse.createDestinationPlateBeckman.mockReturnValue({
+      lighthouse.createDestinationPlateBiosero.mockReturnValue({
         success: true,
         response: 'A successful response message',
       })
@@ -127,7 +89,7 @@ describe('Beckman Cherrypick', () => {
 
     it('on failure calls showAlert', async () => {
       page.showAlert = jest.fn()
-      lighthouse.createDestinationPlateBeckman.mockReturnValue({
+      lighthouse.createDestinationPlateBiosero.mockReturnValue({
         success: false,
         errors: ['an error'],
       })
@@ -144,14 +106,13 @@ describe('Beckman Cherrypick', () => {
       form = {
         username: 'username',
         barcode: 'barcode',
-        robotSerialNumber: 'robotSerialNumber',
         failureType: 'failureType',
       }
     })
 
     it('on success it shows an alert', async () => {
       page.showAlert = jest.fn()
-      lighthouse.failDestinationPlateBeckman.mockReturnValue({
+      lighthouse.failDestinationPlateBiosero.mockReturnValue({
         success: true,
         response: 'A successful response message',
       })
@@ -162,7 +123,7 @@ describe('Beckman Cherrypick', () => {
 
     it('on partial success it shows an alert', async () => {
       page.showAlert = jest.fn()
-      lighthouse.failDestinationPlateBeckman.mockReturnValue({
+      lighthouse.failDestinationPlateBiosero.mockReturnValue({
         success: true,
         errors: ['A error message'],
       })
@@ -173,7 +134,7 @@ describe('Beckman Cherrypick', () => {
 
     it('on failure calls showAlert', async () => {
       page.showAlert = jest.fn()
-      lighthouse.failDestinationPlateBeckman.mockReturnValue({
+      lighthouse.failDestinationPlateBiosero.mockReturnValue({
         success: false,
         errors: ['an error'],
       })
@@ -191,7 +152,7 @@ describe('Beckman Cherrypick', () => {
 
   describe('#showAlert', () => {
     it('calls alert show', () => {
-      const parent = shallowMount(BeckmanCherrypick, {
+      const parent = shallowMount(BioseroCherrypick, {
         localVue,
       })
 
