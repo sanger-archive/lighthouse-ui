@@ -2,8 +2,10 @@ import { createLocalVue, shallowMount } from '@vue/test-utils'
 import { BootstrapVue } from 'bootstrap-vue'
 import BioseroCherrypick from '@/pages/biosero_cherrypick.vue'
 import lighthouse from '@/modules/lighthouse_service'
+import lighthouseBiosero from '@/modules/lighthouse_service_biosero'
 import Alert from '@/components/Alert'
 jest.mock('@/modules/lighthouse_service')
+jest.mock('@/modules/lighthouse_service_biosero')
 
 const localVue = createLocalVue()
 localVue.use(BootstrapVue)
@@ -78,7 +80,7 @@ describe('Biosero Cherrypick', () => {
 
     it('on success it shows an alert', async () => {
       page.showAlert = jest.fn()
-      lighthouse.createDestinationPlateBiosero.mockReturnValue({
+      lighthouseBiosero.createDestinationPlateBiosero.mockReturnValue({
         success: true,
         response: 'A successful response message',
       })
@@ -89,7 +91,7 @@ describe('Biosero Cherrypick', () => {
 
     it('on failure calls showAlert', async () => {
       page.showAlert = jest.fn()
-      lighthouse.createDestinationPlateBiosero.mockReturnValue({
+      lighthouseBiosero.createDestinationPlateBiosero.mockReturnValue({
         success: false,
         errors: ['an error'],
       })
@@ -112,7 +114,7 @@ describe('Biosero Cherrypick', () => {
 
     it('on success it shows an alert', async () => {
       page.showAlert = jest.fn()
-      lighthouse.failDestinationPlateBiosero.mockReturnValue({
+      lighthouseBiosero.failDestinationPlateBiosero.mockReturnValue({
         success: true,
         response: 'A successful response message',
       })
@@ -123,7 +125,7 @@ describe('Biosero Cherrypick', () => {
 
     it('on partial success it shows an alert', async () => {
       page.showAlert = jest.fn()
-      lighthouse.failDestinationPlateBiosero.mockReturnValue({
+      lighthouseBiosero.failDestinationPlateBiosero.mockReturnValue({
         success: true,
         errors: ['A error message'],
       })
@@ -134,7 +136,7 @@ describe('Biosero Cherrypick', () => {
 
     it('on failure calls showAlert', async () => {
       page.showAlert = jest.fn()
-      lighthouse.failDestinationPlateBiosero.mockReturnValue({
+      lighthouseBiosero.failDestinationPlateBiosero.mockReturnValue({
         success: false,
         errors: ['an error'],
       })

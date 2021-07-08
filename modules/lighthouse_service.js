@@ -229,101 +229,12 @@ const failDestinationPlateBeckman = async (form) => {
   }
 }
 
-/**
- * - Returned on success: `{ success: true, response: "A successful message" }`
- * - Returned on failure: `{ success: false, errors: ["A failure message"] }`
- *
- * @param {*} form
- * @returns
- */
-const createDestinationPlateBiosero = async (form) => {
-  try {
-    const url = `${config.privateRuntimeConfig.lighthouseBaseURL}/events`
-    const body = {
-      'event_type': 'lh_biosero_cp_destination_plate_partial_completed',
-      'barcode': form.barcode,
-      'user_id': form.username
-    }
-
-    const response = await axios.post(url, body)
-
-    if (response.status_code === 201) {
-      // success
-      return {
-        success: true,
-        response: `Successfully created destination plate with barcode: ${form.barcode}`,
-      }
-    } else {
-      // constains status code and message
-      const errors = response.data._error
-      // failure
-      return {
-        success: false,
-        errors,
-      }
-    }
-  } catch (resp) {
-    const errors = resp.data._error
-    // failure
-    return {
-      success: false,
-      errors,
-    }
-  }
-}
-
-/**
- * - Returned on success: `{ success: true, errors: [] }`
- * - Returned on partial success: `{ success: true, errors: ["A successful error message"] }`
- * - Returned on failure: `{ success: false, errors: ["A failure message"] }`
- *
- * @param {*} form
- * @returns
- */
-const failDestinationPlateBiosero = async (form) => {
-  try {
-    const url = `${config.privateRuntimeConfig.lighthouseBaseURL}/events`
-    const body = {
-      'event_type': 'lh_biosero_cp_destination_failed',
-      'barcode': form.barcode,
-      'user_id': form.username,
-      'failure_type': form.failureType
-    }
-
-    const response = await axios.post(url, body)
-
-    if (response.status_code === 201) {
-      // success
-      return {
-        success: true,
-        response: `Successfully failed destination plate with barcode: ${form.barcode}`
-      }
-    } else {
-      const errors = response.data._error
-      // failure
-      return {
-        success: false,
-        errors
-      }
-    }
-  } catch (resp) {
-    const errors = resp.data._error
-    // faliure
-    return {
-      success: false,
-      errors
-    }
-  }
-}
-
 const lighthouse = {
   createDestinationPlateBeckman,
-  createDestinationPlateBiosero,
   createPlatesFromBarcodes,
   createReport,
   deleteReports,
   failDestinationPlateBeckman,
-  failDestinationPlateBiosero,
   findPlatesFromBarcodes,
   getFailureTypes,
   getImports,
