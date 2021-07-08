@@ -454,7 +454,7 @@ describe('lighthouse_service api', () => {
     })
   })
 
-  describe('#createDestinationPlate', () => {
+  describe('#createDestinationPlateBeckman', () => {
     let username, barcode, robotSerialNumber, form
 
     beforeEach(() => {
@@ -482,7 +482,7 @@ describe('lighthouse_service api', () => {
       mock.mockResolvedValue(response)
 
       const responseData = response.data.data
-      const result = await lighthouse.createDestinationPlate(form)
+      const result = await lighthouse.createDestinationPlateBeckman(form)
       const expected = {
         success: true,
         response: `Successfully created destination plate, with barcode: ${responseData.plate_barcode}, and ${responseData.count_fit_to_pick_samples} fit to pick sample(s)`,
@@ -500,7 +500,7 @@ describe('lighthouse_service api', () => {
       }
       mock.mockRejectedValue(response)
 
-      const result = await lighthouse.createDestinationPlate(form)
+      const result = await lighthouse.createDestinationPlateBeckman(form)
 
       const expected = { success: false, errors: ['There was an error'] }
 
@@ -509,7 +509,7 @@ describe('lighthouse_service api', () => {
     })
   })
 
-  describe('#failDestinationPlate', () => {
+  describe('#failDestinationPlateBeckman', () => {
     let username, barcode, robotSerialNumber, form, failureType
 
     beforeEach(() => {
@@ -530,7 +530,7 @@ describe('lighthouse_service api', () => {
       response = { data: { errors: [] } }
       mock.mockResolvedValue(response)
 
-      const result = await lighthouse.failDestinationPlate(form)
+      const result = await lighthouse.failDestinationPlateBeckman(form)
       const expected = {
         success: true,
         response: `Successfully failed destination plate with barcode: ${barcode}`,
@@ -547,7 +547,7 @@ describe('lighthouse_service api', () => {
       response = { data: { errors: ['some partial error message'] } }
       mock.mockResolvedValue(response)
 
-      const result = await lighthouse.failDestinationPlate(form)
+      const result = await lighthouse.failDestinationPlateBeckman(form)
       const expected = { success: true, errors: ['some partial error message'] }
 
       expect(mock).toHaveBeenCalledTimes(1)
@@ -560,7 +560,7 @@ describe('lighthouse_service api', () => {
       }
       mock.mockRejectedValue(response)
 
-      const result = await lighthouse.failDestinationPlate(form)
+      const result = await lighthouse.failDestinationPlateBeckman(form)
 
       const expected = { success: false, errors: ['There was an error'] }
 
