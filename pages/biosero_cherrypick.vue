@@ -43,7 +43,7 @@
 
 import BioseroCherrypickForm from '@/components/BioseroCherrypickForm'
 import lighthouse from '@/modules/lighthouse_service'
-import lighthouse_biosero from '@/modules/lighthouse_service_biosero'
+import lighthouseBiosero from '@/modules/lighthouse_service_biosero'
 import Alert from '@/components/Alert'
 
 export default {
@@ -76,11 +76,11 @@ export default {
       this.getDataFromLighthouse(lighthouse.getFailureTypes(), 'failureTypes')
     },
     async create(form) {
-      const response = await lighthouse_biosero.createDestinationPlateBiosero(form)
+      const response = await lighthouseBiosero.createDestinationPlateBiosero(form)
       this.handleResponse(response)
     },
     async fail(form) {
-      const response = await lighthouse_biosero.failDestinationPlateBiosero(form)
+      const response = await lighthouseBiosero.failDestinationPlateBiosero(form)
       this.handleResponse(response)
     },
     handleResponse(response) {
