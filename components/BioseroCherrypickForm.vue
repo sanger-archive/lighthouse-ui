@@ -60,7 +60,7 @@ export default {
         this.form.username.trim() === '' ||
         this.form.barcode.trim() === ''
       if (this.action === 'fail') {
-        return commonValidation || this.form.failureType === ''
+        return commonValidation || (this.form.failureType === '')
       }
       return commonValidation
     },

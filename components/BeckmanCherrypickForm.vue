@@ -78,7 +78,7 @@ export default {
         this.form.barcode.trim() === '' ||
         this.form.robotSerialNumber === ''
       if (this.action === 'fail') {
-        return commonValidation || this.form.failureType === ''
+        return commonValidation || (this.form.failureType === '')
       }
       return commonValidation
     },
