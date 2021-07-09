@@ -44,6 +44,11 @@ describe('lighthouse_service_biosero api', () => {
           barcode,
           'user_id': username,
           'event_type': 'lh_biosero_cp_destination_plate_partial_completed'
+        },
+        {
+          'headers': {
+            'Authorization': config.privateRuntimeConfig.lighthouseApiKey
+          }
         }
       )
     })
@@ -127,6 +132,11 @@ describe('lighthouse_service_biosero api', () => {
           'user_id': username,
           'event_type': 'lh_biosero_cp_destination_failed',
           'failure_type': failureType
+        },
+        {
+          'headers': {
+            'Authorization': config.privateRuntimeConfig.lighthouseApiKey
+          }
         }
       )
     })

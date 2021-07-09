@@ -18,8 +18,9 @@ const createDestinationPlateBiosero = async (form) => {
       'barcode': form.barcode,
       'user_id': form.username
     }
+    const headers = { headers: { Authorization: config.privateRuntimeConfig.lighthouseApiKey } }
 
-    const response = await axios.post(url, body)
+    const response = await axios.post(url, body, headers)
 
     if (response.status_code === 201) {
       // success
@@ -60,7 +61,9 @@ const failDestinationPlateBiosero = async (form) => {
       'failure_type': form.failureType
     }
 
-    const response = await axios.post(url, body)
+    const headers = { headers: { Authorization: config.privateRuntimeConfig.lighthouseApiKey } }
+
+    const response = await axios.post(url, body, headers)
 
     if (response.status_code === 201) {
       // success
