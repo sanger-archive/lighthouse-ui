@@ -130,7 +130,7 @@ describe('lighthouse_service_biosero api', () => {
         {
           barcode,
           'user_id': username,
-          'event_type': 'lh_biosero_cp_destination_failed',
+          'event_type': 'lh_biosero_cp_destination_plate_failed',
           'failure_type': failureType
         },
         {
