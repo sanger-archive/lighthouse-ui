@@ -55,7 +55,7 @@ const failDestinationPlateBiosero = async (form) => {
   try {
     const url = `${config.privateRuntimeConfig.lighthouseBaseURL}/events`
     const body = {
-      'event_type': 'lh_biosero_cp_destination_failed',
+      'event_type': 'lh_biosero_cp_destination_plate_failed',
       'barcode': form.barcode,
       'user_id': form.username,
       'failure_type': form.failureType
