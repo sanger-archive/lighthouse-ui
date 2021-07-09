@@ -22,15 +22,23 @@ const createDestinationPlateBiosero = async (form) => {
 
     const response = await axios.post(url, body, headers)
 
-    if (response.status_code === 201) {
+    // example of success
+    // {"_updated": "2021-07-09T15:52:45", "_created": "2021-07-09T15:52:45", "_etag": "f76fea7e3f65c384f0faa1249f52adc923a1ead8",
+    // "_id": "60e870cddc3379e79ee69ebc", "_links": {"self": {"title": "Event", "href": "events/60e870cddc3379e79ee69ebc"}}, "_status": "OK"}
+
+    // example of fail
+    // {"_status": "ERR", "_issues": {"event_type": "unallowed event type 'wrong_event_type'"},
+    // "_error": {"code": 422, "message": "Insertion failure: 1 document(s) contain(s) error(s)"}}
+
+    if (response._status === 'OK') {
       // success
       return {
         success: true,
         response: `Successfully created destination plate with barcode: ${form.barcode}`,
       }
     } else {
-      // constains status code and message
-      const errors = response.data._error
+      // contains status code and message
+      const errors = response._error
       // failure
       return {
         success: false,
@@ -65,14 +73,14 @@ const failDestinationPlateBiosero = async (form) => {
 
     const response = await axios.post(url, body, headers)
 
-    if (response.status_code === 201) {
+    if (response._status === 'OK') {
       // success
       return {
         success: true,
         response: `Successfully failed destination plate with barcode: ${form.barcode}`
       }
     } else {
-      const errors = response.data._error
+      const errors = response._error
       // failure
       return {
         success: false,

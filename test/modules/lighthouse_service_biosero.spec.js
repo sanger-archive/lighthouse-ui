@@ -24,10 +24,7 @@ describe('lighthouse_service_biosero api', () => {
 
     it('on success', async () => {
       response = {
-        status_code: 201,
-        data: {
-          _status: 'OK',
-        },
+        _status: 'OK'
       }
       mock.mockResolvedValue(response)
 
@@ -55,14 +52,11 @@ describe('lighthouse_service_biosero api', () => {
 
     it('on failure with unexpected status code', async () => {
       const response = {
-        status_code: 422,
-        data: {
-          _status: 'ERR',
-          _error: {
+        _status: 'ERR',
+        _error: {
             'code': 422,
             'message': 'There was an error'
-          }
-        },
+        }
       }
       mock.mockResolvedValue(response)
 
@@ -110,10 +104,7 @@ describe('lighthouse_service_biosero api', () => {
 
     it('on success', async () => {
       response = {
-        status_code: 201,
-        data: {
-          _status: 'OK',
-        },
+        _status: 'OK'
       }
       mock.mockResolvedValue(response)
 
@@ -143,13 +134,10 @@ describe('lighthouse_service_biosero api', () => {
 
     it('on failure with unexpected status code', async () => {
       response = {
-        status_code: 422,
-        data: {
-          _status: 'ERR',
-          _error: {
-            'code': 422,
-            'message': 'some error message'
-          }
+        _status: 'ERR',
+        _error: {
+          'code': 422,
+          'message': 'some error message'
         }
       }
       mock.mockResolvedValue(response)
