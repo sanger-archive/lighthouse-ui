@@ -1,9 +1,9 @@
-import { createLocalVue, shallowMount } from '@vue/test-utils'
-import { BootstrapVue } from 'bootstrap-vue'
-import BioseroCherrypick from '@/pages/biosero_cherrypick.vue'
+import Alert from '@/components/Alert'
 import lighthouse from '@/modules/lighthouse_service'
 import lighthouseBiosero from '@/modules/lighthouse_service_biosero'
-import Alert from '@/components/Alert'
+import BioseroCherrypick from '@/pages/biosero_cherrypick.vue'
+import { createLocalVue, shallowMount } from '@vue/test-utils'
+import { BootstrapVue } from 'bootstrap-vue'
 jest.mock('@/modules/lighthouse_service')
 jest.mock('@/modules/lighthouse_service_biosero')
 
@@ -93,7 +93,9 @@ describe('Biosero Cherrypick', () => {
       page.showAlert = jest.fn()
       lighthouseBiosero.createDestinationPlateBiosero.mockReturnValue({
         success: false,
-        errors: ['an error'],
+        error: {
+          message:'an error',
+        }
       })
 
       await page.create(form)
@@ -123,26 +125,17 @@ describe('Biosero Cherrypick', () => {
       expect(page.showAlert).toHaveBeenCalledWith('A successful response message', 'success')
     })
 
-    it('on partial success it shows an alert', async () => {
-      page.showAlert = jest.fn()
-      lighthouseBiosero.failDestinationPlateBiosero.mockReturnValue({
-        success: true,
-        errors: ['A error message'],
-      })
-
-      await page.fail(form)
-      expect(page.showAlert).toHaveBeenCalledWith('A error message', 'warning')
-    })
-
     it('on failure calls showAlert', async () => {
       page.showAlert = jest.fn()
       lighthouseBiosero.failDestinationPlateBiosero.mockReturnValue({
         success: false,
-        errors: ['an error'],
+        error: {
+          message: 'An error message',
+        }
       })
 
       await page.fail(form)
-      expect(page.showAlert).toHaveBeenCalledWith('an error', 'danger')
+      expect(page.showAlert).toHaveBeenCalledWith('An error message', 'danger')
     })
   })
 
