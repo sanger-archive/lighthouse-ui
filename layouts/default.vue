@@ -34,7 +34,11 @@
               exact-active-class="active"
             >Biosero Cherrypick</b-nav-item>
 
-            <b-nav-item to="/uat_actions" exact exact-active-class="active">UAT Actions</b-nav-item>
+            <b-nav-item
+              to="/uat_actions/generate_test_run_data"
+              exact
+              exact-active-class="active"
+            >UAT Actions</b-nav-item>
           </b-navbar-nav>
         </b-collapse>
       </b-navbar>

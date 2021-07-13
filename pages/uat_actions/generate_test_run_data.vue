@@ -1,6 +1,9 @@
 <template>
   <b-container>
+    <UATActionsRouter />
+
     <h1 class="mt-3">UAT Actions</h1>
+
     <Alert ref="alert" id="alert"></Alert>
 
     <b-card
@@ -64,6 +67,7 @@
 
 import lighthouse from '@/modules/lighthouse_service'
 import Alert from '@/components/Alert'
+import UATActionsRouter from '@/components/UATActionsRouter'
 
 const MAX_NUMBER_OF_POSITIVES = 96
 const MAX_NUMBER_OF_PLATES = 200
@@ -71,6 +75,7 @@ const MAX_NUMBER_OF_PLATES = 200
 export default {
   components: {
     Alert,
+    UATActionsRouter
   },
   data() {
     return {

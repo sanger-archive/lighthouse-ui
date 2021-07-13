@@ -1,6 +1,6 @@
-import { createLocalVue, shallowMount, mount } from '@vue/test-utils'
+import { createLocalVue, mount } from '@vue/test-utils'
 import { BootstrapVue } from 'bootstrap-vue'
-import UATActions from '@/pages/uat_actions.vue'
+import GenerateTestRunData from '@/pages/uat_actions/generate_test_run_data.vue'
 import lighthouse from '@/modules/lighthouse_service'
 import Alert from '@/components/Alert'
 import flushPromises from 'flush-promises'
@@ -14,14 +14,14 @@ describe('UAT Actions', () => {
   let wrapper, page
 
   beforeEach(() => {
-    wrapper = mount(UATActions, {
+    wrapper = mount(GenerateTestRunData, {
       localVue,
     })
     page = wrapper.vm
   })
 
   it('is a Vue instance', () => {
-    expect(wrapper.findComponent(UATActions).exists()).toBeTruthy()
+    expect(wrapper.findComponent(GenerateTestRunData).exists()).toBeTruthy()
   })
 
   // components
@@ -46,7 +46,7 @@ describe('UAT Actions', () => {
   // computed
   describe('totalPlates', () => {
     it('totals the number of plates', () => {
-      wrapper = mount(UATActions, {
+      wrapper = mount(GenerateTestRunData, {
         localVue,
         data() {
           return {
@@ -74,7 +74,7 @@ describe('UAT Actions', () => {
 
   describe('#add', () => {
     it('when plateSpecs is an empty list', async () => {
-      wrapper = mount(UATActions, {
+      wrapper = mount(GenerateTestRunData, {
         localVue,
         data() {
           return {
@@ -91,7 +91,7 @@ describe('UAT Actions', () => {
     })
 
     it('when plateSpecs is not empty', async () => {
-      wrapper = mount(UATActions, {
+      wrapper = mount(GenerateTestRunData, {
         localVue,
         data() {
           return {
@@ -111,7 +111,7 @@ describe('UAT Actions', () => {
 
   describe('#reset', () => {
     it('resets plateSpecs', async () => {
-      wrapper = mount(UATActions, {
+      wrapper = mount(GenerateTestRunData, {
         localVue,
         data() {
           return {
@@ -141,7 +141,7 @@ describe('UAT Actions', () => {
         runId: 'anId123'
       })
 
-      wrapper = mount(UATActions, {
+      wrapper = mount(GenerateTestRunData, {
         localVue,
         data() {
           return {
@@ -164,7 +164,7 @@ describe('UAT Actions', () => {
         errors: ['There was an error'],
       })
 
-      wrapper = mount(UATActions, {
+      wrapper = mount(GenerateTestRunData, {
         localVue,
         data() {
           return {
