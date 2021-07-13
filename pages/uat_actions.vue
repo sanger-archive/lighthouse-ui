@@ -24,12 +24,7 @@
           :options="numberOfPositivesOptions()"
         ></b-form-select>
 
-        <b-button
-          id="addButton"
-          variant="outline-primary"
-          @click="add"
-          :disabled="this.form.numberOfPlates == 0"
-        >Add</b-button>
+        <b-button id="addButton" variant="outline-primary" @click="add">Add</b-button>
       </b-form>
 
       <br />
@@ -80,7 +75,7 @@ export default {
   data() {
     return {
       form: {
-        numberOfPlates: 0,
+        numberOfPlates: 1,
         numberOfPositives: 0,
       },
       addToDart: '',
@@ -94,14 +89,14 @@ export default {
   },
   methods: {
     numberOfPositivesOptions() {
-      return [...Array(MAX_NUMBER_OF_POSITIVES +1).keys()]
+      return Array.from({length: MAX_NUMBER_OF_POSITIVES + 1}, (v, i) => i)
     },
     numberOfPlatesOptions() {
-      return [...Array(MAX_NUMBER_OF_PLATES +1).keys()]
+      return Array.from({length: MAX_NUMBER_OF_PLATES}, (v, i) => i + 1)
     },
     add() {
       this.plateSpecs.push({numberOfPlates: this.form.numberOfPlates, numberOfPositives: this.form.numberOfPositives })
-      this.form.numberOfPlates = 0
+      this.form.numberOfPlates = 1
       this.form.numberOfPositives = 0
     },
     reset() {

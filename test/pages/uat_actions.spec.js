@@ -35,7 +35,7 @@ describe('UAT Actions', () => {
   describe('data', () => {
     it('has default values', () => {
       expect(page.form).toEqual({
-        numberOfPlates: 0,
+        numberOfPlates: 1,
         numberOfPositives: 0,
       })
       expect(page.addToDart).toEqual('')
@@ -68,7 +68,7 @@ describe('UAT Actions', () => {
 
   describe('#numberOfPlatesOptions', () => {
     it('has a default', () => {
-      expect(wrapper.vm.numberOfPlatesOptions().length).toEqual(201)
+      expect(wrapper.vm.numberOfPlatesOptions().length).toEqual(200)
     })
   })
 
@@ -86,7 +86,7 @@ describe('UAT Actions', () => {
       await wrapper.find('#addButton').trigger('click')
 
       expect(wrapper.vm.plateSpecs).toEqual([{ numberOfPlates: 1, numberOfPositives: 2 }])
-      expect(wrapper.vm.form.numberOfPlates).toEqual(0)
+      expect(wrapper.vm.form.numberOfPlates).toEqual(1)
       expect(wrapper.vm.form.numberOfPositives).toEqual(0)
     })
 
@@ -104,7 +104,7 @@ describe('UAT Actions', () => {
       await wrapper.find('#addButton').trigger('click')
 
       expect(wrapper.vm.plateSpecs).toEqual([{ numberOfPlates: 1, numberOfPositives: 2 }, { numberOfPlates: 3, numberOfPositives: 4 }])
-      expect(wrapper.vm.form.numberOfPlates).toEqual(0)
+      expect(wrapper.vm.form.numberOfPlates).toEqual(1)
       expect(wrapper.vm.form.numberOfPositives).toEqual(0)
     })
   })
