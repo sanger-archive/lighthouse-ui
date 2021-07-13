@@ -229,18 +229,22 @@ const failDestinationPlateBeckman = async (form) => {
   }
 }
 
-// [{numberOfPlates: 1, numberOfPositives: 2}, {numberOfPlates: 3, numberOfPositives: 4}] ==> [[1,2],[3,4]]
+/**
+ * Format the plate specs to the expected type
+ * @param {*} plateSpecs a list of objects e.g. [{numberOfPlates: 1, numberOfPositives: 2}, {numberOfPlates: 3, numberOfPositives: 4}]
+ * @param {string} str a string represtation of the plate specs in a nested list e.g. "[[1,2],[3,4]]"
+ */
 const formatPlateSpecs = (plateSpecs) => {
-  return plateSpecs.map((plate) => { return [plate.numberOfPlates, plate.numberOfPositives] })
+  return JSON.stringify(plateSpecs.map((plate) => { return [plate.numberOfPlates, plate.numberOfPositives] }))
 }
 
 // Create a test run
 const generateTestRunData = async (plateSpecs, addToDart) => {
-  const formattedPlateSpecs = formatPlateSpecs(plateSpecs)
+  const plateSpecsParam = formatPlateSpecs(plateSpecs)
   try {
     const url = `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypicker-test-data`
     const body = {
-      'plate_specs': formattedPlateSpecs,
+      'plate_specs': plateSpecsParam,
       'add_to_dart': addToDart,
     }
     const headers = { headers: { Authorization: config.privateRuntimeConfig.lighthouseApiKey } }
@@ -256,7 +260,7 @@ const generateTestRunData = async (plateSpecs, addToDart) => {
     // Status code 400 or 500
     return {
       success: false,
-      error
+      errors: error.response ? error.response.data.errors : [error.message]
     }
   }
 }

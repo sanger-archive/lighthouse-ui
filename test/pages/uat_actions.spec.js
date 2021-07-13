@@ -161,7 +161,7 @@ describe('UAT Actions', () => {
     it('when the request fails', async () => {
       lighthouse.generateTestRunData.mockReturnValue({
         success: false,
-        errors: 'There was an error',
+        errors: ['There was an error'],
       })
 
       wrapper = mount(UATActions, {

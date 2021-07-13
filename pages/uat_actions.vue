@@ -113,25 +113,9 @@ export default {
       if (response.success) {
         this.showAlert('Redirect to run with id: ' + response.runId, 'success')
       } else {
-        this.showAlert(response.errors, 'danger')
+        this.showAlert(response.errors.join(', '), 'danger')
       }
     },
-    // handleResponse(response) {
-    //   let message, type
-    //   if (response.success) {
-    //     if (response.errors) {
-    //       message = response.errors.join(', ')
-    //       type = 'warning'
-    //     } else {
-    //       message = response.response
-    //       type = 'success'
-    //     }
-    //   } else {
-    //     message = response.errors.join(', ')
-    //     type = 'danger'
-    //   }
-    //   this.showAlert(message, type)
-    // },
     showAlert(message, type) {
       return this.$refs.alert.show(message, type)
     },

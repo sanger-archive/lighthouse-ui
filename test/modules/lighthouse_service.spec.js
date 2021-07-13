@@ -598,7 +598,8 @@ describe('lighthouse_service api', () => {
       response = await lighthouse.generateTestRunData(plateSpecs, addToDart)
 
       expect(response.success).toBeFalsy()
-      expect(response.error).toBeDefined()
+      // TODO: confirm error response
+      expect(response.errors).toBeDefined()
     })
   })
 })
