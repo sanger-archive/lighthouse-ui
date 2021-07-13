@@ -230,17 +230,17 @@ const failDestinationPlateBeckman = async (form) => {
 }
 
 // [{numberOfPlates: 1, numberOfPositives: 2}, {numberOfPlates: 3, numberOfPositives: 4}] ==> [[1,2],[3,4]]
-const formatPlatesSpec = (platesSpec) => {
-  return platesSpec.map((plate) => { return [plate.numberOfPlates, plate.numberOfPositives] })
+const formatPlateSpecs = (plateSpecs) => {
+  return plateSpecs.map((plate) => { return [plate.numberOfPlates, plate.numberOfPositives] })
 }
 
 // Create a test run
-const generateTestRunData = async (platesSpec, addToDart) => {
-  const formattedPlatesSpec = formatPlatesSpec(platesSpec)
+const generateTestRunData = async (plateSpecs, addToDart) => {
+  const formattedPlateSpecs = formatPlateSpecs(plateSpecs)
   try {
     const url = `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypicker-test-data`
     const body = {
-      'plates_spec': formattedPlatesSpec,
+      'plate_specs': formattedPlateSpecs,
       'add_to_dart': addToDart,
     }
     const headers = { headers: { Authorization: config.privateRuntimeConfig.lighthouseApiKey } }

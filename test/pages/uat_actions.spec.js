@@ -39,7 +39,7 @@ describe('UAT Actions', () => {
         numberOfPositives: 0,
       })
       expect(page.addToDart).toEqual('')
-      expect(page.platesSpec).toEqual([])
+      expect(page.plateSpecs).toEqual([])
     })
   })
 
@@ -50,7 +50,7 @@ describe('UAT Actions', () => {
         localVue,
         data() {
           return {
-            platesSpec: [{ number_of_plates: 2, number_of_positives: 1 }, { number_of_plates: 11, number_of_positives: 3 }],
+            plateSpecs: [{ numberOfPlates: 2, numberOfPositives: 1 }, { numberOfPlates: 11, numbeOfPpositives: 3 }],
           }
         },
       })
@@ -73,7 +73,7 @@ describe('UAT Actions', () => {
   })
 
   describe('#add', () => {
-    it('when platesSpec is an empty list', async () => {
+    it('when plateSpecs is an empty list', async () => {
       wrapper = mount(UATActions, {
         localVue,
         data() {
@@ -85,17 +85,17 @@ describe('UAT Actions', () => {
 
       await wrapper.find('#addButton').trigger('click')
 
-      expect(wrapper.vm.platesSpec).toEqual([{ numberOfPlates: 1, numberOfPositives: 2 }])
+      expect(wrapper.vm.plateSpecs).toEqual([{ numberOfPlates: 1, numberOfPositives: 2 }])
       expect(wrapper.vm.form.numberOfPlates).toEqual(0)
       expect(wrapper.vm.form.numberOfPositives).toEqual(0)
     })
 
-    it('when platesSpec is not empty', async () => {
+    it('when plateSpecs is not empty', async () => {
       wrapper = mount(UATActions, {
         localVue,
         data() {
           return {
-            platesSpec: [{ numberOfPlates: 1, numberOfPositives: 2 }],
+            plateSpecs: [{ numberOfPlates: 1, numberOfPositives: 2 }],
             form: { numberOfPlates: 3, numberOfPositives: 4 },
           }
         },
@@ -103,26 +103,26 @@ describe('UAT Actions', () => {
 
       await wrapper.find('#addButton').trigger('click')
 
-      expect(wrapper.vm.platesSpec).toEqual([{ numberOfPlates: 1, numberOfPositives: 2 }, { numberOfPlates: 3, numberOfPositives: 4 }])
+      expect(wrapper.vm.plateSpecs).toEqual([{ numberOfPlates: 1, numberOfPositives: 2 }, { numberOfPlates: 3, numberOfPositives: 4 }])
       expect(wrapper.vm.form.numberOfPlates).toEqual(0)
       expect(wrapper.vm.form.numberOfPositives).toEqual(0)
     })
   })
 
   describe('#reset', () => {
-    it('resets platesSpec', async () => {
+    it('resets plateSpecs', async () => {
       wrapper = mount(UATActions, {
         localVue,
         data() {
           return {
-            platesSpec: [{ numberOfPlates: 1, numberOfPositives: 2 }],
+            plateSpecs: [{ numberOfPlates: 1, numberOfPositives: 2 }],
           }
         },
       })
 
       await wrapper.find('#resetButton').trigger('click')
 
-      expect(wrapper.vm.platesSpec).toEqual([])
+      expect(wrapper.vm.plateSpecs).toEqual([])
     })
   })
 
@@ -145,7 +145,7 @@ describe('UAT Actions', () => {
         localVue,
         data() {
           return {
-            platesSpec: [{ numberOfPlates: 1, numberOfPositives: 2 }],
+            plateSpecs: [{ numberOfPlates: 1, numberOfPositives: 2 }],
             addToDart: true,
           }
         },
@@ -168,7 +168,7 @@ describe('UAT Actions', () => {
         localVue,
         data() {
           return {
-            platesSpec: [{ numberOfPlates: 1, numberOfPositives: 2 }],
+            plateSpecs: [{ numberOfPlates: 1, numberOfPositives: 2 }],
             addToDart: true,
           }
         },

@@ -33,7 +33,7 @@
       </b-form>
 
       <br />
-      <b-table striped hover :items="platesSpec"></b-table>
+      <b-table striped hover :items="plateSpecs"></b-table>
 
       <!-- :disabled="isBusy" -->
       <b-button
@@ -84,12 +84,12 @@ export default {
         numberOfPositives: 0,
       },
       addToDart: '',
-      platesSpec: [],
+      plateSpecs: [],
     }
   },
   computed: {
     totalPlates: function () {
-      return this.platesSpec.reduce(function (acc, obj) { return acc + obj.numberOfPlates }, 0)
+      return this.plateSpecs.reduce(function (acc, obj) { return acc + obj.numberOfPlates }, 0)
     }
   },
   methods: {
@@ -100,15 +100,15 @@ export default {
       return [...Array(MAX_NUMBER_OF_PLATES +1).keys()]
     },
     add() {
-      this.platesSpec.push({numberOfPlates: this.form.numberOfPlates, numberOfPositives: this.form.numberOfPositives })
+      this.plateSpecs.push({numberOfPlates: this.form.numberOfPlates, numberOfPositives: this.form.numberOfPositives })
       this.form.numberOfPlates = 0
       this.form.numberOfPositives = 0
     },
     reset() {
-      this.platesSpec = []
+      this.plateSpecs = []
     },
     async generateTestRunData() {
-      const response = await lighthouse.generateTestRunData(this.platesSpec, !!this.addToDart)
+      const response = await lighthouse.generateTestRunData(this.plateSpecs, !!this.addToDart)
 
       if (response.success) {
         this.showAlert('Redirect to run with id: ' + response.runId, 'success')
