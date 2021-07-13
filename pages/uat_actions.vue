@@ -89,7 +89,7 @@ export default {
   },
   computed: {
     totalPlates: function () {
-      return this.platesSpec.reduce(function (acc, obj) { return acc + obj.number_of_plates }, 0)
+      return this.platesSpec.reduce(function (acc, obj) { return acc + obj.numberOfPlates }, 0)
     }
   },
   methods: {
