@@ -568,4 +568,37 @@ describe('lighthouse_service api', () => {
       expect(result).toEqual(expected)
     })
   })
+
+  describe('#generateTestRunData', () => {
+    let runId, platesSpec, addToDart, timestamp
+
+    beforeEach(() => {
+      mock = jest.spyOn(axios, 'post')
+      runId = "aRunId123"
+      timestamp = "2012-03-04T05:06:07.890123+00:00"
+      platesSpec = [[1, 2], [2, 4]]
+      addToDart = true
+    })
+
+    it('when the request is successful returning a 201', async () => {
+      axios.post.mockResolvedValue({
+        data: {
+          "run_id": runId,
+          "timestamp": timestamp
+        },
+      })
+      response = await lighthouse.generateTestRunData(platesSpec, addToDart)
+
+      expect(response.success).toBeTruthy()
+      expect(response.runId).toEqual(runId)
+    })
+
+    it('when the request fails with a 400', async () => {
+      axios.post.mockImplementationOnce(() => Promise.reject(new Error('There was an error')))
+      response = await lighthouse.generateTestRunData(platesSpec, addToDart)
+
+      expect(response.success).toBeFalsy()
+      expect(response.error).toBeDefined()
+    })
+  })
 })

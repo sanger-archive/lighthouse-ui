@@ -229,6 +229,38 @@ const failDestinationPlateBeckman = async (form) => {
   }
 }
 
+// [{numberOfPlates: 1, numberOfPositives: 2}, {numberOfPlates: 3, numberOfPositives: 4}] ==> [[1,2],[3,4]]
+const formatPlatesSpec = (platesSpec) => {
+  return platesSpec.map((plate) => { return [plate.numberOfPlates, plate.numberOfPositives] })
+}
+
+// Create a test run
+const generateTestRunData = async (platesSpec, addToDart) => {
+  const formattedPlatesSpec = formatPlatesSpec(platesSpec)
+  try {
+    const url = `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypicker-test-data`
+    const body = {
+      'plates_spec': formattedPlatesSpec,
+      'add_to_dart': addToDart,
+    }
+    const headers = { headers: { Authorization: config.privateRuntimeConfig.lighthouseApiKey } }
+
+    const response = await axios.post(url, body, headers)
+
+    // Status code 201
+    return {
+      success: true,
+      runId: response.data.run_id,
+    }
+  } catch (error) {
+    // Status code 400 or 500
+    return {
+      success: false,
+      error
+    }
+  }
+}
+
 const lighthouse = {
   createDestinationPlateBeckman,
   createPlatesFromBarcodes,
@@ -240,6 +272,7 @@ const lighthouse = {
   getImports,
   getReports,
   getRobots,
+  generateTestRunData
 }
 
 export default lighthouse
