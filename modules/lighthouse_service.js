@@ -234,12 +234,15 @@ const failDestinationPlateBeckman = async (form) => {
  * @param {*} plateSpecs a list of objects e.g. [{numberOfPlates: 1, numberOfPositives: 2}, {numberOfPlates: 3, numberOfPositives: 4}]
  * @param {string} str a string represtation of the plate specs in a nested list e.g. "[[1,2],[3,4]]"
  */
+
+// TODO: remove string - change to list
+// and boolean not string
 const formatPlateSpecs = (plateSpecs) => {
   return JSON.stringify(plateSpecs.map((plate) => { return [plate.numberOfPlates, plate.numberOfPositives] }))
 }
 
 // Create a test run
-const generateTestRunData = async (plateSpecs, addToDart) => {
+const generateTestRun = async (plateSpecs, addToDart) => {
   const plateSpecsParam = formatPlateSpecs(plateSpecs)
   try {
     const url = `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypicker-test-data`
@@ -265,6 +268,53 @@ const generateTestRunData = async (plateSpecs, addToDart) => {
   }
 }
 
+// TODO
+// Get all test runs
+const getTestRuns = async () => {
+  // try {
+  // const url = `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypicker-test-data`
+
+  // const headers = { headers: { Authorization: config.privateRuntimeConfig.lighthouseApiKey } }
+
+  return {
+    success: true,
+    response: [{
+      id: "1",
+      created_at: "2021-07-02T09:00:00.000Z",
+      updated_at: "2021-07-12T11:31:15.806Z",
+      status: "completed",
+      plate_specs: "[[2,48]]",
+      add_to_dart: false,
+      barcodes: [["TEST-112375", "number of positives: 48"], ["TEST-112376", "number of positives: 48"]]
+    },
+    {
+      id: "2",
+      created_at: "2021-07-02T09:00:00.000Z",
+      updated_at: "2021-07-12T11:31:15.806Z",
+      status: "completed",
+      plate_specs: "[[1,0],[1,96]]",
+      add_to_dart: false,
+      barcodes: [["TEST1-112377", "number of positives: 0"], ["TEST1-112378", "number of positives: 96"]]
+    }]
+  }
+
+  // const response = await axios.get(url, headers)
+
+  // Status code 201
+  //   return {
+  //     success: true,
+  //     response: []
+  //   }
+  // } catch (error) {
+  //   // Status code 400 or 500
+  //   return {
+  //     success: false,
+  //     errors: error.response ? error.response.data.errors : [error.message]
+  //   }
+  // }
+}
+
+
 const lighthouse = {
   createDestinationPlateBeckman,
   createPlatesFromBarcodes,
@@ -276,7 +326,8 @@ const lighthouse = {
   getImports,
   getReports,
   getRobots,
-  generateTestRunData
+  generateTestRun,
+  getTestRuns
 }
 
 export default lighthouse

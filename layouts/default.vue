@@ -35,7 +35,7 @@
             >Biosero Cherrypick</b-nav-item>
 
             <b-nav-item
-              to="/uat_actions/generate_test_run_data"
+              to="/uat_actions/generate_test_run"
               exact
               exact-active-class="active"
             >UAT Actions</b-nav-item>

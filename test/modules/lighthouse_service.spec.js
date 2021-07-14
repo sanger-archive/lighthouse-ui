@@ -569,7 +569,7 @@ describe('lighthouse_service api', () => {
     })
   })
 
-  describe('#generateTestRunData', () => {
+  describe('#generateTestRun', () => {
     let runId, plateSpecs, addToDart, timestamp
 
     beforeEach(() => {
@@ -587,7 +587,7 @@ describe('lighthouse_service api', () => {
           "timestamp": timestamp
         },
       })
-      response = await lighthouse.generateTestRunData(plateSpecs, addToDart)
+      response = await lighthouse.generateTestRun(plateSpecs, addToDart)
 
       expect(response.success).toBeTruthy()
       expect(response.runId).toEqual(runId)
@@ -595,7 +595,7 @@ describe('lighthouse_service api', () => {
 
     it('when the request fails with a 400', async () => {
       axios.post.mockImplementationOnce(() => Promise.reject(new Error('There was an error')))
-      response = await lighthouse.generateTestRunData(plateSpecs, addToDart)
+      response = await lighthouse.generateTestRun(plateSpecs, addToDart)
 
       expect(response.success).toBeFalsy()
       // TODO: confirm error response

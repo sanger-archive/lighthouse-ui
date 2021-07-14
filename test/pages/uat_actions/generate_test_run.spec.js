@@ -1,6 +1,6 @@
 import { createLocalVue, mount } from '@vue/test-utils'
 import { BootstrapVue } from 'bootstrap-vue'
-import GenerateTestRunData from '@/pages/uat_actions/generate_test_run_data.vue'
+import GenerateTestRun from '@/pages/uat_actions/generate_test_run.vue'
 import lighthouse from '@/modules/lighthouse_service'
 import Alert from '@/components/Alert'
 import flushPromises from 'flush-promises'
@@ -14,14 +14,14 @@ describe('UAT Actions', () => {
   let wrapper, page
 
   beforeEach(() => {
-    wrapper = mount(GenerateTestRunData, {
+    wrapper = mount(GenerateTestRun, {
       localVue,
     })
     page = wrapper.vm
   })
 
   it('is a Vue instance', () => {
-    expect(wrapper.findComponent(GenerateTestRunData).exists()).toBeTruthy()
+    expect(wrapper.findComponent(GenerateTestRun).exists()).toBeTruthy()
   })
 
   // components
@@ -46,7 +46,7 @@ describe('UAT Actions', () => {
   // computed
   describe('totalPlates', () => {
     it('totals the number of plates', () => {
-      wrapper = mount(GenerateTestRunData, {
+      wrapper = mount(GenerateTestRun, {
         localVue,
         data() {
           return {
@@ -74,7 +74,7 @@ describe('UAT Actions', () => {
 
   describe('#add', () => {
     it('when plateSpecs is an empty list', async () => {
-      wrapper = mount(GenerateTestRunData, {
+      wrapper = mount(GenerateTestRun, {
         localVue,
         data() {
           return {
@@ -91,7 +91,7 @@ describe('UAT Actions', () => {
     })
 
     it('when plateSpecs is not empty', async () => {
-      wrapper = mount(GenerateTestRunData, {
+      wrapper = mount(GenerateTestRun, {
         localVue,
         data() {
           return {
@@ -111,7 +111,7 @@ describe('UAT Actions', () => {
 
   describe('#reset', () => {
     it('resets plateSpecs', async () => {
-      wrapper = mount(GenerateTestRunData, {
+      wrapper = mount(GenerateTestRun, {
         localVue,
         data() {
           return {
@@ -134,14 +134,14 @@ describe('UAT Actions', () => {
     })
   })
 
-  describe('#generateTestRunData', () => {
+  describe('#generateTestRun', () => {
     it('when the request is successful', async () => {
-      lighthouse.generateTestRunData.mockResolvedValue({
+      lighthouse.generateTestRun.mockResolvedValue({
         success: true,
         runId: 'anId123'
       })
 
-      wrapper = mount(GenerateTestRunData, {
+      wrapper = mount(GenerateTestRun, {
         localVue,
         data() {
           return {
@@ -151,20 +151,20 @@ describe('UAT Actions', () => {
         },
       })
 
-      await wrapper.find('#generateTestRunDataButton').trigger('click')
+      await wrapper.find('#generateTestRunButton').trigger('click')
       await flushPromises()
-      expect(lighthouse.generateTestRunData).toHaveBeenCalledWith([{ numberOfPlates: 1, numberOfPositives: 2 }], true)
+      expect(lighthouse.generateTestRun).toHaveBeenCalledWith([{ numberOfPlates: 1, numberOfPositives: 2 }], true)
       expect(wrapper.find("#alert").text()).toMatch("Redirect to run with id: anId123")
 
     })
 
     it('when the request fails', async () => {
-      lighthouse.generateTestRunData.mockReturnValue({
+      lighthouse.generateTestRun.mockReturnValue({
         success: false,
         errors: ['There was an error'],
       })
 
-      wrapper = mount(GenerateTestRunData, {
+      wrapper = mount(GenerateTestRun, {
         localVue,
         data() {
           return {
@@ -174,9 +174,9 @@ describe('UAT Actions', () => {
         },
       })
 
-      await wrapper.find('#generateTestRunDataButton').trigger('click')
+      await wrapper.find('#generateTestRunButton').trigger('click')
       await flushPromises()
-      expect(lighthouse.generateTestRunData).toHaveBeenCalledWith([{ numberOfPlates: 1, numberOfPositives: 2 }], true)
+      expect(lighthouse.generateTestRun).toHaveBeenCalledWith([{ numberOfPlates: 1, numberOfPositives: 2 }], true)
       expect(wrapper.find("#alert").text()).toMatch('There was an error')
     })
   })

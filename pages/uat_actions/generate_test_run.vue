@@ -6,10 +6,7 @@
 
     <Alert ref="alert" id="alert"></Alert>
 
-    <b-card
-      title="Generate Test Run Data"
-      sub-title="Number of plates containing number of positives."
-    >
+    <b-card title="Generate Test Run" sub-title="Number of plates containing number of positives.">
       <b-form inline>
         <label class="mr-sm-2" for="numberOfPlates">Number of plates</label>
         <b-form-select
@@ -35,13 +32,13 @@
 
       <!-- :disabled="isBusy" -->
       <b-button
-        id="generateTestRunDataButton"
+        id="generateTestRunButton"
         variant="outline-success"
-        @click="generateTestRunData"
+        @click="generateTestRun"
         class="float-right"
         :disabled="totalPlates==0 || totalPlates>200"
       >
-        Generate test run data
+        Generate test run
         <!-- <b-spinner v-show="isBusy" small></b-spinner> -->
       </b-button>
 
@@ -107,8 +104,8 @@ export default {
     reset() {
       this.plateSpecs = []
     },
-    async generateTestRunData() {
-      const response = await lighthouse.generateTestRunData(this.plateSpecs, !!this.addToDart)
+    async generateTestRun() {
+      const response = await lighthouse.generateTestRun(this.plateSpecs, !!this.addToDart)
 
       if (response.success) {
         this.showAlert('Redirect to run with id: ' + response.runId, 'success')
