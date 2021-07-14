@@ -24,9 +24,9 @@
               >Beckman Cherrypick</b-nav-item
             >
 
-            <b-nav-item to="biosero_cherrypick" exact exact-active-class="active"
+            <!-- <b-nav-item to="biosero_cherrypick" exact exact-active-class="active"
               >Biosero Cherrypick</b-nav-item
-            >
+            > -->
           </b-navbar-nav>
         </b-collapse>
       </b-navbar>
