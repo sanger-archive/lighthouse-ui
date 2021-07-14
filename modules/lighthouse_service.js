@@ -232,20 +232,17 @@ const failDestinationPlateBeckman = async (form) => {
 /**
  * Format the plate specs to the expected type
  * @param {*} plateSpecs a list of objects e.g. [{numberOfPlates: 1, numberOfPositives: 2}, {numberOfPlates: 3, numberOfPositives: 4}]
- * @param {string} str a string represtation of the plate specs in a nested list e.g. "[[1,2],[3,4]]"
+ * @param {list} plateSpecsList a string represtation of the plate specs in a nested list e.g. [[1,2],[3,4]]
  */
-
-// TODO: remove string - change to list
-// and boolean not string
 const formatPlateSpecs = (plateSpecs) => {
-  return JSON.stringify(plateSpecs.map((plate) => { return [plate.numberOfPlates, plate.numberOfPositives] }))
+  return plateSpecs.map((plate) => { return [plate.numberOfPlates, plate.numberOfPositives] })
 }
 
 // Create a test run
 const generateTestRun = async (plateSpecs, addToDart) => {
   const plateSpecsParam = formatPlateSpecs(plateSpecs)
   try {
-    const url = `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypicker-test-data`
+    const url = `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypick-test-data`
     const body = {
       'plate_specs': plateSpecsParam,
       'add_to_dart': addToDart,
@@ -272,7 +269,7 @@ const generateTestRun = async (plateSpecs, addToDart) => {
 // Get all test runs
 const getTestRuns = async () => {
   try {
-    const url = `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypicker-test-data`
+    const url = `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypick-test-data`
 
     const headers = { headers: { Authorization: config.privateRuntimeConfig.lighthouseApiKey } }
 
@@ -294,7 +291,7 @@ const getTestRuns = async () => {
 
 const getTestRun = async (id) => {
   try {
-    const url = `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypicker-test-data/${id}`
+    const url = `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypick-test-data/${id}`
 
     const headers = { headers: { Authorization: config.privateRuntimeConfig.lighthouseApiKey } }
 
@@ -327,7 +324,8 @@ const lighthouse = {
   getRobots,
   generateTestRun,
   getTestRuns,
-  getTestRun
+  getTestRun,
+  formatPlateSpecs
 }
 
 export default lighthouse

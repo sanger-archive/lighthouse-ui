@@ -602,4 +602,11 @@ describe('lighthouse_service api', () => {
       expect(response.errors).toBeDefined()
     })
   })
+
+  describe('#formatPlateSpecs', () => {
+    it('returns the correct format', () => {
+      let result = lighthouse.formatPlateSpecs([{ numberOfPlates: 1, numberOfPositives: 2 }, { numberOfPlates: 3, numberOfPositives: 4 }])
+      expect(result).toEqual([[1, 2], [3, 4]])
+    })
+  })
 })
