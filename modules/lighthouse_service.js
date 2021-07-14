@@ -251,21 +251,18 @@ const generateTestRun = async (plateSpecs, addToDart) => {
 
     const response = await axios.post(url, body, headers)
 
-    // Status code 201
     return {
       success: true,
-      runId: response.data.run_id,
+      runId: response.data._id,
     }
   } catch (error) {
-    // Status code 400 or 500
     return {
       success: false,
-      errors: error.response ? error.response.data.errors : [error.message]
+      error: error.response.data._error.message
     }
   }
 }
 
-// TODO: update when final endpoint is ready
 // Get all test runs
 const getTestRuns = async () => {
   try {
@@ -274,16 +271,15 @@ const getTestRuns = async () => {
     const headers = { headers: { Authorization: config.privateRuntimeConfig.lighthouseApiKey } }
 
     const response = await axios.get(url, headers)
-    // Status code 201
+
     return {
       success: true,
-      response: response.data.data
+      response: response.data._items,
     }
   } catch (error) {
-    // Status code 422 or 500
     return {
       success: false,
-      errors: error.response ? error.response.data.errors : [error.message]
+      error: error.response.data._error.message
     }
   }
 }
@@ -296,16 +292,17 @@ const getTestRun = async (id) => {
     const headers = { headers: { Authorization: config.privateRuntimeConfig.lighthouseApiKey } }
 
     const response = await axios.get(url, headers)
-    // Status code 201
+
+    const mockData = { "_id": "123", "plate_specs": [[1, 0]], "barcodes": [{ "barcode": "aBarcode1", "number_of_positives": 1 }, { "barcode": "aBarcode2", "number_of_positives": 2 }], "add_to_dart": false, "_updated": "2021-07-14T15:06:41", "_created": "2021-07-14T15:06:41", "status": "pending", "_etag": "xxx", "_links": { "self": { "title": "Cherrypick_test_data", "href": "cherrypick-test-data/123" }, "parent": { "title": "home", "href": "/" }, "collection": { "title": "cherrypick-test-data", "href": "cherrypick-test-data" } } }
+
     return {
       success: true,
-      response: response.data.data
+      response: mockData // response.data
     }
   } catch (error) {
-    // Status code 400 or 500
     return {
       success: false,
-      errors: error.response ? error.response.data.errors : [error.message]
+      error: error.response.data._error.message
     }
   }
 }

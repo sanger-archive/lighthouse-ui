@@ -111,7 +111,7 @@ export default {
       if (response.success) {
         this.$router.push({ path: `/uat_actions/test_runs/${response.runId}`})
       } else {
-        this.showAlert(response.errors.join(', '), 'danger')
+        this.showAlert(response.error, 'danger')
       }
     },
     showAlert(message, type) {

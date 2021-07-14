@@ -74,7 +74,7 @@ export default {
     if (response.success) {
       this.run = response.response
     } else {
-      this.showAlert('There was a problem: '+response.errors.join(', '), 'danger')
+      this.showAlert(response.error, 'danger')
     }
   },
 }
