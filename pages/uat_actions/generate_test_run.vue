@@ -70,6 +70,7 @@ const MAX_NUMBER_OF_POSITIVES = 96
 const MAX_NUMBER_OF_PLATES = 200
 
 export default {
+  name: 'GenerateTestRun',
   components: {
     Alert,
     UATActionsRouter
@@ -108,7 +109,7 @@ export default {
       const response = await lighthouse.generateTestRun(this.plateSpecs, !!this.addToDart)
 
       if (response.success) {
-        this.showAlert('Redirect to run with id: ' + response.runId, 'success')
+        this.$router.push({ path: `/uat_actions/test_runs/${response.runId}`})
       } else {
         this.showAlert(response.errors.join(', '), 'danger')
       }

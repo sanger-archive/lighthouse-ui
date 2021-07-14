@@ -1,6 +1,7 @@
 import { createLocalVue, mount } from '@vue/test-utils'
 import { BootstrapVue } from 'bootstrap-vue'
 import GenerateTestRun from '@/pages/uat_actions/generate_test_run.vue'
+import TestRun from '@/pages/uat_actions/test_runs/_id.vue'
 import lighthouse from '@/modules/lighthouse_service'
 import Alert from '@/components/Alert'
 import flushPromises from 'flush-promises'
@@ -151,11 +152,13 @@ describe('UAT Actions', () => {
         },
       })
 
+      wrapper.vm.showAlert = jest.fn()
+
       await wrapper.find('#generateTestRunButton').trigger('click')
       await flushPromises()
       expect(lighthouse.generateTestRun).toHaveBeenCalledWith([{ numberOfPlates: 1, numberOfPositives: 2 }], true)
-      expect(wrapper.find("#alert").text()).toMatch("Redirect to run with id: anId123")
-
+      // TODO add test for path
+      expect(wrapper.vm.showAlert).not.toHaveBeenCalled()
     })
 
     it('when the request fails', async () => {

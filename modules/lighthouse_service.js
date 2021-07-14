@@ -268,50 +268,49 @@ const generateTestRun = async (plateSpecs, addToDart) => {
   }
 }
 
-// TODO
+// TODO: update when final endpoint is ready
 // Get all test runs
-const getTestRuns = () => {
-  // try {
-  // const url = `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypicker-test-data`
+const getTestRuns = async () => {
+  try {
+    const url = `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypicker-test-data`
 
-  // const headers = { headers: { Authorization: config.privateRuntimeConfig.lighthouseApiKey } }
+    const headers = { headers: { Authorization: config.privateRuntimeConfig.lighthouseApiKey } }
 
-  return {
-    success: true,
-    response: [{
-      id: "1",
-      created_at: "2021-07-02T09:00:00.000Z",
-      updated_at: "2021-07-12T11:31:15.806Z",
-      status: "completed",
-      plate_specs: "[[2,48]]",
-      add_to_dart: false,
-      barcodes: [["TEST-112375", "number of positives: 48"], ["TEST-112376", "number of positives: 48"]]
-    },
-    {
-      id: "2",
-      created_at: "2021-07-02T09:00:00.000Z",
-      updated_at: "2021-07-12T11:31:15.806Z",
-      status: "completed",
-      plate_specs: "[[1,0],[1,96]]",
-      add_to_dart: false,
-      barcodes: [["TEST1-112377", "number of positives: 0"], ["TEST1-112378", "number of positives: 96"]]
-    }]
+    const response = await axios.get(url, headers)
+    // Status code 201
+    return {
+      success: true,
+      response: response.data.data
+    }
+  } catch (error) {
+    // Status code 422 or 500
+    return {
+      success: false,
+      errors: error.response ? error.response.data.errors : [error.message]
+    }
   }
+}
 
-  // const response = await axios.get(url, headers)
 
-  // Status code 201
-  //   return {
-  //     success: true,
-  //     response: []
-  //   }
-  // } catch (error) {
-  //   // Status code 400 or 500
-  //   return {
-  //     success: false,
-  //     errors: error.response ? error.response.data.errors : [error.message]
-  //   }
-  // }
+const getTestRun = async (id) => {
+  try {
+    const url = `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypicker-test-data/${id}`
+
+    const headers = { headers: { Authorization: config.privateRuntimeConfig.lighthouseApiKey } }
+
+    const response = await axios.get(url, headers)
+    // Status code 201
+    return {
+      success: true,
+      response: response.data.data
+    }
+  } catch (error) {
+    // Status code 400 or 500
+    return {
+      success: false,
+      errors: error.response ? error.response.data.errors : [error.message]
+    }
+  }
 }
 
 
@@ -327,7 +326,8 @@ const lighthouse = {
   getReports,
   getRobots,
   generateTestRun,
-  getTestRuns
+  getTestRuns,
+  getTestRun
 }
 
 export default lighthouse

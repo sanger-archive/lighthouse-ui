@@ -11,7 +11,7 @@
       <template v-slot:cell(actions)="row">
         <b-button
           :id="'viewTestRun-'+row.item.id"
-          :to="'/uat_actions/test_run/'+row.item.id"
+          :to="'/uat_actions/test_runs/'+row.item.id"
           variant="outline-info"
         >View</b-button>
       </template>
@@ -21,12 +21,11 @@
 </template>
 
 <script>
-
 import lighthouse from '@/modules/lighthouse_service'
 import Alert from '@/components/Alert'
 import UATActionsRouter from '@/components/UATActionsRouter'
-
 export default {
+  name: 'TestRuns',
   components: {
     Alert,
     UATActionsRouter

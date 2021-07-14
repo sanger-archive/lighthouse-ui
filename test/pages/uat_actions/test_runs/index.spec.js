@@ -39,7 +39,7 @@ describe('TestRuns.vue', () => {
   })
 
   it('will have a table with runs', () => {
-    page.getTestRuns = jest.fn().mockReturnValue(testRunsData)
+    // page.getTestRuns = jest.fn().mockReturnValue(testRunsData)
     expect(wrapper.find('tbody').findAll('tr').length).toEqual(testRunsData.length)
   })
 
@@ -51,7 +51,7 @@ describe('TestRuns.vue', () => {
     it('will redirect to the test run when View is clicked', async () => {
       let button = wrapper.find('#viewTestRun-111111')
       button.trigger('click')
-      // TODO
+      // TODO add test for path
     })
   })
 
