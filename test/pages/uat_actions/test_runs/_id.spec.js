@@ -2,8 +2,10 @@ import TestRun from '@/pages/uat_actions/test_runs/_id'
 import { createLocalVue, mount } from '@vue/test-utils'
 import { BootstrapVue } from 'bootstrap-vue'
 import lighthouse from '@/modules/lighthouse_service'
+import sprint from '@/modules/sprint'
 
 jest.mock('@/modules/lighthouse_service')
+jest.mock('@/modules/sprint')
 
 const localVue = createLocalVue()
 localVue.use(BootstrapVue)
@@ -37,6 +39,11 @@ describe('TestRuns.vue', () => {
       mocks: {
         $route
       },
+      data() {
+        return {
+          printerSelected: 'heron-bc1',
+        }
+      },
     })
     page = wrapper.vm
   })
@@ -63,6 +70,27 @@ describe('TestRuns.vue', () => {
       page.$refs.alert.show = jest.fn()
       page.showAlert('message', 'success')
       expect(page.$refs.alert.show).toHaveBeenCalled()
+    })
+  })
+
+  describe('#print', () => {
+    it('successfully', async () => {
+      sprint.printLabels.mockReturnValue({
+        success: true,
+        message: 'Labels successfully printed',
+      })
+      await page.print()
+      expect(sprint.printLabels).toHaveBeenCalled()
+      expect(wrapper.find('.alert').text()).toMatch('Labels successfully printed')
+    })
+
+    it('unsuccessfully', async () => {
+      sprint.printLabels.mockReturnValue({
+        success: false,
+        error: 'There was an error',
+      })
+      await page.print()
+      expect(wrapper.find('.alert').text()).toMatch('There was an error')
     })
   })
 })

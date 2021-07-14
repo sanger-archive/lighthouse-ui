@@ -8,11 +8,14 @@
     <b-card title="Test Run" sub-title="Details about test run with id: ">
       <b-table striped hover :fields="fields" :items="run.barcodes"></b-table>
       <b-row>
-        <b-form-select v-model="printerSelected" :options="printerOptions"></b-form-select>
+        <label for="selectPrinter">Which printer would you like to use?</label>
+        <b-form-select id="selectPrinter" v-model="printerSelected" :options="printerOptions"></b-form-select>
+
         <b-button
           id="printBarcodesButton"
           variant="outline-info"
           class="float-right"
+          @click="print"
         >Print ALL labels</b-button>
       </b-row>
     </b-card>
@@ -24,6 +27,7 @@ import lighthouse from '@/modules/lighthouse_service'
 import Alert from '@/components/Alert'
 import UATActionsRouter from '@/components/UATActionsRouter'
 import config from '@/nuxt.config'
+import sprint from '@/modules/sprint'
 
 export default {
   name: 'TestRun',
@@ -42,10 +46,27 @@ export default {
     }
   },
   computed: {
+    labelFields: function () {
+      return this.run.barcodes.map((barcode) => {
+        return { barcode: barcode, text: barcode.number_of_positives }
+      })
+    }
   },
   methods: {
     showAlert(message, type) {
       return this.$refs.alert.show(message, type)
+    },
+    async print() {
+      const response = await sprint.printLabels({
+        labelFields: this.labelFields,
+        printer: this.printerSelected,
+      })
+
+      if (response.success) {
+        this.showAlert('Labels successfully printed', 'success')
+      } else {
+        this.showAlert(response.error, 'danger')
+      }
     },
   },
   async created() {
@@ -55,7 +76,7 @@ export default {
     } else {
       this.showAlert('There was a problem: '+response.errors.join(', '), 'danger')
     }
-  }
+  },
 }
 </script>
 
