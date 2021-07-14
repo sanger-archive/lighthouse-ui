@@ -270,7 +270,7 @@ const generateTestRun = async (plateSpecs, addToDart) => {
 
 // TODO
 // Get all test runs
-const getTestRuns = async () => {
+const getTestRuns = () => {
   // try {
   // const url = `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypicker-test-data`
 
