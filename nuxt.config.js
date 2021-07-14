@@ -82,6 +82,7 @@ export default {
   },
   privateRuntimeConfig: {
     lighthouseBaseURL: process.env.LIGHTHOUSE_BASE_URL || 'http://lighthouse',
+    lighthouseApiKey: process.env.LIGHTHOUSE_API_KEY || 'lighthouse_ui_read_write_dev',
     labwhereBaseURL: process.env.LABWHERE_BASE_URL || 'http://labwhere',
     sequencescapeBaseURL: process.env.SEQUENCESCAPE_BASE_URL || 'http://sequencescape',
     sprintBaseURL: process.env.SPRINT_BASE_URL || 'http://sprint',

@@ -8,24 +8,14 @@
       <b-form-input id="input-2" v-model="form.username"></b-form-input>
     </b-form-group>
 
-    <b-form-group id="input-group-3" label="Robots:" label-for="input-3">
-      <b-form-select
-        id="input-3"
-        v-model="form.robotSerialNumber"
-        :options="robots"
-        value-field="serial_number"
-        text-field="name"
-      ></b-form-select>
-    </b-form-group>
-
     <b-form-group
       v-if="action === 'fail'"
-      id="input-group-4"
+      id="input-group-3"
       label="Failure Type:"
-      label-for="input-4"
+      label-for="input-3"
     >
       <b-form-select
-        id="input-4"
+        id="input-3"
         v-model="form.failureType"
         :options="failureTypes"
         value-field="type"
@@ -39,20 +29,14 @@
 </template>
 
 <script>
-// This form is used in the BeckmanCherrypick view
+// This form is used in the BioseroCherrypick view
 // For both Create and Fail Destination Plate
 export default {
-  name: 'BeckmanCherrypickForm',
+  name: 'BioseroCherrypickForm',
   props: {
     action: {
       type: String,
       default: '',
-    },
-    robots: {
-      type: Array,
-      default() {
-        return []
-      },
     },
     failureTypes: {
       type: Array,
@@ -66,7 +50,6 @@ export default {
       form: {
         username: '',
         barcode: '',
-        robotSerialNumber: '',
         failureType: '',
       },
     }
@@ -75,8 +58,7 @@ export default {
     formInvalid() {
       const commonValidation =
         this.form.username.trim() === '' ||
-        this.form.barcode.trim() === '' ||
-        this.form.robotSerialNumber === ''
+        this.form.barcode.trim() === ''
       if (this.action === 'fail') {
         return commonValidation || (this.form.failureType === '')
       }

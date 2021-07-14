@@ -1,38 +1,36 @@
 <template>
   <b-container>
-    <h1 class="mt-3">Beckman Cherrypick</h1>
+    <h1 class="mt-3">Biosero Cherrypick</h1>
     <Alert ref="alert"></Alert>
     <b-card no-body>
       <b-tabs card>
         <b-tab title="Create">
           <b-card
             title="Create Destination Plate"
-            sub-title="Generate destination plate from DART data so it can continue in pipeline partially filled."
+            sub-title="Generate destination plate from CherryTrack data so it can continue in pipeline partially filled."
           >
-            <BeckmanCherrypickForm
+            <BioseroCherrypickForm
               v-slot="{ form, formInvalid }"
               :action="'create'"
-              :robots="robots"
             >
               <b-button variant="success" :disabled="formInvalid" @click="create(form)"
                 >Create Destination Plate</b-button
               >
-            </BeckmanCherrypickForm>
+            </BioseroCherrypickForm>
           </b-card>
         </b-tab>
 
         <b-tab title="Fail">
           <b-card title="Fail Destination Plate" sub-title="Fail destination plate with a reason.">
-            <BeckmanCherrypickForm
+            <BioseroCherrypickForm
               v-slot="{ form, formInvalid }"
               :action="'fail'"
-              :robots="robots"
               :failure-types="failureTypes"
             >
               <b-button variant="danger" :disabled="formInvalid" @click="fail(form)"
                 >Fail Destination Plate</b-button
               >
-            </BeckmanCherrypickForm>
+            </BioseroCherrypickForm>
           </b-card>
         </b-tab>
       </b-tabs>
@@ -41,25 +39,24 @@
 </template>
 
 <script>
-// https://ssg-confluence.internal.sanger.ac.uk/display/PSDPUB/%5BBeckman%5D+Cherrypicking+Events
+// https://ssg-confluence.internal.sanger.ac.uk/display/PSDPUB/%5BBiosero%5D+Cherrypicking+Events
 
-import BeckmanCherrypickForm from '@/components/BeckmanCherrypickForm'
+import BioseroCherrypickForm from '@/components/BioseroCherrypickForm'
 import lighthouse from '@/modules/lighthouse_service'
+import lighthouseBiosero from '@/modules/lighthouse_service_biosero'
 import Alert from '@/components/Alert'
 
 export default {
   components: {
-    BeckmanCherrypickForm,
+    BioseroCherrypickForm,
     Alert,
   },
   data() {
     return {
-      robots: [],
       failureTypes: [],
     }
   },
   async mounted() {
-    await this.getRobots()
     await this.getFailureTypes()
   },
   methods: {
@@ -75,32 +72,24 @@ export default {
         this.showAlert(message, type)
       }
     },
-    getRobots() {
-      this.getDataFromLighthouse(lighthouse.getRobots(), 'robots')
-    },
     getFailureTypes() {
       this.getDataFromLighthouse(lighthouse.getFailureTypes(), 'failureTypes')
     },
     async create(form) {
-      const response = await lighthouse.createDestinationPlateBeckman(form)
+      const response = await lighthouseBiosero.createDestinationPlateBiosero(form)
       this.handleResponse(response)
     },
     async fail(form) {
-      const response = await lighthouse.failDestinationPlateBeckman(form)
+      const response = await lighthouseBiosero.failDestinationPlateBiosero(form)
       this.handleResponse(response)
     },
     handleResponse(response) {
       let message, type
       if (response.success) {
-        if (response.errors) {
-          message = response.errors.join(', ')
-          type = 'warning'
-        } else {
-          message = response.response
-          type = 'success'
-        }
+        message = response.response
+        type = 'success'
       } else {
-        message = response.errors.join(', ')
+        message = response.error.message
         type = 'danger'
       }
       this.showAlert(message, type)

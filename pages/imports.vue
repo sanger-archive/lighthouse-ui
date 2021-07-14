@@ -95,7 +95,7 @@ export default {
   },
   computed: {
     rows() {
-      return this.items.length
+      return (this.items ? this.items.length : 0)
     },
   },
   created() {

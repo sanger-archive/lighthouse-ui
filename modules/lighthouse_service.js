@@ -162,7 +162,7 @@ const getFailureTypes = async () => {
  * @param {*} form
  * @returns
  */
-const createDestinationPlate = async (form) => {
+const createDestinationPlateBeckman = async (form) => {
   try {
     const response = await axios.get(
       `${config.privateRuntimeConfig.lighthouseBaseURL}` +
@@ -196,7 +196,7 @@ const createDestinationPlate = async (form) => {
  * @param {*} form
  * @returns
  */
-const failDestinationPlate = async (form) => {
+const failDestinationPlateBeckman = async (form) => {
   try {
     const response = await axios.get(
       `${config.privateRuntimeConfig.lighthouseBaseURL}` +
@@ -221,7 +221,7 @@ const failDestinationPlate = async (form) => {
     }
   } catch (resp) {
     const errors = resp.response.data
-    // faliure
+    // failure
     return {
       success: false,
       ...errors,
@@ -230,11 +230,11 @@ const failDestinationPlate = async (form) => {
 }
 
 const lighthouse = {
-  createDestinationPlate,
+  createDestinationPlateBeckman,
   createPlatesFromBarcodes,
   createReport,
   deleteReports,
-  failDestinationPlate,
+  failDestinationPlateBeckman,
   findPlatesFromBarcodes,
   getFailureTypes,
   getImports,
