@@ -86,15 +86,10 @@ export default {
     handleResponse(response) {
       let message, type
       if (response.success) {
-        if (response.errors) {
-          message = response.errors.join(', ')
-          type = 'warning'
-        } else {
-          message = response.response
-          type = 'success'
-        }
+        message = response.response
+        type = 'success'
       } else {
-        message = response.errors.join(', ')
+        message = response.error.message
         type = 'danger'
       }
       this.showAlert(message, type)

@@ -1,6 +1,6 @@
-import axios from 'axios'
 import lighthouseBiosero from '@/modules/lighthouse_service_biosero'
 import config from '@/nuxt.config'
+import axios from 'axios'
 
 describe('lighthouse_service_biosero api', () => {
   let mock, response
@@ -24,7 +24,7 @@ describe('lighthouse_service_biosero api', () => {
 
     it('on success', async () => {
       response = {
-        _status: 'OK'
+        status: 201
       }
       mock.mockResolvedValue(response)
 
@@ -52,10 +52,12 @@ describe('lighthouse_service_biosero api', () => {
 
     it('on failure with unexpected status code', async () => {
       const response = {
-        _status: 'ERR',
-        _error: {
+        data: {
+          _status: 'ERR',
+          _error: {
             'code': 422,
             'message': 'There was an error'
+          }
         }
       }
       mock.mockResolvedValue(response)
@@ -64,7 +66,7 @@ describe('lighthouse_service_biosero api', () => {
 
       const expected = {
         success: false,
-        errors: {
+        error: {
           code: 422,
           message: 'There was an error'
         }
