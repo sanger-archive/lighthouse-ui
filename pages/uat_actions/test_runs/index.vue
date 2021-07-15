@@ -6,17 +6,32 @@
 
     <Alert ref="alert" id="alert"></Alert>
 
-    <!-- <b-card title="Test Runs" sub-title="Get all test runs"> -->
-    <b-table striped hover :fields="fields" :items="getTestRuns">
+    <b-table
+      striped
+      hover
+      :fields="fields"
+      :items="getTestRuns"
+      :per-page="perPage"
+      :current-page="currentPage"
+    >
       <template v-slot:cell(actions)="row">
         <b-button
           :id="'viewTestRun-'+row.item._id"
           :to="'/uat_actions/test_runs/'+row.item._id"
           variant="outline-info"
+          :disabled="row.item.status=='pending'"
         >View</b-button>
       </template>
     </b-table>
-    <!-- </b-card> -->
+
+    <b-pagination
+      v-model="currentPage"
+      :total-rows="totalRows"
+      :per-page="perPage"
+      v-if="this.totalRows"
+    ></b-pagination>
+
+    <span class="font-weight-bold" v-if="this.totalRows">Total: {{ totalRows }}</span>
   </b-container>
 </template>
 
@@ -32,16 +47,19 @@ export default {
   },
   data() {
     return {
-      fields: ['_id', '_created', '_updated', 'status', 'plate_specs', 'add_to_dart', 'actions'],
+      fields: ['_created', 'status', 'add_to_dart', 'actions'],
+      perPage: 10,
+      currentPage: 1,
+      totalRows: 0
     }
   },
   computed: {
   },
   methods: {
     getTestRuns(ctx, callback) {
-      lighthouse.getTestRuns()
+      lighthouse.getTestRuns(this.currentPage, this.perPage)
       .then(data => {
-        // this.totalRows = data.response.length
+        this.totalRows = data.total
         if (data.success) {
           callback(data.response)
         } else {

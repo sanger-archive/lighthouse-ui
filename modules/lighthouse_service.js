@@ -264,17 +264,20 @@ const generateTestRun = async (plateSpecs, addToDart) => {
 }
 
 // Get all test runs
-const getTestRuns = async () => {
+const getTestRuns = async (currentPage, perPage) => {
   try {
-    const url = `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypick-test-data`
+    // TODO: refactor path
+    const url = `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypick-test-data?max_results=${perPage}&page=${currentPage}&sort=[("_created", -1)]`
 
     const headers = { headers: { Authorization: config.privateRuntimeConfig.lighthouseApiKey } }
 
     const response = await axios.get(url, headers)
 
+    // TODO: add total number of plates in run to response
     return {
       success: true,
       response: response.data._items,
+      total: response.data._meta.total,
     }
   } catch (error) {
     return {
@@ -293,11 +296,9 @@ const getTestRun = async (id) => {
 
     const response = await axios.get(url, headers)
 
-    const mockData = { "_id": "123", "plate_specs": [[1, 0]], "barcodes": [{ "barcode": "aBarcode1", "number_of_positives": 1 }, { "barcode": "aBarcode2", "number_of_positives": 2 }], "add_to_dart": false, "_updated": "2021-07-14T15:06:41", "_created": "2021-07-14T15:06:41", "status": "pending", "_etag": "xxx", "_links": { "self": { "title": "Cherrypick_test_data", "href": "cherrypick-test-data/123" }, "parent": { "title": "home", "href": "/" }, "collection": { "title": "cherrypick-test-data", "href": "cherrypick-test-data" } } }
-
     return {
       success: true,
-      response: mockData // response.data
+      response: response.data
     }
   } catch (error) {
     return {
