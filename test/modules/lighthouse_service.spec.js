@@ -583,8 +583,7 @@ describe('lighthouse_service api', () => {
     it('when the request is successful returning a 201', async () => {
       axios.post.mockResolvedValue({
         data: {
-          "run_id": runId,
-          "timestamp": timestamp
+          "_id": runId,
         },
       })
       response = await lighthouse.generateTestRun(plateSpecs, addToDart)
@@ -593,13 +592,22 @@ describe('lighthouse_service api', () => {
       expect(response.runId).toEqual(runId)
     })
 
-    it('when the request fails with a 400', async () => {
-      axios.post.mockImplementationOnce(() => Promise.reject(new Error('There was an error')))
+    it('when the request fails', async () => {
+      const error = {
+        response: {
+          data: {
+            _error: {
+              message: "There was an error"
+            }
+          }
+        }
+      }
+
+      axios.post.mockImplementationOnce(() => Promise.reject(error))
       response = await lighthouse.generateTestRun(plateSpecs, addToDart)
 
       expect(response.success).toBeFalsy()
-      // TODO: confirm error response
-      expect(response.errors).toBeDefined()
+      expect(response.error).toEqual('There was an error')
     })
   })
 

@@ -274,6 +274,7 @@ const getTestRuns = async (currentPage, perPage) => {
     const response = await axios.get(url, headers)
 
     // TODO: add total number of plates in run to response
+    // format barcodes from "[[\"TEST-112408\", \"number of positives: 0\"]]" here
     return {
       success: true,
       response: response.data._items,

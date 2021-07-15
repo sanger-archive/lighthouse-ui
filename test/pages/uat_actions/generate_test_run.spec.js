@@ -136,20 +136,31 @@ describe('UAT Actions', () => {
   })
 
   describe('#generateTestRun', () => {
-    it('when the request is successful', async () => {
-      lighthouse.generateTestRun.mockResolvedValue({
-        success: true,
-        runId: 'anId123'
-      })
+    let wrapper
+
+    beforeEach(() => {
+      const $router = {
+        push: jest.fn()
+      }
 
       wrapper = mount(GenerateTestRun, {
         localVue,
+        mocks: {
+          $router,
+        },
         data() {
           return {
             plateSpecs: [{ numberOfPlates: 1, numberOfPositives: 2 }],
             addToDart: true,
           }
         },
+      })
+
+    })
+    it('when the request is successful', async () => {
+      lighthouse.generateTestRun.mockResolvedValue({
+        success: true,
+        runId: 'anId123'
       })
 
       wrapper.vm.showAlert = jest.fn()
@@ -157,24 +168,14 @@ describe('UAT Actions', () => {
       await wrapper.find('#generateTestRunButton').trigger('click')
       await flushPromises()
       expect(lighthouse.generateTestRun).toHaveBeenCalledWith([{ numberOfPlates: 1, numberOfPositives: 2 }], true)
-      // TODO add test for path
+      expect(wrapper.vm.$router.push).toHaveBeenCalled()
       expect(wrapper.vm.showAlert).not.toHaveBeenCalled()
     })
 
     it('when the request fails', async () => {
       lighthouse.generateTestRun.mockReturnValue({
         success: false,
-        errors: ['There was an error'],
-      })
-
-      wrapper = mount(GenerateTestRun, {
-        localVue,
-        data() {
-          return {
-            plateSpecs: [{ numberOfPlates: 1, numberOfPositives: 2 }],
-            addToDart: true,
-          }
-        },
+        error: 'There was an error',
       })
 
       await wrapper.find('#generateTestRunButton').trigger('click')

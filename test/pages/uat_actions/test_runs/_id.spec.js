@@ -21,10 +21,7 @@ describe('TestRuns.vue', () => {
       "status": "completed",
       "plate_specs": "[[2,48]]",
       "add_to_dart": false,
-      "barcodes": [
-        { "barcode": "TEST-112375", "number_of_positives": 48 },
-        { "barcode": "TEST-112376", "number_of_positives": 48 },
-      ],
+      "barcodes": "[[\"TEST-112408\", \"number of positives: 0\"]]"
     }
 
     const $route = {
@@ -51,7 +48,7 @@ describe('TestRuns.vue', () => {
   // data
   describe('data', () => {
     it('will have fields', () => {
-      let expected = ['barcode', 'number_of_positives']
+      let expected = ['barcode', { key: 'text', label: 'Description' }, 'actions']
       expect(page.fields).toEqual(expected)
     })
   })
@@ -62,7 +59,7 @@ describe('TestRuns.vue', () => {
 
   it('will have a table with run information', () => {
     // page.getTestRuns = jest.fn().mockReturnValue(testRunData)
-    expect(wrapper.find('tbody').findAll('tr').length).toEqual(testRunData.barcodes.length)
+    expect(wrapper.find('tbody').findAll('tr').length).toEqual(1)
   })
 
   describe('#showAlert', () => {

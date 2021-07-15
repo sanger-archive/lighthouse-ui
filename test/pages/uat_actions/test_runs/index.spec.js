@@ -12,24 +12,27 @@ describe('TestRuns.vue', () => {
   let wrapper, page, testRunsData
 
   beforeEach(() => {
-    testRunsData = [
-      { id: 111111, status: 'completed', 'plates_spec': [], 'add_to_dart': true, 'barcodes': '', created_at: '2020-05-13 11:00:00 UTC', updated_at: '2020-05-13 11:00:00 UTC' },
-      { id: 211111, status: 'completed', 'plates_spec': [], 'add_to_dart': true, 'barcodes': '', created_at: '2020-05-10 10:00:00 UTC', updated_at: '2020-05-10 10:00:00 UTC' },
-      { id: 311111, status: 'completed', 'plates_spec': [], 'add_to_dart': true, 'barcodes': '', created_at: '2020-05-10 10:00:00 UTC', updated_at: '2020-05-10 10:00:00 UTC' },
-    ]
+    testRunsData = {
+      "success": true,
+      "response": [
+        { _id: 111111, status: 'completed', 'add_to_dart': true, _created_at: '2020-05-13 11:00:00 UTC' },
+        { _id: 211111, status: 'completed', 'add_to_dart': true, _created_at: '2020-05-10 10:00:00 UTC' },
+        { _id: 311111, status: 'completed', 'add_to_dart': true, _created_at: '2020-05-10 10:00:00 UTC' },
+      ],
+      "total": 23
+    }
 
     wrapper = mount(TestRuns, {
       localVue,
     })
     page = wrapper.vm
-    lighthouse.getTestRuns.mockResolvedValue({ response: testRunsData })
+    lighthouse.getTestRuns.mockResolvedValue(testRunsData)
   })
-
 
   // data
   describe('data', () => {
     it('will have fields', () => {
-      let expected = ['id', 'created_at', 'updated_at', 'status', 'plate_specs', 'add_to_dart', 'barcodes', 'actions']
+      let expected = ['_created', 'status', 'add_to_dart', 'actions']
       expect(page.fields).toEqual(expected)
     })
   })
@@ -39,8 +42,7 @@ describe('TestRuns.vue', () => {
   })
 
   it('will have a table with runs', () => {
-    // page.getTestRuns = jest.fn().mockReturnValue(testRunsData)
-    expect(wrapper.find('tbody').findAll('tr').length).toEqual(testRunsData.length)
+    expect(wrapper.find('tbody').findAll('tr').length).toEqual(testRunsData.response.length)
   })
 
   describe('View run button', () => {
@@ -51,7 +53,7 @@ describe('TestRuns.vue', () => {
     it('will redirect to the test run when View is clicked', async () => {
       let button = wrapper.find('#viewTestRun-111111')
       button.trigger('click')
-      // TODO add test for path
+      // TODO: add test for path
     })
   })
 
@@ -62,6 +64,5 @@ describe('TestRuns.vue', () => {
       expect(wrapper.vm.$refs.alert.show).toHaveBeenCalled()
     })
   })
-
 
 })
