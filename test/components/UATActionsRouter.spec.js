@@ -9,7 +9,6 @@ localVue.use(BootstrapVue)
 const links = [
   'Generate Test Run',
   'Test Runs',
-  'Test Run',
 ]
 
 describe('UATActionsRouter.vue', () => {
@@ -18,7 +17,6 @@ describe('UATActionsRouter.vue', () => {
   beforeEach(() => {
     wrapper = mount(UATActionsRouter, {
       localVue,
-      // stubs: ['nuxt-link'],
     })
   })
 

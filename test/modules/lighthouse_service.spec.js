@@ -570,12 +570,11 @@ describe('lighthouse_service api', () => {
   })
 
   describe('#generateTestRun', () => {
-    let runId, plateSpecs, addToDart, timestamp
+    let runId, plateSpecs, addToDart
 
     beforeEach(() => {
       mock = jest.spyOn(axios, 'post')
       runId = "aRunId123"
-      timestamp = "2012-03-04T05:06:07.890123+00:00"
       plateSpecs = [[1, 2], [2, 4]]
       addToDart = true
     })

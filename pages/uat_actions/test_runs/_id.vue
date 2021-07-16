@@ -81,7 +81,7 @@ export default {
       })
 
       if (response.success) {
-        this.showAlert('Labels successfully printed', 'success')
+        this.showAlert(response.message, 'success')
       } else {
         this.showAlert(response.error, 'danger')
       }

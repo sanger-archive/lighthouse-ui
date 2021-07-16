@@ -232,7 +232,7 @@ const failDestinationPlateBeckman = async (form) => {
 /**
  * Format the plate specs to the expected type
  * @param {*} plateSpecs a list of objects e.g. [{numberOfPlates: 1, numberOfPositives: 2}, {numberOfPlates: 3, numberOfPositives: 4}]
- * @param {list} plateSpecsList a string represtation of the plate specs in a nested list e.g. [[1,2],[3,4]]
+ * @returns {list} plateSpecsList a string represtation of the plate specs in a nested list e.g. [[1,2],[3,4]]
  */
 const formatPlateSpecs = (plateSpecs) => {
   return plateSpecs.map((plate) => { return [plate.numberOfPlates, plate.numberOfPositives] })
@@ -258,7 +258,7 @@ const generateTestRun = async (plateSpecs, addToDart) => {
   } catch (error) {
     return {
       success: false,
-      error: error.response.data._error.message
+      error: error.response ? error.response.data._error.message : 'An unexpected error has occured'
     }
   }
 }
@@ -283,7 +283,7 @@ const getTestRuns = async (currentPage, perPage) => {
   } catch (error) {
     return {
       success: false,
-      error: error.response.data._error.message
+      error: error.response ? error.response.data._error.message : 'An unexpected error has occured'
     }
   }
 }
@@ -304,7 +304,7 @@ const getTestRun = async (id) => {
   } catch (error) {
     return {
       success: false,
-      error: error.response.data._error.message
+      error: error.response ? error.response.data._error.message : 'An unexpected error has occured'
     }
   }
 }
