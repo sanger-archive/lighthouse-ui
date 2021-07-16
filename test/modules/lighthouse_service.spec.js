@@ -241,7 +241,7 @@ describe('lighthouse_service api', () => {
           count_fit_to_pick_samples: 2,
         },
       ]
-      const response = { data: { plates } }
+      response = { data: { plates } }
 
       mock.mockImplementationOnce(() => response)
 
@@ -495,7 +495,7 @@ describe('lighthouse_service api', () => {
     })
 
     it('on failure', async () => {
-      const response = {
+      response = {
         response: { data: { errors: ['There was an error'] } },
       }
       mock.mockRejectedValue(response)
@@ -555,7 +555,7 @@ describe('lighthouse_service api', () => {
     })
 
     it('on failure', async () => {
-      const response = {
+      response = {
         response: { data: { errors: ['There was an error'] } },
       }
       mock.mockRejectedValue(response)
@@ -574,39 +574,146 @@ describe('lighthouse_service api', () => {
 
     beforeEach(() => {
       mock = jest.spyOn(axios, 'post')
-      runId = "aRunId123"
-      plateSpecs = [[1, 2], [2, 4]]
+      runId = "aRunId"
+      plateSpecs = [{ numberOfPlates: 1, numberOfPositives: 2 }, { numberOfPlates: 3, numberOfPositives: 4 }]
       addToDart = true
     })
 
-    it('when the request is successful returning a 201', async () => {
-      axios.post.mockResolvedValue({
-        data: {
-          "_id": runId,
-        },
-      })
-      response = await lighthouse.generateTestRun(plateSpecs, addToDart)
+    it('when the request is successful', async () => {
+      response = { "_id": runId, "_status": "OK" }
 
-      expect(response.success).toBeTruthy()
-      expect(response.runId).toEqual(runId)
+      axios.post.mockResolvedValue({
+        data: response,
+      })
+      const result = await lighthouse.generateTestRun(plateSpecs, addToDart)
+
+      expect(axios.post).toHaveBeenCalled()
+      expect(result.success).toBeTruthy()
+      expect(result.runId).toEqual(runId)
     })
 
-    it('when the request fails', async () => {
+    it('when the request errors', async () => {
+      response = { "_status": "ERR", "_issues": { "plate_specs": "should not be an empty list." }, "_error": { "code": 422, "message": "Insertion failure" } }
       const error = {
         response: {
-          data: {
-            _error: {
-              message: "There was an error"
-            }
-          }
+          data: response
         }
       }
 
       axios.post.mockImplementationOnce(() => Promise.reject(error))
-      response = await lighthouse.generateTestRun(plateSpecs, addToDart)
+      const result = await lighthouse.generateTestRun(plateSpecs, addToDart)
 
-      expect(response.success).toBeFalsy()
-      expect(response.error).toEqual('There was an error')
+      expect(result.success).toBeFalsy()
+      expect(result.error).toEqual("Insertion failure: {\"plate_specs\":\"should not be an empty list.\"}")
+    })
+
+    it('when the request fails', async () => {
+      const error = {}
+      axios.post.mockImplementationOnce(() => Promise.reject(error))
+      const result = await lighthouse.generateTestRun(plateSpecs, addToDart)
+
+      expect(result.success).toBeFalsy()
+      expect(result.error).toEqual("An unexpected error has occured")
+    })
+  })
+
+  describe('#getTestRuns', () => {
+    let currentPage, perPage
+
+    beforeEach(() => {
+      mock = jest.spyOn(axios, 'get')
+      currentPage = 1
+      perPage = 5
+    })
+
+    it('when the request is successful', async () => {
+      response = {
+        _items: [
+          { "_id": "1" },
+          { "_id": "2" },
+          { "_id": "3" }],
+        _meta: { "total": 32 }
+      }
+
+      axios.get.mockResolvedValue({
+        data: response,
+      })
+      const result = await lighthouse.getTestRuns(currentPage, perPage)
+
+      expect(axios.get).toHaveBeenCalled()
+      expect(result.success).toBeTruthy()
+      expect(result.response).toEqual(response._items)
+      expect(result.total).toEqual(response._meta.total)
+    })
+
+    it('when the request errors', async () => {
+      response = { "_status": "ERR", "_error": { "code": 405, "message": "The method is not allowed for the requested URL." } }
+      const error = {
+        response: {
+          data: response
+        }
+      }
+
+      axios.get.mockImplementationOnce(() => Promise.reject(error))
+      const result = await lighthouse.getTestRuns(currentPage, perPage)
+
+      expect(result.success).toBeFalsy()
+      expect(result.error).toEqual("The method is not allowed for the requested URL.")
+    })
+
+    it('when the request fails', async () => {
+      const error = {}
+      axios.get.mockImplementationOnce(() => Promise.reject(error))
+      const result = await lighthouse.getTestRuns(currentPage, perPage)
+
+      expect(result.success).toBeFalsy()
+      expect(result.error).toEqual("An unexpected error has occured")
+    })
+  })
+
+  describe('#getTestRun', () => {
+    let id
+
+    beforeEach(() => {
+      mock = jest.spyOn(axios, 'get')
+      id = 123
+    })
+
+    it('when the request is successful', async () => {
+      response = { "_id": "123", "barcodes": "[[\"TEST-112426\", \"number of positives: 0\"]]" }
+
+      axios.get.mockResolvedValue({
+        data: response,
+      })
+      const result = await lighthouse.getTestRun(id)
+
+      expect(axios.get).toHaveBeenCalled()
+      expect(result.success).toBeTruthy()
+      expect(result.response).toEqual(response)
+    })
+
+    it('when the request errors', async () => {
+      response = { "_status": "ERR", "_error": { "code": 405, "message": "The method is not allowed for the requested URL." } }
+      const error = {
+        response: {
+          data: response
+        }
+      }
+
+      axios.get.mockImplementationOnce(() => Promise.reject(error))
+      const result = await lighthouse.getTestRun(id)
+
+      expect(result.success).toBeFalsy()
+      expect(result.error).toEqual("The method is not allowed for the requested URL.")
+    })
+
+    it('when the request fails', async () => {
+      const error = {}
+      axios.get.mockImplementationOnce(() => Promise.reject(error))
+      const result = await lighthouse.getTestRun(id)
+
+      expect(result.success).toBeFalsy()
+      expect(result.error).toEqual("An unexpected error has occured")
     })
   })
 

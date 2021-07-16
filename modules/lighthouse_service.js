@@ -258,7 +258,7 @@ const generateTestRun = async (plateSpecs, addToDart) => {
   } catch (error) {
     return {
       success: false,
-      error: error.response ? error.response.data._error.message : 'An unexpected error has occured'
+      error: error.response ? error.response.data._error.message + ": " + JSON.stringify(error.response.data._issues) : 'An unexpected error has occured'
     }
   }
 }
