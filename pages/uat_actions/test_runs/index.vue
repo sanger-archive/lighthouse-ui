@@ -53,8 +53,6 @@ export default {
       totalRows: 0
     }
   },
-  computed: {
-  },
   methods: {
     getTestRuns(ctx, callback) {
       lighthouse.getTestRuns(this.currentPage, this.perPage)
@@ -69,7 +67,7 @@ export default {
         }
       })
       .catch(() => {
-        this.showAlert("An unknown error has occurred", 'danger')
+        this.showAlert("An unknown error has occurred", "danger")
         const arr = []
         callback(arr)
       })
