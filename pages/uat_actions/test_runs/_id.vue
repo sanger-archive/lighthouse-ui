@@ -22,7 +22,7 @@
         <b-table striped hover :fields="fields" :items="barcodesWithText">
           <template #cell(actions)="row">
             <b-button
-              :id="'print-'+row.item._id"
+              :id="'print-'+row.item.barcode"
               variant="outline-info"
               :disabled="!printerSelected"
               @click="print([row.item], printerSelected)"
