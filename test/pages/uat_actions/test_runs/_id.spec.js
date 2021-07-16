@@ -48,7 +48,7 @@ describe('TestRuns.vue', () => {
   // data
   describe('data', () => {
     it('will have fields', () => {
-      let expected = ['barcode', { key: 'text', label: 'Description' }, 'actions']
+      const expected = ['barcode', { key: 'text', label: 'Description' }, 'actions']
       expect(page.fields).toEqual(expected)
     })
   })
@@ -59,7 +59,7 @@ describe('TestRuns.vue', () => {
 
   it('will have a table with run information', () => {
     // page.getTestRuns = jest.fn().mockReturnValue(testRunData)
-    expect(wrapper.find('tbody').findAll('tr').length).toEqual(1)
+    expect(wrapper.find('tbody').findAll('tr')).toHaveLength(1)
   })
 
   describe('#showAlert', () => {

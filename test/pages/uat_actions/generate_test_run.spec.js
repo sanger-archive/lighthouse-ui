@@ -1,7 +1,6 @@
 import { createLocalVue, mount } from '@vue/test-utils'
 import { BootstrapVue } from 'bootstrap-vue'
 import GenerateTestRun from '@/pages/uat_actions/generate_test_run.vue'
-import TestRun from '@/pages/uat_actions/test_runs/_id.vue'
 import lighthouse from '@/modules/lighthouse_service'
 import Alert from '@/components/Alert'
 import flushPromises from 'flush-promises'
@@ -63,13 +62,13 @@ describe('UAT Actions', () => {
   // methods
   describe('#numberOfPositivesOptions', () => {
     it('has a default', () => {
-      expect(wrapper.vm.numberOfPositivesOptions().length).toEqual(97)
+      expect(wrapper.vm.numberOfPositivesOptions()).toHaveLength(97)
     })
   })
 
   describe('#numberOfPlatesOptions', () => {
     it('has a default', () => {
-      expect(wrapper.vm.numberOfPlatesOptions().length).toEqual(200)
+      expect(wrapper.vm.numberOfPlatesOptions()).toHaveLength(200)
     })
   })
 

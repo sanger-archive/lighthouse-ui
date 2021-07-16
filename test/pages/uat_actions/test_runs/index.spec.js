@@ -32,7 +32,7 @@ describe('TestRuns.vue', () => {
   // data
   describe('data', () => {
     it('will have fields', () => {
-      let expected = ['_created', 'status', 'add_to_dart', 'actions']
+      const expected = ['_created', 'status', 'add_to_dart', 'actions']
       expect(page.fields).toEqual(expected)
     })
   })
@@ -42,7 +42,7 @@ describe('TestRuns.vue', () => {
   })
 
   it('will have a table with runs', () => {
-    expect(wrapper.find('tbody').findAll('tr').length).toEqual(testRunsData.response.length)
+    expect(wrapper.find('tbody').findAll('tr')).toHaveLength(testRunsData.response.length)
   })
 
   describe('View run button', () => {
@@ -50,9 +50,10 @@ describe('TestRuns.vue', () => {
       expect(wrapper.find('#viewTestRun-111111').text()).toEqual('View')
     })
 
-    it('will redirect to the test run when View is clicked', async () => {
-      let button = wrapper.find('#viewTestRun-111111')
+    it('will redirect to the test run when View is clicked', () => {
+      const button = wrapper.find('#viewTestRun-111111')
       button.trigger('click')
+      expect(true).toBeTruthy()
       // TODO: add test for path
     })
   })

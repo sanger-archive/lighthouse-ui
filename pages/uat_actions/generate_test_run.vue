@@ -4,7 +4,7 @@
 
     <h1 class="mt-3">UAT Actions</h1>
 
-    <Alert ref="alert" id="alert"></Alert>
+    <Alert id="alert" ref="alert"></Alert>
 
     <b-card title="Generate Test Run" sub-title="Number of plates containing number of positives.">
       <b-form inline>
@@ -34,9 +34,9 @@
       <b-button
         id="generateTestRunButton"
         variant="outline-success"
-        @click="generateTestRun"
         class="float-right"
         :disabled="totalPlates==0 || totalPlates>200"
+        @click="generateTestRun"
       >
         Generate test run
         <!-- <b-spinner v-show="isBusy" small></b-spinner> -->
@@ -46,8 +46,8 @@
         id="resetButton"
         type="reset"
         variant="outline-danger"
-        @click="reset"
         class="float-right"
+        @click="reset"
       >Reset</b-button>
       Total plates: {{ totalPlates }}/200
       <b-form-checkbox
@@ -86,7 +86,7 @@ export default {
     }
   },
   computed: {
-    totalPlates: function () {
+    totalPlates () {
       return this.plateSpecs.reduce(function (acc, obj) { return acc + obj.numberOfPlates }, 0)
     }
   },

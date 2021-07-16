@@ -4,15 +4,15 @@
 
     <h1 class="mt-3">UAT Actions</h1>
 
-    <Alert ref="alert" id="alert"></Alert>
+    <Alert id="alert" ref="alert"></Alert>
     <b-card title="Test Run">
-      <div v-if="this.run.status=='completed'">
+      <div v-if="run.status=='completed'">
         <b-button
           id="printBarcodesButton"
           variant="outline-info"
           class="float-right"
-          @click="print(barcodesWithText, printerSelected)"
           :disabled="!printerSelected"
+          @click="print(barcodesWithText, printerSelected)"
         >Print ALL labels</b-button>
 
         <b-row>
@@ -20,20 +20,20 @@
           <b-form-select id="selectPrinter" v-model="printerSelected" :options="printerOptions"></b-form-select>
         </b-row>
         <b-table striped hover :fields="fields" :items="barcodesWithText">
-          <template v-slot:cell(actions)="row">
+          <template #cell(actions)="row">
             <b-button
               :id="'print-'+row.item._id"
-              @click="print([row.item], printerSelected)"
               variant="outline-info"
               :disabled="!printerSelected"
+              @click="print([row.item], printerSelected)"
             >Print</b-button>
           </template>
         </b-table>
       </div>
 
-      <div v-else-if="this.run.status=='failed'">
+      <div v-else-if="run.status=='failed'">
         <span style="color:red" class="font-weight-bold">Failure:</span>
-        {{ this.run.failure_reason}}
+        {{ run.failure_reason}}
       </div>
     </b-card>
   </b-container>
@@ -52,7 +52,6 @@ export default {
     Alert,
     UATActionsRouter
   },
-  props: ['runId'],
   data() {
     return {
       fields: ['barcode',{ key: 'text', label: 'Description' }, 'actions'],
@@ -63,29 +62,12 @@ export default {
     }
   },
   computed: {
-    barcodesWithText: function() {
+    barcodesWithText() {
       const list = JSON.parse(this.run.barcodes)
       return list.map((item) => {
         return { barcode: item[0], text: item[1] }
       })
     }
-  },
-  methods: {
-    showAlert(message, type) {
-      return this.$refs.alert.show(message, type)
-    },
-    async print(labelFields, printer) {
-      const response = await sprint.printLabels({
-        labelFields: labelFields,
-        printer: printer,
-      })
-
-      if (response.success) {
-        this.showAlert(response.message, 'success')
-      } else {
-        this.showAlert(response.error, 'danger')
-      }
-    },
   },
   async created() {
     const response = await lighthouse.getTestRun(this.$route.params.id)
@@ -94,6 +76,23 @@ export default {
     } else {
       this.showAlert(response.error, 'danger')
     }
+  },
+  methods: {
+    showAlert(message, type) {
+      return this.$refs.alert.show(message, type)
+    },
+    async print(labelFields, printer) {
+      const response = await sprint.printLabels({
+        labelFields,
+        printer,
+      })
+
+      if (response.success) {
+        this.showAlert(response.message, 'success')
+      } else {
+        this.showAlert(response.error, 'danger')
+      }
+    },
   },
 }
 </script>

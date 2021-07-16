@@ -4,7 +4,7 @@
 
     <h1 class="mt-3">UAT Actions</h1>
 
-    <Alert ref="alert" id="alert"></Alert>
+    <Alert id="alert" ref="alert"></Alert>
 
     <b-table
       striped
@@ -14,7 +14,7 @@
       :per-page="perPage"
       :current-page="currentPage"
     >
-      <template v-slot:cell(actions)="row">
+      <template #cell(actions)="row">
         <b-button
           :id="'viewTestRun-'+row.item._id"
           :to="'/uat_actions/test_runs/'+row.item._id"
@@ -25,13 +25,13 @@
     </b-table>
 
     <b-pagination
+      v-if="totalRows"
       v-model="currentPage"
       :total-rows="totalRows"
       :per-page="perPage"
-      v-if="this.totalRows"
     ></b-pagination>
 
-    <span class="font-weight-bold" v-if="this.totalRows">Total: {{ totalRows }}</span>
+    <span v-if="totalRows" class="font-weight-bold">Total: {{ totalRows }}</span>
   </b-container>
 </template>
 
@@ -64,12 +64,14 @@ export default {
           callback(data.response)
         } else {
           this.showAlert(data.error, 'danger')
-          callback([])
+          const arr = []
+          callback(arr)
         }
       })
       .catch(() => {
         this.showAlert("An unknown error has occurred", 'danger')
-        callback([])
+        const arr = []
+        callback(arr)
       })
       return null
     },
