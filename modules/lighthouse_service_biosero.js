@@ -20,34 +20,76 @@ const createDestinationPlateBiosero = async (form) => {
     }
     const headers = { headers: { Authorization: config.privateRuntimeConfig.lighthouseApiKey } }
 
+    // https://github.com/axios/axios#response-schema
     const response = await axios.post(url, body, headers)
 
-    // example of success
-    // {"_updated": "2021-07-09T15:52:45", "_created": "2021-07-09T15:52:45", "_etag": "f76fea7e3f65c384f0faa1249f52adc923a1ead8",
-    // "_id": "60e870cddc3379e79ee69ebc", "_links": {"self": {"title": "Event", "href": "events/60e870cddc3379e79ee69ebc"}}, "_status": "OK"}
+    /**
+    Example of success:
 
-    // example of fail
-    // {"_status": "ERR", "_issues": {"event_type": "unallowed event type 'wrong_event_type'"},
-    // "_error": {"code": 422, "message": "Insertion failure: 1 document(s) contain(s) error(s)"}}
+    HTTP/1.0 201 CREATED
+    Content-Length: 258
+    Content-Type: application/json
+    Date: Tue, 13 Jul 2021 11:15:46 GMT
+    Location: http://localhost:8000/events/60ed75e2ffce63a55dec3bdf
+    Server: Werkzeug/2.0.1 Python/3.8.7
 
-    if (response._status === 'OK') {
-      // success
+    {
+        "_created": "2021-07-13T11:15:46",
+        "_etag": "95e225c1f1a3b82a35f11b9f53246d6db591900c",
+        "_id": "60ed75e2ffce63a55dec3bdf",
+        "_links": {
+            "self": {
+                "href": "events/60ed75e2ffce63a55dec3bdf",
+                "title": "Event"
+            }
+        },
+        "_status": "OK",
+        "_updated": "2021-07-13T11:15:46"
+    }
+    */
+
+    /**
+    Example of fail
+
+    HTTP/1.0 422 UNPROCESSABLE ENTITY
+    Content-Length: 233
+    Content-Type: application/json
+    Date: Tue, 13 Jul 2021 11:11:05 GMT
+    Server: Werkzeug/2.0.1 Python/3.8.7
+
+    {
+        "_error": {
+            "code": 422,
+            "message": "Insertion failure: 1 document(s) contain(s) error(s)"
+        },
+        "_issues": {
+            "event_type": "'barcode' cannot be empty with the 'lh_biosero_cp_destination_plate_partial_completed' event"
+        },
+        "_status": "ERR"
+    }
+     */
+    if (response.status === 201) {
+      // successfully created the event and performed subsequent processes
       return {
         success: true,
         response: `Successfully created destination plate with barcode: ${form.barcode}`,
       }
     } else {
       // contains status code and message
-      const errors = response._error
-      // failure
+      const error = response.data._error
       return {
         success: false,
-        errors,
+        error,
       }
     }
   } catch (error) {
     // failure
-    return { success: false, error }
+    if (Object.prototype.hasOwnProperty.call(error, "response")) {
+      return { success: false, error: error.response.data._error }
+    } else {
+      return { success: false, error }
+
+    }
   }
 }
 
