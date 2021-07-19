@@ -573,6 +573,7 @@ describe('lighthouse_service api', () => {
     let runId, plateSpecs, addToDart
 
     beforeEach(() => {
+      jest.spyOn(axios, 'post')
       runId = "aRunId"
       plateSpecs = [{ numberOfPlates: 1, numberOfPositives: 2 }, { numberOfPlates: 3, numberOfPositives: 4 }]
       addToDart = true
@@ -614,12 +615,30 @@ describe('lighthouse_service api', () => {
       expect(result.success).toBeFalsy()
       expect(result.error).toEqual("An unexpected error has occured")
     })
+
+    it('when the request errors, from crawler, with no _issues', async () => {
+      response = { "_status": "ERR", "_error": { "code": 422, "message": "Insertion failure" } }
+      const error = {
+        response: {
+          data: response
+        }
+      }
+
+      axios.post.mockImplementationOnce(() => Promise.reject(error))
+      const result = await lighthouse.generateTestRun(plateSpecs, addToDart)
+
+      expect(result.success).toBeFalsy()
+      // TODO: fix
+      expect(result.error).toEqual("Insertion failure: undefined")
+    })
+
   })
 
   describe('#getTestRuns', () => {
     let currentPage, perPage
 
     beforeEach(() => {
+      jest.spyOn(axios, 'get')
       currentPage = 1
       perPage = 5
     })
@@ -676,6 +695,7 @@ describe('lighthouse_service api', () => {
     let id
 
     beforeEach(() => {
+      jest.spyOn(axios, 'get')
       id = 123
     })
 
