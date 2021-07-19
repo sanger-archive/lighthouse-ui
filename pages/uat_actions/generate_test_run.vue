@@ -40,11 +40,20 @@
 
       <b-button
         id="resetButton"
-        type="reset"
+        v-b-modal.resetModal
         variant="outline-danger"
         class="float-right"
-        @click="resetPlateSpecs"
       >Reset</b-button>
+
+      <b-modal
+        id="resetModal"
+        ref="modal"
+        title="Reset Confirmation"
+        :static="true"
+        @ok="resetPlateSpecs"
+      >
+        <p class="my-4">Are you sure you want to reset?</p>
+      </b-modal>
       Total plates: {{ totalPlates }}/200
       <b-form-checkbox
         id="addToDart"
@@ -94,10 +103,10 @@ export default {
   },
   methods: {
     numberOfPositivesOptions() {
-      return Array.from({length: MAX_NUMBER_OF_POSITIVES + 1}, (v, i) => i)
+      return Array.from({length: MAX_NUMBER_OF_POSITIVES + 1}, (v, i) => i) // 0 - 96
     },
     numberOfPlatesOptions() {
-      return Array.from({length: MAX_NUMBER_OF_PLATES}, (v, i) => i + 1)
+      return Array.from({length: MAX_NUMBER_OF_PLATES}, (v, i) => i + 1) // 1 - 200
     },
     add() {
       this.plateSpecs.push({numberOfPlates: this.form.numberOfPlates, numberOfPositives: this.form.numberOfPositives })
