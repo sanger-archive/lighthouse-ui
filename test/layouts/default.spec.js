@@ -23,8 +23,7 @@ describe('Index', () => {
 
   it('has a navbar', () => {
     expect(wrapper.findComponent({ ref: 'navbar' }).text()).toMatch(
-      // Biosero Cherrypick
-      /Lighthouse {2}Reports Box Buster Sentinel Sample Creation Sentinel Cherrypick Imports Print Labels Beckman Cherrypick UAT Actions/
+      /Lighthouse {2}Reports Box Buster Sentinel Sample Creation Sentinel Cherrypick Imports Print Labels Beckman Cherrypick Biosero Cherrypick UAT Actions/
     )
   })
 })

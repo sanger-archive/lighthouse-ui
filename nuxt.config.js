@@ -52,7 +52,7 @@ export default {
    */
   buildModules: [
     // Doc: https://github.com/nuxt-community/eslint-module
-    '@nuxtjs/eslint-module',
+    // '@nuxtjs/eslint-module',
     '@nuxtjs/dotenv',
   ],
   /*
@@ -78,7 +78,7 @@ export default {
     /*
      ** You can extend webpack config here
      */
-    extend(config, ctx) {},
+    extend(config, ctx) { },
   },
   privateRuntimeConfig: {
     lighthouseBaseURL: process.env.LIGHTHOUSE_BASE_URL || 'http://lighthouse',
@@ -93,5 +93,9 @@ export default {
     projectId: process.env.PROJECT_ID,
     studyId: process.env.STUDY_ID,
     printers: process.env.PRINTERS || 'a,b,c',
+    featureFlags: {
+      uatActions: process.env.FEATURE_FLAG_UAT_ACTIONS,
+      bioseroCherrypick: process.env.FEATURE_FLAG_BIOSERO_CHERRYPICK,
+    },
   },
 }

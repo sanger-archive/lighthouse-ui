@@ -28,13 +28,14 @@
               exact-active-class="active"
             >Beckman Cherrypick</b-nav-item>
 
-            <!-- <b-nav-item
+            <b-nav-item
+              v-if="featureFlagBioseroCherrypick"
               to="/biosero_cherrypick"
               exact
               exact-active-class="active"
-            >Biosero Cherrypick</b-nav-item> -->
-
+            >Biosero Cherrypick</b-nav-item>
             <b-nav-item
+              v-if="featureFlagUatActions"
               to="/uat_actions/generate_test_run"
               exact
               exact-active-class="active"
@@ -46,6 +47,27 @@
     <nuxt />
   </div>
 </template>
+
+<script>
+import config from '@/nuxt.config'
+
+export default {
+  props: {
+    featureFlagUatActions: {
+      type: Boolean,
+      default() {
+        return JSON.parse(config.publicRuntimeConfig.featureFlags.uatActions)
+      },
+    },
+    featureFlagBioseroCherrypick: {
+      type: Boolean,
+      default() {
+        return JSON.parse(config.publicRuntimeConfig.featureFlags.bioseroCherrypick)
+      },
+    },
+  }
+}
+</script>
 
 <style>
 html {
