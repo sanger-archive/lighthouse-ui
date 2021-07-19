@@ -20,7 +20,7 @@ describe('TestRuns.vue', () => {
       lighthouse.getTestRuns.mockResolvedValue({})
     })
     it('will have fields', () => {
-      const expected = ['_created', 'status', 'add_to_dart', 'actions']
+      const expected = ['_created', 'status', 'add_to_dart', 'total_plates', 'actions']
       expect(wrapper.vm.fields).toEqual(expected)
     })
   })

@@ -232,13 +232,18 @@ const failDestinationPlateBeckman = async (form) => {
 /**
  * Format the plate specs to the expected type
  * @param {*} plateSpecs a list of objects e.g. [{numberOfPlates: 1, numberOfPositives: 2}, {numberOfPlates: 3, numberOfPositives: 4}]
- * @returns {list} plateSpecsList a string represtation of the plate specs in a nested list e.g. [[1,2],[3,4]]
+ * @returns {list} a represtation of the plate specs in a nested list e.g. [[1,2],[3,4]]
  */
 const formatPlateSpecs = (plateSpecs) => {
   return plateSpecs.map((plate) => { return [plate.numberOfPlates, plate.numberOfPositives] })
 }
 
-// Create a test run
+/**
+ * Create a test run
+ * @param {integer} plateSpecs a list of objects containing information about the test run to create
+ * @param {integer} addToDart boolean flag whether run is to be added to DART
+ * @returns {object} an object containing success boolean, and response infomation
+ */
 const generateTestRun = async (plateSpecs, addToDart) => {
   const plateSpecsParam = formatPlateSpecs(plateSpecs)
   try {
@@ -263,32 +268,40 @@ const generateTestRun = async (plateSpecs, addToDart) => {
   }
 }
 
-// Get all test runs
-const getTestRuns = async (currentPage, perPage) => {
+/**
+ * Get all test runs
+ * @param {integer} currentPage supports pagination
+ * @param {integer} maxResults supports pagination
+ * @returns {object} an object containing success boolean, and response infomation
+ */
+const getTestRuns = async (currentPage, maxResults) => {
   try {
     // TODO: refactor path
-    const url = `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypick-test-data?max_results=${perPage}&page=${currentPage}&sort=[("_created", -1)]`
+    const url = `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypick-test-data?max_results=${maxResults}&page=${currentPage}&sort=[("_created", -1)]`
 
     const headers = { headers: { Authorization: config.privateRuntimeConfig.lighthouseApiKey } }
 
     const response = await axios.get(url, headers)
 
-    // TODO: add total number of plates in run to response
-    // format barcodes from "[[\"TEST-112408\", \"number of positives: 0\"]]" here
+    response.data._items.forEach(run => {
+      run.total_plates = JSON.parse(run.barcodes || "[]").length
+    })
+
     return {
       success: true,
       response: response.data._items,
       total: response.data._meta.total,
     }
   } catch (error) {
-    return {
-      success: false,
-      error: error.response ? error.response.data._error.message : 'An unexpected error has occured'
-    }
+    return errorResponse(error)
   }
 }
 
-
+/**
+ * Get test run
+ * @param {integer} id the id of the test run to retrieve
+ * @returns {object} an object containing success boolean, and response infomation
+ */
 const getTestRun = async (id) => {
   try {
     const url = `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypick-test-data/${id}`
@@ -302,13 +315,16 @@ const getTestRun = async (id) => {
       response: response.data
     }
   } catch (error) {
-    return {
-      success: false,
-      error: error.response ? error.response.data._error.message : 'An unexpected error has occured'
-    }
+    return errorResponse(error)
   }
 }
 
+const errorResponse = (error) => {
+  return {
+    success: false,
+    error: error.response ? error.response.data._error.message : 'An unexpected error has occured'
+  }
+}
 
 const lighthouse = {
   createDestinationPlateBeckman,

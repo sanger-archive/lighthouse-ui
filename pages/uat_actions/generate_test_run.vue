@@ -30,24 +30,20 @@
       <br />
       <b-table striped hover :items="plateSpecs"></b-table>
 
-      <!-- :disabled="isBusy" -->
       <b-button
         id="generateTestRunButton"
         variant="outline-success"
         class="float-right"
         :disabled="totalPlates==0 || totalPlates>200"
         @click="generateTestRun"
-      >
-        Generate test run
-        <!-- <b-spinner v-show="isBusy" small></b-spinner> -->
-      </b-button>
+      >Generate test run</b-button>
 
       <b-button
         id="resetButton"
         type="reset"
         variant="outline-danger"
         class="float-right"
-        @click="reset"
+        @click="resetPlateSpecs"
       >Reset</b-button>
       Total plates: {{ totalPlates }}/200
       <b-form-checkbox
@@ -55,6 +51,8 @@
         v-model="addToDart"
         name="addToDart"
         class="float-right"
+        value="true"
+        unchecked-value="false"
       >Add to DART</b-form-checkbox>
     </b-card>
   </b-container>
@@ -69,6 +67,13 @@ import UATActionsRouter from '@/components/UATActionsRouter'
 const MAX_NUMBER_OF_POSITIVES = 96
 const MAX_NUMBER_OF_PLATES = 200
 
+function initialFormState (){
+  return {
+    numberOfPlates: 1,
+    numberOfPositives: 0,
+  }
+}
+
 export default {
   name: 'GenerateTestRun',
   components: {
@@ -77,11 +82,8 @@ export default {
   },
   data() {
     return {
-      form: {
-        numberOfPlates: 1,
-        numberOfPositives: 0,
-      },
-      addToDart: '',
+      form: initialFormState(),
+      addToDart: false,
       plateSpecs: [],
     }
   },
@@ -99,14 +101,13 @@ export default {
     },
     add() {
       this.plateSpecs.push({numberOfPlates: this.form.numberOfPlates, numberOfPositives: this.form.numberOfPositives })
-      this.form.numberOfPlates = 1
-      this.form.numberOfPositives = 0
+      Object.assign(this.$data.form, initialFormState());
     },
-    reset() {
+    resetPlateSpecs() {
       this.plateSpecs = []
     },
     async generateTestRun() {
-      const response = await lighthouse.generateTestRun(this.plateSpecs, !!this.addToDart)
+      const response = await lighthouse.generateTestRun(this.plateSpecs, this.addToDart)
 
       if (response.success) {
         this.$router.push({ path: `/uat_actions/test_runs/${response.runId}`})

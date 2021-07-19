@@ -629,8 +629,8 @@ describe('lighthouse_service api', () => {
     it('when the request is successful', async () => {
       response = {
         _items: [
-          { "_id": "1" },
-          { "_id": "2" },
+          { "_id": "1", "barcodes": "[[\"TEST-111\", \"number of positives: 0\"], [\"TEST-222\", \"number of positives: 0\"], [\"TEST-333\", \"number of positives: 2\"]]" },
+          { "_id": "2", "barcodes": "[[\"TEST-444\", \"number of positives: 0\"], [\"TEST-555\", \"number of positives: 2\"]]" },
           { "_id": "3" }],
         _meta: { "total": 32 }
       }
@@ -643,6 +643,9 @@ describe('lighthouse_service api', () => {
       expect(axios.get).toHaveBeenCalled()
       expect(result.success).toBeTruthy()
       expect(result.response).toEqual(response._items)
+      expect(result.response[0].total_plates).toEqual(3)
+      expect(result.response[1].total_plates).toEqual(2)
+      expect(result.response[2].total_plates).toEqual(0)
       expect(result.total).toEqual(response._meta.total)
     })
 

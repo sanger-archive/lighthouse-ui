@@ -38,7 +38,7 @@ describe('UAT Actions', () => {
         numberOfPlates: 1,
         numberOfPositives: 0,
       })
-      expect(page.addToDart).toEqual('')
+      expect(page.addToDart).toEqual(false)
       expect(page.plateSpecs).toEqual([])
     })
   })
