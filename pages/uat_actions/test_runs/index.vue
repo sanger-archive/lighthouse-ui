@@ -19,7 +19,7 @@
           :id="'viewTestRun-'+row.item._id"
           :to="'/uat_actions/test_runs/'+row.item._id"
           variant="outline-info"
-          :disabled="row.item.status=='pending'"
+          :disabled="isRunPending(row)"
         >View</b-button>
       </template>
     </b-table>
@@ -76,6 +76,11 @@ export default {
     showAlert(message, type) {
       return this.$refs.alert.show(message, type)
     },
+    isRunPending(row) {
+      // the status is always updated in Crawler to either failed or completed
+      // pending means that Crawler hasn't even touched this run
+      return row.item.status==='pending'
+    }
   },
 }
 </script>

@@ -573,7 +573,6 @@ describe('lighthouse_service api', () => {
     let runId, plateSpecs, addToDart
 
     beforeEach(() => {
-      mock = jest.spyOn(axios, 'post')
       runId = "aRunId"
       plateSpecs = [{ numberOfPlates: 1, numberOfPositives: 2 }, { numberOfPlates: 3, numberOfPositives: 4 }]
       addToDart = true
@@ -621,7 +620,6 @@ describe('lighthouse_service api', () => {
     let currentPage, perPage
 
     beforeEach(() => {
-      mock = jest.spyOn(axios, 'get')
       currentPage = 1
       perPage = 5
     })
@@ -678,7 +676,6 @@ describe('lighthouse_service api', () => {
     let id
 
     beforeEach(() => {
-      mock = jest.spyOn(axios, 'get')
       id = 123
     })
 

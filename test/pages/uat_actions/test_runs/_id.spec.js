@@ -20,9 +20,9 @@ describe('TestRuns.vue', () => {
       }
     }
     testRunData = {
-      "id": 1,
-      "created_at": "2021-07-02T09:00:00.000Z",
-      "updated_at": "2021-07-12T11:31:15.806Z",
+      "_id": 1,
+      "_created_at": "2021-07-02T09:00:00.000Z",
+      "_updated_at": "2021-07-12T11:31:15.806Z",
       "status": "completed",
       "plate_specs": "[[2,48]]",
       "add_to_dart": false,

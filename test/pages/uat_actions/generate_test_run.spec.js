@@ -26,7 +26,7 @@ describe('UAT Actions', () => {
 
   // components
   describe('alert', () => {
-    it('has a alert', () => {
+    it('has an alert', () => {
       expect(wrapper.findComponent(Alert).exists()).toBeTruthy()
     })
   })
@@ -50,7 +50,7 @@ describe('UAT Actions', () => {
         localVue,
         data() {
           return {
-            plateSpecs: [{ numberOfPlates: 2, numberOfPositives: 1 }, { numberOfPlates: 11, numbeOfPpositives: 3 }],
+            plateSpecs: [{ numberOfPlates: 2, numberOfPositives: 1 }, { numberOfPlates: 11, numberOfPositives: 3 }],
           }
         },
       })
@@ -107,6 +107,24 @@ describe('UAT Actions', () => {
       expect(wrapper.vm.form.numberOfPlates).toEqual(1)
       expect(wrapper.vm.form.numberOfPositives).toEqual(0)
     })
+
+    it('when adding another entry with the same number of positives as an already existing plate spec and that they remain in insertion order', async () => {
+      wrapper = mount(GenerateTestRun, {
+        localVue,
+        data() {
+          return {
+            plateSpecs: [{ numberOfPlates: 1, numberOfPositives: 4 }],
+            form: { numberOfPlates: 3, numberOfPositives: 4 },
+          }
+        },
+      })
+
+      await wrapper.find('#addButton').trigger('click')
+
+      expect(wrapper.vm.plateSpecs).toEqual([{ numberOfPlates: 1, numberOfPositives: 4 }, { numberOfPlates: 3, numberOfPositives: 4 }])
+      expect(wrapper.vm.form.numberOfPlates).toEqual(1)
+      expect(wrapper.vm.form.numberOfPositives).toEqual(0)
+    })
   })
 
   describe('#reset', () => {
@@ -141,7 +159,6 @@ describe('UAT Actions', () => {
         },
       })
 
-
       wrapper.vm.resetPlateSpecs()
       expect(wrapper.vm.plateSpecs).toEqual([])
     })
@@ -175,8 +192,8 @@ describe('UAT Actions', () => {
           }
         },
       })
-
     })
+
     it('when the request is successful', async () => {
       lighthouse.generateTestRun.mockResolvedValue({
         success: true,

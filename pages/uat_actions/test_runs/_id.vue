@@ -33,7 +33,7 @@
 
       <div v-else-if="run.status=='failed'">
         <span style="color:red" class="font-weight-bold">Failure:</span>
-        {{ run.failure_reason}}
+        {{ run.failure_reason }}
       </div>
     </b-card>
   </b-container>
@@ -57,7 +57,7 @@ export default {
       fields: ['barcode',{ key: 'text', label: 'Description' }, 'actions'],
       run: {},
       printerSelected: null,
-      printerOptions: [{value: null, text: 'Please select a printer' }, ...config.publicRuntimeConfig.printers.split(',')],
+      printerOptions: [{ value: null, text: 'Please select a printer' }, ...config.publicRuntimeConfig.printers.split(',')],
 
     }
   },
