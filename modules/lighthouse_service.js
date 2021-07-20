@@ -44,7 +44,7 @@ const findPlatesFromBarcodes = async ({ barcodes }) => {
 }
 
 const getSearchDateString = (daysAgo) => {
-  var dt = new Date()
+  const dt = new Date()
   dt.setDate(dt.getDate() - daysAgo)
   return dt.toISOString().slice(0, 19)  // first 19 characters for format yyyy-mm-ddThh:mm:ss
 }
