@@ -43,10 +43,17 @@ const findPlatesFromBarcodes = async ({ barcodes }) => {
   }
 }
 
+const getSearchDateString = (daysAgo) => {
+  const dt = new Date()
+  dt.setDate(dt.getDate() - daysAgo)
+  return dt.toISOString().slice(0, 19)  // first 19 characters for format yyyy-mm-ddThh:mm:ss
+}
+
 const getImports = async () => {
   try {
     const response = await axios.get(
-      `${config.privateRuntimeConfig.lighthouseBaseURL}/imports?max_results=10000`
+      // Get results for the past 4 weeks, in reverse date order, limited to 10000 results
+      `${config.privateRuntimeConfig.lighthouseBaseURL}/imports?max_results=10000&sort=-date&where={"date": {"$gt": "${getSearchDateString(28)}"}}`
     )
     return {
       success: true,
