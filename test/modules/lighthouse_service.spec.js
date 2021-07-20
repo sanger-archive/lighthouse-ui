@@ -269,6 +269,21 @@ describe('lighthouse_service api', () => {
       mock = jest.spyOn(axios, 'get')
     })
 
+    it('submits the correct lighthouse query string to axios.get', async () => {
+      response = await lighthouse.getImports()
+
+      expect(mock.mock.calls).toHaveLength(1)
+
+      const urlString = mock.mock.calls[0][0]
+      const queryString = urlString.split('/imports?')[1]
+      const params = new URLSearchParams(queryString)
+
+      expect(params.get('max_results')).toEqual('10000')
+      expect(params.get('sort')).toEqual('-date')
+      expect(params.get('where')).toEqual(expect.stringMatching(
+        /\{"date": \{"\$gt": "\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}"\}\}/))
+    })
+
     it('returns data successfully', async () => {
       expected = { data: { items: [] } }
       mock.mockResolvedValue(expected)
