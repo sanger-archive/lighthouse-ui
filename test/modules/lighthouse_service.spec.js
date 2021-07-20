@@ -272,7 +272,7 @@ describe('lighthouse_service api', () => {
     it('submits the correct lighthouse query string to axios.get', async () => {
       response = await lighthouse.getImports()
 
-      expect(mock.mock.calls.length).toEqual(1)
+      expect(mock.mock.calls).toHaveLength(1)
 
       const urlString = mock.mock.calls[0][0]
       const queryString = urlString.split('/imports?')[1]
