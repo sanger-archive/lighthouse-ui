@@ -93,9 +93,7 @@ export default {
     projectId: process.env.PROJECT_ID,
     studyId: process.env.STUDY_ID,
     printers: process.env.PRINTERS || 'a,b,c',
-    featureFlags: {
-      uatActions: process.env.FEATURE_FLAG_UAT_ACTIONS || true,
-      bioseroCherrypick: process.env.FEATURE_FLAG_BIOSERO_CHERRYPICK || true,
-    },
+    uatActions: process.env.FEATURE_FLAG_UAT_ACTIONS,
+    bioseroCherrypick: process.env.FEATURE_FLAG_BIOSERO_CHERRYPICK,
   },
 }
