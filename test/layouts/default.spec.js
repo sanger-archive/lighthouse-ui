@@ -6,23 +6,13 @@ const localVue = createLocalVue()
 localVue.use(BootstrapVue)
 
 describe('Index', () => {
-  let wrapper, $config
+  let wrapper
 
   beforeEach(() => {
-    $config = {
-      featureFlags: {
-        uatActions: true,
-        bioseroCherrypick: true,
-      },
-    }
-
     wrapper = mount(Default, {
       localVue,
       stubs: {
         nuxt: true,
-      },
-      mocks: {
-        $config
       },
     })
   })
