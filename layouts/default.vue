@@ -49,23 +49,14 @@
 </template>
 
 <script>
-import config from '@/nuxt.config'
 
 export default {
-  props: {
-    featureFlagUatActions: {
-      type: Boolean,
-      default() {
-        return JSON.parse(config.publicRuntimeConfig.featureFlags.uatActions)
-      },
-    },
-    featureFlagBioseroCherrypick: {
-      type: Boolean,
-      default() {
-        return JSON.parse(config.publicRuntimeConfig.featureFlags.bioseroCherrypick)
-      },
-    },
-  }
+  data() {
+    return {
+      featureFlagUatActions: this.$config.uatActions,
+      featureFlagBioseroCherrypick: this.$config.bioseroCherrypick,
+    }
+  },
 }
 </script>
 
