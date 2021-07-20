@@ -587,13 +587,23 @@ describe('lighthouse_service api', () => {
       })
       const result = await lighthouse.generateTestRun(plateSpecs, addToDart)
 
-      expect(axios.post).toHaveBeenCalled()
+      const headers = {
+        "headers": { "Authorization": config.privateRuntimeConfig.lighthouseApiKey }
+      }
+
+      const expectedPath = /cherrypick-test-data/
+      const expectedBody = {
+        'plate_specs': [[1, 2], [3, 4]],
+        'add_to_dart': addToDart,
+      }
+
+      expect(axios.post).toHaveBeenCalledWith(expect.stringMatching(expectedPath), expectedBody, headers)
       expect(result.success).toBeTruthy()
       expect(result.runId).toEqual(runId)
     })
 
     it('when the request errors', async () => {
-      response = { "_status": "ERR", "_issues": { "plate_specs": "should not be an empty list." }, "_error": { "code": 422, "message": "Insertion failure" } }
+      response = { "_status": "ERR", "_issues": { "plate_specs": "must be of list type", "another": "error message" }, "_error": { "code": 422, "message": "Insertion failure: 1 document(s) contain(s) error(s)" } }
       const error = {
         response: {
           data: response
@@ -604,7 +614,7 @@ describe('lighthouse_service api', () => {
       const result = await lighthouse.generateTestRun(plateSpecs, addToDart)
 
       expect(result.success).toBeFalsy()
-      expect(result.error).toEqual("Insertion failure: {\"plate_specs\":\"should not be an empty list.\"}")
+      expect(result.error).toEqual("Insertion failure: 1 document(s) contain(s) error(s): plate_specs: must be of list type; another: error message; ")
     })
 
     it('when the request fails', async () => {
@@ -628,19 +638,18 @@ describe('lighthouse_service api', () => {
       const result = await lighthouse.generateTestRun(plateSpecs, addToDart)
 
       expect(result.success).toBeFalsy()
-      // TODO: fix
-      expect(result.error).toEqual("Insertion failure: undefined")
+      expect(result.error).toEqual("Insertion failure")
     })
 
   })
 
   describe('#getTestRuns', () => {
-    let currentPage, perPage
+    let currentPage, maxResults
 
     beforeEach(() => {
       jest.spyOn(axios, 'get')
       currentPage = 1
-      perPage = 5
+      maxResults = 5
     })
 
     it('when the request is successful', async () => {
@@ -655,9 +664,14 @@ describe('lighthouse_service api', () => {
       axios.get.mockResolvedValue({
         data: response,
       })
-      const result = await lighthouse.getTestRuns(currentPage, perPage)
+      const result = await lighthouse.getTestRuns(currentPage, maxResults)
+      const headers = {
+        "headers": { "Authorization": config.privateRuntimeConfig.lighthouseApiKey }
+      }
 
-      expect(axios.get).toHaveBeenCalled()
+      const expectedPath = /cherrypick-test-data\?max_results=5&page=1&sort=-_created/
+
+      expect(axios.get).toHaveBeenCalledWith(expect.stringMatching(expectedPath), headers)
       expect(result.success).toBeTruthy()
       expect(result.response).toEqual(response._items)
       expect(result.response[0].total_plates).toEqual(3)
@@ -675,7 +689,7 @@ describe('lighthouse_service api', () => {
       }
 
       axios.get.mockImplementationOnce(() => Promise.reject(error))
-      const result = await lighthouse.getTestRuns(currentPage, perPage)
+      const result = await lighthouse.getTestRuns(currentPage, maxResults)
 
       expect(result.success).toBeFalsy()
       expect(result.error).toEqual("The method is not allowed for the requested URL.")
@@ -684,7 +698,7 @@ describe('lighthouse_service api', () => {
     it('when the request fails', async () => {
       const error = {}
       axios.get.mockImplementationOnce(() => Promise.reject(error))
-      const result = await lighthouse.getTestRuns(currentPage, perPage)
+      const result = await lighthouse.getTestRuns(currentPage, maxResults)
 
       expect(result.success).toBeFalsy()
       expect(result.error).toEqual("An unexpected error has occured")
@@ -707,7 +721,14 @@ describe('lighthouse_service api', () => {
       })
       const result = await lighthouse.getTestRun(id)
 
-      expect(axios.get).toHaveBeenCalled()
+      const headers = {
+        "headers": { "Authorization": config.privateRuntimeConfig.lighthouseApiKey }
+      }
+
+      const expectedPath = /cherrypick-test-data\/123/
+
+      expect(axios.get).toHaveBeenCalledWith(expect.stringMatching(expectedPath), headers)
+
       expect(result.success).toBeTruthy()
       expect(result.response).toEqual(response)
     })

@@ -247,24 +247,22 @@ const formatPlateSpecs = (plateSpecs) => {
 const generateTestRun = async (plateSpecs, addToDart) => {
   const plateSpecsParam = formatPlateSpecs(plateSpecs)
   try {
-    const url = `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypick-test-data`
+    const url = new URL('cherrypick-test-data', config.privateRuntimeConfig.lighthouseBaseURL)
+
     const body = {
       'plate_specs': plateSpecsParam,
       'add_to_dart': addToDart,
     }
     const headers = { headers: { Authorization: config.privateRuntimeConfig.lighthouseApiKey } }
 
-    const response = await axios.post(url, body, headers)
+    const response = await axios.post(url.href, body, headers)
 
     return {
       success: true,
       runId: response.data._id,
     }
   } catch (error) {
-    return {
-      success: false,
-      error: error.response ? error.response.data._error.message + ": " + JSON.stringify(error.response.data._issues) : 'An unexpected error has occured'
-    }
+    return errorResponse(error)
   }
 }
 
@@ -276,12 +274,15 @@ const generateTestRun = async (plateSpecs, addToDart) => {
  */
 const getTestRuns = async (currentPage, maxResults) => {
   try {
-    // TODO: refactor path
-    const url = `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypick-test-data?max_results=${maxResults}&page=${currentPage}&sort=[("_created", -1)]`
+    const url = new URL('cherrypick-test-data', config.privateRuntimeConfig.lighthouseBaseURL)
+
+    url.searchParams.append("max_results", maxResults)
+    url.searchParams.append("page", currentPage)
+    url.searchParams.append("sort", "-_created")
 
     const headers = { headers: { Authorization: config.privateRuntimeConfig.lighthouseApiKey } }
 
-    const response = await axios.get(url, headers)
+    const response = await axios.get(url.href, headers)
 
     response.data._items.forEach(run => {
       run.total_plates = JSON.parse(run.barcodes || "[]").length
@@ -304,11 +305,11 @@ const getTestRuns = async (currentPage, maxResults) => {
  */
 const getTestRun = async (id) => {
   try {
-    const url = `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypick-test-data/${id}`
+    const url = new URL(`cherrypick-test-data/${id}`, config.privateRuntimeConfig.lighthouseBaseURL)
 
     const headers = { headers: { Authorization: config.privateRuntimeConfig.lighthouseApiKey } }
 
-    const response = await axios.get(url, headers)
+    const response = await axios.get(url.href, headers)
 
     return {
       success: true,
@@ -320,9 +321,19 @@ const getTestRun = async (id) => {
 }
 
 const errorResponse = (error) => {
+  let msg = error.response ? error.response.data._error.message : 'An unexpected error has occured'
+  if (error.response && error.response.data._issues) {
+    let output = ''
+
+    for (const [key, value] of Object.entries(error.response.data._issues)) {
+      output += key + ': ' + value + '; '
+    }
+    msg = msg.concat(': ', output)
+  }
+
   return {
     success: false,
-    error: error.response ? error.response.data._error.message : 'An unexpected error has occured'
+    error: msg
   }
 }
 
