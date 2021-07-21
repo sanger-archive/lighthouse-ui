@@ -7,19 +7,18 @@
     <Alert id="alert" ref="alert"></Alert>
     <b-card title="Test Run">
       <div v-if="run.status=='completed'">
-        <b-button
-          id="printBarcodesButton"
-          variant="outline-info"
-          class="float-right"
-          :disabled="!printerSelected"
-          @click="print(barcodesWithText, printerSelected)"
-        >Print ALL labels</b-button>
-
         <b-row>
           <label for="selectPrinter">Which printer would you like to use?</label>
           <b-form-select id="selectPrinter" v-model="printerSelected" :options="printerOptions"></b-form-select>
+          <b-button
+            id="printBarcodesButton"
+            variant="outline-info"
+            class="float-right ml-2"
+            :disabled="!printerSelected"
+            @click="print(barcodesWithText, printerSelected)"
+          >Print ALL labels</b-button>
         </b-row>
-        <b-table striped hover :fields="fields" :items="barcodesWithText">
+        <b-table striped hover :fields="fields" :items="barcodesWithText" responsive sticky-header>
           <template #cell(actions)="row">
             <b-button
               :id="'print-'+row.item.barcode"
