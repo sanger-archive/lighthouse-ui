@@ -19,7 +19,8 @@
         The
         <em>Generate</em> button will start the creation of the data, and you will be automatically taken to the label printing screen when it is done.
       </b-card-text>
-      <b-form inline>
+
+      <b-form v-if="!totalPlatesReached" inline>
         <label class="mr-sm-2" for="numberOfPlates">Number of plates</label>
         <b-form-select
           id="numberOfPlates"
@@ -43,13 +44,20 @@
           @click="add"
         >Add</b-button>
       </b-form>
+
+      <b-card v-else-if="totalPlatesReached">
+        <span class="font-weight-bold">Maximum number of plates reached</span>
+      </b-card>
+
       <br />
       <b-table striped hover :items="plateSpecs"></b-table>
 
       <b-row align-v="end" align-h="between">
         <b-col>
           Total plates:
-          <span :style="totalPlatesSyle">{{ totalPlates }}/{{maxNumberOfPlates}}</span>
+          <span
+            :style="totalPlatesReached ? {color: 'red'} : {color: 'black'}"
+          >{{ totalPlates }}/{{maxNumberOfPlates}}</span>
         </b-col>
 
         <b-col>
@@ -139,10 +147,8 @@ export default {
     isValid() {
       return this.totalPlates>0 && this.totalPlates<=this.maxNumberOfPlates
     },
-    totalPlatesSyle() {
-      return {
-          color: this.totalPlates === this.maxNumberOfPlates ? 'red' : 'black'
-      }
+    totalPlatesReached() {
+      return this.totalPlates === this.maxNumberOfPlates
     }
   },
   methods: {
