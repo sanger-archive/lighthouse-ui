@@ -5,11 +5,15 @@
     <h1 class="mt-3">UAT Actions</h1>
 
     <Alert id="alert" ref="alert"></Alert>
-    <b-card title="Test Run">
-      <div v-if="run.status=='completed'">
-        <b-row>
+    <b-card v-if="run.status=='completed'" title="Test Run">
+      <b-row align-v="end">
+        <b-col>
           <label for="selectPrinter">Which printer would you like to use?</label>
+        </b-col>
+        <b-col>
           <b-form-select id="selectPrinter" v-model="printerSelected" :options="printerOptions"></b-form-select>
+        </b-col>
+        <b-col>
           <b-button
             id="printBarcodesButton"
             variant="outline-info"
@@ -17,23 +21,25 @@
             :disabled="!printerSelected"
             @click="print(barcodesWithText, printerSelected)"
           >Print ALL labels</b-button>
-        </b-row>
-        <b-table striped hover :fields="fields" :items="barcodesWithText" responsive sticky-header>
-          <template #cell(actions)="row">
-            <b-button
-              :id="'print-'+row.item.barcode"
-              variant="outline-info"
-              :disabled="!printerSelected"
-              @click="print([row.item], printerSelected)"
-            >Print</b-button>
-          </template>
-        </b-table>
-      </div>
+        </b-col>
+      </b-row>
+      <br />
 
-      <div v-else-if="run.status=='failed'">
-        <span style="color:red" class="font-weight-bold">Failure:</span>
-        {{ run.failure_reason }}
-      </div>
+      <b-table striped hover :fields="fields" :items="barcodesWithText" sticky-header="800px">
+        <template #cell(actions)="row">
+          <b-button
+            :id="'print-'+row.item.barcode"
+            variant="outline-info"
+            :disabled="!printerSelected"
+            @click="print([row.item], printerSelected)"
+          >Print</b-button>
+        </template>
+      </b-table>
+    </b-card>
+
+    <b-card v-else-if="run.status=='failed'" title="Test Run">
+      <span style="color:red" class="font-weight-bold">Failure:</span>
+      {{ run.failure_reason }}
     </b-card>
   </b-container>
 </template>

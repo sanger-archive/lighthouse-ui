@@ -39,7 +39,7 @@
         <b-button
           id="addButton"
           variant="outline-primary"
-          :disabled="isBusy || totalPlates>=200"
+          :disabled="isBusy || totalPlates>=maxNumberOfPlates"
           @click="add"
         >Add</b-button>
       </b-form>
@@ -49,7 +49,7 @@
       <b-row align-v="end" align-h="between">
         <b-col>
           Total plates:
-          <span :style="totalPlatesSyle">{{ totalPlates }}/200</span>
+          <span :style="totalPlatesSyle">{{ totalPlates }}/{{maxNumberOfPlates}}</span>
         </b-col>
 
         <b-col>
@@ -137,11 +137,11 @@ export default {
       return this.status === statuses.Busy
     },
     isValid() {
-      return this.totalPlates>0 && this.totalPlates<=200
+      return this.totalPlates>0 && this.totalPlates<=this.maxNumberOfPlates
     },
     totalPlatesSyle() {
       return {
-          color: this.totalPlates === 200 ? 'red' : 'black'
+          color: this.totalPlates === this.maxNumberOfPlates ? 'red' : 'black'
       }
     }
   },
@@ -150,7 +150,7 @@ export default {
       return Array.from({length: this.maxNumberOfPositives + 1}, (v, i) => i) // 0 - 96
     },
     numberOfPlatesOptions() {
-      return Array.from({length: this.maxNumberOfPlates - this.totalPlates}, (v, i) => i + 1) // 200 - totalPlates
+      return Array.from({length: this.maxNumberOfPlates - this.totalPlates}, (v, i) => i + 1) // e.g default: 1-200
     },
     add() {
       this.plateSpecs.push({numberOfPlates: this.form.numberOfPlates, numberOfPositives: this.form.numberOfPositives })
