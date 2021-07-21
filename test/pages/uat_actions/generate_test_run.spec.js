@@ -4,6 +4,7 @@ import GenerateTestRun from '@/pages/uat_actions/generate_test_run.vue'
 import lighthouse from '@/modules/lighthouse_service'
 import Alert from '@/components/Alert'
 import flushPromises from 'flush-promises'
+import statuses from '@/modules/statuses'
 
 jest.mock('@/modules/lighthouse_service')
 
@@ -24,6 +25,24 @@ describe('UAT Actions', () => {
     expect(wrapper.findComponent(GenerateTestRun).exists()).toBeTruthy()
   })
 
+  // view
+  describe('form', () => {
+    it('is displayed when the maximum plates is not reached', () => {
+      expect(wrapper.find("#platesSpecForm").exists()).toBe(true)
+      expect(wrapper.find("#maximumPlateMessage").exists()).not.toBe(true)
+    })
+
+    it('is not displayed when the maximum plates is reached', () => {
+      wrapper.vm.maxNumberOfPlates = 2
+      wrapper.vm.plateSpecs = [{ numberOfPlates: 1, numberOfPositives: 1 }, { numberOfPlates: 1, numberOfPositives: 3 }]
+
+      wrapper.vm.$nextTick(() => {
+        expect(wrapper.find("#platesSpecForm").exists()).toBe(false)
+        expect(wrapper.find("#maximumPlateMessage").exists()).toBe(true)
+      })
+    })
+  })
+
   // components
   describe('alert', () => {
     it('has an alert', () => {
@@ -40,22 +59,37 @@ describe('UAT Actions', () => {
       })
       expect(page.addToDart).toEqual(false)
       expect(page.plateSpecs).toEqual([])
+      expect(wrapper.vm.status).toEqual(statuses.Idle)
     })
   })
 
   // computed
   describe('totalPlates', () => {
     it('totals the number of plates', () => {
-      wrapper = mount(GenerateTestRun, {
-        localVue,
-        data() {
-          return {
-            plateSpecs: [{ numberOfPlates: 2, numberOfPositives: 1 }, { numberOfPlates: 11, numberOfPositives: 3 }],
-          }
-        },
-      })
-
+      wrapper.vm.plateSpecs = [{ numberOfPlates: 2, numberOfPositives: 1 }, { numberOfPlates: 11, numberOfPositives: 3 }]
       expect(wrapper.vm.totalPlates).toEqual(2 + 11)
+    })
+  })
+
+  describe('isBusy', () => {
+    it('default is not busy', () => {
+      expect(wrapper.vm.isBusy).toBeFalsy()
+    })
+
+    it('when busy', () => {
+      wrapper.vm.status = statuses.Busy
+      expect(wrapper.vm.isBusy).toBeTruthy()
+    })
+  })
+
+  describe('isValid', () => {
+    it('default is not busy', () => {
+      expect(wrapper.vm.isValid).toBeFalsy()
+    })
+
+    it('when valid', () => {
+      wrapper.vm.plateSpecs = [{ numberOfPlates: 2, numberOfPositives: 1 }, { numberOfPlates: 11, numberOfPositives: 3 }]
+      expect(wrapper.vm.isValid).toBeTruthy()
     })
   })
 
@@ -127,6 +161,12 @@ describe('UAT Actions', () => {
     })
   })
 
+  describe('setting the status', () => {
+    it('default should be idle', () => {
+      expect(wrapper.vm.status).toEqual(statuses.Idle)
+    })
+  })
+
   describe('#reset', () => {
     it('resets plateSpecs', async () => {
       wrapper = mount(GenerateTestRun, {
@@ -190,8 +230,9 @@ describe('UAT Actions', () => {
             plateSpecs: [{ numberOfPlates: 1, numberOfPositives: 2 }],
             addToDart: true,
           }
-        },
+        }
       })
+      wrapper.vm.showAlert = jest.fn()
     })
 
     it('when the request is successful', async () => {
@@ -200,8 +241,6 @@ describe('UAT Actions', () => {
         runId: 'anId123'
       })
 
-      wrapper.vm.showAlert = jest.fn()
-
       await wrapper.find('#generateTestRunButton').trigger('click')
       await flushPromises()
       expect(lighthouse.generateTestRun).toHaveBeenCalledWith([{ numberOfPlates: 1, numberOfPositives: 2 }], true)
@@ -209,16 +248,31 @@ describe('UAT Actions', () => {
       expect(wrapper.vm.showAlert).not.toHaveBeenCalled()
     })
 
-    it('when the request fails', async () => {
+    it('when the request failsx', async () => {
       lighthouse.generateTestRun.mockReturnValue({
         success: false,
         error: 'There was an error',
       })
 
       await wrapper.find('#generateTestRunButton').trigger('click')
-      await flushPromises()
       expect(lighthouse.generateTestRun).toHaveBeenCalledWith([{ numberOfPlates: 1, numberOfPositives: 2 }], true)
-      expect(wrapper.find("#alert").text()).toMatch('There was an error')
+      expect(wrapper.vm.showAlert).toHaveBeenCalledWith('There was an error', 'danger')
+    })
+
+    it('updates the status and spinner', async () => {
+      lighthouse.generateTestRun.mockResolvedValue({
+        success: true,
+        runId: 'anId123'
+      })
+
+      expect(wrapper.vm.status).toEqual(statuses.Idle)
+      expect(wrapper.find('#busySpinner').isVisible()).toBe(false)
+      await wrapper.find('#generateTestRunButton').trigger('click')
+      expect(wrapper.vm.status).toEqual(statuses.Busy)
+      expect(wrapper.find('#busySpinner').isVisible()).toBe(true)
+      await flushPromises()
+      expect(wrapper.vm.status).toEqual(statuses.Idle)
+      expect(wrapper.find('#busySpinner').isVisible()).toBe(false)
     })
   })
 })
