@@ -292,7 +292,7 @@ const getTestRuns = async (currentPage, maxResults) => {
     const response = await axios.get(url.href, headers)
 
     response.data._items.forEach(run => {
-      run.total_plates = JSON.parse(run.barcodes || "[]").length
+      run.total_plates = run.plate_specs.reduce(function (acc, obj) { return acc + obj[0] }, 0)
     })
 
     return {

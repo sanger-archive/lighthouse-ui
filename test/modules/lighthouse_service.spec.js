@@ -670,9 +670,9 @@ describe('lighthouse_service api', () => {
     it('when the request is successful', async () => {
       response = {
         _items: [
-          { "_id": "1", "barcodes": "[[\"TEST-111\", \"number of positives: 0\"], [\"TEST-222\", \"number of positives: 0\"], [\"TEST-333\", \"number of positives: 2\"]]" },
-          { "_id": "2", "barcodes": "[[\"TEST-444\", \"number of positives: 0\"], [\"TEST-555\", \"number of positives: 2\"]]" },
-          { "_id": "3" }],
+          { "_id": "1", "plate_specs": [[1, 0], [1, 0], [1, 1]], "barcodes": "[[\"TEST-111\", \"number of positives: 0\"], [\"TEST-222\", \"number of positives: 0\"], [\"TEST-333\", \"number of positives: 2\"]]" },
+          { "_id": "2", "plate_specs": [[1, 0], [1, 2]], "barcodes": "[[\"TEST-444\", \"number of positives: 0\"], [\"TEST-555\", \"number of positives: 2\"]]" },
+          { "_id": "3", "plate_specs": [] }],
         _meta: { "total": 32 }
       }
 
