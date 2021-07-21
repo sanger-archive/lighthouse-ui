@@ -49,7 +49,7 @@
       <b-row align-v="end" align-h="between">
         <b-col>
           Total plates:
-          <span class="mr-2" :style="totalPlatesSyle">{{ totalPlates }}/200</span>
+          <span :style="totalPlatesSyle">{{ totalPlates }}/200</span>
         </b-col>
 
         <b-col>
