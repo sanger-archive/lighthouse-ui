@@ -25,6 +25,24 @@ describe('UAT Actions', () => {
     expect(wrapper.findComponent(GenerateTestRun).exists()).toBeTruthy()
   })
 
+  // view
+  describe('form', () => {
+    it('is displayed when the maximum plates is not reached', () => {
+      expect(wrapper.find("#platesSpecForm").exists()).toBe(true)
+      expect(wrapper.find("#maximumPlateMessage").exists()).not.toBe(true)
+    })
+
+    it('is not displayed when the maximum plates is reached', () => {
+      wrapper.vm.maxNumberOfPlates = 2
+      wrapper.vm.plateSpecs = [{ numberOfPlates: 1, numberOfPositives: 1 }, { numberOfPlates: 1, numberOfPositives: 3 }]
+
+      wrapper.vm.$nextTick(() => {
+        expect(wrapper.find("#platesSpecForm").exists()).toBe(false)
+        expect(wrapper.find("#maximumPlateMessage").exists()).toBe(true)
+      })
+    })
+  })
+
   // components
   describe('alert', () => {
     it('has an alert', () => {
@@ -241,17 +259,20 @@ describe('UAT Actions', () => {
       expect(wrapper.vm.showAlert).toHaveBeenCalledWith('There was an error', 'danger')
     })
 
-    it('updates the status', async () => {
+    it('updates the status and spinner', async () => {
       lighthouse.generateTestRun.mockResolvedValue({
         success: true,
         runId: 'anId123'
       })
 
       expect(wrapper.vm.status).toEqual(statuses.Idle)
+      expect(wrapper.find('#busySpinner').isVisible()).toBe(false)
       await wrapper.find('#generateTestRunButton').trigger('click')
       expect(wrapper.vm.status).toEqual(statuses.Busy)
+      expect(wrapper.find('#busySpinner').isVisible()).toBe(true)
       await flushPromises()
       expect(wrapper.vm.status).toEqual(statuses.Idle)
+      expect(wrapper.find('#busySpinner').isVisible()).toBe(false)
     })
   })
 })

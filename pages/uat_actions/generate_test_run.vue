@@ -20,7 +20,7 @@
         <em>Generate</em> button will start the creation of the data, and you will be automatically taken to the label printing screen when it is done.
       </b-card-text>
 
-      <b-form v-if="!totalPlatesReached" inline>
+      <b-form v-if="!totalPlatesReached" id="platesSpecForm" inline>
         <label class="mr-sm-2" for="numberOfPlates">Number of plates</label>
         <b-form-select
           id="numberOfPlates"
@@ -45,7 +45,7 @@
         >Add</b-button>
       </b-form>
 
-      <b-card v-else-if="totalPlatesReached">
+      <b-card v-else id="maximumPlateMessage">
         <span class="font-weight-bold">Maximum number of plates reached</span>
       </b-card>
 
@@ -96,7 +96,7 @@
             @click="generateTestRun"
           >
             Generate test run
-            <b-spinner v-show="isBusy" small></b-spinner>
+            <b-spinner v-show="isBusy" id="busySpinner" small></b-spinner>
           </b-button>
         </b-col>
       </b-row>
