@@ -6,13 +6,21 @@ const localVue = createLocalVue()
 localVue.use(BootstrapVue)
 
 describe('Index', () => {
-  let wrapper
+  let wrapper, $config
 
   beforeEach(() => {
+    $config = {
+      uatActions: true,
+      bioseroCherrypick: true,
+    }
+
     wrapper = mount(Default, {
       localVue,
       stubs: {
         nuxt: true,
+      },
+      mocks: {
+        $config
       },
     })
   })
@@ -23,7 +31,7 @@ describe('Index', () => {
 
   it('has a navbar', () => {
     expect(wrapper.findComponent({ ref: 'navbar' }).text()).toMatch(
-      /Lighthouse {2}Reports Box Buster Sentinel Sample Creation Sentinel Cherrypick Imports Print Labels Beckman Cherrypick/
+      /Lighthouse {2}Reports Box Buster Sentinel Sample Creation Sentinel Cherrypick Imports Print Labels Beckman Cherrypick Biosero Cherrypick UAT Actions/
     )
   })
 })

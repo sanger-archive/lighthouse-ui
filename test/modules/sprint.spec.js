@@ -105,7 +105,7 @@ describe('Sprint', () => {
         Sprint.headers
       )
       expect(response.success).toBeTruthy()
-      expect(response.message).toEqual('successfully printed 3 labels to heron-bc3')
+      expect(response.message).toEqual('Successfully printed 3 labels to heron-bc3')
     })
 
     it('when sprint fails', async () => {
@@ -159,7 +159,7 @@ describe('Sprint', () => {
         Baracoda.createBarcodes.mockResolvedValue({ success: true, barcodes })
         mock.mockResolvedValue({
           success: true,
-          message: 'successfully printed 5 labels to heron-bc3',
+          message: 'Successfully printed 5 labels to heron-bc3',
         })
 
         const response = await Sprint.printDestinationPlateLabels(args)
@@ -168,7 +168,7 @@ describe('Sprint', () => {
           labelFields: Sprint.createLabelFields({ barcodes, text: 'LHTR' }),
         })
         expect(response.success).toBeTruthy()
-        expect(response.message).toEqual('successfully printed 5 labels to heron-bc3')
+        expect(response.message).toEqual('Successfully printed 5 labels to heron-bc3')
       })
 
       it('when baracoda fails', async () => {

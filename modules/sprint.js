@@ -92,7 +92,7 @@ const printLabels = async ({ labelFields, printer }) => {
 
     return {
       success: true,
-      message: `successfully printed ${labelFields.length} labels to ${printer}`,
+      message: `Successfully printed ${labelFields.length} labels to ${printer}`,
     }
   } catch (error) {
     return {

@@ -241,7 +241,7 @@ describe('lighthouse_service api', () => {
           count_fit_to_pick_samples: 2,
         },
       ]
-      const response = { data: { plates } }
+      response = { data: { plates } }
 
       mock.mockImplementationOnce(() => response)
 
@@ -510,7 +510,7 @@ describe('lighthouse_service api', () => {
     })
 
     it('on failure', async () => {
-      const response = {
+      response = {
         response: { data: { errors: ['There was an error'] } },
       }
       mock.mockRejectedValue(response)
@@ -570,7 +570,7 @@ describe('lighthouse_service api', () => {
     })
 
     it('on failure', async () => {
-      const response = {
+      response = {
         response: { data: { errors: ['There was an error'] } },
       }
       mock.mockRejectedValue(response)
@@ -581,6 +581,202 @@ describe('lighthouse_service api', () => {
 
       expect(mock).toHaveBeenCalledTimes(1)
       expect(result).toEqual(expected)
+    })
+  })
+
+  describe('#generateTestRun', () => {
+    let runId, plateSpecs, addToDart
+
+    beforeEach(() => {
+      jest.spyOn(axios, 'post')
+      runId = "aRunId"
+      plateSpecs = [{ numberOfPlates: 1, numberOfPositives: 2 }, { numberOfPlates: 3, numberOfPositives: 4 }]
+      addToDart = true
+    })
+
+    it('when the request is successful', async () => {
+      response = { "_id": runId, "_status": "OK" }
+
+      axios.post.mockResolvedValue({
+        data: response,
+      })
+      const result = await lighthouse.generateTestRun(plateSpecs, addToDart)
+
+      const headers = {
+        "headers": { "Authorization": config.privateRuntimeConfig.lighthouseApiKey }
+      }
+
+      const expectedPath = /cherrypick-test-data/
+      const expectedBody = {
+        'plate_specs': [[1, 2], [3, 4]],
+        'add_to_dart': addToDart,
+      }
+
+      expect(axios.post).toHaveBeenCalledWith(expect.stringMatching(expectedPath), expectedBody, headers)
+      expect(result.success).toBeTruthy()
+      expect(result.runId).toEqual(runId)
+    })
+
+    it('when the request errors', async () => {
+      response = { "_status": "ERR", "_issues": { "plate_specs": "must be of list type", "another": "error message" }, "_error": { "code": 422, "message": "Insertion failure: 1 document(s) contain(s) error(s)" } }
+      const error = {
+        response: {
+          data: response
+        }
+      }
+
+      axios.post.mockImplementationOnce(() => Promise.reject(error))
+      const result = await lighthouse.generateTestRun(plateSpecs, addToDart)
+
+      expect(result.success).toBeFalsy()
+      expect(result.error).toEqual("Insertion failure: 1 document(s) contain(s) error(s): plate_specs: must be of list type; another: error message; ")
+    })
+
+    it('when the request fails', async () => {
+      const error = {}
+      axios.post.mockImplementationOnce(() => Promise.reject(error))
+      const result = await lighthouse.generateTestRun(plateSpecs, addToDart)
+
+      expect(result.success).toBeFalsy()
+      expect(result.error).toEqual("An unexpected error has occured")
+    })
+
+    it('when the request errors, from crawler, with no _issues', async () => {
+      response = { "_status": "ERR", "_error": { "code": 422, "message": "Insertion failure" } }
+      const error = {
+        response: {
+          data: response
+        }
+      }
+
+      axios.post.mockImplementationOnce(() => Promise.reject(error))
+      const result = await lighthouse.generateTestRun(plateSpecs, addToDart)
+
+      expect(result.success).toBeFalsy()
+      expect(result.error).toEqual("Insertion failure")
+    })
+
+  })
+
+  describe('#getTestRuns', () => {
+    let currentPage, maxResults
+
+    beforeEach(() => {
+      jest.spyOn(axios, 'get')
+      currentPage = 1
+      maxResults = 5
+    })
+
+    it('when the request is successful', async () => {
+      response = {
+        _items: [
+          { "_id": "1", "plate_specs": [[1, 0], [1, 0], [1, 1]], "barcodes": "[[\"TEST-111\", \"number of positives: 0\"], [\"TEST-222\", \"number of positives: 0\"], [\"TEST-333\", \"number of positives: 2\"]]" },
+          { "_id": "2", "plate_specs": [[1, 0], [1, 2]], "barcodes": "[[\"TEST-444\", \"number of positives: 0\"], [\"TEST-555\", \"number of positives: 2\"]]" },
+          { "_id": "3", "plate_specs": [] }],
+        _meta: { "total": 32 }
+      }
+
+      axios.get.mockResolvedValue({
+        data: response,
+      })
+      const result = await lighthouse.getTestRuns(currentPage, maxResults)
+      const headers = {
+        "headers": { "Authorization": config.privateRuntimeConfig.lighthouseApiKey }
+      }
+
+      const expectedPath = /cherrypick-test-data\?max_results=5&page=1&sort=-_created/
+
+      expect(axios.get).toHaveBeenCalledWith(expect.stringMatching(expectedPath), headers)
+      expect(result.success).toBeTruthy()
+      expect(result.response).toEqual(response._items)
+      expect(result.response[0].total_plates).toEqual(3)
+      expect(result.response[1].total_plates).toEqual(2)
+      expect(result.response[2].total_plates).toEqual(0)
+      expect(result.total).toEqual(response._meta.total)
+    })
+
+    it('when the request errors', async () => {
+      response = { "_status": "ERR", "_error": { "code": 405, "message": "The method is not allowed for the requested URL." } }
+      const error = {
+        response: {
+          data: response
+        }
+      }
+
+      axios.get.mockImplementationOnce(() => Promise.reject(error))
+      const result = await lighthouse.getTestRuns(currentPage, maxResults)
+
+      expect(result.success).toBeFalsy()
+      expect(result.error).toEqual("The method is not allowed for the requested URL.")
+    })
+
+    it('when the request fails', async () => {
+      const error = {}
+      axios.get.mockImplementationOnce(() => Promise.reject(error))
+      const result = await lighthouse.getTestRuns(currentPage, maxResults)
+
+      expect(result.success).toBeFalsy()
+      expect(result.error).toEqual("An unexpected error has occured")
+    })
+  })
+
+  describe('#getTestRun', () => {
+    let id
+
+    beforeEach(() => {
+      jest.spyOn(axios, 'get')
+      id = 123
+    })
+
+    it('when the request is successful', async () => {
+      response = { "_id": "123", "barcodes": "[[\"TEST-112426\", \"number of positives: 0\"]]" }
+
+      axios.get.mockResolvedValue({
+        data: response,
+      })
+      const result = await lighthouse.getTestRun(id)
+
+      const headers = {
+        "headers": { "Authorization": config.privateRuntimeConfig.lighthouseApiKey }
+      }
+
+      const expectedPath = /cherrypick-test-data\/123/
+
+      expect(axios.get).toHaveBeenCalledWith(expect.stringMatching(expectedPath), headers)
+
+      expect(result.success).toBeTruthy()
+      expect(result.response).toEqual(response)
+    })
+
+    it('when the request errors', async () => {
+      response = { "_status": "ERR", "_error": { "code": 405, "message": "The method is not allowed for the requested URL." } }
+      const error = {
+        response: {
+          data: response
+        }
+      }
+
+      axios.get.mockImplementationOnce(() => Promise.reject(error))
+      const result = await lighthouse.getTestRun(id)
+
+      expect(result.success).toBeFalsy()
+      expect(result.error).toEqual("The method is not allowed for the requested URL.")
+    })
+
+    it('when the request fails', async () => {
+      const error = {}
+      axios.get.mockImplementationOnce(() => Promise.reject(error))
+      const result = await lighthouse.getTestRun(id)
+
+      expect(result.success).toBeFalsy()
+      expect(result.error).toEqual("An unexpected error has occured")
+    })
+  })
+
+  describe('#formatPlateSpecs', () => {
+    it('returns the correct format', () => {
+      const result = lighthouse.formatPlateSpecs([{ numberOfPlates: 1, numberOfPositives: 2 }, { numberOfPlates: 3, numberOfPositives: 4 }])
+      expect(result).toEqual([[1, 2], [3, 4]])
     })
   })
 })

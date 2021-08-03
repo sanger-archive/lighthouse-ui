@@ -1,7 +1,7 @@
 <template>
   <b-container>
     <h1 class="mt-3">Imports</h1>
-    <p class="lead">Import status of CSV files processed by the crawler. Data shown only includes the last 4 week, up to 10,000 results.</p>
+    <p class="lead">Import status of CSV files processed by the crawler. Data shown only includes the last 4 weeks, up to 10,000 results.</p>
     <b-alert ref="alert" dismissible :show="showDismissibleAlert" :variant="alertData.variant">
       {{ alertData.message }}
     </b-alert>
