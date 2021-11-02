@@ -78,7 +78,7 @@ export default {
     /*
      ** You can extend webpack config here
      */
-    extend(config, ctx) { },
+    extend(config, ctx) {},
   },
   privateRuntimeConfig: {
     lighthouseBaseURL: process.env.LIGHTHOUSE_BASE_URL || 'http://lighthouse',
@@ -87,6 +87,7 @@ export default {
     sequencescapeBaseURL: process.env.SEQUENCESCAPE_BASE_URL || 'http://sequencescape',
     sprintBaseURL: process.env.SPRINT_BASE_URL || 'http://sprint',
     baracodaBaseURL: process.env.BARACODA_BASE_URL || 'http://baracoda',
+    cherrytrackBaseURL: process.env.CHERRYTRACK_BASE_URL || 'http://cherrytrack'
   },
   publicRuntimeConfig: {
     asynchronous: process.env.ASYNCHRONOUS,
