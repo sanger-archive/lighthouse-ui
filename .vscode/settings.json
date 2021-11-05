@@ -1,7 +1,4 @@
 {
-  "search.exclude": {
-    "**/.pnp.*": true
-  },
   "files.insertFinalNewline": true,
   "files.trimFinalNewlines": true,
 }
