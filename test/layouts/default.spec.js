@@ -20,7 +20,7 @@ describe('Index', () => {
         nuxt: true,
       },
       mocks: {
-        $config
+        $config,
       },
     })
   })

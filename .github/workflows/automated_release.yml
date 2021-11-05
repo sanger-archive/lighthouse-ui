@@ -64,4 +64,4 @@ jobs:
       - name: Remove the oldest package
         uses: actions/delete-package-versions@v1
         with:
-          package-name: "${{ github.event.repository.name }}"
+          package-name: '${{ github.event.repository.name }}'

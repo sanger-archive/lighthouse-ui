@@ -9,10 +9,7 @@
             title="Create Destination Plate"
             sub-title="Generate destination plate from CherryTrack data so it can continue in pipeline partially filled."
           >
-            <BioseroCherrypickForm
-              v-slot="{ form, formInvalid }"
-              :action="'create'"
-            >
+            <BioseroCherrypickForm v-slot="{ form, formInvalid }" :action="'create'">
               <b-button variant="success" :disabled="formInvalid" @click="create(form)"
                 >Create Destination Plate</b-button
               >

@@ -63,7 +63,7 @@ describe('BioseroCherrypickForm.vue', () => {
         wrapper.setData({
           form: {
             username: 'aUsername',
-            barcode: 'aBarcode'
+            barcode: 'aBarcode',
           },
         })
         expect(form.formInvalid).toEqual(false)

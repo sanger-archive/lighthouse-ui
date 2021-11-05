@@ -6,10 +6,7 @@ import each from 'jest-each'
 const localVue = createLocalVue()
 localVue.use(BootstrapVue)
 
-const links = [
-  'Generate Test Run',
-  'Test Runs',
-]
+const links = ['Generate Test Run', 'Test Runs']
 
 describe('UATActionsRouter.vue', () => {
   let wrapper

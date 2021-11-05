@@ -94,8 +94,8 @@ describe('Biosero Cherrypick', () => {
       lighthouseBiosero.createDestinationPlateBiosero.mockReturnValue({
         success: false,
         error: {
-          message:'an error',
-        }
+          message: 'an error',
+        },
       })
 
       await page.create(form)
@@ -131,7 +131,7 @@ describe('Biosero Cherrypick', () => {
         success: false,
         error: {
           message: 'An error message',
-        }
+        },
       })
 
       await page.fail(form)

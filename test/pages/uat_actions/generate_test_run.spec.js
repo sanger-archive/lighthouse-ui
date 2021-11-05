@@ -28,17 +28,20 @@ describe('UAT Actions', () => {
   // view
   describe('form', () => {
     it('is displayed when the maximum plates is not reached', () => {
-      expect(wrapper.find("#platesSpecForm").exists()).toBe(true)
-      expect(wrapper.find("#maximumPlateMessage").exists()).not.toBe(true)
+      expect(wrapper.find('#platesSpecForm').exists()).toBe(true)
+      expect(wrapper.find('#maximumPlateMessage').exists()).not.toBe(true)
     })
 
     it('is not displayed when the maximum plates is reached', () => {
       wrapper.vm.maxNumberOfPlates = 2
-      wrapper.vm.plateSpecs = [{ numberOfPlates: 1, numberOfPositives: 1 }, { numberOfPlates: 1, numberOfPositives: 3 }]
+      wrapper.vm.plateSpecs = [
+        { numberOfPlates: 1, numberOfPositives: 1 },
+        { numberOfPlates: 1, numberOfPositives: 3 },
+      ]
 
       wrapper.vm.$nextTick(() => {
-        expect(wrapper.find("#platesSpecForm").exists()).toBe(false)
-        expect(wrapper.find("#maximumPlateMessage").exists()).toBe(true)
+        expect(wrapper.find('#platesSpecForm').exists()).toBe(false)
+        expect(wrapper.find('#maximumPlateMessage').exists()).toBe(true)
       })
     })
   })
@@ -66,7 +69,10 @@ describe('UAT Actions', () => {
   // computed
   describe('totalPlates', () => {
     it('totals the number of plates', () => {
-      wrapper.vm.plateSpecs = [{ numberOfPlates: 2, numberOfPositives: 1 }, { numberOfPlates: 11, numberOfPositives: 3 }]
+      wrapper.vm.plateSpecs = [
+        { numberOfPlates: 2, numberOfPositives: 1 },
+        { numberOfPlates: 11, numberOfPositives: 3 },
+      ]
       expect(wrapper.vm.totalPlates).toEqual(2 + 11)
     })
   })
@@ -88,7 +94,10 @@ describe('UAT Actions', () => {
     })
 
     it('when valid', () => {
-      wrapper.vm.plateSpecs = [{ numberOfPlates: 2, numberOfPositives: 1 }, { numberOfPlates: 11, numberOfPositives: 3 }]
+      wrapper.vm.plateSpecs = [
+        { numberOfPlates: 2, numberOfPositives: 1 },
+        { numberOfPlates: 11, numberOfPositives: 3 },
+      ]
       expect(wrapper.vm.isValid).toBeTruthy()
     })
   })
@@ -137,7 +146,10 @@ describe('UAT Actions', () => {
 
       await wrapper.find('#addButton').trigger('click')
 
-      expect(wrapper.vm.plateSpecs).toEqual([{ numberOfPlates: 1, numberOfPositives: 2 }, { numberOfPlates: 3, numberOfPositives: 4 }])
+      expect(wrapper.vm.plateSpecs).toEqual([
+        { numberOfPlates: 1, numberOfPositives: 2 },
+        { numberOfPlates: 3, numberOfPositives: 4 },
+      ])
       expect(wrapper.vm.form.numberOfPlates).toEqual(1)
       expect(wrapper.vm.form.numberOfPositives).toEqual(0)
     })
@@ -155,7 +167,10 @@ describe('UAT Actions', () => {
 
       await wrapper.find('#addButton').trigger('click')
 
-      expect(wrapper.vm.plateSpecs).toEqual([{ numberOfPlates: 1, numberOfPositives: 4 }, { numberOfPlates: 3, numberOfPositives: 4 }])
+      expect(wrapper.vm.plateSpecs).toEqual([
+        { numberOfPlates: 1, numberOfPositives: 4 },
+        { numberOfPlates: 3, numberOfPositives: 4 },
+      ])
       expect(wrapper.vm.form.numberOfPlates).toEqual(1)
       expect(wrapper.vm.form.numberOfPositives).toEqual(0)
     })
@@ -181,7 +196,7 @@ describe('UAT Actions', () => {
       const button = wrapper.find('#resetButton')
       const modal = wrapper.find('#resetModal')
 
-      expect(modal.isVisible()).toBe(false);
+      expect(modal.isVisible()).toBe(false)
       await button.trigger('click')
 
       expect(modal.isVisible()).toBe(true)
@@ -194,7 +209,10 @@ describe('UAT Actions', () => {
         localVue,
         data() {
           return {
-            plateSpecs: [{ numberOfPlates: 2, numberOfPositives: 1 }, { numberOfPlates: 11, numbeOfPpositives: 3 }],
+            plateSpecs: [
+              { numberOfPlates: 2, numberOfPositives: 1 },
+              { numberOfPlates: 11, numbeOfPpositives: 3 },
+            ],
           }
         },
       })
@@ -217,7 +235,7 @@ describe('UAT Actions', () => {
 
     beforeEach(() => {
       const $router = {
-        push: jest.fn()
+        push: jest.fn(),
       }
 
       wrapper = mount(GenerateTestRun, {
@@ -230,7 +248,7 @@ describe('UAT Actions', () => {
             plateSpecs: [{ numberOfPlates: 1, numberOfPositives: 2 }],
             addToDart: true,
           }
-        }
+        },
       })
       wrapper.vm.showAlert = jest.fn()
     })
@@ -238,12 +256,15 @@ describe('UAT Actions', () => {
     it('when the request is successful', async () => {
       lighthouse.generateTestRun.mockResolvedValue({
         success: true,
-        runId: 'anId123'
+        runId: 'anId123',
       })
 
       await wrapper.find('#generateTestRunButton').trigger('click')
       await flushPromises()
-      expect(lighthouse.generateTestRun).toHaveBeenCalledWith([{ numberOfPlates: 1, numberOfPositives: 2 }], true)
+      expect(lighthouse.generateTestRun).toHaveBeenCalledWith(
+        [{ numberOfPlates: 1, numberOfPositives: 2 }],
+        true
+      )
       expect(wrapper.vm.$router.push).toHaveBeenCalled()
       expect(wrapper.vm.showAlert).not.toHaveBeenCalled()
     })
@@ -255,14 +276,17 @@ describe('UAT Actions', () => {
       })
 
       await wrapper.find('#generateTestRunButton').trigger('click')
-      expect(lighthouse.generateTestRun).toHaveBeenCalledWith([{ numberOfPlates: 1, numberOfPositives: 2 }], true)
+      expect(lighthouse.generateTestRun).toHaveBeenCalledWith(
+        [{ numberOfPlates: 1, numberOfPositives: 2 }],
+        true
+      )
       expect(wrapper.vm.showAlert).toHaveBeenCalledWith('There was an error', 'danger')
     })
 
     it('updates the status and spinner', async () => {
       lighthouse.generateTestRun.mockResolvedValue({
         success: true,
-        runId: 'anId123'
+        runId: 'anId123',
       })
 
       expect(wrapper.vm.status).toEqual(statuses.Idle)
