@@ -78,7 +78,7 @@ export default {
       sortDesc: true,
       boxBarcode: '',
       items: [],
-      submit_disabled: false
+      submit_disabled: false,
     }
   },
   computed: {

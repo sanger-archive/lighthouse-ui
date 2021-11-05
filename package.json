@@ -4,8 +4,10 @@
   "description": "Basic website for Lighthouse services",
   "author": "Wellcome Sanger Institute",
   "private": true,
+  "engines": {
+    "yarn": "NO LONGER USED - Please use npm"
+  },
   "scripts": {
-    "audit": "yarn npm audit",
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",

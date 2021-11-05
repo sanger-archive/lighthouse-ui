@@ -1,7 +1,7 @@
-import api from '@/modules/api'
-import SentinelCreateSamples from '@/pages/sentinel_create_samples'
 import { createLocalVue, mount } from '@vue/test-utils'
 import { BootstrapVue } from 'bootstrap-vue'
+import api from '@/modules/api'
+import SentinelCreateSamples from '@/pages/sentinel_create_samples'
 
 const localVue = createLocalVue()
 localVue.use(BootstrapVue)

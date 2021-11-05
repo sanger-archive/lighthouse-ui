@@ -1,7 +1,7 @@
 // Lighthouse Service Module
 
-import config from '@/nuxt.config'
 import axios from 'axios'
+import config from '@/nuxt.config'
 
 const handlePromise = async (promise) => {
   let rawResponse
@@ -34,7 +34,7 @@ const findPlatesFromBarcodes = async ({ barcodes }) => {
     const response = await axios.get(url, {
       params: {
         barcodes: barcodes.join(','),
-        '_exclude': 'pickable_samples'
+        _exclude: 'pickable_samples',
       },
     })
     return { success: true, ...response.data }
@@ -46,14 +46,16 @@ const findPlatesFromBarcodes = async ({ barcodes }) => {
 const getSearchDateString = (daysAgo) => {
   const dt = new Date()
   dt.setDate(dt.getDate() - daysAgo)
-  return dt.toISOString().slice(0, 19)  // first 19 characters for format yyyy-mm-ddThh:mm:ss
+  return dt.toISOString().slice(0, 19) // first 19 characters for format yyyy-mm-ddThh:mm:ss
 }
 
 const getImports = async () => {
   try {
     const response = await axios.get(
       // Get results for the past 4 weeks, in reverse date order, limited to 10000 results
-      `${config.privateRuntimeConfig.lighthouseBaseURL}/imports?max_results=10000&sort=-date&where={"date": {"$gt": "${getSearchDateString(28)}"}}`
+      `${
+        config.privateRuntimeConfig.lighthouseBaseURL
+      }/imports?max_results=10000&sort=-date&where={"date": {"$gt": "${getSearchDateString(28)}"}}`
     )
     return {
       success: true,
@@ -173,11 +175,11 @@ const createDestinationPlateBeckman = async (form) => {
   try {
     const response = await axios.get(
       `${config.privateRuntimeConfig.lighthouseBaseURL}` +
-      '/cherrypicked-plates' +
-      '/create?' +
-      `barcode=${form.barcode}&` +
-      `robot=${form.robotSerialNumber}&` +
-      `user_id=${form.username}`
+        '/cherrypicked-plates' +
+        '/create?' +
+        `barcode=${form.barcode}&` +
+        `robot=${form.robotSerialNumber}&` +
+        `user_id=${form.username}`
     )
     const responseData = response.data.data
     // success
@@ -207,12 +209,12 @@ const failDestinationPlateBeckman = async (form) => {
   try {
     const response = await axios.get(
       `${config.privateRuntimeConfig.lighthouseBaseURL}` +
-      '/cherrypicked-plates' +
-      '/fail?' +
-      `barcode=${form.barcode}&` +
-      `robot=${form.robotSerialNumber}&` +
-      `user_id=${form.username}&` +
-      `failure_type=${form.failureType}`
+        '/cherrypicked-plates' +
+        '/fail?' +
+        `barcode=${form.barcode}&` +
+        `robot=${form.robotSerialNumber}&` +
+        `user_id=${form.username}&` +
+        `failure_type=${form.failureType}`
     )
     // partial success
     if (response.data.errors.length > 0) {
@@ -242,7 +244,9 @@ const failDestinationPlateBeckman = async (form) => {
  * @returns {list} a represtation of the plate specs in a nested list e.g. [[1,2],[3,4]]
  */
 const formatPlateSpecs = (plateSpecs) => {
-  return plateSpecs.map((plate) => { return [plate.numberOfPlates, plate.numberOfPositives] })
+  return plateSpecs.map((plate) => {
+    return [plate.numberOfPlates, plate.numberOfPositives]
+  })
 }
 
 /**
@@ -257,8 +261,8 @@ const generateTestRun = async (plateSpecs, addToDart) => {
     const url = new URL('cherrypick-test-data', config.privateRuntimeConfig.lighthouseBaseURL)
 
     const body = {
-      'plate_specs': plateSpecsParam,
-      'add_to_dart': addToDart,
+      plate_specs: plateSpecsParam,
+      add_to_dart: addToDart,
     }
     const headers = { headers: { Authorization: config.privateRuntimeConfig.lighthouseApiKey } }
 
@@ -283,16 +287,18 @@ const getTestRuns = async (currentPage, maxResults) => {
   try {
     const url = new URL('cherrypick-test-data', config.privateRuntimeConfig.lighthouseBaseURL)
 
-    url.searchParams.append("max_results", maxResults)
-    url.searchParams.append("page", currentPage)
-    url.searchParams.append("sort", "-_created")
+    url.searchParams.append('max_results', maxResults)
+    url.searchParams.append('page', currentPage)
+    url.searchParams.append('sort', '-_created')
 
     const headers = { headers: { Authorization: config.privateRuntimeConfig.lighthouseApiKey } }
 
     const response = await axios.get(url.href, headers)
 
-    response.data._items.forEach(run => {
-      run.total_plates = run.plate_specs.reduce(function (acc, obj) { return acc + obj[0] }, 0)
+    response.data._items.forEach((run) => {
+      run.total_plates = run.plate_specs.reduce(function (acc, obj) {
+        return acc + obj[0]
+      }, 0)
     })
 
     return {
@@ -320,7 +326,7 @@ const getTestRun = async (id) => {
 
     return {
       success: true,
-      response: response.data
+      response: response.data,
     }
   } catch (error) {
     return errorResponse(error)
@@ -340,7 +346,7 @@ const errorResponse = (error) => {
 
   return {
     success: false,
-    error: msg
+    error: msg,
   }
 }
 
@@ -358,7 +364,7 @@ const lighthouse = {
   generateTestRun,
   getTestRuns,
   getTestRun,
-  formatPlateSpecs
+  formatPlateSpecs,
 }
 
 export default lighthouse

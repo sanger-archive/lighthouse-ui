@@ -1,6 +1,6 @@
-import Default from '@/layouts/default.vue'
 import { createLocalVue, mount } from '@vue/test-utils'
 import { BootstrapVue } from 'bootstrap-vue'
+import Default from '@/layouts/default.vue'
 
 const localVue = createLocalVue()
 localVue.use(BootstrapVue)
@@ -20,7 +20,7 @@ describe('Index', () => {
         nuxt: true,
       },
       mocks: {
-        $config
+        $config,
       },
     })
   })

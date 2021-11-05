@@ -1,11 +1,11 @@
+import { createLocalVue, mount } from '@vue/test-utils'
+import { BootstrapVue } from 'bootstrap-vue'
+import flushPromises from 'flush-promises'
 import labwhere from '@/modules/labwhere'
 import lighthouse from '@/modules/lighthouse_service'
 import BoxBuster from '@/pages/box_buster.vue'
 import '@/plugins/vue-pluralize'
 import { plateA, plateB, plateC, plateD, plateE, plateF } from '@/test/data/lighthouse_plates'
-import { createLocalVue, mount } from '@vue/test-utils'
-import { BootstrapVue } from 'bootstrap-vue'
-import flushPromises from 'flush-promises'
 
 // Mock the whole module. Returning jest.fn() allows you to mock methods here
 // jest.mock('@/modules/labwhere', () => jest.fn())
