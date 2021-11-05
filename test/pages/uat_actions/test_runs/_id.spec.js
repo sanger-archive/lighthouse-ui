@@ -1,6 +1,6 @@
-import TestRun from '@/pages/uat_actions/test_runs/_id'
 import { createLocalVue, mount } from '@vue/test-utils'
 import { BootstrapVue } from 'bootstrap-vue'
+import TestRun from '@/pages/uat_actions/test_runs/_id'
 import lighthouse from '@/modules/lighthouse_service'
 import sprint from '@/modules/sprint'
 

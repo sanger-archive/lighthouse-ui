@@ -1,9 +1,9 @@
+import { createLocalVue, shallowMount } from '@vue/test-utils'
+import { BootstrapVue } from 'bootstrap-vue'
 import Alert from '@/components/Alert'
 import lighthouse from '@/modules/lighthouse_service'
 import lighthouseBiosero from '@/modules/lighthouse_service_biosero'
 import BioseroCherrypick from '@/pages/biosero_cherrypick.vue'
-import { createLocalVue, shallowMount } from '@vue/test-utils'
-import { BootstrapVue } from 'bootstrap-vue'
 jest.mock('@/modules/lighthouse_service')
 jest.mock('@/modules/lighthouse_service_biosero')
 

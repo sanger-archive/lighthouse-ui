@@ -1,6 +1,6 @@
+import axios from 'axios'
 import lighthouseBiosero from '@/modules/lighthouse_service_biosero'
 import config from '@/nuxt.config'
-import axios from 'axios'
 
 describe('lighthouse_service_biosero api', () => {
   let mock, response

@@ -1,6 +1,6 @@
-import TestRuns from '@/pages/uat_actions/test_runs'
 import { createLocalVue, mount } from '@vue/test-utils'
 import { BootstrapVue } from 'bootstrap-vue'
+import TestRuns from '@/pages/uat_actions/test_runs'
 import lighthouse from '@/modules/lighthouse_service'
 
 jest.mock('@/modules/lighthouse_service')

@@ -1,5 +1,5 @@
-import Baracoda from '@/modules/baracoda'
 import axios from 'axios'
+import Baracoda from '@/modules/baracoda'
 
 const errorResponse = new Error('There was an error')
 const rejectPromise = () => Promise.reject(errorResponse)

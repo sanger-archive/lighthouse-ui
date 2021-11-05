@@ -1,7 +1,7 @@
-import PrintLabelsRouter from '@/components/PrintLabelsRouter'
 import { createLocalVue, mount } from '@vue/test-utils'
 import { BootstrapVue } from 'bootstrap-vue'
 import each from 'jest-each'
+import PrintLabelsRouter from '@/components/PrintLabelsRouter'
 
 const localVue = createLocalVue()
 localVue.use(BootstrapVue)

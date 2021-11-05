@@ -1,7 +1,7 @@
-import UATActionsRouter from '@/components/UATActionsRouter'
 import { createLocalVue, mount } from '@vue/test-utils'
 import { BootstrapVue } from 'bootstrap-vue'
 import each from 'jest-each'
+import UATActionsRouter from '@/components/UATActionsRouter'
 
 const localVue = createLocalVue()
 localVue.use(BootstrapVue)

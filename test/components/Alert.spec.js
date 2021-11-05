@@ -1,6 +1,6 @@
-import Alert from '@/components/Alert'
 import { createLocalVue, mount } from '@vue/test-utils'
 import { BootstrapVue } from 'bootstrap-vue'
+import Alert from '@/components/Alert'
 
 const localVue = createLocalVue()
 localVue.use(BootstrapVue)

@@ -1,7 +1,7 @@
 // Lighthouse Service Biosero Module
 
-import config from '@/nuxt.config'
 import axios from 'axios'
+import config from '@/nuxt.config'
 
 /**
  * - Returned on success: `{ success: true, response: "A successful message" }`

@@ -1,5 +1,5 @@
-import config from '@/nuxt.config'
 import axios from 'axios'
+import config from '@/nuxt.config'
 
 const createPayloadForCherrypickBatch = (barcodes, runtimeOptions = config.publicRuntimeConfig) => {
   const { asynchronous, studyId, projectId } = runtimeOptions

@@ -1,6 +1,6 @@
+import axios from 'axios'
 import Baracoda from '@/modules/baracoda'
 import config from '@/nuxt.config'
-import axios from 'axios'
 
 const query = `mutation printRequest($printRequest: PrintRequest!, $printer: String!) {
   print(printRequest: $printRequest, printer: $printer) {

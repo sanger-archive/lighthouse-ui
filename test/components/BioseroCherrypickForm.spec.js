@@ -1,6 +1,6 @@
-import BioseroCherrypickForm from '@/components/BioseroCherrypickForm'
 import { createLocalVue, mount } from '@vue/test-utils'
 import { BootstrapVue } from 'bootstrap-vue'
+import BioseroCherrypickForm from '@/components/BioseroCherrypickForm'
 
 const localVue = createLocalVue()
 localVue.use(BootstrapVue)

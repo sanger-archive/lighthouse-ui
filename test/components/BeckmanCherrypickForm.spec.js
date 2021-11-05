@@ -1,6 +1,6 @@
-import BeckmanCherrypickForm from '@/components/BeckmanCherrypickForm'
 import { createLocalVue, mount } from '@vue/test-utils'
 import { BootstrapVue } from 'bootstrap-vue'
+import BeckmanCherrypickForm from '@/components/BeckmanCherrypickForm'
 
 const localVue = createLocalVue()
 localVue.use(BootstrapVue)

@@ -1,9 +1,9 @@
 import { createLocalVue, mount } from '@vue/test-utils'
 import { BootstrapVue } from 'bootstrap-vue'
+import flushPromises from 'flush-promises'
 import GenerateTestRun from '@/pages/uat_actions/generate_test_run.vue'
 import lighthouse from '@/modules/lighthouse_service'
 import Alert from '@/components/Alert'
-import flushPromises from 'flush-promises'
 import statuses from '@/modules/statuses'
 
 jest.mock('@/modules/lighthouse_service')
