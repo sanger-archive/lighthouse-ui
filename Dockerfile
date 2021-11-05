@@ -1,4 +1,4 @@
-FROM node:14.16
+FROM node:14.17
 
 WORKDIR /code
 ADD . /code/
