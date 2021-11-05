@@ -45,7 +45,6 @@ gives you an opportunity to deselect samples that you do not want to include
 The following tools are required for development:
 
 - node (the version used is found in `.nvmrc`)
-- yarn
 
 ## Getting started
 
@@ -62,13 +61,13 @@ Create a `.env` file, or copy the `.env.example`, and update the values to meet 
 
 Install the require packages:
 
-    yarn install
+    npm install
 
 ## Running
 
 To serve the application with hot reloading:
 
-    yarn dev
+    npm run dev
 
 ## Testing
 
@@ -76,11 +75,11 @@ To serve the application with hot reloading:
 
 To run the Jest test suite:
 
-    yarn run test
+    npm test
 
 There are also some cypress tests which can be run as follows:
 
-    yarn run cypress run
+    npx cypress run
 
 ## Deployment
 

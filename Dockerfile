@@ -3,12 +3,12 @@ FROM node:14.17
 WORKDIR /code
 ADD . /code/
 
-RUN yarn install
+RUN npm ci
 
 # build for production
-RUN yarn build
+RUN npm run build
 
 # generate static project
-RUN yarn generate
+RUN npm run generate
 
-CMD ["yarn", "start", "--port", "8000", "--hostname", "0.0.0.0"]
+CMD ["npm", "start", "--", "--port", "8000", "--hostname", "0.0.0.0"]

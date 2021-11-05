@@ -5,7 +5,6 @@
   "author": "Wellcome Sanger Institute",
   "private": true,
   "scripts": {
-    "audit": "yarn npm audit",
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",

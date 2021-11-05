@@ -23,16 +23,16 @@ jobs:
 
       - uses: actions/cache@v1
         with:
-          path: ~/.cache/yarn
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          path: ~/.cache/npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-yarn-
+            ${{ runner.os }}-npm-
 
-      - name: Install packages using yarn
-        run: yarn install
+      - name: Install packages using npm
+        run: npm ci
 
       - name: Lint using ESLint
-        run: yarn lint .
+        run: npm lint .
   test:
     runs-on: ubuntu-latest
     steps:
@@ -45,16 +45,16 @@ jobs:
 
       - uses: actions/cache@v1
         with:
-          path: ~/.cache/yarn
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          path: ~/.cache/npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-yarn-
+            ${{ runner.os }}-npm-
 
-      - name: Install packages using yarn
-        run: yarn install
+      - name: Install packages using npm
+        run: npm ci
 
       - name: Run tests using Jest
-        run: yarn test
+        run: npm test
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
