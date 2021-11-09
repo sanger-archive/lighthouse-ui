@@ -133,7 +133,7 @@ describe('BoxBuster', () => {
     const row = wrapper.find('table').findAll('tr').at(1)
     expect(row.text()).toContain(plateE.plate_barcode)
     expect(row.findAll('td').at(1).text()).toContain('Yes')
-    expect(row.findAll('td').at(2).text()).toContain(0)
+    expect(row.findAll('td').at(2).text()).toContain('0')
     expect(row.findAll('td').at(3).text()).toContain('No')
     expect(row.findAll('td').at(4).text()).toContain('No')
     expect(row.classes()).toContain('table-warning')
