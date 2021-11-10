@@ -1,10 +1,10 @@
 import { BootstrapVue } from 'bootstrap-vue'
 import { mount, createLocalVue } from '@vue/test-utils'
 import flushPromises from 'flush-promises'
-import ReportsJson from '../data/reports'
 import Reports from '@/pages/reports.vue'
 import statuses from '@/modules/statuses'
 import lighthouse from '@/modules/lighthouse_service'
+import ReportsJson from '../data/reports'
 
 // Mock the whole module. Returning jest.fn() allows you to mock methods here
 // jest.mock('@/modules/lighthouse_service', () => jest.fn())

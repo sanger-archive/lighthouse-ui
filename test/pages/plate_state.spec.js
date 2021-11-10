@@ -97,12 +97,12 @@ describe('PlateState', () => {
   })
 
   describe('Plate table', () => {
-    it('renders a table with 8 rows and 12 columns', async () => {
+    it('renders a table with 8 rows and 12 columns', () => {
       const table = wrapper.find('#plate-table')
 
-      expect(table.findAll('tr').length).toEqual(9)
+      expect(table.findAll('tr')).toHaveLength(9)
       // 9 because we include the column header row
-      expect(table.find('tr').findAll('th').length).toEqual(13)
+      expect(table.find('tr').findAll('th')).toHaveLength(13)
       // 13 because we include the row header column
     })
   })
@@ -161,18 +161,18 @@ describe('PlateState', () => {
     describe('plateItems', () => {
       it('calls sourcePlateItems when the plate is a source plate', async () => {
         wrapper.vm.sourcePlateItems = jest.fn()
+        wrapper.vm.sourcePlateItems.mockReturnValue([{"row": "A"}])
         await wrapper.setData({ plate: { ...sourcePlate, source: true }})
 
-        wrapper.vm.plateItems
-        expect(wrapper.vm.sourcePlateItems).toHaveBeenCalled()
+        expect(wrapper.vm.plateItems).toEqual([{"row": "A"}])
       })
 
       it('calls destinationPlateItems when the plate is a destination plate', async () => {
         wrapper.vm.destinationPlateItems = jest.fn()
+        wrapper.vm.destinationPlateItems.mockReturnValue([{"row": "B"}])
         await wrapper.setData({ plate: { ...destinationPlate, destination: true }})
 
-        wrapper.vm.plateItems
-        expect(wrapper.vm.destinationPlateItems).toHaveBeenCalled()
+        expect(wrapper.vm.plateItems).toEqual([{"row": "B"}])
       })
 
       it('returns empty item structure when no plate is set', () => {
