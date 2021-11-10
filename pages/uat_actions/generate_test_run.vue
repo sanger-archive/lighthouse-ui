@@ -8,8 +8,9 @@
 
     <b-card title="Generate Test Run">
       <b-card-text>
-        Select the number of plates you want to generate test data for with the number of positive samples per plate.
-        You can add additional sets of plates up to a maximum of {{ maxNumberOfPlates }}.
+        Select the number of plates you want to generate test data for with the number of positive
+        samples per plate. You can add additional sets of plates up to a maximum of
+        {{ maxNumberOfPlates }}.
       </b-card-text>
       <b-card-text>
         N.B. for Beckman testing remember to check the
@@ -17,7 +18,8 @@
       </b-card-text>
       <b-card-text>
         The
-        <em>Generate</em> button will start the creation of the data, and you will be automatically taken to the label printing screen when it is done.
+        <em>Generate</em> button will start the creation of the data, and you will be automatically
+        taken to the label printing screen when it is done.
       </b-card-text>
 
       <b-form v-if="!totalPlatesReached" id="platesSpecForm" inline>
@@ -40,9 +42,10 @@
         <b-button
           id="addButton"
           variant="outline-primary"
-          :disabled="isBusy || totalPlates>=maxNumberOfPlates"
+          :disabled="isBusy || totalPlates >= maxNumberOfPlates"
           @click="add"
-        >Add</b-button>
+          >Add</b-button
+        >
       </b-form>
 
       <b-card v-else id="maximumPlateMessage">
@@ -55,9 +58,9 @@
       <b-row align-v="end" align-h="between">
         <b-col>
           Total plates:
-          <span
-            :style="totalPlatesReached ? {color: 'red'} : {color: 'black'}"
-          >{{ totalPlates }}/{{maxNumberOfPlates}}</span>
+          <span :style="totalPlatesReached ? { color: 'red' } : { color: 'black' }"
+            >{{ totalPlates }}/{{ maxNumberOfPlates }}</span
+          >
         </b-col>
 
         <b-col>
@@ -67,7 +70,8 @@
             name="addToDart"
             value="true"
             unchecked-value="false"
-          >Add to DART</b-form-checkbox>
+            >Add to DART</b-form-checkbox
+          >
         </b-col>
 
         <b-col>
@@ -77,7 +81,8 @@
             variant="outline-danger"
             class="mr-2"
             :disabled="isBusy"
-          >Reset</b-button>
+            >Reset</b-button
+          >
 
           <b-modal
             id="resetModal"
@@ -105,7 +110,6 @@
 </template>
 
 <script>
-
 import lighthouse from '@/modules/lighthouse_service'
 import Alert from '@/components/Alert'
 import UATActionsRouter from '@/components/UATActionsRouter'
@@ -114,7 +118,7 @@ import statuses from '@/modules/statuses'
 const MAX_NUMBER_OF_POSITIVES = 96
 const MAX_NUMBER_OF_PLATES = 200
 
-function initialFormState (){
+function initialFormState() {
   return {
     numberOfPlates: 1,
     numberOfPositives: 0,
@@ -125,7 +129,7 @@ export default {
   name: 'GenerateTestRun',
   components: {
     Alert,
-    UATActionsRouter
+    UATActionsRouter,
   },
   data() {
     return {
@@ -134,33 +138,38 @@ export default {
       addToDart: false,
       plateSpecs: [],
       maxNumberOfPlates: MAX_NUMBER_OF_PLATES,
-      maxNumberOfPositives: MAX_NUMBER_OF_POSITIVES
+      maxNumberOfPositives: MAX_NUMBER_OF_POSITIVES,
     }
   },
   computed: {
-    totalPlates () {
-      return this.plateSpecs.reduce(function (acc, obj) { return acc + obj.numberOfPlates }, 0)
+    totalPlates() {
+      return this.plateSpecs.reduce(function (acc, obj) {
+        return acc + obj.numberOfPlates
+      }, 0)
     },
     isBusy() {
       return this.status === statuses.Busy
     },
     isValid() {
-      return this.totalPlates>0 && this.totalPlates<=this.maxNumberOfPlates
+      return this.totalPlates > 0 && this.totalPlates <= this.maxNumberOfPlates
     },
     totalPlatesReached() {
       return this.totalPlates === this.maxNumberOfPlates
-    }
+    },
   },
   methods: {
     numberOfPositivesOptions() {
-      return Array.from({length: this.maxNumberOfPositives + 1}, (v, i) => i) // 0 - 96
+      return Array.from({ length: this.maxNumberOfPositives + 1 }, (v, i) => i) // 0 - 96
     },
     numberOfPlatesOptions() {
-      return Array.from({length: this.maxNumberOfPlates - this.totalPlates}, (v, i) => i + 1) // e.g default: 1-200
+      return Array.from({ length: this.maxNumberOfPlates - this.totalPlates }, (v, i) => i + 1) // e.g default: 1-200
     },
     add() {
-      this.plateSpecs.push({numberOfPlates: this.form.numberOfPlates, numberOfPositives: this.form.numberOfPositives })
-      Object.assign(this.$data.form, initialFormState());
+      this.plateSpecs.push({
+        numberOfPlates: this.form.numberOfPlates,
+        numberOfPositives: this.form.numberOfPositives,
+      })
+      Object.assign(this.$data.form, initialFormState())
     },
     resetPlateSpecs() {
       this.plateSpecs = []
@@ -170,7 +179,7 @@ export default {
       const response = await lighthouse.generateTestRun(this.plateSpecs, this.addToDart)
       if (response.success) {
         this.status = statuses.Idle
-        this.$router.push({ path: `/uat_actions/test_runs/${response.runId}`})
+        this.$router.push({ path: `/uat_actions/test_runs/${response.runId}` })
       } else {
         this.status = statuses.Idle
         this.showAlert(response.error, 'danger')

@@ -16,11 +16,12 @@
     >
       <template #cell(actions)="row">
         <b-button
-          :id="'viewTestRun-'+row.item._id"
-          :to="'/uat_actions/test_runs/'+row.item._id"
+          :id="'viewTestRun-' + row.item._id"
+          :to="'/uat_actions/test_runs/' + row.item._id"
           variant="outline-info"
           :disabled="!isRunViewable(row)"
-        >View</b-button>
+          >View</b-button
+        >
       </template>
     </b-table>
 
@@ -43,34 +44,35 @@ export default {
   name: 'TestRuns',
   components: {
     Alert,
-    UATActionsRouter
+    UATActionsRouter,
   },
   data() {
     return {
-      fields: ['_created', 'status', 'add_to_dart', 'total_plates','actions'],
+      fields: ['_created', 'status', 'add_to_dart', 'total_plates', 'actions'],
       perPage: 10,
       currentPage: 1,
-      totalRows: 0
+      totalRows: 0,
     }
   },
   methods: {
     getTestRuns(ctx, callback) {
-      lighthouse.getTestRuns(this.currentPage, this.perPage)
-      .then(data => {
-        this.totalRows = data.total
-        if (data.success) {
-          callback(data.response)
-        } else {
-          this.showAlert(data.error, 'danger')
+      lighthouse
+        .getTestRuns(this.currentPage, this.perPage)
+        .then((data) => {
+          this.totalRows = data.total
+          if (data.success) {
+            callback(data.response)
+          } else {
+            this.showAlert(data.error, 'danger')
+            const arr = []
+            callback(arr)
+          }
+        })
+        .catch(() => {
+          this.showAlert('An unknown error has occurred', 'danger')
           const arr = []
           callback(arr)
-        }
-      })
-      .catch(() => {
-        this.showAlert("An unknown error has occurred", "danger")
-        const arr = []
-        callback(arr)
-      })
+        })
       return null
     },
     showAlert(message, type) {
@@ -79,8 +81,8 @@ export default {
     isRunViewable(row) {
       // the status is always updated in Crawler to either failed or completed
       // pending means that Crawler hasn't even touched this run
-      return row.item.status==='completed' || row.item.status==='failed'
-    }
+      return row.item.status === 'completed' || row.item.status === 'failed'
+    },
   },
 }
 </script>

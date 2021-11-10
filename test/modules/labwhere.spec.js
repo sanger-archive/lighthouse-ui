@@ -1,6 +1,6 @@
 import axios from 'axios'
-import labwhere from '@/modules/labwhere'
 import PlatesJson from '../data/labwhere_plates'
+import labwhere from '@/modules/labwhere'
 
 describe('Labwhere', () => {
   describe('#getPlatesFromBoxBarcodes', () => {

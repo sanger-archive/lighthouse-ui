@@ -1,6 +1,6 @@
-import BioseroCherrypickForm from '@/components/BioseroCherrypickForm'
 import { createLocalVue, mount } from '@vue/test-utils'
 import { BootstrapVue } from 'bootstrap-vue'
+import BioseroCherrypickForm from '@/components/BioseroCherrypickForm'
 
 const localVue = createLocalVue()
 localVue.use(BootstrapVue)
@@ -63,7 +63,7 @@ describe('BioseroCherrypickForm.vue', () => {
         wrapper.setData({
           form: {
             username: 'aUsername',
-            barcode: 'aBarcode'
+            barcode: 'aBarcode',
           },
         })
         expect(form.formInvalid).toEqual(false)

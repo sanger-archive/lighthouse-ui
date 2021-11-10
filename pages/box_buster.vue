@@ -1,4 +1,4 @@
- <template>
+<template>
   <b-container>
     <h1 class="mt-3">Box Buster</h1>
     <p class="lead">Quickly overview box contents to assist with cherrypicking</p>
@@ -22,15 +22,14 @@
       ></b-form-input>
     </b-form-group>
     <p>
-      <b-button id="refreshResults" variant="info" :disabled="isBusy" @click="refreshResults">Search</b-button>
+      <b-button id="refreshResults" variant="info" :disabled="isBusy" @click="refreshResults"
+        >Search</b-button
+      >
     </p>
     <p>
-      <b-alert
-        id="alert"
-        :show="isError"
-        dismissible
-        variant="danger"
-      >{{ `Error in lighthouse service: ${lighthouseFeedback}` }}</b-alert>
+      <b-alert id="alert" :show="isError" dismissible variant="danger">{{
+        `Error in lighthouse service: ${lighthouseFeedback}`
+      }}</b-alert>
     </p>
     <b-table
       ref="plates_table"
@@ -82,7 +81,9 @@
                 v-for="(scanned_barcode, i) in scanned_barcodes"
                 :key="`${i}-${scanned_barcode}`"
                 :class="isBarcodeDuplicate(scanned_barcode)"
-              >{{ scanned_barcode }}</li>
+              >
+                {{ scanned_barcode }}
+              </li>
             </ol>
             <span v-if="scanned_barcodes.length == 0">None</span>
           </b-col>

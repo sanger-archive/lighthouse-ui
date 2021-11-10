@@ -1,6 +1,6 @@
-import TestRuns from '@/pages/uat_actions/test_runs'
 import { createLocalVue, mount } from '@vue/test-utils'
 import { BootstrapVue } from 'bootstrap-vue'
+import TestRuns from '@/pages/uat_actions/test_runs'
 import lighthouse from '@/modules/lighthouse_service'
 
 jest.mock('@/modules/lighthouse_service')
@@ -31,12 +31,22 @@ describe('TestRuns.vue', () => {
         localVue,
       })
       testRunsData = {
-        "success": true,
-        "response": [
-          { _id: 1, status: 'completed', 'add_to_dart': true, _created_at: '2020-05-13 11:00:00 UTC' },
-          { _id: 2, status: 'completed', 'add_to_dart': true, _created_at: '2020-05-13 11:00:00 UTC' },
+        success: true,
+        response: [
+          {
+            _id: 1,
+            status: 'completed',
+            add_to_dart: true,
+            _created_at: '2020-05-13 11:00:00 UTC',
+          },
+          {
+            _id: 2,
+            status: 'completed',
+            add_to_dart: true,
+            _created_at: '2020-05-13 11:00:00 UTC',
+          },
         ],
-        "total": 23
+        total: 23,
       }
       lighthouse.getTestRuns.mockResolvedValue(testRunsData)
     })
@@ -57,13 +67,28 @@ describe('TestRuns.vue', () => {
         localVue,
       })
       testRunsData = {
-        "success": true,
-        "response": [
-          { _id: 111111, status: 'completed', 'add_to_dart': true, _created_at: '2020-05-13 11:00:00 UTC' },
-          { _id: 211111, status: 'completed', 'add_to_dart': true, _created_at: '2020-05-10 10:00:00 UTC' },
-          { _id: 311111, status: 'completed', 'add_to_dart': true, _created_at: '2020-05-10 10:00:00 UTC' },
+        success: true,
+        response: [
+          {
+            _id: 111111,
+            status: 'completed',
+            add_to_dart: true,
+            _created_at: '2020-05-13 11:00:00 UTC',
+          },
+          {
+            _id: 211111,
+            status: 'completed',
+            add_to_dart: true,
+            _created_at: '2020-05-10 10:00:00 UTC',
+          },
+          {
+            _id: 311111,
+            status: 'completed',
+            add_to_dart: true,
+            _created_at: '2020-05-10 10:00:00 UTC',
+          },
         ],
-        "total": 23
+        total: 23,
       }
       lighthouse.getTestRuns.mockResolvedValue(testRunsData)
     })
@@ -80,9 +105,9 @@ describe('TestRuns.vue', () => {
         localVue,
       })
       testRunsData = {
-        "success": false,
-        "total": 0,
-        "error": "An error"
+        success: false,
+        total: 0,
+        error: 'An error',
       }
       lighthouse.getTestRuns.mockResolvedValue(testRunsData)
       wrapper.vm.$refs.alert.show = jest.fn()
@@ -91,7 +116,7 @@ describe('TestRuns.vue', () => {
     it('has a table with no runs', () => {
       expect(wrapper.vm.totalRows).toEqual(0)
       expect(wrapper.find('tbody').findAll('tr')).toHaveLength(0)
-      expect(wrapper.vm.$refs.alert.show).toHaveBeenCalledWith("An error", "danger")
+      expect(wrapper.vm.$refs.alert.show).toHaveBeenCalledWith('An error', 'danger')
     })
   })
 
@@ -101,17 +126,22 @@ describe('TestRuns.vue', () => {
         localVue,
       })
       testRunsData = {
-        "success": false,
-        "totoal": 0
+        success: false,
+        totoal: 0,
       }
-      lighthouse.getTestRuns.mockImplementationOnce(() => Promise.reject(new Error('There was an error')))
+      lighthouse.getTestRuns.mockImplementationOnce(() =>
+        Promise.reject(new Error('There was an error'))
+      )
       wrapper.vm.$refs.alert.show = jest.fn()
     })
 
     it('calls the catch block', () => {
       expect(wrapper.vm.totalRows).toEqual(0)
       expect(wrapper.find('tbody').findAll('tr')).toHaveLength(0)
-      expect(wrapper.vm.$refs.alert.show).toHaveBeenCalledWith("An unknown error has occurred", "danger")
+      expect(wrapper.vm.$refs.alert.show).toHaveBeenCalledWith(
+        'An unknown error has occurred',
+        'danger'
+      )
     })
   })
 

@@ -61,6 +61,7 @@ describe('print destination plate labels', () => {
     try {
       vm.getFile()
     } catch {
+      // TODO: Implement proper logging of error
       console.log('error')
     }
     expect(true).toBeTruthy()
