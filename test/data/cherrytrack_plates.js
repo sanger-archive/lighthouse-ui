@@ -4,6 +4,7 @@ const sourcePlate = {
     {
       automation_system_run_id: 1,
       created_at: 'Wed, 27 Oct 2021 09:04:49 GMT',
+      date_picked: 'Wed, 27 Oct 2021 09:04:49 GMT',
       destination_barcode: 'DN00000001',
       destination_coordinate: 'A1',
       lab_id: 'MK',
@@ -17,6 +18,7 @@ const sourcePlate = {
     {
       automation_system_run_id: 1,
       created_at: 'Wed, 27 Oct 2021 09:04:49 GMT',
+      date_picked: 'Wed, 27 Oct 2021 09:04:49 GMT',
       destination_barcode: 'DN00000002',
       destination_coordinate: 'A3',
       lab_id: 'MK',
@@ -30,6 +32,7 @@ const sourcePlate = {
     {
       automation_system_run_id: '',
       created_at: 'Wed, 27 Oct 2021 09:04:49 GMT',
+      date_picked: '',
       destination_barcode: '',
       destination_coordinate: '',
       lab_id: 'MK',
@@ -43,6 +46,7 @@ const sourcePlate = {
     {
       automation_system_run_id: '',
       created_at: 'Wed, 27 Oct 2021 09:04:49 GMT',
+      date_picked: '',
       destination_barcode: '',
       destination_coordinate: '',
       lab_id: 'MK',
@@ -67,6 +71,8 @@ const destinationPlate = {
       rna_id: 'RNA-S-00001-00000001',
       source_barcode: 'DS000010001',
       source_coordinate: 'H8',
+      created_at: "Wed, 27 Oct 2021 09:04:49 GMT", 
+      date_picked: "Wed, 27 Oct 2021 09:04:49 GMT", 
       type: 'sample',
     },
     {
@@ -77,6 +83,8 @@ const destinationPlate = {
       rna_id: 'RNA-S-00001-00000002',
       source_barcode: 'DS000010001',
       source_coordinate: 'C7',
+      created_at: "Wed, 27 Oct 2021 09:04:49 GMT", 
+      date_picked: "Wed, 27 Oct 2021 09:04:49 GMT", 
       type: 'sample',
     },
     {
@@ -87,6 +95,8 @@ const destinationPlate = {
       rna_id: 'RNA-S-00001-00000003',
       source_barcode: 'DS000010001',
       source_coordinate: 'D6',
+      created_at: "Wed, 27 Oct 2021 09:04:49 GMT", 
+      date_picked: "Wed, 27 Oct 2021 09:04:49 GMT", 
       type: 'sample',
     },
     {
@@ -97,8 +107,20 @@ const destinationPlate = {
       rna_id: 'RNA-S-00001-00000004',
       source_barcode: 'DS000010001',
       source_coordinate: 'C1',
+      created_at: "Wed, 27 Oct 2021 09:04:49 GMT", 
+      date_picked: "Wed, 27 Oct 2021 09:04:49 GMT", 
       type: 'sample',
     },
+    {
+      automation_system_run_id: 1, 
+      control: "negative", 
+      control_barcode: "DN999999999", 
+      control_coordinate: "A1", 
+      created_at: "Wed, 27 Oct 2021 09:04:49 GMT", 
+      date_picked: "Wed, 27 Oct 2021 09:04:49 GMT", 
+      destination_coordinate: "D2", 
+      type: "control"
+    }, 
   ],
 }
 

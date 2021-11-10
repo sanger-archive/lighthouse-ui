@@ -23,6 +23,7 @@ describe('Cherrytrack', () => {
       response = await cherrytrack.getSourcePlate(plateBarcode)
 
       expect(response.success).toBeTruthy()
+      expect(response.source).toBeTruthy()
       expect(response.barcode).toEqual(sourcePlate.barcode)
       expect(response.samples).toEqual(sourcePlate.samples)
     })
@@ -48,6 +49,7 @@ describe('Cherrytrack', () => {
       response = await cherrytrack.getDestinationPlate(plateBarcode)
 
       expect(response.success).toBeTruthy()
+      expect(response.destination).toBeTruthy()
       expect(response.barcode).toEqual(destinationPlate.barcode)
       expect(response.wells).toEqual(destinationPlate.wells)
     })

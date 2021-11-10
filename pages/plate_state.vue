@@ -23,8 +23,11 @@
 
     <Alert ref="alert"></Alert>
 
-    <b-card id="plate-summary" title="Plate Summary" :sub-title="plateType">
-      <div v-if="plateType === 'Source'">
+    <b-card id="plate-summary" title="Plate Summary">
+      <div v-if="plate.source">
+        <b-card-text
+          ><b>Source plate barcode:</b> {{ lastPlateBarcode }}</b-card-text
+        >
         <b-card-text style="color: green"
           >Total number of picked wells: {{ calculateSourceWells[0] }}</b-card-text
         >
@@ -33,13 +36,27 @@
         >
         <b-card-text>Total number of empty wells: {{ calculateSourceWells[2] }}</b-card-text>
       </div>
+
+      <div v-if="plate.destination">
+        <b-card-text
+          ><b>Destination plate barcode:</b> {{ lastPlateBarcode }}</b-card-text
+        >
+        <b-card-text style="color: green"
+          >Total number of picked wells: {{ calculateDestinationWells[0] }}</b-card-text
+        >
+        <b-card-text style="color: gray"
+          >Total number of control wells: {{ calculateDestinationWells[1] }}</b-card-text
+        >
+        <b-card-text>Total number of empty wells: {{ calculateDestinationWells[2] }}</b-card-text>
+      </div>
+
       <b-form-group id="plate-filter-group" label="Filters:" label-for="plateFilter">
         <b-form-select
           id="plate-filter"
           v-model="filter"
           style="width: 250px"
           :options="plateFilterOptions"
-          :disabled="!plateType.length"
+          :disabled="!plate.source && !plate.destination"
         />
       </b-form-group>
     </b-card>
@@ -62,8 +79,8 @@ export default {
   data() {
     return {
       barcode: '',
-      plate: {},
-      plateType: '',
+      lastPlateBarcode: '',
+      plate: { source: false, destination: false },
       filter: 'source_barcode',
       plateFields: [
         { key: 'row', label: '', isRowHeader: true },
@@ -81,74 +98,100 @@ export default {
         '12',
       ],
       rowHeaders: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'],
-      plateFilterOptions: [
+    }
+  },
+  computed: {
+    plateFilterOptions() {
+      return [
         { text: 'Source Barcode', value: 'source_barcode' },
-        { text: 'Control Barcode', value: 'control_barcode' },
+        { text: 'Control Barcode', value: 'control_barcode', disabled: !this.plate.destination },
+        { text: 'Control Type', value: 'control', disabled: !this.plate.destination },
         { text: 'Source Coordinate', value: 'source_coordinate' },
         { text: 'Destination Coordinate', value: 'destination_coordinate' },
         { text: 'RNA ID', value: 'rna_id' },
         { text: 'Run ID', value: 'automation_system_run_id' },
+        { text: 'Lab ID', value: 'lab_id', disabled: !this.plate.destination },
+        { text: 'LH sample UUID', value: 'lh_sample_uuid', disabled: !this.plate.destination },
         { text: 'Date picked', value: 'date_picked' },
         { text: 'Date created', value: 'created_at' },
-      ],
-    }
-  },
-  computed: {
+      ]
+    },
     calculateSourceWells() {
-      let pickedWells, unpickedWells, emptyWells
-      if (this.plate.samples !== undefined) {
-        pickedWells = this.plate.samples.filter((sample) => {
-          return sample.picked
-        }).length
-        unpickedWells = this.plate.samples.length - pickedWells
-        emptyWells = 96 - this.plate.samples.length
-      }
+      const pickedWells = this.plate.samples.filter((sample) => {
+        return sample.picked
+      }).length
+      const unpickedWells = this.plate.samples.length - pickedWells
+      const emptyWells = 96 - this.plate.samples.length
+
       return [pickedWells, unpickedWells, emptyWells]
     },
+    calculateDestinationWells() {
+      const controlWells = this.plate.wells.filter((well) => {
+        return well.type === "control"
+      }).length
+      const pickedWells = this.plate.wells.length - controlWells
+      const emptyWells = 96 - this.plate.wells.length
+
+      return [pickedWells, controlWells, emptyWells]
+    },
     plateItems() {
-      const rows = this.rowHeaders.map((header) => {
-        const row = { row: header, _cellVariants: {} }
-        if (this.plateType === 'Source') {
-          this.plateFields.forEach((field) => {
-            const well = this.plate.samples.find(
-              (well) => well.source_coordinate === `${header}${field}`
-            )
-            if (well) {
-              row[field] = well[this.filter]
-              row._cellVariants[field] = well.picked ? 'success' : 'warning'
-            }
-          })
-        }
-        if (this.plateType === 'Destination') {
-          this.plateFields.forEach((field) => {
-            const well = this.plate.wells.find(
-              (well) => well.destination_coordinate === `${header}${field}`
-            )
-            if (well) {
-              row[field] = well[this.filter]
-            }
-          })
-        }
-        return row
-      })
-      return rows
+      if (this.plate.source) {
+        return this.sourcePlateItems()
+      } else if (this.plate.destination) {
+        return this.destinationPlateItems()
+      } else {
+        return this.rowHeaders.map((header) => {
+          return { row: header }
+        })
+      }
     },
   },
   methods: {
     async findPlate() {
       let plate = await cherrytrack.getSourcePlate(this.barcode)
       if (plate.success) {
-        this.plateType = 'Source'
         this.plate = plate
       } else {
         plate = await cherrytrack.getDestinationPlate(this.barcode)
         if (plate.success) {
-          this.plateType = 'Destination'
           this.plate = plate
         } else {
-          this.$refs.alert.show('Could not find plate in Bioseros', 'danger')
+          this.plate = { source: false, destination: false }
+          this.$refs.alert.show(`Could not find plate in Biosero with barcode: ${this.barcode}`, 'danger')
         }
       }
+      this.lastPlateBarcode = this.barcode
+      this.barcode = ""
+    },
+    sourcePlateItems() {
+      return this.rowHeaders.map((header) => {
+        const row = { row: header, _cellVariants: {} }
+        this.plateFields.forEach((field) => {
+          const well = this.plate.samples.find(
+            (well) => well.source_coordinate === `${header}${field}`
+          )
+          if (well) {
+            row[field] = well[this.filter]
+            row._cellVariants[field] = well.picked ? 'success' : 'warning'
+          }
+        })
+        return row
+      })
+    },
+    destinationPlateItems() {
+      return this.rowHeaders.map((header) => {
+        const row = { row: header, _cellVariants: {} }
+        this.plateFields.forEach((field) => {
+          const well = this.plate.wells.find(
+            (well) => well.destination_coordinate === `${header}${field}`
+          )
+          if (well) {
+            row[field] = well[this.filter]
+            row._cellVariants[field] = well.type === 'sample' ? 'success' : 'secondary'
+          }
+        })
+        return row
+      })
     },
   },
 }
