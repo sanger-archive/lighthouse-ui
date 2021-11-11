@@ -110,8 +110,8 @@ export default {
         { text: 'Destination Coordinate', value: 'destination_coordinate' },
         { text: 'RNA ID', value: 'rna_id' },
         { text: 'Run ID', value: 'automation_system_run_id' },
-        { text: 'Lab ID', value: 'lab_id', disabled: !this.plate.destination },
-        { text: 'LH sample UUID', value: 'lh_sample_uuid', disabled: !this.plate.destination },
+        { text: 'Lab ID', value: 'lab_id' },
+        { text: 'LH sample UUID', value: 'lh_sample_uuid' },
         { text: 'Date picked', value: 'date_picked' },
         { text: 'Date created', value: 'created_at' },
       ]

@@ -1,9 +1,9 @@
+import { createLocalVue, mount } from '@vue/test-utils'
+import { BootstrapVue } from 'bootstrap-vue'
 import cherrytrack from '@/modules/cherrytrack'
 import PlateState from '@/pages/plate_state.vue'
 import '@/plugins/vue-pluralize'
 import { sourcePlate, destinationPlate } from '@/test/data/cherrytrack_plates'
-import { createLocalVue, mount } from '@vue/test-utils'
-import { BootstrapVue } from 'bootstrap-vue'
 
 jest.mock('@/modules/cherrytrack')
 
@@ -132,8 +132,8 @@ describe('PlateState', () => {
           { text: 'Destination Coordinate', value: 'destination_coordinate' },
           { text: 'RNA ID', value: 'rna_id' },
           { text: 'Run ID', value: 'automation_system_run_id' },
-          { text: 'Lab ID', value: 'lab_id', disabled: true },
-          { text: 'LH sample UUID', value: 'lh_sample_uuid', disabled: true },
+          { text: 'Lab ID', value: 'lab_id' },
+          { text: 'LH sample UUID', value: 'lh_sample_uuid' },
           { text: 'Date picked', value: 'date_picked' },
           { text: 'Date created', value: 'created_at' }
         ])
@@ -150,8 +150,8 @@ describe('PlateState', () => {
           { text: 'Destination Coordinate', value: 'destination_coordinate' },
           { text: 'RNA ID', value: 'rna_id' },
           { text: 'Run ID', value: 'automation_system_run_id' },
-          { text: 'Lab ID', value: 'lab_id', disabled: false },
-          { text: 'LH sample UUID', value: 'lh_sample_uuid', disabled: false },
+          { text: 'Lab ID', value: 'lab_id' },
+          { text: 'LH sample UUID', value: 'lh_sample_uuid' },
           { text: 'Date picked', value: 'date_picked' },
           { text: 'Date created', value: 'created_at' }
         ])

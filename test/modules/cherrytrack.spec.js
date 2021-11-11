@@ -1,6 +1,6 @@
 import axios from 'axios'
-import cherrytrack from '@/modules/cherrytrack'
 import { sourcePlate, destinationPlate } from '../data/cherrytrack_plates'
+import cherrytrack from '@/modules/cherrytrack' 
 
 describe('Cherrytrack', () => {
   let plateBarcode, response, mockGet, mockResponse

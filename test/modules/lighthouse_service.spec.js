@@ -1,9 +1,9 @@
 import axios from 'axios'
-import config from '@/nuxt.config'
-import lighthouse from '@/modules/lighthouse_service'
 import ReportsJson from '../data/reports'
 import RobotsJson from '../data/robots'
 import FailureTypesJson from '../data/failures_types.json'
+import config from '@/nuxt.config'
+import lighthouse from '@/modules/lighthouse_service'
 
 describe('lighthouse_service api', () => {
   let mock, response
