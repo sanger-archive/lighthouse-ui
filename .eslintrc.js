@@ -27,5 +27,8 @@ module.exports = {
         assertFunctionNames: ['expect', 'cy.contains'],
       },
     ],
+    "vue/multi-word-component-names": ["error", {
+      ignores: ['default', 'imports', 'index', 'reports'] // These are layouts and page names
+    }],
   },
 }

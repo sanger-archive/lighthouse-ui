@@ -1,7 +1,7 @@
 <template>
   <b-container>
     <h1 class="mt-3">Biosero Cherrypick</h1>
-    <Alert ref="alert"></Alert>
+    <AlertDialog ref="alert"></AlertDialog>
     <b-card no-body>
       <b-tabs card>
         <b-tab title="Create">
@@ -41,12 +41,12 @@
 import BioseroCherrypickForm from '@/components/BioseroCherrypickForm'
 import lighthouse from '@/modules/lighthouse_service'
 import lighthouseBiosero from '@/modules/lighthouse_service_biosero'
-import Alert from '@/components/Alert'
+import AlertDialog from '@/components/AlertDialog'
 
 export default {
   components: {
     BioseroCherrypickForm,
-    Alert,
+    AlertDialog,
   },
   data() {
     return {

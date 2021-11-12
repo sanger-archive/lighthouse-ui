@@ -2,7 +2,7 @@ import { createLocalVue, shallowMount } from '@vue/test-utils'
 import { BootstrapVue } from 'bootstrap-vue'
 import BeckmanCherrypick from '@/pages/beckman_cherrypick.vue'
 import lighthouse from '@/modules/lighthouse_service'
-import Alert from '@/components/Alert'
+import AlertDialog from '@/components/AlertDialog'
 jest.mock('@/modules/lighthouse_service')
 
 const localVue = createLocalVue()
@@ -185,7 +185,7 @@ describe('Beckman Cherrypick', () => {
 
   describe('alert', () => {
     it('has a alert', () => {
-      expect(wrapper.findComponent(Alert).exists()).toBeTruthy()
+      expect(wrapper.findComponent(AlertDialog).exists()).toBeTruthy()
     })
   })
 

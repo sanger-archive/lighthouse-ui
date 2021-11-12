@@ -2,7 +2,7 @@
   <b-container>
     <h1 class="mt-3">Sentinel Sample Creation</h1>
     <p class="lead">Creates samples in Sequencescape from the fit to pick samples</p>
-    <Alert ref="alert"></Alert>
+    <AlertDialog ref="alert"></AlertDialog>
 
     <form class="border">
       <div class="form-group row">
@@ -57,11 +57,11 @@
 
 <script>
 import api from '@/modules/api'
-import Alert from '@/components/Alert'
+import AlertDialog from '@/components/AlertDialog'
 
 export default {
   components: {
-    Alert,
+    AlertDialog,
   },
   data() {
     return {

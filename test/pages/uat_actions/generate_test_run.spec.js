@@ -3,7 +3,7 @@ import { BootstrapVue } from 'bootstrap-vue'
 import flushPromises from 'flush-promises'
 import GenerateTestRun from '@/pages/uat_actions/generate_test_run.vue'
 import lighthouse from '@/modules/lighthouse_service'
-import Alert from '@/components/Alert'
+import AlertDialog from '@/components/AlertDialog'
 import statuses from '@/modules/statuses'
 
 jest.mock('@/modules/lighthouse_service')
@@ -49,7 +49,7 @@ describe('UAT Actions', () => {
   // components
   describe('alert', () => {
     it('has an alert', () => {
-      expect(wrapper.findComponent(Alert).exists()).toBeTruthy()
+      expect(wrapper.findComponent(AlertDialog).exists()).toBeTruthy()
     })
   })
 
