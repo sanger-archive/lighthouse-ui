@@ -26,7 +26,7 @@ describe('lighthouse sentinel cherrypick', () => {
   })
 
   it('has a barcode', () => {
-    expect(wrapper.vm.boxBarcode).toEqual('lw-ogilvie-4')
+    expect(wrapper.vm.boxBarcode).toBe('lw-ogilvie-4')
   })
 
   it('has items', () => {
@@ -39,7 +39,7 @@ describe('lighthouse sentinel cherrypick', () => {
 
     it('has a submit button', () => {
       button = wrapper.find('#handleSentinelSampleCreation')
-      expect(button.text()).toEqual('Submit')
+      expect(button.text()).toBe('Submit')
     })
 
     it('on submit button click it calls handleSentinelSampleCreation', () => {
@@ -55,7 +55,7 @@ describe('lighthouse sentinel cherrypick', () => {
 
     it('has a cancel button', () => {
       button = wrapper.find('#cancelSearch')
-      expect(button.text()).toEqual('Cancel')
+      expect(button.text()).toBe('Cancel')
     })
 
     it('on cancel button click it calls cancelSearch', () => {
@@ -69,7 +69,7 @@ describe('lighthouse sentinel cherrypick', () => {
   describe('#cancelSearch', () => {
     it('clears boxBarcode', () => {
       wrapper.vm.cancelSearch()
-      expect(wrapper.vm.boxBarcode).toEqual('')
+      expect(wrapper.vm.boxBarcode).toBe('')
     })
   })
 

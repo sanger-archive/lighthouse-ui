@@ -84,7 +84,7 @@ describe('lighthouse_service_biosero api', () => {
       const result = await lighthouseBiosero.createDestinationPlateBiosero(form)
 
       expect(mock).toHaveBeenCalledTimes(1)
-      expect(result.success).toEqual(false)
+      expect(result.success).toBe(false)
       expect(result.error).toEqual(errorResponse)
     })
   })
@@ -165,7 +165,7 @@ describe('lighthouse_service_biosero api', () => {
       const result = await lighthouseBiosero.failDestinationPlateBiosero(form)
 
       expect(mock).toHaveBeenCalledTimes(1)
-      expect(result.success).toEqual(false)
+      expect(result.success).toBe(false)
       expect(result.error).toEqual(errorResponse)
     })
   })

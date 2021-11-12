@@ -44,13 +44,13 @@ describe('print destination plate labels', () => {
   it('should be able to select a number of labels', () => {
     const input = wrapper.find('#numberOfBarcodes')
     input.setValue(10)
-    expect(vm.numberOfBarcodes).toEqual('10')
+    expect(vm.numberOfBarcodes).toBe('10')
   })
 
   it('#setMessage', () => {
     vm.setStatus('Success', 'Barcodes successfully printed')
     expect(vm.status).toEqual(statuses.Success)
-    expect(vm.alertMessage).toEqual('Barcodes successfully printed')
+    expect(vm.alertMessage).toBe('Barcodes successfully printed')
   })
 
   // TODO: These tests are duplicated so will be removed once refactored. Need to get it to pass code coverage.

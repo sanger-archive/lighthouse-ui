@@ -56,8 +56,8 @@ describe('TestRuns.vue', () => {
     })
 
     it('contains a view run button for each row', () => {
-      expect(wrapper.find('#viewTestRun-1').text()).toEqual('View')
-      expect(wrapper.find('#viewTestRun-2').text()).toEqual('View')
+      expect(wrapper.find('#viewTestRun-1').text()).toBe('View')
+      expect(wrapper.find('#viewTestRun-2').text()).toBe('View')
     })
   })
 
@@ -94,7 +94,7 @@ describe('TestRuns.vue', () => {
     })
 
     it('has a table with runs', () => {
-      expect(wrapper.vm.totalRows).toEqual(23)
+      expect(wrapper.vm.totalRows).toBe(23)
       expect(wrapper.find('tbody').findAll('tr')).toHaveLength(testRunsData.response.length)
     })
   })
@@ -114,7 +114,7 @@ describe('TestRuns.vue', () => {
     })
 
     it('has a table with no runs', () => {
-      expect(wrapper.vm.totalRows).toEqual(0)
+      expect(wrapper.vm.totalRows).toBe(0)
       expect(wrapper.find('tbody').findAll('tr')).toHaveLength(0)
       expect(wrapper.vm.$refs.alert.show).toHaveBeenCalledWith('An error', 'danger')
     })
@@ -136,7 +136,7 @@ describe('TestRuns.vue', () => {
     })
 
     it('calls the catch block', () => {
-      expect(wrapper.vm.totalRows).toEqual(0)
+      expect(wrapper.vm.totalRows).toBe(0)
       expect(wrapper.find('tbody').findAll('tr')).toHaveLength(0)
       expect(wrapper.vm.$refs.alert.show).toHaveBeenCalledWith(
         'An unknown error has occurred',

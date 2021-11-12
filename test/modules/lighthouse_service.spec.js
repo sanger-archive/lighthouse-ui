@@ -278,8 +278,8 @@ describe('lighthouse_service api', () => {
       const queryString = urlString.split('/imports?')[1]
       const params = new URLSearchParams(queryString)
 
-      expect(params.get('max_results')).toEqual('10000')
-      expect(params.get('sort')).toEqual('-date')
+      expect(params.get('max_results')).toBe('10000')
+      expect(params.get('sort')).toBe('-date')
       expect(params.get('where')).toEqual(
         expect.stringMatching(/\{"date": \{"\$gt": "\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}"\}\}/)
       )
@@ -644,7 +644,7 @@ describe('lighthouse_service api', () => {
       const result = await lighthouse.generateTestRun(plateSpecs, addToDart)
 
       expect(result.success).toBeFalsy()
-      expect(result.error).toEqual(
+      expect(result.error).toBe(
         'Insertion failure: 1 document(s) contain(s) error(s): plate_specs: must be of list type; another: error message; '
       )
     })
@@ -655,7 +655,7 @@ describe('lighthouse_service api', () => {
       const result = await lighthouse.generateTestRun(plateSpecs, addToDart)
 
       expect(result.success).toBeFalsy()
-      expect(result.error).toEqual('An unexpected error has occured')
+      expect(result.error).toBe('An unexpected error has occured')
     })
 
     it('when the request errors, from crawler, with no _issues', async () => {
@@ -670,7 +670,7 @@ describe('lighthouse_service api', () => {
       const result = await lighthouse.generateTestRun(plateSpecs, addToDart)
 
       expect(result.success).toBeFalsy()
-      expect(result.error).toEqual('Insertion failure')
+      expect(result.error).toBe('Insertion failure')
     })
   })
 
@@ -723,9 +723,9 @@ describe('lighthouse_service api', () => {
       expect(axios.get).toHaveBeenCalledWith(expect.stringMatching(expectedPath), headers)
       expect(result.success).toBeTruthy()
       expect(result.response).toEqual(response._items)
-      expect(result.response[0].total_plates).toEqual(3)
-      expect(result.response[1].total_plates).toEqual(2)
-      expect(result.response[2].total_plates).toEqual(0)
+      expect(result.response[0].total_plates).toBe(3)
+      expect(result.response[1].total_plates).toBe(2)
+      expect(result.response[2].total_plates).toBe(0)
       expect(result.total).toEqual(response._meta.total)
     })
 
@@ -744,7 +744,7 @@ describe('lighthouse_service api', () => {
       const result = await lighthouse.getTestRuns(currentPage, maxResults)
 
       expect(result.success).toBeFalsy()
-      expect(result.error).toEqual('The method is not allowed for the requested URL.')
+      expect(result.error).toBe('The method is not allowed for the requested URL.')
     })
 
     it('when the request fails', async () => {
@@ -753,7 +753,7 @@ describe('lighthouse_service api', () => {
       const result = await lighthouse.getTestRuns(currentPage, maxResults)
 
       expect(result.success).toBeFalsy()
-      expect(result.error).toEqual('An unexpected error has occured')
+      expect(result.error).toBe('An unexpected error has occured')
     })
   })
 
@@ -800,7 +800,7 @@ describe('lighthouse_service api', () => {
       const result = await lighthouse.getTestRun(id)
 
       expect(result.success).toBeFalsy()
-      expect(result.error).toEqual('The method is not allowed for the requested URL.')
+      expect(result.error).toBe('The method is not allowed for the requested URL.')
     })
 
     it('when the request fails', async () => {
@@ -809,7 +809,7 @@ describe('lighthouse_service api', () => {
       const result = await lighthouse.getTestRun(id)
 
       expect(result.success).toBeFalsy()
-      expect(result.error).toEqual('An unexpected error has occured')
+      expect(result.error).toBe('An unexpected error has occured')
     })
   })
 
