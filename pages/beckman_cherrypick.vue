@@ -1,7 +1,7 @@
 <template>
   <b-container>
     <h1 class="mt-3">Beckman Cherrypick</h1>
-    <Alert ref="alert"></Alert>
+    <AlertDialog ref="alert"></AlertDialog>
     <b-card no-body>
       <b-tabs card>
         <b-tab title="Create">
@@ -45,12 +45,12 @@
 
 import BeckmanCherrypickForm from '@/components/BeckmanCherrypickForm'
 import lighthouse from '@/modules/lighthouse_service'
-import Alert from '@/components/Alert'
+import AlertDialog from '@/components/AlertDialog'
 
 export default {
   components: {
     BeckmanCherrypickForm,
-    Alert,
+    AlertDialog,
   },
   data() {
     return {
