@@ -62,7 +62,7 @@ describe('Imports', () => {
         variant: 'danger',
         message: errorMsg,
       })
-      expect(wrapper.vm.showDismissibleAlert).toEqual(true)
+      expect(wrapper.vm.showDismissibleAlert).toBe(true)
       expect(resp).toEqual([])
     })
 
