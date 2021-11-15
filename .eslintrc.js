@@ -5,7 +5,8 @@ module.exports = {
   },
   parser: 'vue-eslint-parser', // https://eslint.vuejs.org/user-guide/#how-to-use-a-custom-parser
   parserOptions: {
-    parser: 'babel-eslint',
+    parser: '@babel/eslint-parser',
+    requireConfigFile: false,
     sourceType: 'module',
   },
   extends: [
