@@ -1,11 +1,11 @@
 import { createLocalVue, mount } from '@vue/test-utils'
 import { BootstrapVue } from 'bootstrap-vue'
-import cherrytrack from '@/modules/cherrytrack'
+import lighthouseBiosero from '@/modules/lighthouse_service_biosero'
 import PlateState from '@/pages/plate_state.vue'
 import '@/plugins/vue-pluralize'
-import { sourcePlate, destinationPlate } from '@/test/data/cherrytrack_plates'
+import { sourcePlate, destinationPlate } from '@/test/data/biosero_plates'
 
-jest.mock('@/modules/cherrytrack')
+jest.mock('@/modules/lighthouse_service_biosero')
 
 describe('PlateState', () => {
   let wrapper
@@ -187,28 +187,29 @@ describe('PlateState', () => {
   describe('methods', () => {
     describe('findPlate', () => {
       it('calls getSourcePlate', async () => {
-        cherrytrack.getSourcePlate.mockReturnValue({ success: true, ...sourcePlate, source: true })
+        lighthouseBiosero.getBioseroPlate.mockReturnValue({ success: true, ...sourcePlate, source: true })
 
         await wrapper.setData({ barcode: sourcePlate.barcode })
         await wrapper.vm.findPlate()
 
-        expect(cherrytrack.getSourcePlate).toHaveBeenCalled()
+        expect(lighthouseBiosero.getBioseroPlate).toHaveBeenCalledWith(sourcePlate.barcode, 'source')
         expect(wrapper.vm.plate).toEqual({ success: true, ...sourcePlate, source: true })
       })
 
-      it('calls getDestinationPlate when getSourcePlate fails', async () => {
+      it('calls getBioseroPlate with type destination when type source fails', async () => {
         const errorResponse = {
           success: false,
           error: 'Could not find plate',
         }
-        cherrytrack.getSourcePlate.mockReturnValue(errorResponse)
-        cherrytrack.getDestinationPlate.mockReturnValue({ success: true, ...destinationPlate, destination: true })
+        // getBioseroPlate gets called once for source plate, which we want to fail, and then called with destination plate
+        lighthouseBiosero.getBioseroPlate.mockReturnValueOnce(errorResponse).mockReturnValue({ success: true, ...destinationPlate, destination: true })
 
         await wrapper.setData({ barcode: destinationPlate.barcode })
         await wrapper.vm.findPlate()
 
-        expect(cherrytrack.getDestinationPlate).toHaveBeenCalled()
-        expect(wrapper.vm.plate).toEqual({ success: true, ...destinationPlate, destination: true})
+        expect(lighthouseBiosero.getBioseroPlate).toHaveBeenCalledWith(destinationPlate.barcode, 'source')
+        expect(lighthouseBiosero.getBioseroPlate).toHaveBeenCalledWith(destinationPlate.barcode, 'destination')
+        expect(wrapper.vm.plate).toEqual({ success: true, ...destinationPlate, destination: true })
       })
 
       it('shows an alert and clears the plate object when both requests fail', async () => {
@@ -217,8 +218,7 @@ describe('PlateState', () => {
           success: false,
           error: 'Could not find plate',
         }
-        cherrytrack.getSourcePlate.mockReturnValue(errorResponse)
-        cherrytrack.getDestinationPlate.mockReturnValue(errorResponse)
+        lighthouseBiosero.getBioseroPlate.mockReturnValue(errorResponse)
 
         await wrapper.setData({ barcode: 'Random barcode' })
         await wrapper.vm.findPlate()

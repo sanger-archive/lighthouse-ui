@@ -69,7 +69,7 @@
 
 <script>
 import Alert from '@/components/Alert'
-import cherrytrack from '@/modules/cherrytrack'
+import lighthouseBiosero from '@/modules/lighthouse_service_biosero'
 
 export default {
   name: 'PlateState',
@@ -148,11 +148,11 @@ export default {
   },
   methods: {
     async findPlate() {
-      let plate = await cherrytrack.getSourcePlate(this.barcode)
+      let plate = await lighthouseBiosero.getBioseroPlate(this.barcode, 'source')
       if (plate.success) {
         this.plate = plate
       } else {
-        plate = await cherrytrack.getDestinationPlate(this.barcode)
+        plate = await lighthouseBiosero.getBioseroPlate(this.barcode, 'destination')
         if (plate.success) {
           this.plate = plate
         } else {
