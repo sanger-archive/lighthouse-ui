@@ -214,8 +214,8 @@ describe('lighthouse_service_biosero api', () => {
       response = await lighthouseBiosero.getBioseroPlate(destinationPlateBarcode, 'destination')
 
       expect(response.success).toBeFalsy()
-      expect(response.barcode).not.toBeDefined()
-      expect(response.samples).not.toBeDefined()
+      expect(response.barcode).toBeUndefined()
+      expect(response.samples).toBeUndefined()
     })
   })
 })

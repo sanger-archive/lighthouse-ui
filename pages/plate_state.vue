@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import Alert from '@/components/Alert'
+import Alert from '@/components/AlertDialog'
 import lighthouseBiosero from '@/modules/lighthouse_service_biosero'
 
 export default {

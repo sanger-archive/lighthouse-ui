@@ -231,7 +231,7 @@ describe('PlateState', () => {
         await wrapper.vm.findPlate()
 
         expect(wrapper.vm.lastPlateBarcode).toEqual(PLATE_BARCODE)
-        expect(wrapper.vm.barcode).toEqual("")
+        expect(wrapper.vm.barcode).toBe("")
       })
     })
 
