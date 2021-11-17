@@ -4,7 +4,7 @@
 
     <h1 class="mt-3">UAT Actions</h1>
 
-    <Alert id="alert" ref="alert"></Alert>
+    <AlertDialog id="alert" ref="alert"></AlertDialog>
 
     <b-card title="Generate Test Run">
       <b-card-text>
@@ -111,7 +111,7 @@
 
 <script>
 import lighthouse from '@/modules/lighthouse_service'
-import Alert from '@/components/Alert'
+import AlertDialog from '@/components/AlertDialog'
 import UATActionsRouter from '@/components/UATActionsRouter'
 import statuses from '@/modules/statuses'
 
@@ -128,7 +128,7 @@ function initialFormState() {
 export default {
   name: 'GenerateTestRun',
   components: {
-    Alert,
+    AlertDialog,
     UATActionsRouter,
   },
   data() {

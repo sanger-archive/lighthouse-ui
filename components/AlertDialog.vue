@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  name: 'Alert',
+  name: 'AlertDialog',
   data() {
     return {
       message: '',

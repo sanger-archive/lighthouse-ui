@@ -55,8 +55,8 @@ describe('TestRuns.vue', () => {
     })
 
     it('contains a print button for each row', () => {
-      expect(wrapper.find('#print-TEST-111').text()).toEqual('Print')
-      expect(wrapper.find('#print-TEST-222').text()).toEqual('Print')
+      expect(wrapper.find('#print-TEST-111').text()).toBe('Print')
+      expect(wrapper.find('#print-TEST-222').text()).toBe('Print')
     })
   })
 

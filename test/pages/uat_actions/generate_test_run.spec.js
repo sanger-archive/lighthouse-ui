@@ -3,7 +3,7 @@ import { BootstrapVue } from 'bootstrap-vue'
 import flushPromises from 'flush-promises'
 import GenerateTestRun from '@/pages/uat_actions/generate_test_run.vue'
 import lighthouse from '@/modules/lighthouse_service'
-import Alert from '@/components/Alert'
+import AlertDialog from '@/components/AlertDialog'
 import statuses from '@/modules/statuses'
 
 jest.mock('@/modules/lighthouse_service')
@@ -49,7 +49,7 @@ describe('UAT Actions', () => {
   // components
   describe('alert', () => {
     it('has an alert', () => {
-      expect(wrapper.findComponent(Alert).exists()).toBeTruthy()
+      expect(wrapper.findComponent(AlertDialog).exists()).toBeTruthy()
     })
   })
 
@@ -60,7 +60,7 @@ describe('UAT Actions', () => {
         numberOfPlates: 1,
         numberOfPositives: 0,
       })
-      expect(page.addToDart).toEqual(false)
+      expect(page.addToDart).toBe(false)
       expect(page.plateSpecs).toEqual([])
       expect(wrapper.vm.status).toEqual(statuses.Idle)
     })
@@ -129,8 +129,8 @@ describe('UAT Actions', () => {
       await wrapper.find('#addButton').trigger('click')
 
       expect(wrapper.vm.plateSpecs).toEqual([{ numberOfPlates: 1, numberOfPositives: 2 }])
-      expect(wrapper.vm.form.numberOfPlates).toEqual(1)
-      expect(wrapper.vm.form.numberOfPositives).toEqual(0)
+      expect(wrapper.vm.form.numberOfPlates).toBe(1)
+      expect(wrapper.vm.form.numberOfPositives).toBe(0)
     })
 
     it('when plateSpecs is not empty', async () => {
@@ -150,8 +150,8 @@ describe('UAT Actions', () => {
         { numberOfPlates: 1, numberOfPositives: 2 },
         { numberOfPlates: 3, numberOfPositives: 4 },
       ])
-      expect(wrapper.vm.form.numberOfPlates).toEqual(1)
-      expect(wrapper.vm.form.numberOfPositives).toEqual(0)
+      expect(wrapper.vm.form.numberOfPlates).toBe(1)
+      expect(wrapper.vm.form.numberOfPositives).toBe(0)
     })
 
     it('when adding another entry with the same number of positives as an already existing plate spec and that they remain in insertion order', async () => {
@@ -171,8 +171,8 @@ describe('UAT Actions', () => {
         { numberOfPlates: 1, numberOfPositives: 4 },
         { numberOfPlates: 3, numberOfPositives: 4 },
       ])
-      expect(wrapper.vm.form.numberOfPlates).toEqual(1)
-      expect(wrapper.vm.form.numberOfPositives).toEqual(0)
+      expect(wrapper.vm.form.numberOfPlates).toBe(1)
+      expect(wrapper.vm.form.numberOfPositives).toBe(0)
     })
   })
 

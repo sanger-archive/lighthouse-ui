@@ -1,6 +1,6 @@
 import { createLocalVue, shallowMount } from '@vue/test-utils'
 import { BootstrapVue } from 'bootstrap-vue'
-import Alert from '@/components/Alert'
+import AlertDialog from '@/components/AlertDialog'
 import lighthouse from '@/modules/lighthouse_service'
 import lighthouseBiosero from '@/modules/lighthouse_service_biosero'
 import BioseroCherrypick from '@/pages/biosero_cherrypick.vue'
@@ -141,7 +141,7 @@ describe('Biosero Cherrypick', () => {
 
   describe('alert', () => {
     it('has a alert', () => {
-      expect(wrapper.findComponent(Alert).exists()).toBeTruthy()
+      expect(wrapper.findComponent(AlertDialog).exists()).toBeTruthy()
     })
   })
 

@@ -309,12 +309,12 @@ describe('BoxBuster', () => {
 
     it('sorts by count_must_sequence, then count_preferentially_sequence, then count_fit_to_pick_samples, then has_plate_map', () => {
       const result = wrapper.vm.sortedPlates(examplePlates)
-      expect(result[0].plate_barcode).toEqual('AP-rna-2-0-10-8')
-      expect(result[1].plate_barcode).toEqual('AP-rna-1-1-5-5')
-      expect(result[2].plate_barcode).toEqual('AP-rna-0-2-8-6')
-      expect(result[3].plate_barcode).toEqual('AP-rna-0-1-2-1')
-      expect(result[4].plate_barcode).toEqual('AP-rna-0-0-0-0')
-      expect(result[5].plate_barcode).toEqual('AP-rna-no_map')
+      expect(result[0].plate_barcode).toBe('AP-rna-2-0-10-8')
+      expect(result[1].plate_barcode).toBe('AP-rna-1-1-5-5')
+      expect(result[2].plate_barcode).toBe('AP-rna-0-2-8-6')
+      expect(result[3].plate_barcode).toBe('AP-rna-0-1-2-1')
+      expect(result[4].plate_barcode).toBe('AP-rna-0-0-0-0')
+      expect(result[5].plate_barcode).toBe('AP-rna-no_map')
     })
   })
 
@@ -379,8 +379,8 @@ describe('BoxBuster', () => {
     await flushPromises()
 
     expect(wrapper.vm.scanned_barcodes).toEqual(['12345'])
-    expect(wrapper.vm.barcode).toEqual('')
-    expect(barcodeField.element.value).toEqual('')
+    expect(wrapper.vm.barcode).toBe('')
+    expect(barcodeField.element.value).toBe('')
     expect(wrapper.find('caption').text()).toContain('12345')
   })
 

@@ -4,7 +4,7 @@
 
     <h1 class="mt-3">UAT Actions</h1>
 
-    <Alert id="alert" ref="alert"></Alert>
+    <AlertDialog id="alert" ref="alert"></AlertDialog>
 
     <b-table
       striped
@@ -38,12 +38,12 @@
 
 <script>
 import lighthouse from '@/modules/lighthouse_service'
-import Alert from '@/components/Alert'
+import AlertDialog from '@/components/AlertDialog'
 import UATActionsRouter from '@/components/UATActionsRouter'
 export default {
   name: 'TestRuns',
   components: {
-    Alert,
+    AlertDialog,
     UATActionsRouter,
   },
   data() {

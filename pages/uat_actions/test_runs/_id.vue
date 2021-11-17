@@ -4,7 +4,7 @@
 
     <h1 class="mt-3">UAT Actions</h1>
 
-    <Alert id="alert" ref="alert"></Alert>
+    <AlertDialog id="alert" ref="alert"></AlertDialog>
     <b-card v-if="run.status == 'completed'" title="Test Run">
       <b-row align-v="end">
         <b-col>
@@ -52,7 +52,7 @@
 
 <script>
 import lighthouse from '@/modules/lighthouse_service'
-import Alert from '@/components/Alert'
+import AlertDialog from '@/components/AlertDialog'
 import UATActionsRouter from '@/components/UATActionsRouter'
 import config from '@/nuxt.config'
 import sprint from '@/modules/sprint'
@@ -60,7 +60,7 @@ import sprint from '@/modules/sprint'
 export default {
   name: 'TestRun',
   components: {
-    Alert,
+    AlertDialog,
     UATActionsRouter,
   },
   data() {
