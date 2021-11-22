@@ -126,11 +126,22 @@ export default {
       return [pickedWells, unpickedWells, emptyWells]
     },
     calculateDestinationWells() {
-      const controlWells = this.plate.wells.filter((well) => {
-        return well.type === "control"
-      }).length
-      const pickedWells = this.plate.wells.length - controlWells
-      const emptyWells = 96 - this.plate.wells.length
+      let pickedWells = 0
+      let controlWells = 0
+      let emptyWells = 0
+      this.plate.wells.forEach((well) => {
+        switch (well.type) {
+          case "control":
+            controlWells += 1
+            break;
+          case "sample":
+            pickedWells += 1
+            break;
+          case "empty":
+            emptyWells += 1
+            break;
+        }
+      })
 
       return [pickedWells, controlWells, emptyWells]
     },
@@ -187,7 +198,11 @@ export default {
           )
           if (well) {
             row[field] = well[this.filter]
-            row._cellVariants[field] = well.type === 'sample' ? 'success' : 'secondary'
+            if (well.type === 'sample') {
+              row._cellVariants[field] = 'success'
+            } else if (well.type === 'control') {
+              row._cellVariants[field] = 'secondary'
+            }
           }
         })
         return row

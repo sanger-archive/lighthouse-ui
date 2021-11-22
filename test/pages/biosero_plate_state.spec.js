@@ -74,7 +74,7 @@ describe('BioseroPlateState', () => {
       expect(caption).toContain('Destination plate barcode: destination-barcode')
       expect(caption).toContain('Total number of picked wells: 4')
       expect(caption).toContain('Total number of control wells: 1')
-      expect(caption).toContain('Total number of empty wells: 91')
+      expect(caption).toContain('Total number of empty wells: 0')
     })
   })
 
@@ -117,7 +117,7 @@ describe('BioseroPlateState', () => {
     it('has calculateDestinationWells method which returns pickedWells, controlWells and emptyWells', async () => {
       await wrapper.setData({ plate: destinationPlate })
 
-      expect(wrapper.vm.calculateDestinationWells).toEqual([4, 1, 91])
+      expect(wrapper.vm.calculateDestinationWells).toEqual([4, 1, 0])
     })
 
     describe('plateFilterOptions', () => {
