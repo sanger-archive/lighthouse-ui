@@ -1,20 +1,20 @@
 import { createLocalVue, mount } from '@vue/test-utils'
 import { BootstrapVue } from 'bootstrap-vue'
 import lighthouseBiosero from '@/modules/lighthouse_service_biosero'
-import PlateState from '@/pages/plate_state.vue'
+import BioseroPlateState from '@/pages/biosero_plate_state.vue'
 import '@/plugins/vue-pluralize'
 import { sourcePlate, destinationPlate } from '@/test/data/biosero_plates'
 
 jest.mock('@/modules/lighthouse_service_biosero')
 
-describe('PlateState', () => {
+describe('BioseroPlateState', () => {
   let wrapper
   const localVue = createLocalVue()
   localVue.use(BootstrapVue)
   const PLATE_BARCODE = '12345'
 
   beforeEach(() => {
-    wrapper = mount(PlateState, {
+    wrapper = mount(BioseroPlateState, {
       localVue,
       data() {
         return {
@@ -26,7 +26,7 @@ describe('PlateState', () => {
 
   describe('components', () => {
     it('is a Vue instance', () => {
-      expect(wrapper.findComponent(PlateState).exists()).toBeTruthy()
+      expect(wrapper.findComponent(BioseroPlateState).exists()).toBeTruthy()
     })
 
     it('has a barcode input field', () => {
@@ -223,7 +223,7 @@ describe('PlateState', () => {
         await wrapper.setData({ barcode: 'Random barcode' })
         await wrapper.vm.findPlate()
 
-        expect(wrapper.find('#showAlert').text()).toContain('Could not find plate in Biosero with barcode: Random barcode')
+        expect(wrapper.find('#showAlert').text()).toContain('Could not find a plate used on a Biosero system with barcode: Random barcode')
         expect(wrapper.vm.plate).toEqual({ source: false, destination: false })
       })
 

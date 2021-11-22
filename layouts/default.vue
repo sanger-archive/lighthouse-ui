@@ -23,7 +23,7 @@
             <b-nav-item to="/beckman_cherrypick" exact exact-active-class="active"
               >Beckman Cherrypick</b-nav-item
             >
-            <b-nav-item to="/plate_state" exact exact-active-class="active">Plate State</b-nav-item>
+            <b-nav-item to="/biosero_plate_state" exact exact-active-class="active">Biosero Plate State</b-nav-item>
             <b-nav-item
               v-if="featureFlagBioseroCherrypick"
               to="/biosero_cherrypick"

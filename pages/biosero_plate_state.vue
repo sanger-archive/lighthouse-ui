@@ -1,6 +1,6 @@
 <template>
   <b-container style="max-width: 1400px">
-    <h1 class="mt-3">Plate state</h1>
+    <h1 class="mt-3">Biosero Plate state</h1>
     <p class="lead">Find the state of a source or destination plate</p>
     <b-form-group
       id="plate-barcode"
@@ -72,7 +72,7 @@ import Alert from '@/components/AlertDialog'
 import lighthouseBiosero from '@/modules/lighthouse_service_biosero'
 
 export default {
-  name: 'PlateState',
+  name: 'BioseroPlateState',
   components: {
     Alert,
   },
@@ -157,7 +157,7 @@ export default {
           this.plate = plate
         } else {
           this.plate = { source: false, destination: false }
-          this.$refs.alert.show(`Could not find plate in Biosero with barcode: ${this.barcode}`, 'danger')
+          this.$refs.alert.show(`Could not find a plate used on a Biosero system with barcode: ${this.barcode}`, 'danger')
         }
       }
       this.lastPlateBarcode = this.barcode
