@@ -120,6 +120,14 @@ const destinationPlate = {
       date_picked: "Wed, 27 Oct 2021 09:04:49 GMT", 
       destination_coordinate: "D2", 
       type: "control"
+    },
+    {
+      automation_system_run_id: 1, 
+      created_at: "Wed, 27 Oct 2021 09:04:49 GMT", 
+      date_picked: "", 
+      destination_coordinate: "A1", 
+      picked: false, 
+      type: "empty"
     }, 
   ],
 }
