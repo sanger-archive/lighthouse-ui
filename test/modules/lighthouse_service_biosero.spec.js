@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { sourcePlate, destinationPlate } from '../data/biosero_plates'
 import lighthouseBiosero from '@/modules/lighthouse_service_biosero'
 import config from '@/nuxt.config'
 
@@ -167,6 +168,54 @@ describe('lighthouse_service_biosero api', () => {
       expect(mock).toHaveBeenCalledTimes(1)
       expect(result.success).toBe(false)
       expect(result.error).toEqual(errorResponse)
+    })
+  })
+
+  describe('#getBioseroPlate', () => {
+    let mockGet, destinationPlateBarcode, sourcePlateBarcode, response, mockResponse
+
+    beforeEach(() => {
+      mockGet = jest.spyOn(axios, 'get')
+      destinationPlateBarcode = 'DN1'
+      sourcePlateBarcode = '12345'
+    })
+
+    afterEach(() => {
+      mockGet.mockRestore()
+    })
+
+    it('successfully gets source plates', async () => {
+      mockResponse = { data: { plate: { data: sourcePlate } } }
+      mockGet.mockResolvedValue(mockResponse)
+
+      response = await lighthouseBiosero.getBioseroPlate(sourcePlateBarcode, 'source')
+
+      expect(response.success).toBeTruthy()
+      expect(response.source).toBeTruthy()
+      expect(response.barcode).toEqual(sourcePlate.barcode)
+      expect(response.samples).toEqual(sourcePlate.samples)
+    })
+
+    it('successfully gets destination plates', async () => {
+      mockResponse = { data: { plate: { data: destinationPlate } } }
+      mockGet.mockResolvedValue(mockResponse)
+
+      response = await lighthouseBiosero.getBioseroPlate(destinationPlateBarcode, 'destination')
+
+      expect(response.success).toBeTruthy()
+      expect(response.destination).toBeTruthy()
+      expect(response.barcode).toEqual(destinationPlate.barcode)
+      expect(response.samples).toEqual(destinationPlate.samples)
+    })
+
+    it('when there is an error', async () => {
+      mockGet.mockImplementationOnce(() => Promise.reject(new Error('There was an error')))
+
+      response = await lighthouseBiosero.getBioseroPlate(destinationPlateBarcode, 'destination')
+
+      expect(response.success).toBeFalsy()
+      expect(response.barcode).toBeUndefined()
+      expect(response.samples).toBeUndefined()
     })
   })
 })

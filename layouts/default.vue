@@ -23,7 +23,7 @@
             <b-nav-item to="/beckman_cherrypick" exact exact-active-class="active"
               >Beckman Cherrypick</b-nav-item
             >
-
+            <b-nav-item to="/biosero_plate_state" exact exact-active-class="active">Biosero Plate State</b-nav-item>
             <b-nav-item
               v-if="featureFlagBioseroCherrypick"
               to="/biosero_cherrypick"
@@ -104,5 +104,15 @@ html {
 .button--grey:hover {
   color: #fff;
   background-color: #35495e;
+}
+</style>
+
+<style scoped>
+.nav-item {
+  padding: 0 10px;
+}
+
+.nav-item:not(:last-child) {
+  border-right: 1px solid #3b8070;
 }
 </style>

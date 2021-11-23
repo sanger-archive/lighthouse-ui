@@ -69,6 +69,12 @@ To serve the application with hot reloading:
 
     npm run dev
 
+## Linting
+
+This project is linted using [ESLint](https://github.com/eslint/eslint). To lint the code, run:
+
+    npm run lint .
+
 ## Testing
 
 ### Running tests

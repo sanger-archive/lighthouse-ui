@@ -134,9 +134,22 @@ const failDestinationPlateBiosero = async (form) => {
   }
 }
 
+const getBioseroPlate = async (barcode, type) => {
+  try {
+    const url = `${config.privateRuntimeConfig.lighthouseBaseURL}/plates/cherrytrack`
+    const response = await axios.get(url + `?barcode=${barcode}&_type=${type}`)
+    const plate = { success: true, [type]: true, ...response.data.plate.data }
+
+    return plate
+  } catch (error) {
+    return { success: false }
+  }
+}
+
 const lighthouseBiosero = {
   createDestinationPlateBiosero,
   failDestinationPlateBiosero,
+  getBioseroPlate
 }
 
 export default lighthouseBiosero

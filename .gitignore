@@ -83,3 +83,6 @@ sw.*
 
 # Vim swap files
 *.swp
+
+# Talisman
+.talismanrc
