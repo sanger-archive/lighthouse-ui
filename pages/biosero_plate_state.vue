@@ -21,7 +21,18 @@
       <b-button id="searchPlates" variant="info" @click="findPlate">Search</b-button>
     </p>
 
-    <Alert ref="alert"></Alert>
+    <p>
+      <b-alert 
+        id="alert"
+        :show="alertData.show"
+        dismissible
+        fade
+        :variant="alertData.variant"
+        @dismissed="alertData.show=false"
+      >
+        {{ alertData.message }}
+      </b-alert>
+    </p>
 
     <b-card id="plate-summary" title="Plate Summary">
       <div v-if="plate.source">
@@ -68,20 +79,17 @@
 </template>
 
 <script>
-import Alert from '@/components/AlertDialog'
 import lighthouseBiosero from '@/modules/lighthouse_service_biosero'
 
 export default {
   name: 'BioseroPlateState',
-  components: {
-    Alert,
-  },
   data() {
     return {
       barcode: '',
       lastPlateBarcode: '',
       plate: { source: false, destination: false },
       filter: 'source_barcode',
+      alertData: { variant: '', message: '', show: false },
       plateFields: [
         { key: 'row', label: '', isRowHeader: true },
         '1',
@@ -102,19 +110,25 @@ export default {
   },
   computed: {
     plateFilterOptions() {
-      return [
+      const filters = [
         { text: 'Source Barcode', value: 'source_barcode' },
-        { text: 'Control Barcode', value: 'control_barcode', disabled: !this.plate.destination },
-        { text: 'Control Type', value: 'control', disabled: !this.plate.destination },
         { text: 'Source Coordinate', value: 'source_coordinate' },
-        { text: 'Destination Coordinate', value: 'destination_coordinate' },
         { text: 'RNA ID', value: 'rna_id' },
         { text: 'Run ID', value: 'automation_system_run_id' },
         { text: 'Lab ID', value: 'lab_id' },
-        { text: 'LH sample UUID', value: 'lh_sample_uuid' },
         { text: 'Date picked', value: 'date_picked' },
         { text: 'Date created', value: 'created_at' },
+        { text: 'Destination Coordinate', value: 'destination_coordinate' },
       ]
+      if (this.plate.source) {
+        filters.push({ text: 'Destination Barcode', value: 'destination_barcode' })
+      } else if (this.plate.destination) {
+        filters.push(
+          { text: 'Control Barcode', value: 'control_barcode' },
+          { text: 'Control Type', value: 'control' }
+        )
+      }
+      return filters
     },
     calculateSourceWells() {
       const pickedWells = this.plate.samples.filter((sample) => {
@@ -159,6 +173,8 @@ export default {
   },
   methods: {
     async findPlate() {
+      this.filter = 'source_barcode' // Resets the filter each plate to prevent empty filter bug
+      this.alertData = { variant: '', message: '', show: false } // Removes existing alerts when a new plate is scanned
       let plate = await lighthouseBiosero.getBioseroPlate(this.barcode, 'source')
       if (plate.success) {
         this.plate = plate
@@ -168,7 +184,7 @@ export default {
           this.plate = plate
         } else {
           this.plate = { source: false, destination: false }
-          this.$refs.alert.show(`Could not find a plate used on a Biosero system with barcode: ${this.barcode}`, 'danger')
+          this.showAlert(`Could not find a plate used on a Biosero system with barcode: ${this.barcode}`, 'danger')
         }
       }
       this.lastPlateBarcode = this.barcode
@@ -207,6 +223,11 @@ export default {
         })
         return row
       })
+    },
+    showAlert(message, variant) {
+      this.alertData.show = true
+      this.alertData.variant = variant
+      this.alertData.message = message
     },
   },
 }
