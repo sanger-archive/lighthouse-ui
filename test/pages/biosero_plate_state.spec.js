@@ -238,7 +238,7 @@ describe('BioseroPlateState', () => {
         await wrapper.vm.findPlate()
 
         expect(wrapper.vm.alertData).toEqual({ variant: '', message: '', show: false })
-        expect(wrapper.vm.filter).toEqual('source_barcode')
+        expect(wrapper.vm.filter).toBe('source_barcode')
       })
     })
 
