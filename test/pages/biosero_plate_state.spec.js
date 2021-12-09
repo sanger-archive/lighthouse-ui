@@ -34,7 +34,7 @@ describe('BioseroPlateState', () => {
     })
 
     it('has an alert', () => {
-      expect(wrapper.find('#showAlert').exists()).toBeTruthy()
+      expect(wrapper.find('#alert').exists()).toBeTruthy()
     })
 
     it('has a plate summary', () => {
@@ -126,16 +126,14 @@ describe('BioseroPlateState', () => {
 
         expect(wrapper.vm.plateFilterOptions).toEqual([
           { text: 'Source Barcode', value: 'source_barcode' },
-          { text: 'Control Barcode', value: 'control_barcode', disabled: true },
-          { text: 'Control Type', value: 'control', disabled: true },
           { text: 'Source Coordinate', value: 'source_coordinate' },
-          { text: 'Destination Coordinate', value: 'destination_coordinate' },
           { text: 'RNA ID', value: 'rna_id' },
           { text: 'Run ID', value: 'automation_system_run_id' },
           { text: 'Lab ID', value: 'lab_id' },
-          { text: 'LH sample UUID', value: 'lh_sample_uuid' },
           { text: 'Date picked', value: 'date_picked' },
-          { text: 'Date created', value: 'created_at' }
+          { text: 'Date created', value: 'created_at' },
+          { text: 'Destination Coordinate', value: 'destination_coordinate' },
+          { text: 'Destination Barcode', value: 'destination_barcode' }
         ])
       })
 
@@ -144,16 +142,15 @@ describe('BioseroPlateState', () => {
 
         expect(wrapper.vm.plateFilterOptions).toEqual([
           { text: 'Source Barcode', value: 'source_barcode' },
-          { text: 'Control Barcode', value: 'control_barcode', disabled: false },
-          { text: 'Control Type', value: 'control', disabled: false },
           { text: 'Source Coordinate', value: 'source_coordinate' },
-          { text: 'Destination Coordinate', value: 'destination_coordinate' },
           { text: 'RNA ID', value: 'rna_id' },
           { text: 'Run ID', value: 'automation_system_run_id' },
           { text: 'Lab ID', value: 'lab_id' },
-          { text: 'LH sample UUID', value: 'lh_sample_uuid' },
           { text: 'Date picked', value: 'date_picked' },
-          { text: 'Date created', value: 'created_at' }
+          { text: 'Date created', value: 'created_at' },
+          { text: 'Destination Coordinate', value: 'destination_coordinate' },
+          { text: 'Control Barcode', value: 'control_barcode' },
+          { text: 'Control Type', value: 'control' }
         ])
       })
     })
@@ -223,7 +220,7 @@ describe('BioseroPlateState', () => {
         await wrapper.setData({ barcode: 'Random barcode' })
         await wrapper.vm.findPlate()
 
-        expect(wrapper.find('#showAlert').text()).toContain('Could not find a plate used on a Biosero system with barcode: Random barcode')
+        expect(wrapper.find('#alert').text()).toContain('Could not find a plate used on a Biosero system with barcode: Random barcode')
         expect(wrapper.vm.plate).toEqual({ source: false, destination: false })
       })
 
@@ -232,6 +229,16 @@ describe('BioseroPlateState', () => {
 
         expect(wrapper.vm.lastPlateBarcode).toEqual(PLATE_BARCODE)
         expect(wrapper.vm.barcode).toBe("")
+      })
+
+      it('clears the alertData and resets the filter', async () => {
+        await wrapper.setData({ alertData: { variant: 'danger', message: 'test', show: true }, filter: 'control_barcode'})
+        lighthouseBiosero.getBioseroPlate.mockReturnValue({ success: true, ...sourcePlate, source: true })
+
+        await wrapper.vm.findPlate()
+
+        expect(wrapper.vm.alertData).toEqual({ variant: '', message: '', show: false })
+        expect(wrapper.vm.filter).toEqual('source_barcode')
       })
     })
 
