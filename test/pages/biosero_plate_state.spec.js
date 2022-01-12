@@ -131,7 +131,6 @@ describe('BioseroPlateState', () => {
           { text: 'Run ID', value: 'automation_system_run_id' },
           { text: 'Lab ID', value: 'lab_id' },
           { text: 'Date picked', value: 'date_picked' },
-          { text: 'Date created', value: 'created_at' },
           { text: 'Destination Coordinate', value: 'destination_coordinate' },
           { text: 'Destination Barcode', value: 'destination_barcode' }
         ])
@@ -147,7 +146,6 @@ describe('BioseroPlateState', () => {
           { text: 'Run ID', value: 'automation_system_run_id' },
           { text: 'Lab ID', value: 'lab_id' },
           { text: 'Date picked', value: 'date_picked' },
-          { text: 'Date created', value: 'created_at' },
           { text: 'Destination Coordinate', value: 'destination_coordinate' },
           { text: 'Control Barcode', value: 'control_barcode' },
           { text: 'Control Type', value: 'control' }
