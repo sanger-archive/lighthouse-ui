@@ -1,15 +1,15 @@
-import Alert from '@/components/Alert'
 import { createLocalVue, mount } from '@vue/test-utils'
 import { BootstrapVue } from 'bootstrap-vue'
+import AlertDialog from '@/components/AlertDialog'
 
 const localVue = createLocalVue()
 localVue.use(BootstrapVue)
 
-describe('Alert.vue', () => {
+describe('AlertDialog.vue', () => {
   let wrapper
 
   it('has a message', () => {
-    wrapper = mount(Alert, {
+    wrapper = mount(AlertDialog, {
       localVue,
       data() {
         return { message: 'bar' }
@@ -19,7 +19,7 @@ describe('Alert.vue', () => {
   })
 
   it('has a type', () => {
-    wrapper = mount(Alert, {
+    wrapper = mount(AlertDialog, {
       localVue,
       data() {
         return { type: 'primary' }
@@ -29,7 +29,7 @@ describe('Alert.vue', () => {
   })
 
   it('has a showDismissibleAlert', () => {
-    wrapper = mount(Alert, {
+    wrapper = mount(AlertDialog, {
       localVue,
       data() {
         return { showDismissibleAlert: true }
@@ -39,13 +39,13 @@ describe('Alert.vue', () => {
   })
 
   it('is hidden as default', () => {
-    wrapper = mount(Alert, { localVue })
+    wrapper = mount(AlertDialog, { localVue })
     expect(wrapper.vm.showDismissibleAlert).toBe(false)
     expect(wrapper.find('#showAlert').element).toBeTruthy()
   })
 
   it('displays the message', () => {
-    wrapper = mount(Alert, {
+    wrapper = mount(AlertDialog, {
       localVue,
       data() {
         return { message: 'bar', showDismissibleAlert: true }
@@ -55,7 +55,7 @@ describe('Alert.vue', () => {
   })
 
   it('displays the type', () => {
-    wrapper = mount(Alert, {
+    wrapper = mount(AlertDialog, {
       localVue,
       data() {
         return { type: 'success', showDismissibleAlert: true }
@@ -65,7 +65,7 @@ describe('Alert.vue', () => {
   })
 
   it('#show sets the data', () => {
-    const alert = mount(Alert, { localVue }).vm
+    const alert = mount(AlertDialog, { localVue }).vm
     alert.show('msg')
     expect(alert.message).toBe('msg')
     expect(alert.type).toBe('primary')

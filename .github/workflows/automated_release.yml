@@ -15,31 +15,34 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - uses: nelonoel/branch-name@v1.0.1
+
       - name: Build and tag the image for testing and release
         run: >-
           docker build .
           --file Dockerfile
-          --tag docker.pkg.github.com/${IMAGE_NAME}:${GITHUB_REF##*/}
+          --tag docker.pkg.github.com/${IMAGE_NAME}:${BRANCH_NAME}
 
       - name: Run tests against the image
         run: >-
           docker run
           --network host
-          docker.pkg.github.com/${IMAGE_NAME}:${GITHUB_REF##*/}
-          yarn test
+          docker.pkg.github.com/${IMAGE_NAME}:${BRANCH_NAME}
+          npm test
 
       - name: Set release tag
         # https://docs.github.com/en/actions/reference/workflow-commands-for-github-actions#setting-an-environment-variable
-        run: echo "RELEASE_VERSION=$([ ${GITHUB_REF##*/} = "develop" ] && printf '%s\n' $(cat .release-version)-develop || printf '%s\n' $(cat .release-version))" >> $GITHUB_ENV
+        # On the develop branch this might create RELEASE_VERSION=2.4.6-987654321-develop
+        # On the master branch this would then only create RELEASE_VERSION=2.4.6
+        run: echo "RELEASE_VERSION=$(printf -- '%s%s\n' $(cat .release-version) $([ ${BRANCH_NAME} = "develop" ] && printf -- '-%s-develop' ${GITHUB_RUN_ID} || echo ""))" >> $GITHUB_ENV
 
       - name: Create release
-        uses: softprops/action-gh-release@v1
+        uses: ncipollo/release-action@v1.8.8
         with:
           name: ${{ env.RELEASE_VERSION }}
-          tag_name: v${{ env.RELEASE_VERSION }}
+          tag: v${{ env.RELEASE_VERSION }}
           prerelease: ${{ !(github.ref == 'refs/heads/master') }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          commit: ${{ github.sha }}
 
       - name: Login to registry
         run: >-
@@ -51,7 +54,7 @@ jobs:
       - name: Tag image with release version
         run: >-
           docker tag
-          docker.pkg.github.com/${IMAGE_NAME}:${GITHUB_REF##*/}
+          docker.pkg.github.com/${IMAGE_NAME}:${BRANCH_NAME}
           docker.pkg.github.com/${IMAGE_NAME}:${{ env.RELEASE_VERSION }}
 
       - name: Push release tag image to registry
@@ -59,6 +62,9 @@ jobs:
           docker push docker.pkg.github.com/${IMAGE_NAME}:${{ env.RELEASE_VERSION }}
 
       - name: Remove the oldest package
+        # The delete-package-versions action has become broken and the fix doesn't look imminent.
+        # Re-enable this later if a fix comes out! https://github.com/actions/delete-package-versions/issues/28
+        if: false
         uses: actions/delete-package-versions@v1
         with:
-          package-name: "${{ github.event.repository.name }}"
+          package-name: '${{ github.event.repository.name }}'

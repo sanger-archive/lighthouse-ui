@@ -27,7 +27,7 @@ describe('sentinel cherrypick', () => {
   })
 
   it('has barcodes', () => {
-    expect(wrapper.vm.boxBarcodes).toEqual('lw-ogilvie-4\nlw-ogilvie-5\nlw-ogilvie-6')
+    expect(wrapper.vm.boxBarcodes).toBe('lw-ogilvie-4\nlw-ogilvie-5\nlw-ogilvie-6')
   })
 
   it('has items', () => {
@@ -39,7 +39,7 @@ describe('sentinel cherrypick', () => {
 
     it('has a get plates button', () => {
       button = wrapper.find('#handlePlatesRetrieval')
-      expect(button.text()).toEqual('Get plates')
+      expect(button.text()).toBe('Get plates')
     })
 
     it('on get plates button click it calls getPlates', () => {
@@ -55,7 +55,7 @@ describe('sentinel cherrypick', () => {
 
     it('has a cancel button', () => {
       button = wrapper.find('#cancelSearch')
-      expect(button.text()).toEqual('Cancel')
+      expect(button.text()).toBe('Cancel')
     })
 
     it('on cancel button click it calls cancelSearch', () => {
@@ -69,7 +69,7 @@ describe('sentinel cherrypick', () => {
   describe('#cancelSearch', () => {
     it('clears boxBarcode', () => {
       wrapper.vm.cancelSearch()
-      expect(wrapper.vm.boxBarcodes).toEqual('')
+      expect(wrapper.vm.boxBarcodes).toBe('')
     })
   })
 
@@ -125,7 +125,7 @@ describe('sentinel cherrypick', () => {
 
       wrapper.vm.handleGetPlatesResponse(response)
       wrapper.vm.$nextTick(() => {
-        expect(wrapper.findComponent({ ref: 'alert' }).text()).toEqual(
+        expect(wrapper.findComponent({ ref: 'alert' }).text()).toBe(
           'Could not retrieve plates from LabWhere'
         )
       })
@@ -138,12 +138,12 @@ describe('sentinel cherrypick', () => {
 
     it('has a create batch button at the top of the table', () => {
       button = wrapper.find('#handleSentinelBatchCreationTop')
-      expect(button.text()).toEqual('Create cherrypick batch')
+      expect(button.text()).toBe('Create cherrypick batch')
     })
 
     it('has a create batch button at the bottom of the table', () => {
       button = wrapper.find('#handleSentinelBatchCreationBottom')
-      expect(button.text()).toEqual('Create cherrypick batch')
+      expect(button.text()).toBe('Create cherrypick batch')
     })
 
     it('create batch button (top) is disabled', () => {
@@ -238,7 +238,7 @@ describe('sentinel cherrypick', () => {
 
         wrapper.vm.handleCreateBatchResponse(response)
         wrapper.vm.$nextTick(() => {
-          expect(wrapper.findComponent({ ref: 'alert' }).text()).toEqual(
+          expect(wrapper.findComponent({ ref: 'alert' }).text()).toBe(
             'Cherrypicking batch successfully created. Go to this link to view it: http://localhost:3000/pick_lists/4'
           )
         })
@@ -252,7 +252,7 @@ describe('sentinel cherrypick', () => {
 
         wrapper.vm.handleCreateBatchResponse(response)
         wrapper.vm.$nextTick(() => {
-          expect(wrapper.findComponent({ ref: 'alert' }).text()).toEqual('Test error')
+          expect(wrapper.findComponent({ ref: 'alert' }).text()).toBe('Test error')
         })
       })
     })

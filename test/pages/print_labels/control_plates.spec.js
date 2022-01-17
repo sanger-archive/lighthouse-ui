@@ -44,19 +44,19 @@ describe('print control plate labels', () => {
   it('should be able to add a barcode', () => {
     const input = wrapper.find('#barcode')
     input.setValue('DN111111')
-    expect(vm.barcode).toEqual('DN111111')
+    expect(vm.barcode).toBe('DN111111')
   })
 
   it('should be able to select a number of labels', () => {
     const input = wrapper.find('#numberOfBarcodes')
     input.setValue(10)
-    expect(vm.numberOfBarcodes).toEqual('10')
+    expect(vm.numberOfBarcodes).toBe('10')
   })
 
   it('#setMessage', () => {
     vm.setStatus('Success', 'Barcodes successfully printed')
     expect(vm.status).toEqual(statuses.Success)
-    expect(vm.alertMessage).toEqual('Barcodes successfully printed')
+    expect(vm.alertMessage).toBe('Barcodes successfully printed')
   })
 
   it('#multiplyBarcodes', () => {

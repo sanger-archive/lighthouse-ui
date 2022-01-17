@@ -105,7 +105,7 @@ export default {
       pickListResponse: { variant: 'danger' },
       perPage: 10,
       currentPage: 1,
-      submit_disabled: false
+      submit_disabled: false,
     }
   },
   computed: {

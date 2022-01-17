@@ -1,9 +1,9 @@
-import Alert from '@/components/Alert'
+import { createLocalVue, shallowMount } from '@vue/test-utils'
+import { BootstrapVue } from 'bootstrap-vue'
+import AlertDialog from '@/components/AlertDialog'
 import lighthouse from '@/modules/lighthouse_service'
 import lighthouseBiosero from '@/modules/lighthouse_service_biosero'
 import BioseroCherrypick from '@/pages/biosero_cherrypick.vue'
-import { createLocalVue, shallowMount } from '@vue/test-utils'
-import { BootstrapVue } from 'bootstrap-vue'
 jest.mock('@/modules/lighthouse_service')
 jest.mock('@/modules/lighthouse_service_biosero')
 
@@ -94,8 +94,8 @@ describe('Biosero Cherrypick', () => {
       lighthouseBiosero.createDestinationPlateBiosero.mockReturnValue({
         success: false,
         error: {
-          message:'an error',
-        }
+          message: 'an error',
+        },
       })
 
       await page.create(form)
@@ -131,7 +131,7 @@ describe('Biosero Cherrypick', () => {
         success: false,
         error: {
           message: 'An error message',
-        }
+        },
       })
 
       await page.fail(form)
@@ -141,7 +141,7 @@ describe('Biosero Cherrypick', () => {
 
   describe('alert', () => {
     it('has a alert', () => {
-      expect(wrapper.findComponent(Alert).exists()).toBeTruthy()
+      expect(wrapper.findComponent(AlertDialog).exists()).toBeTruthy()
     })
   })
 

@@ -1,7 +1,7 @@
 // Lighthouse Service Biosero Module
 
-import config from '@/nuxt.config'
 import axios from 'axios'
+import config from '@/nuxt.config'
 
 /**
  * - Returned on success: `{ success: true, response: "A successful message" }`
@@ -14,9 +14,9 @@ const createDestinationPlateBiosero = async (form) => {
   try {
     const url = `${config.privateRuntimeConfig.lighthouseBaseURL}/events`
     const body = {
-      'event_type': 'lh_biosero_cp_destination_plate_partial_completed',
-      'barcode': form.barcode,
-      'user_id': form.username
+      event_type: 'lh_biosero_cp_destination_plate_partial_completed',
+      barcode: form.barcode,
+      user_id: form.username,
     }
     const headers = { headers: { Authorization: config.privateRuntimeConfig.lighthouseApiKey } }
 
@@ -84,11 +84,10 @@ const createDestinationPlateBiosero = async (form) => {
     }
   } catch (error) {
     // failure
-    if (Object.prototype.hasOwnProperty.call(error, "response")) {
+    if (Object.prototype.hasOwnProperty.call(error, 'response')) {
       return { success: false, error: error.response.data._error }
     } else {
       return { success: false, error }
-
     }
   }
 }
@@ -105,10 +104,10 @@ const failDestinationPlateBiosero = async (form) => {
   try {
     const url = `${config.privateRuntimeConfig.lighthouseBaseURL}/events`
     const body = {
-      'event_type': 'lh_biosero_cp_destination_plate_failed',
-      'barcode': form.barcode,
-      'user_id': form.username,
-      'failure_type': form.failureType
+      event_type: 'lh_biosero_cp_destination_plate_failed',
+      barcode: form.barcode,
+      user_id: form.username,
+      failure_type: form.failureType,
     }
 
     const headers = { headers: { Authorization: config.privateRuntimeConfig.lighthouseApiKey } }
@@ -119,14 +118,14 @@ const failDestinationPlateBiosero = async (form) => {
       // success
       return {
         success: true,
-        response: `Successfully failed destination plate with barcode: ${form.barcode}`
+        response: `Successfully failed destination plate with barcode: ${form.barcode}`,
       }
     } else {
       const errors = response._error
       // failure
       return {
         success: false,
-        errors
+        errors,
       }
     }
   } catch (error) {
@@ -135,9 +134,22 @@ const failDestinationPlateBiosero = async (form) => {
   }
 }
 
+const getBioseroPlate = async (barcode, type) => {
+  try {
+    const url = `${config.privateRuntimeConfig.lighthouseBaseURL}/plates/cherrytrack`
+    const response = await axios.get(url + `?barcode=${barcode}&_type=${type}`)
+    const plate = { success: true, [type]: true, ...response.data.plate.data }
+
+    return plate
+  } catch (error) {
+    return { success: false }
+  }
+}
+
 const lighthouseBiosero = {
   createDestinationPlateBiosero,
-  failDestinationPlateBiosero
+  failDestinationPlateBiosero,
+  getBioseroPlate
 }
 
 export default lighthouseBiosero

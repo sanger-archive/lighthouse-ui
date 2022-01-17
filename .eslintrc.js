@@ -5,7 +5,8 @@ module.exports = {
   },
   parser: 'vue-eslint-parser', // https://eslint.vuejs.org/user-guide/#how-to-use-a-custom-parser
   parserOptions: {
-    parser: 'babel-eslint',
+    parser: '@babel/eslint-parser',
+    requireConfigFile: false,
     sourceType: 'module',
   },
   extends: [
@@ -27,5 +28,8 @@ module.exports = {
         assertFunctionNames: ['expect', 'cy.contains'],
       },
     ],
+    "vue/multi-word-component-names": ["error", {
+      ignores: ['default', 'imports', 'index', 'reports'] // These are layouts and page names
+    }],
   },
 }
