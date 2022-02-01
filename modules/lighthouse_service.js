@@ -264,7 +264,11 @@ const generateTestRun = async (plateSpecs, addToDart) => {
     }
     const headers = { headers: { Authorization: config.privateRuntimeConfig.lighthouseApiKey } }
 
-    const response = await axios.post(`${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypick-test-data`, body, headers)
+    const response = await axios.post(
+      `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypick-test-data`,
+      body,
+      headers
+    )
 
     return {
       success: true,
@@ -283,7 +287,7 @@ const generateTestRun = async (plateSpecs, addToDart) => {
  */
 const getTestRuns = async (currentPage, maxResults) => {
   try {
-    const url = new URL('cherrypick-test-data', config.privateRuntimeConfig.lighthouseBaseURL)
+    // const url = new URL('cherrypick-test-data', config.privateRuntimeConfig.lighthouseBaseURL)
 
     url.searchParams.append('max_results', maxResults)
     url.searchParams.append('page', currentPage)
@@ -291,7 +295,10 @@ const getTestRuns = async (currentPage, maxResults) => {
 
     const headers = { headers: { Authorization: config.privateRuntimeConfig.lighthouseApiKey } }
 
-    const response = await axios.get(url.href, headers)
+    const response = await axios.get(
+      `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypick-test-data`,
+      headers
+    )
 
     response.data._items.forEach((run) => {
       run.total_plates = run.plate_specs.reduce(function (acc, obj) {
@@ -316,11 +323,11 @@ const getTestRuns = async (currentPage, maxResults) => {
  */
 const getTestRun = async (id) => {
   try {
-    const url = new URL(`cherrypick-test-data/${id}`, config.privateRuntimeConfig.lighthouseBaseURL)
+    // const url = new URL(`cherrypick-test-data/${id}`, config.privateRuntimeConfig.lighthouseBaseURL)
 
     const headers = { headers: { Authorization: config.privateRuntimeConfig.lighthouseApiKey } }
 
-    const response = await axios.get(url.href, headers)
+    const response = await axios.get(`${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypick-test-data`, headers)
 
     return {
       success: true,
