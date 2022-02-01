@@ -287,16 +287,10 @@ const generateTestRun = async (plateSpecs, addToDart) => {
  */
 const getTestRuns = async (currentPage, maxResults) => {
   try {
-    // const url = new URL('cherrypick-test-data', config.privateRuntimeConfig.lighthouseBaseURL)
-
-    url.searchParams.append('max_results', maxResults)
-    url.searchParams.append('page', currentPage)
-    url.searchParams.append('sort', '-_created')
-
     const headers = { headers: { Authorization: config.privateRuntimeConfig.lighthouseApiKey } }
 
     const response = await axios.get(
-      `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypick-test-data`,
+      `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypick-test-data?max_results=${maxResults}&page=${currentPage}&sort=-_created`,
       headers
     )
 
@@ -323,11 +317,12 @@ const getTestRuns = async (currentPage, maxResults) => {
  */
 const getTestRun = async (id) => {
   try {
-    // const url = new URL(`cherrypick-test-data/${id}`, config.privateRuntimeConfig.lighthouseBaseURL)
-
     const headers = { headers: { Authorization: config.privateRuntimeConfig.lighthouseApiKey } }
 
-    const response = await axios.get(`${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypick-test-data`, headers)
+    const response = await axios.get(
+      `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypick-test-data/${id}`,
+      headers
+    )
 
     return {
       success: true,
