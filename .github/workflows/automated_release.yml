@@ -5,6 +5,7 @@ on:
     branches:
       - develop
       - master
+      - lighthouse-ui-url-fix
 
 env:
   IMAGE_NAME: ${{ github.repository }}/${{ github.event.repository.name }}
