@@ -254,15 +254,13 @@ const formatPlateSpecs = (plateSpecs) => {
 const generateTestRun = async (plateSpecs, addToDart) => {
   const plateSpecsParam = formatPlateSpecs(plateSpecs)
   try {
-    const url = new URL('cherrypick-test-data', config.privateRuntimeConfig.lighthouseBaseURL)
-
     const body = {
       'plate_specs': plateSpecsParam,
       'add_to_dart': addToDart,
     }
     const headers = { headers: { Authorization: config.privateRuntimeConfig.lighthouseApiKey } }
 
-    const response = await axios.post(url.href, body, headers)
+    const response = await axios.post(`${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypick-test-data`, body, headers)
 
     return {
       success: true,
