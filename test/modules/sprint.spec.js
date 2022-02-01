@@ -60,7 +60,7 @@ describe('Sprint', () => {
       expect(body.query).toBeDefined()
       const variables = body.variables
       expect(variables).toBeDefined()
-      expect(variables.printer).toEqual('heron-bc3')
+      expect(variables.printer).toBe('heron-bc3')
       expect(variables.printRequest).toBeDefined()
       expect(variables.printRequest.layouts[0]).toEqual(layout)
     })
@@ -105,7 +105,7 @@ describe('Sprint', () => {
         Sprint.headers
       )
       expect(response.success).toBeTruthy()
-      expect(response.message).toEqual('Successfully printed 3 labels to heron-bc3')
+      expect(response.message).toBe('Successfully printed 3 labels to heron-bc3')
     })
 
     it('when sprint fails', async () => {
@@ -168,7 +168,7 @@ describe('Sprint', () => {
           labelFields: Sprint.createLabelFields({ barcodes, text: 'LHTR' }),
         })
         expect(response.success).toBeTruthy()
-        expect(response.message).toEqual('Successfully printed 5 labels to heron-bc3')
+        expect(response.message).toBe('Successfully printed 5 labels to heron-bc3')
       })
 
       it('when baracoda fails', async () => {

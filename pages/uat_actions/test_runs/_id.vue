@@ -4,14 +4,18 @@
 
     <h1 class="mt-3">UAT Actions</h1>
 
-    <Alert id="alert" ref="alert"></Alert>
-    <b-card v-if="run.status=='completed'" title="Test Run">
+    <AlertDialog id="alert" ref="alert"></AlertDialog>
+    <b-card v-if="run.status == 'completed'" title="Test Run">
       <b-row align-v="end">
         <b-col>
           <label for="selectPrinter">Which printer would you like to use?</label>
         </b-col>
         <b-col>
-          <b-form-select id="selectPrinter" v-model="printerSelected" :options="printerOptions"></b-form-select>
+          <b-form-select
+            id="selectPrinter"
+            v-model="printerSelected"
+            :options="printerOptions"
+          ></b-form-select>
         </b-col>
         <b-col>
           <b-button
@@ -20,7 +24,8 @@
             class="float-right ml-2"
             :disabled="!printerSelected"
             @click="print(barcodesWithText, printerSelected)"
-          >Print ALL labels</b-button>
+            >Print ALL labels</b-button
+          >
         </b-col>
       </b-row>
       <br />
@@ -28,17 +33,18 @@
       <b-table striped hover :fields="fields" :items="barcodesWithText" sticky-header="800px">
         <template #cell(actions)="row">
           <b-button
-            :id="'print-'+row.item.barcode"
+            :id="'print-' + row.item.barcode"
             variant="outline-info"
             :disabled="!printerSelected"
             @click="print([row.item], printerSelected)"
-          >Print</b-button>
+            >Print</b-button
+          >
         </template>
       </b-table>
     </b-card>
 
-    <b-card v-else-if="run.status=='failed'" title="Test Run">
-      <span style="color:red" class="font-weight-bold">Failure:</span>
+    <b-card v-else-if="run.status == 'failed'" title="Test Run">
+      <span style="color: red" class="font-weight-bold">Failure:</span>
       {{ run.failure_reason }}
     </b-card>
   </b-container>
@@ -46,7 +52,7 @@
 
 <script>
 import lighthouse from '@/modules/lighthouse_service'
-import Alert from '@/components/Alert'
+import AlertDialog from '@/components/AlertDialog'
 import UATActionsRouter from '@/components/UATActionsRouter'
 import config from '@/nuxt.config'
 import sprint from '@/modules/sprint'
@@ -54,16 +60,18 @@ import sprint from '@/modules/sprint'
 export default {
   name: 'TestRun',
   components: {
-    Alert,
-    UATActionsRouter
+    AlertDialog,
+    UATActionsRouter,
   },
   data() {
     return {
-      fields: ['barcode',{ key: 'text', label: 'Description' }, 'actions'],
+      fields: ['barcode', { key: 'text', label: 'Description' }, 'actions'],
       run: {},
       printerSelected: null,
-      printerOptions: [{ value: null, text: 'Please select a printer' }, ...config.publicRuntimeConfig.printers.split(',')],
-
+      printerOptions: [
+        { value: null, text: 'Please select a printer' },
+        ...config.publicRuntimeConfig.printers.split(','),
+      ],
     }
   },
   computed: {
@@ -72,7 +80,7 @@ export default {
       return list.map((item) => {
         return { barcode: item[0], text: item[1] }
       })
-    }
+    },
   },
   async created() {
     const response = await lighthouse.getTestRun(this.$route.params.id)

@@ -1,7 +1,7 @@
 <template>
   <b-container>
     <h1 class="mt-3">Biosero Cherrypick</h1>
-    <Alert ref="alert"></Alert>
+    <AlertDialog ref="alert"></AlertDialog>
     <b-card no-body>
       <b-tabs card>
         <b-tab title="Create">
@@ -9,10 +9,7 @@
             title="Create Destination Plate"
             sub-title="Generate destination plate from CherryTrack data so it can continue in pipeline partially filled."
           >
-            <BioseroCherrypickForm
-              v-slot="{ form, formInvalid }"
-              :action="'create'"
-            >
+            <BioseroCherrypickForm v-slot="{ form, formInvalid }" :action="'create'">
               <b-button variant="success" :disabled="formInvalid" @click="create(form)"
                 >Create Destination Plate</b-button
               >
@@ -44,12 +41,12 @@
 import BioseroCherrypickForm from '@/components/BioseroCherrypickForm'
 import lighthouse from '@/modules/lighthouse_service'
 import lighthouseBiosero from '@/modules/lighthouse_service_biosero'
-import Alert from '@/components/Alert'
+import AlertDialog from '@/components/AlertDialog'
 
 export default {
   components: {
     BioseroCherrypickForm,
-    Alert,
+    AlertDialog,
   },
   data() {
     return {

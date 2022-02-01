@@ -1,6 +1,6 @@
-import Default from '@/layouts/default.vue'
 import { createLocalVue, mount } from '@vue/test-utils'
 import { BootstrapVue } from 'bootstrap-vue'
+import Default from '@/layouts/default.vue'
 
 const localVue = createLocalVue()
 localVue.use(BootstrapVue)
@@ -20,7 +20,7 @@ describe('Index', () => {
         nuxt: true,
       },
       mocks: {
-        $config
+        $config,
       },
     })
   })
@@ -31,7 +31,7 @@ describe('Index', () => {
 
   it('has a navbar', () => {
     expect(wrapper.findComponent({ ref: 'navbar' }).text()).toMatch(
-      /Lighthouse {2}Reports Box Buster Sentinel Sample Creation Sentinel Cherrypick Imports Print Labels Beckman Cherrypick Biosero Cherrypick UAT Actions/
+      /Lighthouse {2}Reports Box Buster Sentinel Sample Creation Sentinel Cherrypick Imports Print Labels Beckman Cherrypick Biosero Plate State Biosero Cherrypick UAT Actions/
     )
   })
 })

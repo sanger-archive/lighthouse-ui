@@ -1,6 +1,6 @@
 import axios from 'axios'
-import labwhere from '@/modules/labwhere'
 import PlatesJson from '../data/labwhere_plates'
+import labwhere from '@/modules/labwhere'
 
 describe('Labwhere', () => {
   describe('#getPlatesFromBoxBarcodes', () => {
@@ -28,7 +28,7 @@ describe('Labwhere', () => {
       mockGet.mockImplementationOnce(() => Promise.reject(new Error('There was an error')))
       response = await labwhere.getPlatesFromBoxBarcodes(boxBarcodes)
       expect(response.success).toBeFalsy()
-      expect(response.barcodes).not.toBeDefined()
+      expect(response.barcodes).toBeUndefined()
     })
 
     // This is the same as the above but worth adding for consistency
@@ -36,7 +36,7 @@ describe('Labwhere', () => {
       mockGet.mockImplementationOnce(() => Promise.reject(new Error('There was an error')))
       response = await labwhere.getPlatesFromBoxBarcodes(['dodgybarcode'])
       expect(response.success).toBeFalsy()
-      expect(response.barcodes).not.toBeDefined()
+      expect(response.barcodes).toBeUndefined()
       expect(response.error).toEqual(new Error('There was an error'))
     })
 
@@ -44,7 +44,7 @@ describe('Labwhere', () => {
       mockGet.mockResolvedValue({ data: [] })
       response = await labwhere.getPlatesFromBoxBarcodes(boxBarcodes)
       expect(response.success).toBeFalsy()
-      expect(response.error).toEqual('The box has no plates')
+      expect(response.error).toBe('The box has no plates')
     })
   })
 })

@@ -1,6 +1,6 @@
-import TestRun from '@/pages/uat_actions/test_runs/_id'
 import { createLocalVue, mount } from '@vue/test-utils'
 import { BootstrapVue } from 'bootstrap-vue'
+import TestRun from '@/pages/uat_actions/test_runs/_id'
 import lighthouse from '@/modules/lighthouse_service'
 import sprint from '@/modules/sprint'
 
@@ -16,17 +16,17 @@ describe('TestRuns.vue', () => {
   beforeEach(() => {
     $route = {
       params: {
-        id: 1
-      }
+        id: 1,
+      },
     }
     testRunData = {
-      "_id": 1,
-      "_created_at": "2021-07-02T09:00:00.000Z",
-      "_updated_at": "2021-07-12T11:31:15.806Z",
-      "status": "completed",
-      "plate_specs": "[[2,48]]",
-      "add_to_dart": false,
-      "barcodes": "[[\"TEST-111\", \"number of positives: 1\"],[\"TEST-222\", \"number of positives: 2\"]]"
+      _id: 1,
+      _created_at: '2021-07-02T09:00:00.000Z',
+      _updated_at: '2021-07-12T11:31:15.806Z',
+      status: 'completed',
+      plate_specs: '[[2,48]]',
+      add_to_dart: false,
+      barcodes: '[["TEST-111", "number of positives: 1"],["TEST-222", "number of positives: 2"]]',
     }
 
     lighthouse.getTestRun.mockResolvedValue({ success: true, response: testRunData })
@@ -34,7 +34,7 @@ describe('TestRuns.vue', () => {
     wrapper = mount(TestRun, {
       localVue,
       mocks: {
-        $route
+        $route,
       },
       data() {
         return {
@@ -55,10 +55,9 @@ describe('TestRuns.vue', () => {
     })
 
     it('contains a print button for each row', () => {
-      expect(wrapper.find('#print-TEST-111').text()).toEqual('Print')
-      expect(wrapper.find('#print-TEST-222').text()).toEqual('Print')
+      expect(wrapper.find('#print-TEST-111').text()).toBe('Print')
+      expect(wrapper.find('#print-TEST-222').text()).toBe('Print')
     })
-
   })
 
   describe('#created successful', () => {
@@ -74,19 +73,19 @@ describe('TestRuns.vue', () => {
 
   describe('#created unsuccessful', () => {
     beforeEach(() => {
-      lighthouse.getTestRun.mockResolvedValue({ success: false, error: "An error" })
+      lighthouse.getTestRun.mockResolvedValue({ success: false, error: 'An error' })
 
       wrapper = mount(TestRun, {
         localVue,
         mocks: {
-          $route
+          $route,
         },
       })
       wrapper.vm.$refs.alert.show = jest.fn()
     })
     it('will have a table with run information', () => {
       expect(wrapper.vm.run).toEqual({})
-      expect(wrapper.vm.$refs.alert.show).toHaveBeenCalledWith("An error", "danger")
+      expect(wrapper.vm.$refs.alert.show).toHaveBeenCalledWith('An error', 'danger')
     })
   })
 

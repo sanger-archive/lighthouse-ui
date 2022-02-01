@@ -1,5 +1,5 @@
-import config from '@/nuxt.config'
 import axios from 'axios'
+import config from '@/nuxt.config'
 
 // return a bunch of barcodes from baracoda
 const createBarcodes = async ({ count }) => {

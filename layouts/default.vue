@@ -10,36 +10,34 @@
           <b-navbar-nav class="ml-auto">
             <b-nav-item to="/reports" exact exact-active-class="active">Reports</b-nav-item>
             <b-nav-item to="/box_buster" exact exact-active-class="active">Box Buster</b-nav-item>
-            <b-nav-item
-              to="/sentinel_create_samples"
-              exact
-              exact-active-class="active"
-            >Sentinel Sample Creation</b-nav-item>
-            <b-nav-item
-              to="/sentinel_cherrypick"
-              exact
-              exact-active-class="active"
-            >Sentinel Cherrypick</b-nav-item>
+            <b-nav-item to="/sentinel_create_samples" exact exact-active-class="active"
+              >Sentinel Sample Creation</b-nav-item
+            >
+            <b-nav-item to="/sentinel_cherrypick" exact exact-active-class="active"
+              >Sentinel Cherrypick</b-nav-item
+            >
             <b-nav-item to="/imports" exact exact-active-class="active">Imports</b-nav-item>
-            <b-nav-item to="/print_labels" exact exact-active-class="active">Print Labels</b-nav-item>
-            <b-nav-item
-              to="/beckman_cherrypick"
-              exact
-              exact-active-class="active"
-            >Beckman Cherrypick</b-nav-item>
-
+            <b-nav-item to="/print_labels" exact exact-active-class="active"
+              >Print Labels</b-nav-item
+            >
+            <b-nav-item to="/beckman_cherrypick" exact exact-active-class="active"
+              >Beckman Cherrypick</b-nav-item
+            >
+            <b-nav-item to="/biosero_plate_state" exact exact-active-class="active">Biosero Plate State</b-nav-item>
             <b-nav-item
               v-if="featureFlagBioseroCherrypick"
               to="/biosero_cherrypick"
               exact
               exact-active-class="active"
-            >Biosero Cherrypick</b-nav-item>
+              >Biosero Cherrypick</b-nav-item
+            >
             <b-nav-item
               v-if="featureFlagUatActions"
               to="/uat_actions/generate_test_run"
               exact
               exact-active-class="active"
-            >UAT Actions</b-nav-item>
+              >UAT Actions</b-nav-item
+            >
           </b-navbar-nav>
         </b-collapse>
       </b-navbar>
@@ -49,7 +47,6 @@
 </template>
 
 <script>
-
 export default {
   data() {
     return {
@@ -107,5 +104,15 @@ html {
 .button--grey:hover {
   color: #fff;
   background-color: #35495e;
+}
+</style>
+
+<style scoped>
+.nav-item {
+  padding: 0 10px;
+}
+
+.nav-item:not(:last-child) {
+  border-right: 1px solid #3b8070;
 }
 </style>

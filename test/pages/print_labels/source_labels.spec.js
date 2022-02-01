@@ -48,7 +48,7 @@ describe('print destination plate labels', () => {
   it('#setMessage', () => {
     vm.setStatus('Success', 'Barcodes successfully printed')
     expect(vm.status).toEqual(statuses.Success)
-    expect(vm.alertMessage).toEqual('Barcodes successfully printed')
+    expect(vm.alertMessage).toBe('Barcodes successfully printed')
   })
 
   // TODO: the following 3 tests are arbitrary just to get it to pass.
@@ -61,6 +61,7 @@ describe('print destination plate labels', () => {
     try {
       vm.getFile()
     } catch {
+      // TODO: Implement proper logging of error
       console.log('error')
     }
     expect(true).toBeTruthy()
