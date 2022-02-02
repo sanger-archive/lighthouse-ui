@@ -258,15 +258,17 @@ const formatPlateSpecs = (plateSpecs) => {
 const generateTestRun = async (plateSpecs, addToDart) => {
   const plateSpecsParam = formatPlateSpecs(plateSpecs)
   try {
-    const url = new URL('cherrypick-test-data', config.privateRuntimeConfig.lighthouseBaseURL)
-
     const body = {
       plate_specs: plateSpecsParam,
       add_to_dart: addToDart,
     }
     const headers = { headers: { Authorization: config.privateRuntimeConfig.lighthouseApiKey } }
 
-    const response = await axios.post(url.href, body, headers)
+    const response = await axios.post(
+      `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypick-test-data`,
+      body,
+      headers
+    )
 
     return {
       success: true,
@@ -285,15 +287,12 @@ const generateTestRun = async (plateSpecs, addToDart) => {
  */
 const getTestRuns = async (currentPage, maxResults) => {
   try {
-    const url = new URL('cherrypick-test-data', config.privateRuntimeConfig.lighthouseBaseURL)
-
-    url.searchParams.append('max_results', maxResults)
-    url.searchParams.append('page', currentPage)
-    url.searchParams.append('sort', '-_created')
-
     const headers = { headers: { Authorization: config.privateRuntimeConfig.lighthouseApiKey } }
 
-    const response = await axios.get(url.href, headers)
+    const response = await axios.get(
+      `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypick-test-data?max_results=${maxResults}&page=${currentPage}&sort=-_created`,
+      headers
+    )
 
     response.data._items.forEach((run) => {
       run.total_plates = run.plate_specs.reduce(function (acc, obj) {
@@ -318,11 +317,12 @@ const getTestRuns = async (currentPage, maxResults) => {
  */
 const getTestRun = async (id) => {
   try {
-    const url = new URL(`cherrypick-test-data/${id}`, config.privateRuntimeConfig.lighthouseBaseURL)
-
     const headers = { headers: { Authorization: config.privateRuntimeConfig.lighthouseApiKey } }
 
-    const response = await axios.get(url.href, headers)
+    const response = await axios.get(
+      `${config.privateRuntimeConfig.lighthouseBaseURL}/cherrypick-test-data/${id}`,
+      headers
+    )
 
     return {
       success: true,
