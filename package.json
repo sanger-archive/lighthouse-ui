@@ -44,7 +44,7 @@
     "convert-source-map": "^1.7.0",
     "cypress": "^9.5.1",
     "eslint": "^7.21.0",
-    "eslint-config-prettier": "^8.4.0",
+    "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-cypress": "^2.11.2",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-jest": "^26.1.1",
