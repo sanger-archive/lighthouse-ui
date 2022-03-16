@@ -80,6 +80,9 @@ export default {
      */
     extend(config, ctx) {},
   },
+  serverMiddleware: [
+    { path: '/health', handler: '~/middleware/health.js' }
+  ],
   privateRuntimeConfig: {
     lighthouseBaseURL: process.env.LIGHTHOUSE_BASE_URL || 'http://lighthouse',
     lighthouseApiKey: process.env.LIGHTHOUSE_API_KEY || 'lighthouse_ui_read_write_dev',
