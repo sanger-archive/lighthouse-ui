@@ -101,36 +101,42 @@ const createDestinationPlateBiosero = async (form) => {
  * @returns
  */
 const failDestinationPlateBiosero = async (form) => {
+  const url = `${config.privateRuntimeConfig.lighthouseBaseURL}/events`
+  const body = {
+    event_type: 'lh_biosero_cp_destination_plate_failed',
+    barcode: form.barcode,
+    user_id: form.username,
+    failure_type: form.failureType,
+  }
+
+  const headers = { headers: { Authorization: config.privateRuntimeConfig.lighthouseApiKey } }
+
   try {
-    const url = `${config.privateRuntimeConfig.lighthouseBaseURL}/events`
-    const body = {
-      event_type: 'lh_biosero_cp_destination_plate_failed',
-      barcode: form.barcode,
-      user_id: form.username,
-      failure_type: form.failureType,
-    }
-
-    const headers = { headers: { Authorization: config.privateRuntimeConfig.lighthouseApiKey } }
-
     const response = await axios.post(url, body, headers)
-
-    if (response._status === 'OK') {
-      // success
+    if (response.data._status === 'OK') {
+      // successfull insert of fail event
       return {
         success: true,
         response: `Successfully failed destination plate with barcode: ${form.barcode}`,
       }
     } else {
-      const errors = response._error
-      // failure
+      // unsuccessfull insert
+      const errors = response.data._error.message
       return {
         success: false,
         errors,
       }
     }
   } catch (error) {
-    // failure
-    return { success: false, error }
+    // other failure
+    let errors
+    errors = error.response.data._error.message
+    if (error.response.data._issues) {
+      const issues = error.response.data._issues
+      errors = errors + ' ' + issues.wells[0]
+    }
+
+    return { success: false, errors }
   }
 }
 
