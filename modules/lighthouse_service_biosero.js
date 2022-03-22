@@ -120,23 +120,37 @@ const failDestinationPlateBiosero = async (form) => {
         response: `Successfully failed destination plate with barcode: ${form.barcode}`,
       }
     } else {
-      // unsuccessfull insert
-      const errors = response.data._error.message
+      let error
+      // for an unsuccessfull insert via cherrytrack
+      error = response.data?._error.message
+      // other
+      if (error === undefined) {
+        error = response._error
+      }
+
       return {
         success: false,
-        errors,
+        error,
       }
     }
-  } catch (error) {
-    // other failure
-    let errors
-    errors = error.response.data._error.message
-    if (error.response.data._issues) {
-      const issues = error.response.data._issues
-      errors = errors + ' ' + issues.wells[0]
+  } catch (ex) {
+    let error
+    const data = ex.response?.data
+
+    if (data !== undefined) {
+      // exception was from cherrytrack, add primary message
+      error = data._error?.message
+      // then add more useful message which is down in issues section
+      const wellsMessage = data._issues?.wells[0]
+      if (wellsMessage !== undefined) {
+        error = error + ' ' + wellsMessage
+      }
+    } else {
+      // other exception, use error at top level
+      error = ex.message
     }
 
-    return { success: false, errors }
+    return { success: false, error }
   }
 }
 

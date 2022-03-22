@@ -97,7 +97,7 @@ export default {
         message = response.response
         type = 'success'
       } else {
-        message = response.errors
+        message = response.error
         type = 'danger'
       }
       this.showAlert(message, type)

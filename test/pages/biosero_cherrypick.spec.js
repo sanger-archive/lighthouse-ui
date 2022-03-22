@@ -129,9 +129,7 @@ describe('Biosero Cherrypick', () => {
       page.showAlert = jest.fn()
       lighthouseBiosero.failDestinationPlateBiosero.mockReturnValue({
         success: false,
-        error: {
-          message: 'An error message',
-        },
+        error: 'An error message',
       })
 
       await page.fail(form)

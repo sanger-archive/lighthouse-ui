@@ -107,7 +107,9 @@ describe('lighthouse_service_biosero api', () => {
 
     it('on success', async () => {
       response = {
-        _status: 'OK',
+        data: {
+          _status: 'OK',
+        }
       }
       mock.mockResolvedValue(response)
 
@@ -137,10 +139,12 @@ describe('lighthouse_service_biosero api', () => {
 
     it('on failure with unexpected status code', async () => {
       response = {
-        _status: 'ERR',
-        _error: {
-          code: 422,
-          message: 'some error message',
+        data: {
+          _status: 'ERR',
+          _error: {
+            code: 422,
+            message: 'some error message',
+          },
         },
       }
       mock.mockResolvedValue(response)
@@ -148,17 +152,14 @@ describe('lighthouse_service_biosero api', () => {
       const result = await lighthouseBiosero.failDestinationPlateBiosero(form)
       const expected = {
         success: false,
-        errors: {
-          code: 422,
-          message: 'some error message',
-        },
+        error: 'some error message',
       }
 
       expect(mock).toHaveBeenCalledTimes(1)
       expect(result).toEqual(expected)
     })
 
-    it('on failure with exception', async () => {
+    it('on failure with standard exception', async () => {
       const errorResponse = new Error('some error message')
 
       mock.mockRejectedValue(errorResponse)
@@ -167,7 +168,39 @@ describe('lighthouse_service_biosero api', () => {
 
       expect(mock).toHaveBeenCalledTimes(1)
       expect(result.success).toBe(false)
-      expect(result.error).toEqual(errorResponse)
+
+      expect(result.error).toEqual(errorResponse.message)
+    })
+
+    it('on failure with exception from cherrytrack', async () => {
+      const errorResponse = {
+        response: {
+          data: {
+            _status: 'ERR',
+            _error: {
+              code: 422,
+              message: 'some primary error message',
+            },
+            _issues: {
+              wells: [
+                'some secondary error message'
+              ],
+            },
+          },
+        },
+      }
+
+      mock.mockRejectedValue(errorResponse)
+
+      const result = await lighthouseBiosero.failDestinationPlateBiosero(form)
+
+      expect(mock).toHaveBeenCalledTimes(1)
+      expect(result.success).toBe(false)
+      const expected = {
+        success: false,
+        error: 'some primary error message some secondary error message',
+      }
+      expect(result).toEqual(expected)
     })
   })
 
