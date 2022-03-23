@@ -120,37 +120,33 @@ const failDestinationPlateBiosero = async (form) => {
         response: `Successfully failed destination plate with barcode: ${form.barcode}`,
       }
     } else {
-      let error
-      // for an unsuccessfull insert via cherrytrack
-      error = response.data?._error.message
-      // other
-      if (error === undefined) {
-        error = response._error
-      }
-
+      // unable to insert the fail event
+      const errorMessage = response.data?._error.message || response._error
       return {
         success: false,
-        error,
+        error: { message: errorMessage },
       }
     }
   } catch (ex) {
-    let error
+    // an unhandled exception was thrown either from cherrytrack or lighthouse
+    let errorMessage
     const data = ex.response?.data
-
-    if (data !== undefined) {
+    if (data === undefined) {
+      // standard exception, use error message at top level
+      errorMessage = ex.message
+    } else {
       // exception was from cherrytrack, add primary message
-      error = data._error?.message
-      // then add more useful message which is down in issues section
+      errorMessage = data._error?.message
+      // and then add more useful message from issues section if present
       const wellsMessage = data._issues?.wells[0]
       if (wellsMessage !== undefined) {
-        error = error + ' ' + wellsMessage
+        errorMessage += ` ${wellsMessage}`
       }
-    } else {
-      // other exception, use error at top level
-      error = ex.message
     }
-
-    return { success: false, error }
+    return {
+      success: false,
+      error: { message: errorMessage },
+    }
   }
 }
 

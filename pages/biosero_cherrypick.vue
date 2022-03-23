@@ -76,6 +76,10 @@ export default {
       const response = await lighthouseBiosero.createDestinationPlateBiosero(form)
       this.handleResponse(response)
     },
+    async fail(form) {
+      const response = await lighthouseBiosero.failDestinationPlateBiosero(form)
+      this.handleResponse(response)
+    },
     handleResponse(response) {
       let message, type
       if (response.success) {
@@ -83,21 +87,6 @@ export default {
         type = 'success'
       } else {
         message = response.error.message
-        type = 'danger'
-      }
-      this.showAlert(message, type)
-    },
-    async fail(form) {
-      const response = await lighthouseBiosero.failDestinationPlateBiosero(form)
-      this.handleFailResponse(response)
-    },
-    handleFailResponse(response) {
-      let message, type
-      if (response.success) {
-        message = response.response
-        type = 'success'
-      } else {
-        message = response.error
         type = 'danger'
       }
       this.showAlert(message, type)

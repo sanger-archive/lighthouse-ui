@@ -152,7 +152,7 @@ describe('lighthouse_service_biosero api', () => {
       const result = await lighthouseBiosero.failDestinationPlateBiosero(form)
       const expected = {
         success: false,
-        error: 'some error message',
+        error: { message: 'some error message' },
       }
 
       expect(mock).toHaveBeenCalledTimes(1)
@@ -165,11 +165,15 @@ describe('lighthouse_service_biosero api', () => {
       mock.mockRejectedValue(errorResponse)
 
       const result = await lighthouseBiosero.failDestinationPlateBiosero(form)
+      const expected = {
+        success: false,
+        error: { message: 'some error message' },
+      }
 
       expect(mock).toHaveBeenCalledTimes(1)
       expect(result.success).toBe(false)
 
-      expect(result.error).toEqual(errorResponse.message)
+      expect(result).toEqual(expected)
     })
 
     it('on failure with exception from cherrytrack', async () => {
@@ -198,7 +202,7 @@ describe('lighthouse_service_biosero api', () => {
       expect(result.success).toBe(false)
       const expected = {
         success: false,
-        error: 'some primary error message some secondary error message',
+        error: { message: 'some primary error message some secondary error message' },
       }
       expect(result).toEqual(expected)
     })
