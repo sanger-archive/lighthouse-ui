@@ -35,7 +35,7 @@ export default {
    ** Customize the base url
    */
   router: {
-    base: process.env.base,
+    base: process.env.BASE_URL || process.env.base,
   },
 
   /*
