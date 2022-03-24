@@ -101,36 +101,52 @@ const createDestinationPlateBiosero = async (form) => {
  * @returns
  */
 const failDestinationPlateBiosero = async (form) => {
+  const url = `${config.privateRuntimeConfig.lighthouseBaseURL}/events`
+  const body = {
+    event_type: 'lh_biosero_cp_destination_plate_failed',
+    barcode: form.barcode,
+    user_id: form.username,
+    failure_type: form.failureType,
+  }
+
+  const headers = { headers: { Authorization: config.privateRuntimeConfig.lighthouseApiKey } }
+
   try {
-    const url = `${config.privateRuntimeConfig.lighthouseBaseURL}/events`
-    const body = {
-      event_type: 'lh_biosero_cp_destination_plate_failed',
-      barcode: form.barcode,
-      user_id: form.username,
-      failure_type: form.failureType,
-    }
-
-    const headers = { headers: { Authorization: config.privateRuntimeConfig.lighthouseApiKey } }
-
     const response = await axios.post(url, body, headers)
-
-    if (response._status === 'OK') {
-      // success
+    if (response.data._status === 'OK') {
+      // successfull insert of fail event
       return {
         success: true,
         response: `Successfully failed destination plate with barcode: ${form.barcode}`,
       }
     } else {
-      const errors = response._error
-      // failure
+      // unable to insert the fail event
+      const errorMessage = response.data?._error.message || response._error
       return {
         success: false,
-        errors,
+        error: { message: errorMessage },
       }
     }
-  } catch (error) {
-    // failure
-    return { success: false, error }
+  } catch (ex) {
+    // an unhandled exception was thrown either from cherrytrack or lighthouse
+    let errorMessage
+    const data = ex.response?.data
+    if (data === undefined) {
+      // standard exception, use error message at top level
+      errorMessage = ex.message
+    } else {
+      // exception was from cherrytrack, add primary message
+      errorMessage = data._error?.message
+      // and then add more useful message from issues section if present
+      const wellsMessage = data._issues?.wells[0]
+      if (wellsMessage !== undefined) {
+        errorMessage += ` ${wellsMessage}`
+      }
+    }
+    return {
+      success: false,
+      error: { message: errorMessage },
+    }
   }
 }
 
