@@ -70,6 +70,7 @@ export default {
    */
   axios: {
     browserBaseURL: process.env.LIGHTHOUSE_BASE_URL,
+    proxy: true,
   },
   /*
    ** Build configuration
@@ -80,8 +81,17 @@ export default {
      */
     extend(config, ctx) {},
   },
+  serverMiddleware: [
+    { path: '/health', handler: '~/middleware/health.js' }
+  ],
+  proxy: {
+    '/lighthouse': {
+      target: process.env.LIGHTHOUSE_BASE_URL,
+      pathRewrite: {'/lighthouse': ''}
+    }
+  },
   privateRuntimeConfig: {
-    lighthouseBaseURL: process.env.LIGHTHOUSE_BASE_URL || 'http://lighthouse',
+    lighthouseBaseURL: '/lighthouse',
     lighthouseApiKey: process.env.LIGHTHOUSE_API_KEY || 'lighthouse_ui_read_write_dev',
     labwhereBaseURL: process.env.LABWHERE_BASE_URL || 'http://labwhere',
     sequencescapeBaseURL: process.env.SEQUENCESCAPE_BASE_URL || 'http://sequencescape',
