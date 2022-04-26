@@ -54,7 +54,7 @@
     "eslint-plugin-unicorn": "^40.1.0",
     "eslint-plugin-vue": "^8.6.0",
     "flush-promises": "^1.0.2",
-    "jest": "^27.5.1",
+    "jest": "^28.0.0",
     "jest-each": "^27.5.1",
     "prettier": "^2.6.2",
     "vue-jest": "^3.0.7"
