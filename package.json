@@ -42,7 +42,7 @@
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^28.1.0",
     "convert-source-map": "^1.7.0",
-    "cypress": "^9.6.0",
+    "cypress": "^9.6.1",
     "eslint": "^7.21.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-cypress": "^2.11.2",
