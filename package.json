@@ -52,7 +52,7 @@
     "eslint-plugin-nuxt": "^3.2.0",
     "eslint-plugin-promise": "^5.2.0",
     "eslint-plugin-unicorn": "^40.1.0",
-    "eslint-plugin-vue": "^9.0.0",
+    "eslint-plugin-vue": "^9.0.1",
     "flush-promises": "^1.0.2",
     "jest": "^28.1.0",
     "jest-each": "^28.1.0",
