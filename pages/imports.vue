@@ -32,6 +32,12 @@
       align="center"
       aria-table="imports-table"
     ></b-pagination>
+    <p>
+      <b>Note:</b> Imports shown may be from an SFTP fetch performed each half
+      hour, or they may be from messages processed via RabbitMQ. SFTP fetches
+      show the file name, identifiable by the inclusion of a file extension.
+      Imports from a RabbitMQ message show the plate barcode.
+    </p>
     <b-table
       id="imports-table"
       show-empty
@@ -82,7 +88,7 @@ export default {
           filterByFormatted: true,
         },
         { key: 'centre_name', label: 'Centre', sortable: true },
-        { key: 'csv_file_used', label: 'File', sortable: true },
+        { key: 'csv_file_used', label: 'File Name / Plate Barcode', sortable: true },
         { key: 'number_of_records', label: 'Num of records', sortable: true },
         { key: 'errors', label: 'Errors', sortable: true },
       ],
