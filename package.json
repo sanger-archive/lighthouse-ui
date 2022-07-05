@@ -25,9 +25,9 @@
     "jquery": "^3.6.0",
     "nuxt": "^2.15.2",
     "popper.js": "^1.16.1",
-    "vue": "^2.6.12",
+    "vue": "^2.7.2",
     "vue-pluralize": "^0.0.2",
-    "vue-template-compiler": "^2.6.12"
+    "vue-template-compiler": "^2.7.2"
   },
   "devDependencies": {
     "@babel/core": "^7.18.6",
