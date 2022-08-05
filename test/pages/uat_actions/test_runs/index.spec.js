@@ -20,7 +20,7 @@ describe('TestRuns.vue', () => {
       lighthouse.getTestRuns.mockResolvedValue({})
     })
     it('will have fields', () => {
-      const expected = ['_created', 'status', 'add_to_dart', 'total_plates', 'actions']
+      const expected = ['_created', 'status', 'total_plates', 'actions']
       expect(wrapper.vm.fields).toEqual(expected)
     })
   })
@@ -36,13 +36,11 @@ describe('TestRuns.vue', () => {
           {
             _id: 1,
             status: 'completed',
-            add_to_dart: true,
             _created_at: '2020-05-13 11:00:00 UTC',
           },
           {
             _id: 2,
             status: 'completed',
-            add_to_dart: true,
             _created_at: '2020-05-13 11:00:00 UTC',
           },
         ],
@@ -72,19 +70,16 @@ describe('TestRuns.vue', () => {
           {
             _id: 111111,
             status: 'completed',
-            add_to_dart: true,
             _created_at: '2020-05-13 11:00:00 UTC',
           },
           {
             _id: 211111,
             status: 'completed',
-            add_to_dart: true,
             _created_at: '2020-05-10 10:00:00 UTC',
           },
           {
             _id: 311111,
             status: 'completed',
-            add_to_dart: true,
             _created_at: '2020-05-10 10:00:00 UTC',
           },
         ],

@@ -25,7 +25,6 @@ describe('TestRuns.vue', () => {
       _updated_at: '2021-07-12T11:31:15.806Z',
       status: 'completed',
       plate_specs: '[[2,48]]',
-      add_to_dart: false,
       barcodes: '[["TEST-111", "number of positives: 1"],["TEST-222", "number of positives: 2"]]',
     }
 
