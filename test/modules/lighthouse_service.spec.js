@@ -586,7 +586,7 @@ describe('lighthouse_service api', () => {
   })
 
   describe('#generateTestRun', () => {
-    let runId, plateSpecs, addToDart
+    let runId, plateSpecs
 
     beforeEach(() => {
       jest.spyOn(axios, 'post')
@@ -595,7 +595,6 @@ describe('lighthouse_service api', () => {
         { numberOfPlates: 1, numberOfPositives: 2 },
         { numberOfPlates: 3, numberOfPositives: 4 },
       ]
-      addToDart = true
     })
 
     it('when the request is successful', async () => {
@@ -604,7 +603,7 @@ describe('lighthouse_service api', () => {
       axios.post.mockResolvedValue({
         data: response,
       })
-      const result = await lighthouse.generateTestRun(plateSpecs, addToDart)
+      const result = await lighthouse.generateTestRun(plateSpecs)
 
       const headers = {
         headers: { Authorization: config.privateRuntimeConfig.lighthouseApiKey },
@@ -616,7 +615,6 @@ describe('lighthouse_service api', () => {
           [1, 2],
           [3, 4],
         ],
-        add_to_dart: addToDart,
       }
 
       expect(axios.post).toHaveBeenCalledWith(
@@ -641,7 +639,7 @@ describe('lighthouse_service api', () => {
       }
 
       axios.post.mockImplementationOnce(() => Promise.reject(error))
-      const result = await lighthouse.generateTestRun(plateSpecs, addToDart)
+      const result = await lighthouse.generateTestRun(plateSpecs)
 
       expect(result.success).toBeFalsy()
       expect(result.error).toBe(
@@ -652,7 +650,7 @@ describe('lighthouse_service api', () => {
     it('when the request fails', async () => {
       const error = {}
       axios.post.mockImplementationOnce(() => Promise.reject(error))
-      const result = await lighthouse.generateTestRun(plateSpecs, addToDart)
+      const result = await lighthouse.generateTestRun(plateSpecs)
 
       expect(result.success).toBeFalsy()
       expect(result.error).toBe('An unexpected error has occured')
@@ -667,7 +665,7 @@ describe('lighthouse_service api', () => {
       }
 
       axios.post.mockImplementationOnce(() => Promise.reject(error))
-      const result = await lighthouse.generateTestRun(plateSpecs, addToDart)
+      const result = await lighthouse.generateTestRun(plateSpecs)
 
       expect(result.success).toBeFalsy()
       expect(result.error).toBe('Insertion failure')

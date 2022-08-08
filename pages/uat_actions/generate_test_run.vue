@@ -63,18 +63,7 @@
           >
         </b-col>
 
-        <b-col>
-          <b-form-checkbox
-            id="addToDart"
-            v-model="addToDart"
-            name="addToDart"
-            value="true"
-            unchecked-value="false"
-            >Add to DART</b-form-checkbox
-          >
-        </b-col>
-
-        <b-col>
+        <b-col cols="6" md="auto">
           <b-button
             id="resetButton"
             v-b-modal.resetModal
@@ -176,7 +165,7 @@ export default {
     },
     async generateTestRun() {
       this.status = statuses.Busy
-      const response = await lighthouse.generateTestRun(this.plateSpecs, this.addToDart)
+      const response = await lighthouse.generateTestRun(this.plateSpecs)
       if (response.success) {
         this.status = statuses.Idle
         this.$router.push({ path: `/uat_actions/test_runs/${response.runId}` })
