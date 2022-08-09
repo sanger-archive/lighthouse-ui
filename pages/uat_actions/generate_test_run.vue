@@ -13,10 +13,6 @@
         {{ maxNumberOfPlates }}.
       </b-card-text>
       <b-card-text>
-        N.B. for Beckman testing remember to check the
-        <em>Add to DART</em> box. DART data is not needed for Biosero testing.
-      </b-card-text>
-      <b-card-text>
         The
         <em>Generate</em> button will start the creation of the data, and you will be automatically
         taken to the label printing screen when it is done.
