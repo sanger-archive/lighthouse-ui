@@ -255,12 +255,11 @@ const formatPlateSpecs = (plateSpecs) => {
  * @param {integer} addToDart boolean flag whether run is to be added to DART
  * @returns {object} an object containing success boolean, and response infomation
  */
-const generateTestRun = async (plateSpecs, addToDart) => {
+const generateTestRun = async (plateSpecs) => {
   const plateSpecsParam = formatPlateSpecs(plateSpecs)
   try {
     const body = {
       plate_specs: plateSpecsParam,
-      add_to_dart: addToDart,
     }
     const headers = { headers: { Authorization: config.privateRuntimeConfig.lighthouseApiKey } }
 

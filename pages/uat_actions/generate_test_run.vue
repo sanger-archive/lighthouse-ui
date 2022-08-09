@@ -13,10 +13,6 @@
         {{ maxNumberOfPlates }}.
       </b-card-text>
       <b-card-text>
-        N.B. for Beckman testing remember to check the
-        <em>Add to DART</em> box. DART data is not needed for Biosero testing.
-      </b-card-text>
-      <b-card-text>
         The
         <em>Generate</em> button will start the creation of the data, and you will be automatically
         taken to the label printing screen when it is done.
@@ -63,18 +59,7 @@
           >
         </b-col>
 
-        <b-col>
-          <b-form-checkbox
-            id="addToDart"
-            v-model="addToDart"
-            name="addToDart"
-            value="true"
-            unchecked-value="false"
-            >Add to DART</b-form-checkbox
-          >
-        </b-col>
-
-        <b-col>
+        <b-col cols="6" md="auto">
           <b-button
             id="resetButton"
             v-b-modal.resetModal
@@ -176,7 +161,7 @@ export default {
     },
     async generateTestRun() {
       this.status = statuses.Busy
-      const response = await lighthouse.generateTestRun(this.plateSpecs, this.addToDart)
+      const response = await lighthouse.generateTestRun(this.plateSpecs)
       if (response.success) {
         this.status = statuses.Idle
         this.$router.push({ path: `/uat_actions/test_runs/${response.runId}` })

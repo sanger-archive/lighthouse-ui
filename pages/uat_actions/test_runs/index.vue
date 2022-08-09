@@ -48,7 +48,7 @@ export default {
   },
   data() {
     return {
-      fields: ['_created', 'status', 'add_to_dart', 'total_plates', 'actions'],
+      fields: ['_created', 'status', 'total_plates', 'actions'],
       perPage: 10,
       currentPage: 1,
       totalRows: 0,

@@ -246,7 +246,6 @@ describe('UAT Actions', () => {
         data() {
           return {
             plateSpecs: [{ numberOfPlates: 1, numberOfPositives: 2 }],
-            addToDart: true,
           }
         },
       })
@@ -262,14 +261,13 @@ describe('UAT Actions', () => {
       await wrapper.find('#generateTestRunButton').trigger('click')
       await flushPromises()
       expect(lighthouse.generateTestRun).toHaveBeenCalledWith(
-        [{ numberOfPlates: 1, numberOfPositives: 2 }],
-        true
+        [{ numberOfPlates: 1, numberOfPositives: 2 }]
       )
       expect(wrapper.vm.$router.push).toHaveBeenCalled()
       expect(wrapper.vm.showAlert).not.toHaveBeenCalled()
     })
 
-    it('when the request failsx', async () => {
+    it('when the request fails', async () => {
       lighthouse.generateTestRun.mockReturnValue({
         success: false,
         error: 'There was an error',
@@ -277,8 +275,7 @@ describe('UAT Actions', () => {
 
       await wrapper.find('#generateTestRunButton').trigger('click')
       expect(lighthouse.generateTestRun).toHaveBeenCalledWith(
-        [{ numberOfPlates: 1, numberOfPositives: 2 }],
-        true
+        [{ numberOfPlates: 1, numberOfPositives: 2 }]
       )
       expect(wrapper.vm.showAlert).toHaveBeenCalledWith('There was an error', 'danger')
     })
