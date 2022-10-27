@@ -3,7 +3,7 @@
     <b-row>
       <b-col>
         <PrintLabelsRouter />
-        <h1>Print Control plate labels</h1>
+        <h1>Print control plate labels</h1>
         <p class="lead"></p>
 
         <!-- TODO: better in a component of its own? -->
