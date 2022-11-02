@@ -268,7 +268,7 @@ describe('UAT Actions', () => {
     })
 
     it('when the request fails', async () => {
-      lighthouse.generateTestRun.mockReturnValue({
+      lighthouse.generateTestRun.mockResolvedValue({
         success: false,
         error: 'There was an error',
       })
