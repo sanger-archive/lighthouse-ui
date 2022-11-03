@@ -259,7 +259,6 @@ describe('UAT Actions', () => {
       })
 
       await wrapper.find('#generateTestRunButton').trigger('click')
-      await flushPromises()
       expect(lighthouse.generateTestRun).toHaveBeenCalledWith(
         [{ numberOfPlates: 1, numberOfPositives: 2 }]
       )
@@ -288,14 +287,17 @@ describe('UAT Actions', () => {
 
       expect(wrapper.vm.status).toEqual(statuses.Idle)
       expect(wrapper.find('#busySpinner').isVisible()).toBe(false)
+
       // We dont want to await here because we want to test the status and components
-      // while the promise is being processed
+      // while the promise is being processed.
       wrapper.find('#generateTestRunButton').trigger('click')
       expect(wrapper.vm.status).toEqual(statuses.Busy)
-      // We need to go to the next tick to see the computed spinner
-      wrapper.vm.$nextTick(() => {
-        expect(wrapper.find('#busySpinner').isVisible()).toBe(true)
-      })
+
+      // We need to go to the next tick to see the computed spinner.
+      await wrapper.vm.$nextTick()
+      expect(wrapper.find('#busySpinner').isVisible()).toBe(true)
+
+      // Completely flush the promises to see that the request returned to idle status.
       await flushPromises()
       expect(wrapper.vm.status).toEqual(statuses.Idle)
       expect(wrapper.find('#busySpinner').isVisible()).toBe(false)
