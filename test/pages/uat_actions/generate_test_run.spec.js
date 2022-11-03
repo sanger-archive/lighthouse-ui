@@ -281,16 +281,21 @@ describe('UAT Actions', () => {
     })
 
     it('updates the status and spinner', async () => {
-      lighthouse.generateTestRun.mockResolvedValue({
+      lighthouse.generateTestRun.mockReturnValue({
         success: true,
         runId: 'anId123',
       })
 
       expect(wrapper.vm.status).toEqual(statuses.Idle)
       expect(wrapper.find('#busySpinner').isVisible()).toBe(false)
-      await wrapper.find('#generateTestRunButton').trigger('click')
+      // We dont want to await here because we want to test the status and components
+      // while the promise is being processed
+      wrapper.find('#generateTestRunButton').trigger('click')
       expect(wrapper.vm.status).toEqual(statuses.Busy)
-      expect(wrapper.find('#busySpinner').isVisible()).toBe(true)
+      // We need to go to the next tick to see the computed spinner
+      wrapper.vm.$nextTick(() => {
+        expect(wrapper.find('#busySpinner').isVisible()).toBe(true)
+      })
       await flushPromises()
       expect(wrapper.vm.status).toEqual(statuses.Idle)
       expect(wrapper.find('#busySpinner').isVisible()).toBe(false)
