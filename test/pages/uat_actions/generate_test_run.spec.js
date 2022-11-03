@@ -288,13 +288,13 @@ describe('UAT Actions', () => {
       expect(wrapper.vm.status).toEqual(statuses.Idle)
       expect(wrapper.find('#busySpinner').isVisible()).toBe(false)
 
-      // We dont want to await here because we want to test the status and components
+      // We dont want to await here because we want to test the status
       // while the promise is being processed.
       wrapper.find('#generateTestRunButton').trigger('click')
       expect(wrapper.vm.status).toEqual(statuses.Busy)
 
-      // We need to go to the next tick to see the computed spinner.
-      await wrapper.vm.$nextTick()
+      // We need to go to the next tick to cause a DOM update and see the computed spinner.
+      await localVue.nextTick()
       expect(wrapper.find('#busySpinner').isVisible()).toBe(true)
 
       // Completely flush the promises to see that the request returned to idle status.
