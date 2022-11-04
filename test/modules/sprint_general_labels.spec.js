@@ -2,6 +2,7 @@ import axios from 'axios'
 import Sprint from '@/modules/sprint_general_labels'
 import Baracoda from '@/modules/baracoda'
 import config from '@/nuxt.config'
+import { headers as SprintHeaders } from '@/modules/sprint_constants'
 
 jest.mock('@/modules/baracoda')
 
@@ -102,7 +103,7 @@ describe('Sprint', () => {
       expect(mock).toHaveBeenCalledWith(
         config.privateRuntimeConfig.sprintBaseURL,
         Sprint.createPrintRequestBody(args),
-        Sprint.headers
+        SprintHeaders
       )
       expect(response.success).toBeTruthy()
       expect(response.message).toBe('Successfully printed 3 labels to heron-bc3')

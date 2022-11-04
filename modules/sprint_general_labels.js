@@ -1,18 +1,7 @@
 import axios from 'axios'
 import Baracoda from '@/modules/baracoda'
 import config from '@/nuxt.config'
-
-const query = `mutation printRequest($printRequest: PrintRequest!, $printer: String!) {
-  print(printRequest: $printRequest, printer: $printer) {
-    jobId
-  }
-}`
-
-const headers = {
-  headers: {
-    'Content-Type': 'application/json',
-  },
-}
+import {query, headers} from '@/modules/sprint_constants'
 
 // Will create a new layout object for a print job
 // Requires barcode which will be used for barcode and text field
@@ -141,7 +130,6 @@ const Sprint = {
   createPrintRequestBody,
   printLabels,
   printDestinationPlateLabels,
-  headers,
   createLabelFields,
 }
 
