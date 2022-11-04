@@ -37,7 +37,7 @@ const createLayout = ({ barcode, firstText, secondText }) => ({
 /*
   Creates the print request body
   A query can have multiple layouts
-  the number of layouts is dependent on the number of LabelFields
+  the number of layouts is dependent on the specified quantity
   the printer must be specified
 */
 const createPrintRequestBody = ({ barcode, firstText, secondText, printer, quantity }) => ({
@@ -87,4 +87,4 @@ const printLabels = async ({ barcode, firstText, secondText, printer, quantity }
 }
 
 export default printLabels
-export {createLayout, createPrintRequestBody}
+export { createLayout, createPrintRequestBody }
