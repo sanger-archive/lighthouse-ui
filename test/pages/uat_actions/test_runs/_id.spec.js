@@ -2,10 +2,10 @@ import { createLocalVue, mount } from '@vue/test-utils'
 import { BootstrapVue } from 'bootstrap-vue'
 import TestRun from '@/pages/uat_actions/test_runs/_id'
 import lighthouse from '@/modules/lighthouse_service'
-import sprint from '@/modules/sprint'
+import Sprint from '@/modules/sprint_general_labels'
 
 jest.mock('@/modules/lighthouse_service')
-jest.mock('@/modules/sprint')
+jest.mock('@/modules/sprint_general_labels')
 
 const localVue = createLocalVue()
 localVue.use(BootstrapVue)
@@ -98,17 +98,17 @@ describe('TestRuns.vue', () => {
 
   describe('#print', () => {
     it('successfully', async () => {
-      sprint.printLabels.mockReturnValue({
+      Sprint.printLabels.mockReturnValue({
         success: true,
         message: 'Labels successfully printed',
       })
       await wrapper.vm.print()
-      expect(sprint.printLabels).toHaveBeenCalled()
+      expect(Sprint.printLabels).toHaveBeenCalled()
       expect(wrapper.find('.alert').text()).toMatch('Labels successfully printed')
     })
 
     it('unsuccessfully', async () => {
-      sprint.printLabels.mockReturnValue({
+      Sprint.printLabels.mockReturnValue({
         success: false,
         error: 'There was an error',
       })

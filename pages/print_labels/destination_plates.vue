@@ -52,7 +52,7 @@
 
 <script>
 import statuses from '@/modules/statuses'
-import sprint from '@/modules/sprint'
+import Sprint from '@/modules/sprint_general_labels'
 import config from '@/nuxt.config'
 import PrintLabelsRouter from '@/components/PrintLabelsRouter'
 
@@ -98,7 +98,7 @@ export default {
     },
     async printLabels() {
       this.setStatus('Busy', 'Printing labels ...')
-      const response = await sprint.printDestinationPlateLabels({
+      const response = await Sprint.printDestinationPlateLabels({
         numberOfBarcodes: this.numberOfBarcodes,
         printer: this.printer,
       })

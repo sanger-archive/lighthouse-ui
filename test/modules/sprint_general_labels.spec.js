@@ -1,5 +1,5 @@
 import axios from 'axios'
-import Sprint from '@/modules/sprint'
+import Sprint from '@/modules/sprint_general_labels'
 import Baracoda from '@/modules/baracoda'
 import config from '@/nuxt.config'
 

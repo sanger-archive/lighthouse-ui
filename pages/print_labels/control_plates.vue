@@ -56,7 +56,7 @@
 
 <script>
 import statuses from '@/modules/statuses'
-import Sprint from '@/modules/sprint'
+import Sprint from '@/modules/sprint_general_labels'
 import config from '@/nuxt.config'
 import PrintLabelsRouter from '@/components/PrintLabelsRouter'
 

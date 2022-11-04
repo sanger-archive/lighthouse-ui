@@ -7,10 +7,11 @@ const localVue = createLocalVue()
 localVue.use(BootstrapVue)
 
 const links = [
-  'Print Destination plate Labels',
-  'Print Source plate labels',
-  'Print Control plate labels',
-  'Print Ad Hoc plate labels',
+  'Destination Plates',
+  'Source Plates',
+  'Control Plates',
+  'Ad Hoc Plates',
+  'Reagent Aliquots',
 ]
 
 describe('PrintLabelsRouter.vue', () => {

@@ -2,10 +2,10 @@ import { BootstrapVue } from 'bootstrap-vue'
 import { mount, createLocalVue } from '@vue/test-utils'
 import AdHocPlate from '@/pages/print_labels/ad_hoc_plate'
 import statuses from '@/modules/statuses'
-import Sprint from '@/modules/sprint'
+import Sprint from '@/modules/sprint_general_labels'
 import config from '@/nuxt.config'
 
-jest.mock('@/modules/sprint')
+jest.mock('@/modules/sprint_general_labels')
 
 const localVue = createLocalVue()
 localVue.use(BootstrapVue)
