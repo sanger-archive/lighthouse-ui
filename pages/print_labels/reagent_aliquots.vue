@@ -67,7 +67,7 @@
 
 <script>
 import statuses from '@/modules/statuses'
-import Sprint from '@/modules/sprint'
+import PrintLabels from '@/modules/sprint_reagent_aliquot_labels'
 import config from '@/nuxt.config'
 import PrintLabelsRouter from '@/components/PrintLabelsRouter'
 
@@ -118,9 +118,12 @@ export default {
       this.alertMessage = message
     },
     async printLabels() {
-      const response = await Sprint.printLabels({
-        labelFields: [{ barcode: this.barcode, text: this.text }],
+      const response = await PrintLabels({
+        barcode: this.barcode,
+        firstText: this.firstLineText,
+        secondText: this.secondLineText,
         printer: this.printer,
+        quantity: this.quantity,
       })
 
       if (response.success) {
