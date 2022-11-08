@@ -41,7 +41,7 @@
           <label for="numberOfLabels">Quantity of labels needed:</label>
           <b-form-input
             id="numberOfLabels"
-            v-model="numberOfLabels"
+            v-model="numberOfLabelsString"
             type="number"
             value="1"
             min="1"
@@ -91,7 +91,7 @@ export default {
       firstLineText: '',
       secondLineText: '',
       barcode: '',
-      numberOfLabels: 1,
+      numberOfLabelsString: '1',
     }
   },
   computed: {
@@ -108,8 +108,15 @@ export default {
     isBusy() {
       return this.status === statuses.Busy
     },
+    numberOfLabels() {
+      const numberOfLabels = parseInt(this.numberOfLabelsString)
+      return numberOfLabels === NaN ? 1 : numberOfLabels
+    },
     isValid() {
-      return this.barcode.length > 0 && this.text.length > 0
+      return this.barcode.length > 0 &&
+        this.firstLineText.length > 0 &&
+        this.numberOfLabels >= 1 &&
+        this.numberOfLabels <= 100
     },
   },
   methods: {
@@ -123,7 +130,7 @@ export default {
         firstText: this.firstLineText,
         secondText: this.secondLineText,
         printer: this.printer,
-        quantity: this.quantity,
+        quantity: this.numberOfLabels,
       })
 
       if (response.success) {
