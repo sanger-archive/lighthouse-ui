@@ -109,8 +109,7 @@ export default {
       return this.status === statuses.Busy
     },
     numberOfLabels() {
-      const numberOfLabels = parseInt(this.numberOfLabelsString)
-      return numberOfLabels === NaN ? 1 : numberOfLabels
+      return parseInt(this.numberOfLabelsString)
     },
     isValid() {
       return this.barcode.length > 0 &&

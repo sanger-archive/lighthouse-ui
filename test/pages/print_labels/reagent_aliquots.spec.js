@@ -90,41 +90,46 @@ describe('print destination plate labels', () => {
       vm = wrapper.vm
     })
 
-    it('is valid', async () => {
+    it('is valid', () => {
       expect(vm.isValid).toBeTruthy()
     })
 
-    it('stays valid when quantity is changed to 1', async () => {
+    it('stays valid when quantity is changed to 1', () => {
       vm.numberOfLabelsString = '1'
       expect(vm.isValid).toBeTruthy()
     })
 
-    it('stays valid when quantity is changed to 100', async () => {
+    it('stays valid when quantity is changed to 100', () => {
       vm.numberOfLabelsString = '100'
       expect(vm.isValid).toBeTruthy()
     })
 
-    it('stays valid when second line of text is left blank', async () => {
+    it('stays valid when second line of text is left blank', () => {
       vm.secondLineText = ''
       expect(vm.isValid).toBeTruthy()
     })
 
-    it('becomes invalid when quantity is changed below 1', async () => {
+    it('becomes invalid when quantity is changed below 1', () => {
       vm.numberOfLabelsString = '0'
       expect(vm.isValid).toBeFalsy()
     })
 
-    it('becomes invalid when quantity is changed above 100', async () => {
+    it('becomes invalid when quantity is changed above 100', () => {
       vm.numberOfLabelsString = '101'
       expect(vm.isValid).toBeFalsy()
     })
 
-    it('becomes invalid when barcode is left blank', async () => {
+    it('becomes invalid when quantity is not a number', () => {
+      vm.numberOfLabelsString = 'banana'
+      expect(vm.isValid).toBeFalsy()
+    })
+
+    it('becomes invalid when barcode is left blank', () => {
       vm.barcode = ''
       expect(vm.isValid).toBeFalsy()
     })
 
-    it('becomes invalid when first line of text is left blank', async () => {
+    it('becomes invalid when first line of text is left blank', () => {
       vm.firstLineText = ''
       expect(vm.isValid).toBeFalsy()
     })
