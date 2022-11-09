@@ -1,6 +1,5 @@
 import { createLocalVue, mount } from '@vue/test-utils'
 import { BootstrapVue } from 'bootstrap-vue'
-import each from 'jest-each'
 import UATActionsRouter from '@/components/UATActionsRouter'
 
 const localVue = createLocalVue()
@@ -21,7 +20,7 @@ describe('UATActionsRouter.vue', () => {
     expect(wrapper.findComponent(UATActionsRouter).exists()).toBeTruthy()
   })
 
-  each(links).test('will have a link to %s', (link) => {
+  it.each(links)('will have a link to %s', (link) => {
     expect(wrapper.text()).toMatch(link)
   })
 })
