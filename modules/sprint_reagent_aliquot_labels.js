@@ -57,26 +57,27 @@ const createPrintRequestBody = ({ barcode, firstText, secondText, printer, quant
   and send a request to sprint to print labels
 */
 const printLabels = async ({ barcode, firstText, secondText, printer, quantity }) => {
-  if (quantity < 1 || quantity > 100) {
-    return {
-      success: false,
-      error: "Quantity should be between 1 and 100."
-    }
-  }
-
   try {
-    const payload = createPrintRequestBody({ barcode, firstText, secondText, printer, quantity })
+    const parsedQuantity = parseInt(quantity)
+
+    if (isNaN(parsedQuantity) || parsedQuantity < 1 || parsedQuantity > 100) {
+      throw new Error("Quantity should be between 1 and 100.")
+    }
+
+    const payload = createPrintRequestBody({ barcode, firstText, secondText, printer, quantity: parsedQuantity })
 
     const response = await axios.post(config.privateRuntimeConfig.sprintBaseURL, payload, headers)
 
     // because this is GraphQL it will always be a success unless it is a 500
     // so we need to extract the error messages and turn it into an error object
-    if (response.data.errors)
+    if (response.data.errors) {
       throw new Error(response.data.errors.map(({ message }) => message).join(','))
+    }
 
+    const labelString = parsedQuantity === 1 ? 'label' : 'labels'
     return {
       success: true,
-      message: `Successfully printed ${quantity} labels to ${printer}`,
+      message: `Successfully printed ${parsedQuantity} ${labelString} to ${printer}`,
     }
   } catch (error) {
     return {
