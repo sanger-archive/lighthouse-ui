@@ -77,7 +77,7 @@ export default {
       status: statuses.Idle,
       alertMessage: '',
       printer: 'heron-bc1',
-      numberOfBarcodes: 1,
+      numberOfBarcodes: '1',
       barcode: '',
     }
   },

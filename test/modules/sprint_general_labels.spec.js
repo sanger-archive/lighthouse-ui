@@ -152,7 +152,7 @@ describe('Sprint', () => {
       let barcodes
 
       beforeEach(() => {
-        args = { numberOfBarcodes: 5, printer: 'heron-bc3' }
+        args = { numberOfBarcodes: '5', printer: 'heron-bc3' }
         barcodes = ['HT-111116', 'HT-111117', 'HT-111118', 'HT-111119', 'HT-111120']
       })
 

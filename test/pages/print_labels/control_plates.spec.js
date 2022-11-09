@@ -65,7 +65,7 @@ describe('print control plate labels', () => {
       data() {
         return {
           printer: 'heron-bc1',
-          numberOfBarcodes: 5,
+          numberOfBarcodes: '5',
           barcode: 'DN111111',
         }
       },
@@ -146,7 +146,7 @@ describe('print control plate labels', () => {
         data() {
           return {
             printer: 'heron-bc1',
-            numberOfBarcodes: 10,
+            numberOfBarcodes: '10',
             barcode: 'DN111111',
           }
         },

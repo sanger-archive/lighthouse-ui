@@ -137,7 +137,6 @@ describe('print destination plate labels', () => {
           data() {
             return {
               printer: 'heron-bc1',
-              numberOfBarcodes: 10,
               filename: null,
             }
           },
@@ -164,7 +163,6 @@ describe('print destination plate labels', () => {
           data() {
             return {
               printer: 'heron-bc1',
-              numberOfBarcodes: 10,
               filename: 'barcodes.csv',
             }
           },
