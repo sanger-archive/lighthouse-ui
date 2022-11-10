@@ -42,7 +42,7 @@
             block
             size="lg"
             variant="success"
-            :disabled="isBusy || barcode.length == 0"
+            :disabled="isBusy || !isValid"
             @click="printLabels"
           >
             Print labels
@@ -56,7 +56,7 @@
 
 <script>
 import statuses from '@/modules/statuses'
-import Sprint from '@/modules/sprint'
+import Sprint from '@/modules/sprint_general_labels'
 import config from '@/nuxt.config'
 import PrintLabelsRouter from '@/components/PrintLabelsRouter'
 
@@ -76,8 +76,8 @@ export default {
     return {
       status: statuses.Idle,
       alertMessage: '',
-      printer: 'heron-bc1',
-      numberOfBarcodes: 1,
+      printer: this.printers[0],
+      numberOfBarcodes: '1',
       barcode: '',
     }
   },
@@ -94,6 +94,9 @@ export default {
     },
     isBusy() {
       return this.status === statuses.Busy
+    },
+    isValid() {
+      return this.barcode.length > 0
     },
   },
   methods: {

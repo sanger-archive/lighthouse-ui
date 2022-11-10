@@ -2,10 +2,10 @@ import { BootstrapVue } from 'bootstrap-vue'
 import { mount, createLocalVue } from '@vue/test-utils'
 import ControlPlates from '@/pages/print_labels/control_plates'
 import statuses from '@/modules/statuses'
-import Sprint from '@/modules/sprint'
+import Sprint from '@/modules/sprint_general_labels'
 import config from '@/nuxt.config'
 
-jest.mock('@/modules/sprint')
+jest.mock('@/modules/sprint_general_labels')
 
 const localVue = createLocalVue()
 localVue.use(BootstrapVue)
@@ -65,7 +65,7 @@ describe('print control plate labels', () => {
       data() {
         return {
           printer: 'heron-bc1',
-          numberOfBarcodes: 5,
+          numberOfBarcodes: '5',
           barcode: 'DN111111',
         }
       },
@@ -146,7 +146,7 @@ describe('print control plate labels', () => {
         data() {
           return {
             printer: 'heron-bc1',
-            numberOfBarcodes: 10,
+            numberOfBarcodes: '10',
             barcode: 'DN111111',
           }
         },

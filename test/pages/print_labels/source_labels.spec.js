@@ -3,12 +3,12 @@ import { BootstrapVue } from 'bootstrap-vue'
 import { mount, createLocalVue } from '@vue/test-utils'
 import SourcePlates from '@/pages/print_labels/source_plates'
 import statuses from '@/modules/statuses'
-import Sprint from '@/modules/sprint'
+import Sprint from '@/modules/sprint_general_labels'
 import CSV from '@/modules/csv'
 import config from '@/nuxt.config'
 import barcodes from '@/test/data/barcodes'
 
-jest.mock('@/modules/sprint')
+jest.mock('@/modules/sprint_general_labels')
 jest.mock('@/modules/csv')
 
 const localVue = createLocalVue()
@@ -137,7 +137,6 @@ describe('print destination plate labels', () => {
           data() {
             return {
               printer: 'heron-bc1',
-              numberOfBarcodes: 10,
               filename: null,
             }
           },
@@ -164,7 +163,6 @@ describe('print destination plate labels', () => {
           data() {
             return {
               printer: 'heron-bc1',
-              numberOfBarcodes: 10,
               filename: 'barcodes.csv',
             }
           },

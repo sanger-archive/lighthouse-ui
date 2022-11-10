@@ -3,7 +3,7 @@
     <b-row>
       <b-col>
         <PrintLabelsRouter />
-        <h1>Print Source plate labels</h1>
+        <h1>Print source plate labels</h1>
         <p class="lead"></p>
 
         <!-- TODO: better in a component of its own? -->
@@ -73,7 +73,7 @@
 
 <script>
 import statuses from '@/modules/statuses'
-import Sprint from '@/modules/sprint'
+import Sprint from '@/modules/sprint_general_labels'
 import csv from '@/modules/csv'
 import config from '@/nuxt.config'
 import PrintLabelsRouter from '@/components/PrintLabelsRouter'
@@ -94,8 +94,7 @@ export default {
     return {
       status: statuses.Idle,
       alertMessage: '',
-      printer: 'heron-bc1',
-      numberOfBarcodes: 1,
+      printer: this.printers[0],
       filename: null,
     }
   },

@@ -3,7 +3,7 @@
     <b-row>
       <b-col>
         <PrintLabelsRouter />
-        <h1>Print ad hoc plate labels</h1>
+        <h1>Print reagent aliquot labels</h1>
         <p class="lead"></p>
 
         <!-- TODO: better in a component of its own? -->
@@ -19,16 +19,33 @@
           </b-alert>
         </p>
         <p>
-          <label for="selectPrinter"> Which printer would you like to use? </label>
+          <img src="@/assets/images/reagent_aliquot_label_preview.png" />
+        </p>
+        <p>
+          <label for="selectPrinter">Which printer would you like to use?</label>
           <b-form-select id="selectPrinter" v-model="printer" :options="printers"></b-form-select>
         </p>
         <p>
-          <label for="barcode"> Please scan the barcode </label>
+          <label for="firstLineText">Freeform first line of text:</label>
+          <b-form-input id="firstLineText" v-model="firstLineText" type="text"></b-form-input>
+        </p>
+        <p>
+          <label for="secondLineText">Freeform second line of text:</label>
+          <b-form-input id="secondLineText" v-model="secondLineText" type="text"></b-form-input>
+        </p>
+        <p>
+          <label for="barcode">Scan or enter an aliquot barcode:</label>
           <b-form-input id="barcode" v-model="barcode" type="text"></b-form-input>
         </p>
         <p>
-          <label for="text"> Please provide some text to go on the label </label>
-          <b-form-input id="text" v-model="text" type="text"></b-form-input>
+          <label for="numberOfLabels">Quantity of labels needed:</label>
+          <b-form-input
+            id="numberOfLabels"
+            v-model="numberOfLabelsString"
+            type="number"
+            value="1"
+            min="1"
+          ></b-form-input>
         </p>
         <p class="text-right">
           <b-button
@@ -50,7 +67,7 @@
 
 <script>
 import statuses from '@/modules/statuses'
-import Sprint from '@/modules/sprint_general_labels'
+import PrintLabels from '@/modules/sprint_reagent_aliquot_labels'
 import config from '@/nuxt.config'
 import PrintLabelsRouter from '@/components/PrintLabelsRouter'
 
@@ -71,8 +88,10 @@ export default {
       status: statuses.Idle,
       alertMessage: '',
       printer: this.printers[0],
+      firstLineText: '',
+      secondLineText: '',
       barcode: '',
-      text: '',
+      numberOfLabelsString: '1',
     }
   },
   computed: {
@@ -89,8 +108,14 @@ export default {
     isBusy() {
       return this.status === statuses.Busy
     },
+    numberOfLabels() {
+      return parseInt(this.numberOfLabelsString)
+    },
     isValid() {
-      return this.barcode.length > 0 && this.text.length > 0
+      return this.barcode.length > 0 &&
+        this.firstLineText.length > 0 &&
+        this.numberOfLabels >= 1 &&
+        this.numberOfLabels <= 100
     },
   },
   methods: {
@@ -99,9 +124,12 @@ export default {
       this.alertMessage = message
     },
     async printLabels() {
-      const response = await Sprint.printLabels({
-        labelFields: [{ barcode: this.barcode, text: this.text }],
+      const response = await PrintLabels({
+        barcode: this.barcode,
+        firstText: this.firstLineText,
+        secondText: this.secondLineText,
         printer: this.printer,
+        quantity: this.numberOfLabels,
       })
 
       if (response.success) {
