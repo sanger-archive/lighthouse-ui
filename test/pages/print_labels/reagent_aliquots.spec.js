@@ -135,7 +135,7 @@ describe('print destination plate labels', () => {
     })
   })
 
-  // TODO: These tests are duplicated so will be removed once refactored. Need to get it to pass code coverage.
+  // TODO: GPL-828 - These tests are duplicated so will be removed once refactored. Need to get it to pass code coverage.
   describe('setting the status', () => {
     let vm
 

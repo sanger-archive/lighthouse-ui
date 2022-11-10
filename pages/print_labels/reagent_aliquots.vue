@@ -6,7 +6,7 @@
         <h1>Print reagent aliquot labels</h1>
         <p class="lead"></p>
 
-        <!-- TODO: better in a component of its own? -->
+        <!-- TODO: GPL-828 - better in a component of its own? -->
         <p>
           <b-alert :show="isError" dismissible variant="danger">
             {{ alertMessage }}
@@ -79,6 +79,7 @@ export default {
     printers: {
       type: Array,
       default() {
+        // TODO: GPL-828 - Can we get this list from SPrint instead of setting it in config
         return config.publicRuntimeConfig.printers.split(',')
       },
     },
@@ -95,7 +96,7 @@ export default {
     }
   },
   computed: {
-    // TODO: abstract and create functions dynamically.
+    // TODO: GPL-828 - abstract and create functions dynamically.
     isIdle() {
       return this.status === statuses.Idle
     },
