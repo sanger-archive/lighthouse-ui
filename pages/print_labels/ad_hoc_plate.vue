@@ -70,7 +70,7 @@ export default {
     return {
       status: statuses.Idle,
       alertMessage: '',
-      printer: 'heron-bc1',
+      printer: this.printers[0],
       barcode: '',
       text: '',
     }

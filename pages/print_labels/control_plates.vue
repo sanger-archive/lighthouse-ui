@@ -3,7 +3,7 @@
     <b-row>
       <b-col>
         <PrintLabelsRouter />
-        <h1>Print control plate labels</h1>
+        <h1>Print Control plate labels</h1>
         <p class="lead"></p>
 
         <!-- TODO: better in a component of its own? -->
@@ -42,7 +42,7 @@
             block
             size="lg"
             variant="success"
-            :disabled="isBusy || barcode.length == 0"
+            :disabled="isBusy || !isValid"
             @click="printLabels"
           >
             Print labels
@@ -76,7 +76,7 @@ export default {
     return {
       status: statuses.Idle,
       alertMessage: '',
-      printer: 'heron-bc1',
+      printer: this.printers[0],
       numberOfBarcodes: '1',
       barcode: '',
     }
@@ -94,6 +94,9 @@ export default {
     },
     isBusy() {
       return this.status === statuses.Busy
+    },
+    isValid() {
+      return this.barcode.length > 0
     },
   },
   methods: {
