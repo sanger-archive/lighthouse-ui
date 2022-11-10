@@ -4,7 +4,7 @@ import { query, headers } from '@/modules/sprint_constants'
 
 // Will create a new layout object for a print job
 // Requires barcode and two lines of text
-// TODO: how do we turn this into external json
+// TODO: DPL-561 - how do we turn this into external json
 const createLayout = ({ barcode, firstText, secondText }) => ({
   barcodeFields: [
     {

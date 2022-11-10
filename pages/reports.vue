@@ -16,7 +16,7 @@
             Delete Reports
           </b-button>
         </p>
-        <!-- TODO: better in a component of its own? -->
+        <!-- TODO: DPL-561 - better in a component of its own? -->
         <p>
           <b-alert :show="isError" dismissible variant="danger">
             {{ alertMessage }}
@@ -82,7 +82,7 @@ export default {
     reportsToDelete() {
       return this.items.filter((item) => item.selected === true).map((item) => item.filename)
     },
-    // TODO: abstract and create functions dynamically.
+    // TODO: DPL-561 - abstract and create functions dynamically.
     isIdle() {
       return this.status === statuses.Idle
     },

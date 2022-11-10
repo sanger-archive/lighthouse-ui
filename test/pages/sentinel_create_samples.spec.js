@@ -33,7 +33,7 @@ describe('lighthouse sentinel cherrypick', () => {
     expect(wrapper.vm.items).toEqual([])
   })
 
-  // TODO: Are these necessary. Would this be better done in an integration test.
+  // TODO: DPL-561 - Are these necessary. Would this be better done in an integration test.
   describe('submission', () => {
     let button
 
