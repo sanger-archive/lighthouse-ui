@@ -1,6 +1,5 @@
 import { createLocalVue, mount } from '@vue/test-utils'
 import { BootstrapVue } from 'bootstrap-vue'
-import each from 'jest-each'
 import PrintLabelsRouter from '@/components/PrintLabelsRouter'
 
 const localVue = createLocalVue()
@@ -27,7 +26,7 @@ describe('PrintLabelsRouter.vue', () => {
     expect(wrapper.findComponent(PrintLabelsRouter).exists()).toBeTruthy()
   })
 
-  each(links).test('will have a link to %s', (link) => {
+  it.each(links)('will have a link to %s', (link) => {
     expect(wrapper.text()).toMatch(link)
   })
 })
