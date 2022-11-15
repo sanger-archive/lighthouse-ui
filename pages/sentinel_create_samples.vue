@@ -93,7 +93,7 @@ export default {
       this.handleSentinelSampleCreationResponse(resp)
       this.submit_disabled = false
     },
-    // TODO: make this more javascripty? destructuring?
+    // TODO: DPL-561 - make this more javascripty? destructuring?
     handleSentinelSampleCreationResponse(resp) {
       const errored = resp.filter((obj) => Object.keys(obj).includes('errors'))
       const successful = resp.filter((obj) => Object.keys(obj).includes('data'))

@@ -6,7 +6,7 @@ import { headers as SprintHeaders } from '@/modules/sprint_constants'
 
 jest.mock('@/modules/baracoda')
 
-// TODO: move out into helper
+// TODO: DPL-561 - move out into helper
 const errorResponse = new Error('There was an error')
 const rejectPromise = () => Promise.reject(errorResponse)
 

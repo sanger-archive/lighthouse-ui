@@ -1,7 +1,7 @@
 // this is done as lowest common demoninator to get it working
 // nothing fancy, no error checking
 // it will take a file, read it and return it
-// TODO: add some error handling
+// TODO: DPL-561 - add some error handling
 const read = async (file) => {
   const reader = new FileReader()
 

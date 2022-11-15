@@ -3,7 +3,7 @@ import PrintLabels, { createLayout, createPrintRequestBody } from '@/modules/spr
 import config from '@/nuxt.config'
 import { headers as SprintHeaders } from '@/modules/sprint_constants'
 
-// TODO: move out into helper
+// TODO: DPL-561 - move out into helper
 const errorResponse = new Error('There was an error')
 const rejectPromise = () => Promise.reject(errorResponse)
 
