@@ -3,10 +3,10 @@
     <b-row>
       <b-col>
         <PrintLabelsRouter />
-        <h1>Print Ad hoc plate labels</h1>
+        <h1>Print ad hoc plate labels</h1>
         <p class="lead"></p>
 
-        <!-- TODO: better in a component of its own? -->
+        <!-- TODO: GPL-828 - better in a component of its own? -->
         <p>
           <b-alert :show="isError" dismissible variant="danger">
             {{ alertMessage }}
@@ -50,7 +50,7 @@
 
 <script>
 import statuses from '@/modules/statuses'
-import Sprint from '@/modules/sprint'
+import Sprint from '@/modules/sprint_general_labels'
 import config from '@/nuxt.config'
 import PrintLabelsRouter from '@/components/PrintLabelsRouter'
 
@@ -62,6 +62,7 @@ export default {
     printers: {
       type: Array,
       default() {
+        // TODO: GPL-828 - Can we get this list from SPrint instead of setting it in config
         return config.publicRuntimeConfig.printers.split(',')
       },
     },
@@ -70,13 +71,13 @@ export default {
     return {
       status: statuses.Idle,
       alertMessage: '',
-      printer: 'heron-bc1',
+      printer: this.printers[0],
       barcode: '',
       text: '',
     }
   },
   computed: {
-    // TODO: abstract and create functions dynamically.
+    // TODO: GPL-828 - abstract and create functions dynamically.
     isIdle() {
       return this.status === statuses.Idle
     },

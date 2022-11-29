@@ -55,7 +55,7 @@ import lighthouse from '@/modules/lighthouse_service'
 import AlertDialog from '@/components/AlertDialog'
 import UATActionsRouter from '@/components/UATActionsRouter'
 import config from '@/nuxt.config'
-import sprint from '@/modules/sprint'
+import Sprint from '@/modules/sprint_general_labels'
 
 export default {
   name: 'TestRun',
@@ -95,7 +95,7 @@ export default {
       return this.$refs.alert.show(message, type)
     },
     async print(labelFields, printer) {
-      const response = await sprint.printLabels({
+      const response = await Sprint.printLabels({
         labelFields,
         printer,
       })

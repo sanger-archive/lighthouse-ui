@@ -3,7 +3,7 @@
     <b-row>
       <b-col>
         <PrintLabelsRouter />
-        <h1>Print source plate labels</h1>
+        <h1>Print reagent aliquot labels</h1>
         <p class="lead"></p>
 
         <!-- TODO: GPL-828 - better in a component of its own? -->
@@ -18,48 +18,42 @@
             {{ alertMessage }}
           </b-alert>
         </p>
-        <form enctype="multipart/form-data" method="post" action="#" @submit.prevent="upload">
-          <div class="form-group">
-            <div class="form-group">
-              <label for="selectPrinter">Which printer would you like to use?</label>
-              <b-form-select
-                id="selectPrinter"
-                v-model="printer"
-                :options="printers"
-              ></b-form-select>
-            </div>
-            <label for="file-input">Select a file to upload</label>
-            <input
-              id="file-input"
-              ref="fileInput"
-              type="file"
-              name="file-input"
-              class="file"
-              @change.prevent="addFilenames"
-            />
-            <div class="input-group">
-              <input
-                ref="browseFiles"
-                class="form-control"
-                type="text"
-                disabled
-                placeholder="Upload File..."
-              />
-              <span class="input-group-btn">
-                <button class="btn btn-success spacer" type="button" @click.prevent="browseFiles">
-                  Browse
-                </button>
-              </span>
-            </div>
-          </div>
-        </form>
+        <p>
+          <img src="@/assets/images/reagent_aliquot_label_preview.png" />
+        </p>
+        <p>
+          <label for="selectPrinter">Which printer would you like to use?</label>
+          <b-form-select id="selectPrinter" v-model="printer" :options="printers"></b-form-select>
+        </p>
+        <p>
+          <label for="firstLineText">Freeform first line of text:</label>
+          <b-form-input id="firstLineText" v-model="firstLineText" type="text"></b-form-input>
+        </p>
+        <p>
+          <label for="secondLineText">Freeform second line of text:</label>
+          <b-form-input id="secondLineText" v-model="secondLineText" type="text"></b-form-input>
+        </p>
+        <p>
+          <label for="barcode">Scan or enter an aliquot barcode:</label>
+          <b-form-input id="barcode" v-model="barcode" type="text"></b-form-input>
+        </p>
+        <p>
+          <label for="numberOfLabels">Quantity of labels needed:</label>
+          <b-form-input
+            id="numberOfLabels"
+            v-model="numberOfLabelsString"
+            type="number"
+            value="1"
+            min="1"
+          ></b-form-input>
+        </p>
         <p class="text-right">
           <b-button
             id="printLabels"
             block
             size="lg"
             variant="success"
-            :disabled="isBusy"
+            :disabled="isBusy || !isValid"
             @click="printLabels"
           >
             Print labels
@@ -73,8 +67,7 @@
 
 <script>
 import statuses from '@/modules/statuses'
-import Sprint from '@/modules/sprint_general_labels'
-import csv from '@/modules/csv'
+import PrintLabels from '@/modules/sprint_reagent_aliquot_labels'
 import config from '@/nuxt.config'
 import PrintLabelsRouter from '@/components/PrintLabelsRouter'
 
@@ -96,7 +89,10 @@ export default {
       status: statuses.Idle,
       alertMessage: '',
       printer: this.printers[0],
-      filename: null,
+      firstLineText: '',
+      secondLineText: '',
+      barcode: '',
+      numberOfLabelsString: '1',
     }
   },
   computed: {
@@ -113,6 +109,15 @@ export default {
     isBusy() {
       return this.status === statuses.Busy
     },
+    numberOfLabels() {
+      return parseInt(this.numberOfLabelsString)
+    },
+    isValid() {
+      return this.barcode.length > 0 &&
+        this.firstLineText.length > 0 &&
+        this.numberOfLabels >= 1 &&
+        this.numberOfLabels <= 100
+    },
   },
   methods: {
     setStatus(status, message) {
@@ -120,18 +125,12 @@ export default {
       this.alertMessage = message
     },
     async printLabels() {
-      if (this.filename == null) {
-        this.setStatus('Error', 'Please upload a file')
-        return
-      }
-      this.setStatus('Busy', 'Printing labels ...')
-
-      const file = this.getFile()
-      const read = await csv.read(file)
-      const labelFields = csv.parse(read)
-      const response = await Sprint.printLabels({
-        labelFields,
+      const response = await PrintLabels({
+        barcode: this.barcode,
+        firstText: this.firstLineText,
+        secondText: this.secondLineText,
         printer: this.printer,
+        quantity: this.numberOfLabels,
       })
 
       if (response.success) {
@@ -140,23 +139,8 @@ export default {
         this.setStatus('Error', response.error)
       }
     },
-    browseFiles() {
-      this.$refs.fileInput.click()
-    },
-    getFile() {
-      return document.getElementById('file-input').files[0]
-    },
-    addFilenames() {
-      this.filename = this.$refs.fileInput.value
-      this.$refs.browseFiles.value = this.filename
-    },
   },
 }
 </script>
 
-<style>
-.file {
-  visibility: hidden;
-  position: absolute;
-}
-</style>
+<style></style>

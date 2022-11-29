@@ -1,11 +1,12 @@
 import axios from 'axios'
-import Sprint from '@/modules/sprint'
+import Sprint from '@/modules/sprint_general_labels'
 import Baracoda from '@/modules/baracoda'
 import config from '@/nuxt.config'
+import { headers as SprintHeaders } from '@/modules/sprint_constants'
 
 jest.mock('@/modules/baracoda')
 
-// TODO: move out into helper
+// TODO: DPL-561 - move out into helper
 const errorResponse = new Error('There was an error')
 const rejectPromise = () => Promise.reject(errorResponse)
 
@@ -102,7 +103,7 @@ describe('Sprint', () => {
       expect(mock).toHaveBeenCalledWith(
         config.privateRuntimeConfig.sprintBaseURL,
         Sprint.createPrintRequestBody(args),
-        Sprint.headers
+        SprintHeaders
       )
       expect(response.success).toBeTruthy()
       expect(response.message).toBe('Successfully printed 3 labels to heron-bc3')
@@ -151,7 +152,7 @@ describe('Sprint', () => {
       let barcodes
 
       beforeEach(() => {
-        args = { numberOfBarcodes: 5, printer: 'heron-bc3' }
+        args = { numberOfBarcodes: '5', printer: 'heron-bc3' }
         barcodes = ['HT-111116', 'HT-111117', 'HT-111118', 'HT-111119', 'HT-111120']
       })
 

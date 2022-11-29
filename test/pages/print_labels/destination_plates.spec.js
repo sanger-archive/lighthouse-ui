@@ -2,10 +2,10 @@ import { BootstrapVue } from 'bootstrap-vue'
 import { mount, createLocalVue } from '@vue/test-utils'
 import PrintDestinationPlateLabels from '@/pages/print_labels/destination_plates'
 import statuses from '@/modules/statuses'
-import Sprint from '@/modules/sprint'
+import Sprint from '@/modules/sprint_general_labels'
 import config from '@/nuxt.config'
 
-jest.mock('@/modules/sprint')
+jest.mock('@/modules/sprint_general_labels')
 
 const localVue = createLocalVue()
 localVue.use(BootstrapVue)
@@ -53,7 +53,7 @@ describe('print destination plate labels', () => {
     expect(vm.alertMessage).toBe('Barcodes successfully printed')
   })
 
-  // TODO: These tests are duplicated so will be removed once refactored. Need to get it to pass code coverage.
+  // TODO: GPL-828 - These tests are duplicated so will be removed once refactored. Need to get it to pass code coverage.
   describe('setting the status', () => {
     let vm
 

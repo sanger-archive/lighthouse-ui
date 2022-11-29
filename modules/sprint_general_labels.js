@@ -1,22 +1,11 @@
 import axios from 'axios'
 import Baracoda from '@/modules/baracoda'
 import config from '@/nuxt.config'
-
-const query = `mutation printRequest($printRequest: PrintRequest!, $printer: String!) {
-  print(printRequest: $printRequest, printer: $printer) {
-    jobId
-  }
-}`
-
-const headers = {
-  headers: {
-    'Content-Type': 'application/json',
-  },
-}
+import {query, headers} from '@/modules/sprint_constants'
 
 // Will create a new layout object for a print job
 // Requires barcode which will be used for barcode and text field
-// TODO: how do we turn this into external json
+// TODO: DPL-561 - how do we turn this into external json
 const createLayout = ({ barcode, text }) => ({
   barcodeFields: [
     {
@@ -120,7 +109,7 @@ const printDestinationPlateLabels = async ({ numberOfBarcodes, printer }) => {
     const labelFields = createLabelFields({ ...response, text: 'LHTR' })
 
     // print the labels
-    // TODO: similar implementation to printLabels. Can we pass a function?
+    // TODO: DPL-561 - similar implementation to printLabels. Can we pass a function?
     response = await Sprint.printLabels({ labelFields, printer })
 
     if (response.success) {
@@ -141,7 +130,6 @@ const Sprint = {
   createPrintRequestBody,
   printLabels,
   printDestinationPlateLabels,
-  headers,
   createLabelFields,
 }
 

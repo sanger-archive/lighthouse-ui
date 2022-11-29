@@ -1,16 +1,16 @@
 import { createLocalVue, mount } from '@vue/test-utils'
 import { BootstrapVue } from 'bootstrap-vue'
-import each from 'jest-each'
 import PrintLabelsRouter from '@/components/PrintLabelsRouter'
 
 const localVue = createLocalVue()
 localVue.use(BootstrapVue)
 
 const links = [
-  'Print Destination plate Labels',
-  'Print Source plate labels',
-  'Print Control plate labels',
-  'Print Ad Hoc plate labels',
+  'Destination Plates',
+  'Source Plates',
+  'Control Plates',
+  'Ad Hoc Plates',
+  'Reagent Aliquots',
 ]
 
 describe('PrintLabelsRouter.vue', () => {
@@ -27,7 +27,7 @@ describe('PrintLabelsRouter.vue', () => {
     expect(wrapper.findComponent(PrintLabelsRouter).exists()).toBeTruthy()
   })
 
-  each(links).test('will have a link to %s', (link) => {
+  it.each(links)('will have a link to %s', (link) => {
     expect(wrapper.text()).toMatch(link)
   })
 })

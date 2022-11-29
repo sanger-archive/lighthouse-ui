@@ -3,12 +3,12 @@ import { BootstrapVue } from 'bootstrap-vue'
 import { mount, createLocalVue } from '@vue/test-utils'
 import SourcePlates from '@/pages/print_labels/source_plates'
 import statuses from '@/modules/statuses'
-import Sprint from '@/modules/sprint'
+import Sprint from '@/modules/sprint_general_labels'
 import CSV from '@/modules/csv'
 import config from '@/nuxt.config'
 import barcodes from '@/test/data/barcodes'
 
-jest.mock('@/modules/sprint')
+jest.mock('@/modules/sprint_general_labels')
 jest.mock('@/modules/csv')
 
 const localVue = createLocalVue()
@@ -51,7 +51,7 @@ describe('print destination plate labels', () => {
     expect(vm.alertMessage).toBe('Barcodes successfully printed')
   })
 
-  // TODO: the following 3 tests are arbitrary just to get it to pass.
+  // TODO: GPL-828 - the following 3 tests are arbitrary just to get it to pass.
   it('browse files', () => {
     vm.browseFiles()
     expect(true).toBeTruthy()
@@ -61,7 +61,7 @@ describe('print destination plate labels', () => {
     try {
       vm.getFile()
     } catch {
-      // TODO: Implement proper logging of error
+      // TODO: GPL-828 - Implement proper logging of error
       console.log('error')
     }
     expect(true).toBeTruthy()
@@ -72,7 +72,7 @@ describe('print destination plate labels', () => {
     expect(true).toBeTruthy()
   })
 
-  // TODO: These tests are duplicated so will be removed once refactored. Need to get it to pass code coverage.
+  // TODO: GPL-828 - These tests are duplicated so will be removed once refactored. Need to get it to pass code coverage.
   describe('setting the status', () => {
     let vm
 
@@ -137,7 +137,6 @@ describe('print destination plate labels', () => {
           data() {
             return {
               printer: 'heron-bc1',
-              numberOfBarcodes: 10,
               filename: null,
             }
           },
@@ -164,7 +163,6 @@ describe('print destination plate labels', () => {
           data() {
             return {
               printer: 'heron-bc1',
-              numberOfBarcodes: 10,
               filename: 'barcodes.csv',
             }
           },
