@@ -1,4 +1,4 @@
-export default {
+export default defineNuxtConfig({
   /*
    ** Headers of the page
    */
@@ -48,14 +48,6 @@ export default {
    */
   plugins: [{ src: '~/plugins/vue-pluralize.js' }],
   /*
-   ** Nuxt.js dev-modules
-   */
-  buildModules: [
-    // Doc: https://github.com/nuxt-community/eslint-module
-    '@nuxtjs/eslint-module',
-    '@nuxtjs/dotenv',
-  ],
-  /*
    ** Nuxt.js modules
    */
   modules: [
@@ -103,4 +95,4 @@ export default {
     uatActions: process.env.FEATURE_FLAG_UAT_ACTIONS,
     bioseroCherrypick: process.env.FEATURE_FLAG_BIOSERO_CHERRYPICK,
   },
-}
+})
