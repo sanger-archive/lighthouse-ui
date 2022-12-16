@@ -46,7 +46,7 @@ export default defineNuxtConfig({
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [{ src: '~/plugins/vue-pluralize.js' }],
+  plugins: [],
   /*
    ** Nuxt.js modules
    */
