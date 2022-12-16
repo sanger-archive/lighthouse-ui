@@ -2,7 +2,6 @@ import { createLocalVue, mount } from '@vue/test-utils'
 import { BootstrapVue } from 'bootstrap-vue'
 import lighthouseBiosero from '@/modules/lighthouse_service_biosero'
 import BioseroPlateState from '@/pages/biosero_plate_state.vue'
-import '@/plugins/vue-pluralize'
 import { sourcePlate, destinationPlate } from '@/test/data/biosero_plates'
 
 jest.mock('@/modules/lighthouse_service_biosero')
@@ -248,7 +247,7 @@ describe('BioseroPlateState', () => {
         const sourcePlateItems = wrapper.vm.sourcePlateItems()
 
         expect(sourcePlateItems[0]).toEqual(
-          { 
+          {
             "2": sourcePlate.samples[0].source_barcode,
             "4": sourcePlate.samples[1].source_barcode,
             "6": sourcePlate.samples[2].source_barcode,
@@ -274,7 +273,7 @@ describe('BioseroPlateState', () => {
 
         // For the picked wells
         expect(destinationPlateItems[0]).toEqual(
-          { 
+          {
             "1": destinationPlate.wells[0].rna_id,
             "2": destinationPlate.wells[1].rna_id,
             "3": destinationPlate.wells[2].rna_id,
@@ -290,7 +289,7 @@ describe('BioseroPlateState', () => {
         )
         // For the control well
         expect(destinationPlateItems[3]).toEqual(
-          { 
+          {
             "2": destinationPlate.wells[4].rna_id,
             "_cellVariants": {
               "2": "secondary",

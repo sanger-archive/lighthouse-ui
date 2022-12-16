@@ -45,14 +45,12 @@
           <b-col>
             <strong>Box summary:</strong>
             <ul>
-              <li>Total of {{ total }} {{ 'plate' | pluralize(total) }} in the box</li>
+              <li>Total of {{ total }} plates in the box</li>
               <li>
-                {{ total_with_maps }} {{ 'plate' | pluralize(total_with_maps) }} with plate
-                {{ 'map' | pluralize(total_with_maps) }}
+                {{ total_with_maps }} plates with plate maps
               </li>
               <li>
-                {{ total_without_maps }} {{ 'plate' | pluralize(total_without_maps) }} without plate
-                {{ 'map' | pluralize(total_without_maps) }}
+                {{ total_without_maps }} plates without plate maps
               </li>
             </ul>
           </b-col>
@@ -60,16 +58,15 @@
             <strong>Sample summary:</strong>
             <ul>
               <li>
-                Total of {{ total_fit_to_pick }} fit to pick
-                {{ 'sample' | pluralize(total_fit_to_pick) }}
+                Total of {{ total_fit_to_pick }} fit to pick samples
               </li>
               <li style="color: green">
-                {{ total_must_sequence }} {{ 'plate' | pluralize(total_must_sequence) }} with
+                {{ total_must_sequence }} plates with
                 samples that must be sequenced
               </li>
               <li style="color: DarkOrange">
                 {{ total_preferentially_sequence }}
-                {{ 'plate' | pluralize(total_preferentially_sequence) }} with samples that should
+                plates with samples that should
                 preferentially be sequenced
               </li>
             </ul>
@@ -299,10 +296,7 @@ export default {
       this.lighthouseResponse = defaultResponse
     },
     async findPlatesInLighthouse(labwhereResponse) {
-      this.currentState = `Checking ${this.$pluralize(
-        'plate',
-        labwhereResponse.length
-      )} in the Lighthouse service`
+      this.currentState = 'Checking plates in the Lighthouse service'
 
       const response = await lighthouse.findPlatesFromBarcodes(labwhereResponse)
 

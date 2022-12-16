@@ -1,4 +1,4 @@
-export default {
+export default defineNuxtConfig({
   /*
    ** Headers of the page
    */
@@ -46,23 +46,12 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [{ src: '~/plugins/vue-pluralize.js' }],
-  /*
-   ** Nuxt.js dev-modules
-   */
-  buildModules: [
-    // Doc: https://github.com/nuxt-community/eslint-module
-    '@nuxtjs/eslint-module',
-    '@nuxtjs/dotenv',
-  ],
+  plugins: [],
   /*
    ** Nuxt.js modules
    */
   modules: [
-    // Doc: https://bootstrap-vue.js.org
-    'bootstrap-vue/nuxt',
-    // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios',
+    'bootstrap-vue-3/nuxt',
   ],
   /*
    ** Axios module configuration
@@ -106,4 +95,4 @@ export default {
     uatActions: process.env.FEATURE_FLAG_UAT_ACTIONS,
     bioseroCherrypick: process.env.FEATURE_FLAG_BIOSERO_CHERRYPICK,
   },
-}
+})
