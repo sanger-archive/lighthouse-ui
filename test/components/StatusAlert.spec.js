@@ -28,7 +28,7 @@ describe('StatusAlert.vue', () => {
       },
     })
 
-    expect(wrapper.find('.statusAlert').element).toBeTruthy()
+    expect(wrapper.find('.alert').element).toBeFalsy()
     expect(wrapper.html()).not.toContain('Alert Message')
   })
 
@@ -44,6 +44,7 @@ describe('StatusAlert.vue', () => {
       },
     })
 
+    expect(wrapper.find('.alert').element).toBeTruthy()
     expect(wrapper.html()).toContain('Alert Message')
   })
 

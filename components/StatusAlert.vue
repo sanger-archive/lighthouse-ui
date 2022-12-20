@@ -1,6 +1,6 @@
 <template>
   <p>
-    <b-alert class="statusAlert" :show="isShown" dismissible :variant="alertVariant">
+    <b-alert :show="isShown" dismissible :variant="alertVariant">
       {{ alertMessage }}
     </b-alert>
   </p>
