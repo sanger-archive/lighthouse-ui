@@ -2,7 +2,6 @@ import fs from 'fs'
 import { BootstrapVue } from 'bootstrap-vue'
 import { mount, createLocalVue } from '@vue/test-utils'
 import SourcePlates from '@/pages/print_labels/source_plates'
-import statuses from '@/modules/statuses'
 import Sprint from '@/modules/sprint_general_labels'
 import CSV from '@/modules/csv'
 import config from '@/nuxt.config'
@@ -45,12 +44,6 @@ describe('print destination plate labels', () => {
     expect(wrapper.find('#selectPrinter').findAll('option')).toHaveLength(printers.length)
   })
 
-  it('#setMessage', () => {
-    vm.setStatus('Success', 'Barcodes successfully printed')
-    expect(vm.status).toEqual(statuses.Success)
-    expect(vm.alertMessage).toBe('Barcodes successfully printed')
-  })
-
   // TODO: GPL-828 - the following 3 tests are arbitrary just to get it to pass.
   it('browse files', () => {
     vm.browseFiles()
@@ -70,61 +63,6 @@ describe('print destination plate labels', () => {
   it('add filenames', () => {
     vm.addFilenames()
     expect(true).toBeTruthy()
-  })
-
-  // TODO: GPL-828 - These tests are duplicated so will be removed once refactored. Need to get it to pass code coverage.
-  describe('setting the status', () => {
-    let vm
-
-    it('default should be idle', () => {
-      vm = mount(SourcePlates, { localVue }).vm
-      expect(vm.isIdle).toBeTruthy()
-    })
-
-    it('when success', () => {
-      wrapper = mount(SourcePlates, {
-        localVue,
-        data() {
-          return {
-            status: statuses.Success,
-            alertMessage: 'I am a success',
-          }
-        },
-      })
-      vm = wrapper.vm
-      expect(vm.isSuccess).toBeTruthy()
-      expect(wrapper.find('.alert').text()).toMatch('I am a success')
-    })
-
-    it('when error', () => {
-      wrapper = mount(SourcePlates, {
-        localVue,
-        data() {
-          return {
-            status: statuses.Error,
-            alertMessage: 'I am a failure',
-          }
-        },
-      })
-      vm = wrapper.vm
-      expect(vm.isError).toBeTruthy()
-      expect(wrapper.find('.alert').text()).toMatch('I am a failure')
-    })
-
-    it('when busy', () => {
-      wrapper = mount(SourcePlates, {
-        localVue,
-        data() {
-          return {
-            status: statuses.Busy,
-            alertMessage: 'I am busy',
-          }
-        },
-      })
-      vm = wrapper.vm
-      expect(vm.isBusy).toBeTruthy()
-      expect(wrapper.find('.alert').text()).toMatch('I am busy')
-    })
   })
 
   describe('printing labels', () => {
