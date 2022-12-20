@@ -1,12 +1,6 @@
 <template>
   <p>
-    <b-alert :show="isError" dismissible variant="danger">
-      {{ alertMessage }}
-    </b-alert>
-    <b-alert :show="isSuccess" dismissible variant="success">
-      {{ alertMessage }}
-    </b-alert>
-    <b-alert :show="isBusy" dismissible variant="warning">
+    <b-alert class="statusAlert" :show="isShown" dismissible :variant="alertVariant">
       {{ alertMessage }}
     </b-alert>
   </p>
@@ -26,14 +20,29 @@ export default {
     isIdle() {
       return this.status === statuses.Idle
     },
+    isBusy() {
+      return this.status === statuses.Busy
+    },
     isSuccess() {
       return this.status === statuses.Success
     },
     isError() {
       return this.status === statuses.Error
     },
-    isBusy() {
-      return this.status === statuses.Busy
+    isShown() {
+      return this.isBusy || this.isError || this.isSuccess
+    },
+    alertVariant() {
+      switch (this.status) {
+        case statuses.Error:
+          return "danger"
+        case statuses.Success:
+          return "success"
+        case statuses.Busy:
+          return "warning"
+        default:
+          return ""
+      }
     },
   },
   methods: {
