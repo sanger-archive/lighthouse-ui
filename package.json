@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.13.1",
-    "axios": "^0.27.2",
+    "axios": "^1.2.2",
     "bootstrap": "^4.6.2",
     "bootstrap-vue": "^2.23.1",
     "dotenv": "^16.0.3",
