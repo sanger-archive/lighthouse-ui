@@ -44,26 +44,8 @@ describe('print destination plate labels', () => {
     expect(wrapper.find('#selectPrinter').findAll('option')).toHaveLength(printers.length)
   })
 
-  // TODO: GPL-828 - the following 3 tests are arbitrary just to get it to pass.
-  it('browse files', () => {
-    vm.browseFiles()
-    expect(true).toBeTruthy()
-  })
-
-  it('get files', () => {
-    try {
-      vm.getFile()
-    } catch {
-      // TODO: GPL-828 - Implement proper logging of error
-      console.log('error')
-    }
-    expect(true).toBeTruthy()
-  })
-
-  it('add filenames', () => {
-    vm.addFilenames()
-    expect(true).toBeTruthy()
-  })
+  // Note: Not worthwhile testing the file picking actions since they
+  // trigger browser operations outside our control.
 
   describe('printing labels', () => {
     let mock
