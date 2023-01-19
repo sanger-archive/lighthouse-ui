@@ -82,6 +82,8 @@ export default {
       return Array.from({ length: this.numberOfBarcodes }, () => this.barcode)
     },
     async printLabels() {
+      this.$refs.statusAlert.setStatus('Busy', 'Printing labels…')
+
       const barcodes = this.multiplyBarcodes()
       const labelFields = Sprint.createLabelFields({
         barcodes,

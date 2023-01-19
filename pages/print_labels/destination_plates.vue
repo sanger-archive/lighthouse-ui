@@ -71,7 +71,8 @@ export default {
   },
   methods: {
     async printLabels() {
-      this.$refs.statusAlert.setStatus('Busy', 'Printing labels ...')
+      this.$refs.statusAlert.setStatus('Busy', 'Printing labels…')
+
       const response = await Sprint.printDestinationPlateLabels({
         numberOfBarcodes: this.numberOfBarcodes,
         printer: this.printer,

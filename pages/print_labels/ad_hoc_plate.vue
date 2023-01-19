@@ -73,6 +73,8 @@ export default {
   },
   methods: {
     async printLabels() {
+      this.$refs.statusAlert.setStatus('Busy', 'Printing labels…')
+
       const response = await Sprint.printLabels({
         labelFields: [{ barcode: this.barcode, text: this.text }],
         printer: this.printer,

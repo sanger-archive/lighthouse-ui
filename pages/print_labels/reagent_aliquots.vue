@@ -98,6 +98,8 @@ export default {
   },
   methods: {
     async printLabels() {
+      this.$refs.statusAlert.setStatus('Busy', 'Printing labels…')
+
       const response = await PrintLabels({
         barcode: this.barcode,
         firstText: this.firstLineText,

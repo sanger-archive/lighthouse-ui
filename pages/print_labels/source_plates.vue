@@ -97,7 +97,8 @@ export default {
         this.$refs.statusAlert.setStatus('Error', 'Please upload a file')
         return
       }
-      this.$refs.statusAlert.setStatus('Busy', 'Printing labels ...')
+
+      this.$refs.statusAlert.setStatus('Busy', 'Printing labels…')
 
       const file = this.getFile()
       const read = await csv.read(file)
