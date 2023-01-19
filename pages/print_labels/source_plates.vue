@@ -88,7 +88,7 @@ export default {
   },
   computed: {
     isBusy() {
-      return this.$refs.statusAlert?.isBusy || false
+      return this.$refs.statusAlert?.isBusy
     },
   },
   methods: {

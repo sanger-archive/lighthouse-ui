@@ -71,7 +71,7 @@ export default {
   },
   computed: {
     isBusy() {
-      return this.$refs.statusAlert?.isBusy || false
+      return this.$refs.statusAlert?.isBusy
     },
     isValid() {
       return this.barcode.length > 0
