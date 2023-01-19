@@ -9,6 +9,14 @@ localVue.use(BootstrapVue)
 describe('StatusAlert.vue', () => {
   let wrapper
 
+  it('has an Idle status and no alert message by default', () => {
+    wrapper = mount(StatusAlert, { localVue })
+
+    expect(wrapper.vm.status).toBe(statuses.Idle)
+    expect(wrapper.vm.alertMessage).toBe('')
+  })
+
+
   it('has an alertMessage', () => {
     wrapper = mount(StatusAlert, {
       localVue,
