@@ -68,7 +68,7 @@ export default {
     printers: {
       type: Array,
       default() {
-        // TODO: GPL-828 - Can we get this list from SPrint instead of setting it in config
+        // TODO: GPL-828-2 - Can we get this list from SPrint instead of setting it in config
         return config.publicRuntimeConfig.printers.split(',')
       },
     },
