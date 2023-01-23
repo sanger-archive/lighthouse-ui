@@ -5,19 +5,7 @@
         <PrintLabelsRouter />
         <h1>Print destination plate labels</h1>
         <p class="lead"></p>
-
-        <!-- TODO: GPL-828 - better in a component of its own? -->
-        <p>
-          <b-alert :show="isError" dismissible variant="danger">
-            {{ alertMessage }}
-          </b-alert>
-          <b-alert :show="isSuccess" dismissible variant="success">
-            {{ alertMessage }}
-          </b-alert>
-          <b-alert :show="isBusy" dismissible variant="warning">
-            {{ alertMessage }}
-          </b-alert>
-        </p>
+        <StatusAlert ref="statusAlert" />
         <p>
           <label for="selectPrinter">Which printer would you like to use?</label>
           <b-form-select id="selectPrinter" v-model="printer" :options="printers"></b-form-select>
@@ -51,63 +39,49 @@
 </template>
 
 <script>
-import statuses from '@/modules/statuses'
 import Sprint from '@/modules/sprint_general_labels'
 import config from '@/nuxt.config'
 import PrintLabelsRouter from '@/components/PrintLabelsRouter'
+import StatusAlert from '@/components/StatusAlert'
 
 export default {
   components: {
     PrintLabelsRouter,
+    StatusAlert,
   },
   props: {
     printers: {
       type: Array,
       default() {
-        // TODO: GPL-828 - Can we get this list from SPrint instead of setting it in config
+        // TODO: GPL-828-2 - Can we get this list from SPrint instead of setting it in config
         return config.publicRuntimeConfig.printers.split(',')
       },
     },
   },
   data() {
     return {
-      status: statuses.Idle,
-      alertMessage: '',
       printer: this.printers[0],
       numberOfBarcodes: '1',
     }
   },
   computed: {
-    // TODO: GPL-828 - abstract and create functions dynamically.
-    isIdle() {
-      return this.status === statuses.Idle
-    },
-    isSuccess() {
-      return this.status === statuses.Success
-    },
-    isError() {
-      return this.status === statuses.Error
-    },
     isBusy() {
-      return this.status === statuses.Busy
+      return this.$refs.statusAlert?.isBusy
     },
   },
   methods: {
-    setStatus(status, message) {
-      this.status = statuses[status]
-      this.alertMessage = message
-    },
     async printLabels() {
-      this.setStatus('Busy', 'Printing labels ...')
+      this.$refs.statusAlert.setStatus('Busy', 'Printing labels…')
+
       const response = await Sprint.printDestinationPlateLabels({
         numberOfBarcodes: this.numberOfBarcodes,
         printer: this.printer,
       })
 
       if (response.success) {
-        this.setStatus('Success', response.message)
+        this.$refs.statusAlert.setStatus('Success', response.message)
       } else {
-        this.setStatus('Error', response.error)
+        this.$refs.statusAlert.setStatus('Error', response.error)
       }
     },
   },
