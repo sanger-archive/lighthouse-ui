@@ -1,7 +1,6 @@
 import { BootstrapVue } from 'bootstrap-vue'
 import { mount, createLocalVue } from '@vue/test-utils'
 import PrintReagentAliquotsLabels from '@/pages/print_labels/reagent_aliquots'
-import statuses from '@/modules/statuses'
 import PrintLabels from '@/modules/sprint_reagent_aliquot_labels'
 import config from '@/nuxt.config'
 
@@ -67,12 +66,6 @@ describe('print destination plate labels', () => {
     expect(vm.numberOfLabels).toBe(10)
   })
 
-  it('#setMessage', () => {
-    vm.setStatus('Success', 'Barcodes successfully printed')
-    expect(vm.status).toEqual(statuses.Success)
-    expect(vm.alertMessage).toBe('Barcodes successfully printed')
-  })
-
   describe('with initial data', () => {
     beforeEach(() => {
       wrapper = mount(PrintReagentAliquotsLabels, {
@@ -132,61 +125,6 @@ describe('print destination plate labels', () => {
     it('becomes invalid when first line of text is left blank', () => {
       vm.firstLineText = ''
       expect(vm.isValid).toBeFalsy()
-    })
-  })
-
-  // TODO: GPL-828 - These tests are duplicated so will be removed once refactored. Need to get it to pass code coverage.
-  describe('setting the status', () => {
-    let vm
-
-    it('default should be idle', () => {
-      vm = mount(PrintReagentAliquotsLabels, { localVue }).vm
-      expect(vm.isIdle).toBeTruthy()
-    })
-
-    it('when success', () => {
-      wrapper = mount(PrintReagentAliquotsLabels, {
-        localVue,
-        data() {
-          return {
-            status: statuses.Success,
-            alertMessage: 'I am a success',
-          }
-        },
-      })
-      vm = wrapper.vm
-      expect(vm.isSuccess).toBeTruthy()
-      expect(wrapper.find('.alert').text()).toMatch('I am a success')
-    })
-
-    it('when error', () => {
-      wrapper = mount(PrintReagentAliquotsLabels, {
-        localVue,
-        data() {
-          return {
-            status: statuses.Error,
-            alertMessage: 'I am a failure',
-          }
-        },
-      })
-      vm = wrapper.vm
-      expect(vm.isError).toBeTruthy()
-      expect(wrapper.find('.alert').text()).toMatch('I am a failure')
-    })
-
-    it('when busy', () => {
-      wrapper = mount(PrintReagentAliquotsLabels, {
-        localVue,
-        data() {
-          return {
-            status: statuses.Busy,
-            alertMessage: 'I am busy',
-          }
-        },
-      })
-      vm = wrapper.vm
-      expect(vm.isBusy).toBeTruthy()
-      expect(wrapper.find('.alert').text()).toMatch('I am busy')
     })
   })
 
