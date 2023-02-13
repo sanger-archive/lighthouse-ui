@@ -78,20 +78,20 @@ export default {
       sortDesc: true,
       boxBarcode: '',
       items: [],
-      submit_disabled: false,
+      isCreating: false,
     }
   },
   computed: {
     isDisabled() {
-      return this.submit_disabled || this.boxBarcode.length === 0
+      return this.isCreating || this.boxBarcode.length === 0
     },
   },
   methods: {
     async handleSentinelSampleCreation() {
-      this.submit_disabled = true
+      this.isCreating = true
       const resp = await api.createSamples(this.boxBarcode)
       this.handleSentinelSampleCreationResponse(resp)
-      this.submit_disabled = false
+      this.isCreating = false
     },
     // TODO: DPL-561 - make this more javascripty? destructuring?
     handleSentinelSampleCreationResponse(resp) {
