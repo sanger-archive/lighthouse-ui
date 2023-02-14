@@ -8,14 +8,14 @@
 
     <b-card title="Generate Test Run">
       <b-card-text>
-        Select the number of plates you want to generate test data for with the number of positive
-        samples per plate. You can add additional sets of plates up to a maximum of
-        {{ maxNumberOfPlates }}.
+        Select the number of plates you want to generate test data for with the
+        number of positive samples per plate. You can add additional sets of
+        plates up to a maximum of {{ maxNumberOfPlates }}.
       </b-card-text>
       <b-card-text>
-        The
-        <em>Generate</em> button will start the creation of the data, and you will be automatically
-        taken to the label printing screen when it is done.
+        The <em>Generate</em> button will start the creation of the data, and
+        you will be automatically taken to the label printing screen when it is
+        done.
       </b-card-text>
 
       <b-form v-if="!totalPlatesReached" id="platesSpecForm" inline>
