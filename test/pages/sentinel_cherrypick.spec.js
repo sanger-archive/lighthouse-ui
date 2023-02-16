@@ -108,11 +108,11 @@ describe('sentinel cherrypick', () => {
 
       const expected = [
         {
-          plate_barcode: response.barcodes[0],
+          plateBarcode: response.barcodes[0],
           selected: true,
         },
         {
-          plate_barcode: response.barcodes[1],
+          plateBarcode: response.barcodes[1],
           selected: true,
         },
       ]
@@ -165,11 +165,11 @@ describe('sentinel cherrypick', () => {
     beforeEach(() => {
       wrapper.vm.items = [
         {
-          plate_barcode: 'aBarcode1',
+          plateBarcode: 'aBarcode1',
           selected: true,
         },
         {
-          plate_barcode: 'aBarcode2',
+          plateBarcode: 'aBarcode2',
           selected: true,
         },
       ]
@@ -262,11 +262,11 @@ describe('sentinel cherrypick', () => {
     beforeEach(() => {
       wrapper.vm.items = [
         {
-          plate_barcode: 'aBarcode1',
+          plateBarcode: 'aBarcode1',
           selected: false,
         },
         {
-          plate_barcode: 'aBarcode2',
+          plateBarcode: 'aBarcode2',
           selected: true,
         },
       ]
@@ -286,11 +286,11 @@ describe('sentinel cherrypick', () => {
     beforeEach(() => {
       wrapper.vm.items = [
         {
-          plate_barcode: 'aBarcode1',
+          plateBarcode: 'aBarcode1',
           selected: false,
         },
         {
-          plate_barcode: 'aBarcode2',
+          plateBarcode: 'aBarcode2',
           selected: false,
         },
       ]

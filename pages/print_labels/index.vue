@@ -1,11 +1,5 @@
 <template>
-  <b-container>
-    <b-row>
-      <b-col>
-        <DestinationPlates />
-      </b-col>
-    </b-row>
-  </b-container>
+  <DestinationPlates />
 </template>
 
 <script>

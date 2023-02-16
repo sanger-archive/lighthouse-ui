@@ -93,10 +93,10 @@ export default {
   data() {
     return {
       fields: [
-        { key: 'plate_barcode', label: 'Plate barcode', sortable: true },
+        { key: 'plateBarcode', label: 'Plate barcode', sortable: true },
         { key: 'selected', label: 'Include in batch', sortable: true },
       ],
-      sortBy: 'plate_barcode',
+      sortBy: 'plateBarcode',
       sortDesc: true,
       boxBarcodes: '',
       showDismissibleAlert: false,
@@ -105,7 +105,7 @@ export default {
       pickListResponse: { variant: 'danger' },
       perPage: 10,
       currentPage: 1,
-      submit_disabled: false,
+      isCreating: false,
     }
   },
   computed: {
@@ -113,7 +113,7 @@ export default {
       return this.boxBarcodes.length === 0
     },
     batchCreationDisabled() {
-      return this.submit_disabled || this.items.length === 0
+      return this.isCreating || this.items.length === 0
     },
     rows() {
       return this.items.length
@@ -134,16 +134,16 @@ export default {
         this.showDismissibleAlert = true
       } else {
         this.items = resp.barcodes.map((barcode) => ({
-          plate_barcode: barcode,
+          plateBarcode: barcode,
           selected: true,
         }))
       }
     },
     async createBatch() {
-      this.submit_disabled = true
+      this.isCreating = true
       const barcodes = this.items
         .filter((item) => item.selected === true)
-        .map((item) => item.plate_barcode)
+        .map((item) => item.plateBarcode)
 
       if (barcodes.length > 0) {
         const resp = await sequencescape.createCherrypickBatch(barcodes)
@@ -154,7 +154,7 @@ export default {
           variant: 'warning',
         }
       }
-      this.submit_disabled = false
+      this.isCreating = false
     },
     handleCreateBatchResponse(resp) {
       if (resp.success) {

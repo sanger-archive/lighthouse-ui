@@ -114,7 +114,7 @@ const failDestinationPlateBiosero = async (form) => {
   try {
     const response = await axios.post(url, body, headers)
     if (response.data._status === 'OK') {
-      // successfull insert of fail event
+      // successful insert of fail event
       return {
         success: true,
         response: `Successfully failed destination plate with barcode: ${form.barcode}`,
