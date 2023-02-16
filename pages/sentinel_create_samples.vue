@@ -28,7 +28,7 @@
             id="handleSentinelSampleCreation"
             variant="success"
             class="float-right"
-            :disabled="isDisabled"
+            :disabled="submitDisabled"
             @click="handleSentinelSampleCreation()"
             >Submit
           </b-button>
@@ -82,7 +82,7 @@ export default {
     }
   },
   computed: {
-    isDisabled() {
+    submitDisabled() {
       return this.isCreating || this.boxBarcode.length === 0
     },
   },
