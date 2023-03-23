@@ -68,7 +68,6 @@ export default {
     printers: {
       type: Array,
       default() {
-        // TODO: GPL-828-2 - Can we get this list from SPrint instead of setting it in config
         return config.publicRuntimeConfig.printers.split(',')
       },
     },
@@ -90,10 +89,12 @@ export default {
       return this.$refs.statusAlert?.isBusy
     },
     isValid() {
-      return this.barcode.length > 0 &&
+      return (
+        this.barcode.length > 0 &&
         this.firstLineText.length > 0 &&
         this.numberOfLabels >= 1 &&
         this.numberOfLabels <= 100
+      )
     },
   },
   methods: {
